@@ -95,7 +95,7 @@ def solve(S, k):
 ```
 
 Notar como ya no necesitamos el $-\infty$, puesto que símplemente no leemos esa casilla si nos hubieramos salido de la matriz. Llenamos la matriz de ceros inicialmente, y así no tenemos que manejar el $\max(0, \dots)$, ni explícitamente el caso $i = n$.
-Esta implementación, como siempre que usamos programación dinámica bottom-up, hace muy simple el cálculo de complejidad. Hacemos $O(nk)$ operaciones para inicializar el cache, y usamos $O(nk)$ espacio para eos. Además, tenemos dos ciclos anidados, donde hacemos $O(1)$ operaciones dentro de cada iteración, lo que resulta en $O(nk)$ operaciones en los ciclos. Finalmente, el algoritmo entero usa $O(nk)$ operaciones y espacio.
+Esta implementación, como siempre que usamos programación dinámica bottom-up, hace muy simple el cálculo de complejidad. Hacemos $O(nk)$ operaciones para inicializar el cache, y usamos $O(nk)$ espacio para eso. Además, tenemos dos ciclos anidados, donde hacemos $O(1)$ operaciones dentro de cada iteración, lo que resulta en $O(nk)$ operaciones en los ciclos. Finalmente, el algoritmo entero usa $O(nk)$ operaciones y espacio.
 
 ### Mejora de espacio
 
