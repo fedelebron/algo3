@@ -1,6 +1,6 @@
 # Enunciado
 
-Un _grafo mixto_ es una tripla $G = (V, E, A)$ tal que $(V, E)$ es un grafo, $(V, A)$ es un grafo orientado, y $E$ y $A$ no tienen aristas en común, cuando las aristas de $A$ son consideradas sin dirección. En otras palabras, G se obtiene del grafo $(G, E \cup A)$ orientando las aristas de $A$. El grafo mixto $G$ es _euleriano_ si se pueden orientar las aristas de $E$ a fin de que el grafo orientado resultante tenga un circuito que pase por todas sus aristas exactamente una vez.
+Un _grafo mixto_ es una tripla $G = (V, E, A)$ tal que $(V, E)$ es un grafo, $(V, A)$ es un grafo orientado, y $E$ y $A$ no tienen aristas en común, cuando las aristas de $A$ son consideradas sin dirección. En otras palabras, G se obtiene del grafo $(V, E \cup A)$ orientando las aristas de $A$. El grafo mixto $G$ es _euleriano_ si se pueden orientar las aristas de $E$ a fin de que el grafo orientado resultante tenga un circuito que pase por todas sus aristas exactamente una vez.
 
 Es sabido que un digrafo es euleriano si y sólo si el digrafo es conexo y $d^+(v) = d^-(v)$ para todo $v \in V(G)$.
 
@@ -17,7 +17,7 @@ Vamos a establecer un poco de notación para que sea más fácil hablar de los o
 
 * $d_E(v)$ al número de aristas no-dirigidas incidentes a $v$ en $E$,
 * $d^{+}_A(v)$ al número de aristas dirigidas en $A$ que salen de $v$,
-* $d^{-}_A(v)$ al número de aristas dirigidas en $A$ que llegan a $v$.
+* $d^{-}_A(v)$ al número de aristas dirigidas en $A$ que entran a $v$.
 * $d^{+}_E(v)$ al número de aristas no-dirigidas en $E$, que orientamos como saliendo de $v$.
 * $d^{-}_E(v)$ al número de aristas no-dirigidas en $E$, que orientamos como entrando a $v$.
 
@@ -61,14 +61,14 @@ $$
 \end{align}
 $$
 El primer término es $|E|$ porque al sumar $d_E(v)$ para todo $v \in V$, contamos a cada $e \in E$ dos veces. El segundo término es cero porque cada arista aporta 1 a un grado de salida y a un grado de entrada, y luego la suma del grado de entrada de todos los vértices es igual a la suma del grado de salida de todos los vértices.
-Luego, sabemos que si el flujo tiene valor $|E|$, todas las aristas que entran a $t$ están saturadas, y luego para cada vértice $v \in V$, el flujo que le llega es $\frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$. Recordemos que el flujo que le entra a $v$ es el número de aristas de $E$ que orientamos como llegando a $v$, es decir, $d^{-}_E(v)$. Luego, tenemos que para todo $v$, $d^{-}_E(v) = \frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$. Como vimos, esto es equivalente, usando que $d_E(v) = d^+_E(v) + d^-_E(v)$, a que $d^{-}_E(v) + d^{-}_A(v) = d^{+}_E(v) + d^{+}_A(v)$. Luego, esta orientación de aristas hace que para todo $v \ in V$, su grado de entrada y su grado de salida son idénticos.
+Luego, sabemos que si el flujo tiene valor $|E|$, todas las aristas que entran a $t$ están saturadas, y luego para cada vértice $v \in V$, el flujo que le llega es $\frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$. Recordemos que el flujo que le entra a $v$ es el número de aristas de $E$ que orientamos como entrando a $v$, es decir, $d^{-}_E(v)$. Luego, tenemos que para todo $v$, $d^{-}_E(v) = \frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$. Como vimos, esto es equivalente, usando que $d_E(v) = d^+_E(v) + d^-_E(v)$, a que $d^{-}_E(v) + d^{-}_A(v) = d^{+}_E(v) + d^{+}_A(v)$. Luego, esta orientación de aristas hace que para todo $v \in V$, su grado de entrada y su grado de salida son idénticos.
 Luego, si $G$ es conexo, esta orientación de las aristas de $G$ produce un grafo dirigido euleriano.
 
-$\Leftarrow)$. Queremos ver que si hay una orientación de las aristas en $E$ que produce un grafo euleriano, entonces hay un flujo en $R$ de valor $|E|$. Para esto, describamos el flujo $f:F \to \mathbb{R}$, y verifiquemos que la condición de flujo se verifica en todos los vértices de $W$.
+$\Leftarrow)$. Queremos ver que si hay una orientación de las aristas en $E$ que produce un grafo dirigido euleriano, entonces hay un flujo en $R$ de valor $|E|$. Para esto, describamos el flujo $f:F \to \mathbb{R}$, y verifiquemos que la condición de flujo se verifica en todos los vértices de $W$.
 
-* $f(s, e) = 1$, para todo $e \in E$. Esto nos dice que el valor del flujo, si podemos crearlo, va a ser $|E|$, la suma del flujo que sale de la fuente. La condición de flujo para $s$ es sólo que su suma de flujo no sea negativo, y esto es cierto. El flujo es igual a la capacidad, $c((s, e)) = 1$.
-* $f(e, u) = 1$ para todo $e \in E, u \in e$, si y sólo si la arista $e$ está orientada hacia $u$, y $f(e, u) = 0$ de otra forma. A $e$ le llega una unidad de flujo, y como está orientada sólo hacia a uno de sus extremos, sale una unidad de flujo de la misma, y por lo tanto la condición de flujo se verifica en $e$. El flujo es menor o igual a la capacidad, $c((e, u)) = 1$.
-* $f(e, t) = \frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$, para todo $e \in E$. Esto es igual a su capacidad. Como tenemos una orientación que hace que $d_E(v) - d^{-}_E(v) = d^{-}_E(v) + d^{-}_A(v) - d^{+}_A(v)$ para todo $v$, esto es lo mismo $d^{-}_E(v) = \frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$. Luego, como en la orientación tengo $d^-_E(v)$ aristas orientadas hacia $v$, y en $R$ (por el item anterior) tengo una unidad de flujo por cada arista en $E$ orientada hacia $v$, la suma del flujo que le llega a $v$ es exactamente $d^-_E(v)$, y por lo tanto la condición de flujo se satisface en $e$.
+* $f((s, e)) = 1$, para todo $e \in E$. Esto nos dice que el valor del flujo, si podemos crearlo, va a ser $|E|$, la suma del flujo que sale de la fuente. La condición de flujo para $s$ es sólo que su suma de flujo no sea negativo, y esto es cierto. El flujo es igual a la capacidad, $c((s, e)) = 1$.
+* $f((e, u)) = 1$ para todo $e \in E, u \in e$, si y sólo si la arista $e$ está orientada hacia $u$, y $f(e, u) = 0$ de otra forma. A $e$ le llega una unidad de flujo, y como está orientada sólo hacia a uno de sus extremos, sale una unidad de flujo de la misma, y por lo tanto la condición de flujo se verifica en $e$. El flujo es menor o igual a la capacidad, $c((e, u)) = 1$.
+* $f((e, t)) = \frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$, para todo $e \in E$. Esto es igual a su capacidad. Tenemos una orientación que hace que $d^{-}_E(v) + d^{-}_A(v) = d^{+}_E(v) + d^{+}_A(v)$ para todo $v \in V$, y como vimos, esto es lo mismo que $d^{-}_E(v) = \frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$. Luego, como en la orientación tengo $d^-_E(v)$ aristas orientadas hacia $v$, y en $R$ (por el item anterior) tengo una unidad de flujo por cada arista en $E$ orientada hacia $v$, la suma del flujo que le llega a $v$ es exactamente $d^-_E(v)$, y por lo tanto la condición de flujo se satisface en $e$.
 
 Luego tenemos un flujo en $R$, de valor $|E|$.
 Notemos que no necesitamos la condición sobre conectividad de $G$ para esta parte; el flujo realmente sólo nos habla sobre la condición de grados de entrada y salida en cada vértice, y no dice nada sobre la conectividad del grafo original.
