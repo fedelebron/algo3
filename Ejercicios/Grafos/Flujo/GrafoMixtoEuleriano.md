@@ -25,11 +25,11 @@ Nuestro objetivo es darle una orientación a todas las aristas de $E$, tal que p
 
 Veamos un ejemplo. Para este vértice $v \in V$, tenemos en $E$ tres aristas incidentes, y en $A$ cinco.
 
-<img src="./GrafoMixtoEuleriano_1.jpg" alt="GrafoMixtoEuleriano_1" style="zoom: 25%;" />
+<img src="./GrafoMixtoEuleriano_1.png" alt="GrafoMixtoEuleriano_1" style="zoom: 50%;" />
 
 Queremos orientar las tres aristas en $E$, de tal forma que nos quede el mismo grado de entrada y salida resultante. Por ejemplo, podemos orientarlas de esta manera:
 
-<img src="./GrafoMixtoEuleriano_2.jpg" alt="GrafoMixtoEuleriano_2" style="zoom: 25%;" />
+<img src="./GrafoMixtoEuleriano_2.png" alt="GrafoMixtoEuleriano_2" style="zoom: 50%;" />
 
 Sabemos que para todo $v \in V$, tenemos $d_E(v) = d^{-}_E(v) + d^{+}_E(v)$, porque estamos orientando todas las aristas en $E$, y luego para cada arista incidente a $v$ o la orientamos saliendo de $v$, o entrando a $v$. Tenemos, entonces, dos ecuaciones para $d^{+}_E(v)$. Igualando estas cantidades, nuestro objetivo es lógicamente equivalente a pedir que para todo $v \in V$:
 $$
