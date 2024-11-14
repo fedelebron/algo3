@@ -44,7 +44,7 @@ Consideremos, entonces, la siguiente red de flujo $R = (W, F, c$), con:
 
 * $W = \{s\} \cup E \cup V \cup \{t\}$
 * $F = \{(s, e) \mid e \in E\}\ \cup \{(e, v) \mid e \in E, v \in e\} \cup \{(v, t) \mid v \in V\}$
-* $c((a, b)) = \begin{cases}1&\text{ si } a = s\\1&\text{ si } a \in E\\\frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}&\text{ si } b = t\end{cases}$.
+* $c((a, b)) = \begin{cases}1&\text{ si } a = s\\1&\text{ si } a \in E\\\frac{d_E(a) - d^{-}_A(a) + d^{+}_A(a)}{2}&\text{ si } b = t\end{cases}$.
 
 El problma de encontrar una orientación a las aristas de $E$ se resuelve corriendo un algoritmo de flujo máximo en $R$, desde $s$ hasta $t$. Obviamente no hay un flujo con valor mayor a $|E|$, dado que salen $|E|$ aristas de capacidad $1$ de $s$. Si el flujo máximo tiene un valor de $|E|$, entonces existe una orientación como la pedida, y es orientar $e = \{u, v\}$ hacia $v$ si $c((e, v)) = 1$, y hacia $u$ si $c((e, u)) = 1$. Si el flujo máximo tiene un valor menor a $|E|$, entonces no es posible orientar las aristas de forma de conseguir un grafo dirigido euleriano.
 
@@ -52,7 +52,7 @@ Una unidad de flujo es una decisión sobre cómo orientar una arista. Las restri
 
 ### Demostración
 
-$\Rightarrow)$. Queremos ver que si hay un flujo de valor $|E|$, y es conexo, entonces existe una orientación de $E$ que resulte en un grafo euleriano. Un flujo máximo de valor $|E|$ implica que cada arista que sale de $E$ está saturada. Veamos que también implica que cada arista que llega a $t$ está saturada. La suma de las capacidades de las aristas que entran a $t$ es
+$\Rightarrow)$. Queremos ver que si hay un flujo de valor $|E|$, y es conexo, entonces existe una orientación de $E$ que resulte en un grafo euleriano. Un flujo máximo de valor $|E|$ implica que cada arista que sale de $s$ está saturada, porque hay $|E|$ de ellas, y cada una tiene capacidad $1$. Veamos que también implica que cada arista que llega a $t$ está saturada. La suma de las capacidades de las aristas que entran a $t$ es
 $$
 \begin{align}
 \sum_{v\in V} \frac{d_E(v) - d^+_A(v) + d^-_A(v)}{2} &= \frac{1}{2}\left(\sum_{v\in V} d_E(v)\right) + \frac{1}{2}\left(\sum_{v\in V}  d^-_A(v) - \sum_{v\in V} d^+_A(v)\right)\\
@@ -61,7 +61,7 @@ $$
 \end{align}
 $$
 El primer término es $|E|$ porque al sumar $d_E(v)$ para todo $v \in V$, contamos a cada $e \in E$ dos veces. El segundo término es cero porque cada arista aporta 1 a un grado de salida y a un grado de entrada, y luego la suma del grado de entrada de todos los vértices es igual a la suma del grado de salida de todos los vértices.
-Luego, sabemos que si el flujo tiene valor $|E|$, todas las aristas que entran a $t$ están saturadas, y luego para cada vértice $v \in V$, el flujo que le llega es $\frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$. Recordemos que el flujo que le entra a $v$ es el número de aristas de $E$ que orientamos como entrando a $v$, es decir, $d^{-}_E(v)$. Luego, tenemos que para todo $v$, $d^{-}_E(v) = \frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$. Como vimos, esto es equivalente, usando que $d_E(v) = d^+_E(v) + d^-_E(v)$, a que $d^{-}_E(v) + d^{-}_A(v) = d^{+}_E(v) + d^{+}_A(v)$. Luego, esta orientación de aristas hace que para todo $v \in V$, su grado de entrada y su grado de salida son idénticos.
+Luego, sabemos que si el flujo tiene valor $|E|$, todas las aristas que entran a $t$ están saturadas, y luego para cada vértice $v \in V$, el flujo que le llega es $\frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$, porque esa es la capacidad de la arista $(v, t)$. Recordemos que el flujo que le entra a $v$ es el número de aristas de $E$ que orientamos como entrando a $v$, es decir, $d^{-}_E(v)$. Luego, tenemos que para todo $v$, $d^{-}_E(v) = \frac{d_E(v) - d^{-}_A(v) + d^{+}_A(v)}{2}$. Como vimos, esto es equivalente, usando que $d_E(v) = d^+_E(v) + d^-_E(v)$, a que $d^{-}_E(v) + d^{-}_A(v) = d^{+}_E(v) + d^{+}_A(v)$. Luego, esta orientación de aristas hace que para todo $v \in V$, su grado de entrada y su grado de salida son idénticos.
 Luego, si $G$ es conexo, esta orientación de las aristas de $G$ produce un grafo dirigido euleriano.
 
 $\Leftarrow)$. Queremos ver que si hay una orientación de las aristas en $E$ que produce un grafo dirigido euleriano, entonces hay un flujo en $R$ de valor $|E|$, y es máximo. Para esto, describamos el flujo $f:F \to \mathbb{R}$, y verifiquemos que la condición de flujo se verifica en todos los vértices de $W$.
