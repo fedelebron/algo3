@@ -102,7 +102,7 @@ def f(n, s):
   return TA[s]
   ```
 
-
+  Obteniendo así una complejidad espacial de $O(s)$, y manteniendo la complejidad temporal anterior de $O(n s k)$.
 
 + Sea $g(n, s, k)$ el número de formas de tirar $n$ dados, donde cada uno puede valer desde $1$ hasta $k$, y entre todos suman $s$. Para este ítem, los consideramos indistinguibles. 
   Esto es lo mismo que contar las tuplas $T$ de $k$ elementos, donde el $i$-ésimo elemento de la tupla te dice cuántos dados tienen valor $i$, y $sum_(i=1)^k i T_i = s$ (es decir, suman $s$), y $sum_(i = 1)^k T_i = n$ (es decir, hay $n$ dados en total). Notar que podemos tener ceros en estas tuplas, si para algún $1 <= i <= k$, ningún dado valió $i$.
