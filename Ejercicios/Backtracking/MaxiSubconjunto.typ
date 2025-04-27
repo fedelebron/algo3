@@ -110,6 +110,7 @@ def f(M: list[list[int]], k: int) -> list[int]:
                       "1-2": red.transparentize(80%),
                       "1-0": red.transparentize(80%),
                       "4-1": red.transparentize(80%),
+                      "1-4": red.transparentize(80%),
                       "0-2": blue.transparentize(80%),
                       "2-2": blue.transparentize(80%),
                       "2-0": blue.transparentize(80%),
