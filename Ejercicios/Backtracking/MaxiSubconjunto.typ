@@ -1,3 +1,5 @@
+#import "@preview/pavemat:0.2.0": pavemat
+
 = MaxiSubconjunto
 
 == Enunciado
@@ -9,7 +11,7 @@ $
 
 entonces $I = {1, 2, 3}$ es una solución óptima.
 
-#set enum(numbering: "a)")
+#set enum(numbering: "a)1)")
 + Diseñar un algoritmo de _backtracking_ para resolver el problema, indicando claramente cómo se codifica una solución candidata, cuáles soluciones son válidas y qué valor tienen, qué es una solución parcial y cómo se extiende cada solución parcial.
 
 + Calcular la complejidad temporal y espacial del mismo.
@@ -63,30 +65,65 @@ def f(M: list[list[int]], k: int) -> list[int]:
     )
   $
 
-  Si tenemos `I = [0]`, `i = 2`, entonces ya decidimos no usar la segunda fila ni la segunda columna:
- $
-   mat(
-      10, X, 10, 2, 9;
-      X, X, X, X, X;
-      10, X, 9, 9, 6;
-      2, X, 9, 6, 4;
-      9, X, 6, 4, 1
-    )
- $ 
+  Si tenemos `I = [0]`, `i = 2`, entonces ya decidimos no usar la segunda fila ni la segunda columna (es decir, el índice $1$), y luego `cota` ya tiene restados los números en rojo:
+  #let m = $mat(
+      10, 4, 10, 2, 9;
+      4, 10, 2, 2, 6;
+      10, 2, 9, 9, 6;
+      2, 2, 9, 6, 4;
+      9, 6, 6, 4, 1
+      )$
+  #let e0 = pavemat(m,
+                    pave: (
+                      (path: "SSSSS", from: (0, 1)),
+                      (path: "SSSSS", from: (0, 2)),
+                      (path: "DDDDD", from: (1, 0)),
+                      (path: "DDDDD", from: (2, 0))
+                    ),
+                    stroke: 0pt,
+                    block: true,
+                    fills: (
+                      "0-1": red.transparentize(80%),
+                      "1-1": red.transparentize(80%),
+                      "2-1": red.transparentize(80%),
+                      "1-2": red.transparentize(80%),
+                      "1-0": red.transparentize(80%),
+                    ))
+  $ #e0 $
+   
+   Tenemos `cota = 10 + 10 + 2 + 9 + 10 + 9 + 9 + 6 + 2 + 9 + 6 + 4 + 9 + 6 + 4 + 1 = 106`. Al decidir no usar el índice `i = 2`, encontramos que no vamos a poder usar lo que marcamos ahora con azul:
 
-   Tenemos `cota = 10 + 10 + 2 + 9 + 10 + 9 + 9 + 6 + 2 + 9 + 6 + 4 + 9 + 6 + 4 + 1 = 106`. Al decidir no usar el índice `i = 2`, encontramos que no vamos a poder usar lo que marcamos ahora con $Y$:
+  #let e0 = pavemat(m,
+                    pave: (
+                      (path: "SSSSS", from: (0, 1)),
+                      (path: "SSSSS", from: (0, 2)),
+                      (path: "DDDDD", from: (1, 0)),
+                      (path: "DDDDD", from: (2, 0)),
+                      (path: "SSSSS", from: (0, 3)),
+                      (path: "DDDDD", from: (3, 0))
+                    ),
+                    stroke: 0pt,
+                    fills: (
+                      "0-1": red.transparentize(80%),
+                      "1-1": red.transparentize(80%),
+                      "2-1": red.transparentize(80%),
+                      "1-2": red.transparentize(80%),
+                      "1-0": red.transparentize(80%),
+                      "4-1": red.transparentize(80%),
+                      "0-2": blue.transparentize(80%),
+                      "2-2": blue.transparentize(80%),
+                      "2-0": blue.transparentize(80%),
+                      "2-4": blue.transparentize(80%),
+                      "3-2": blue.transparentize(80%),
+                    ))
+  $ #e0 $
 
- $
-   mat(
-      10, X, Y, 2, 9;
-      X, X, X, X, X;
-      Y, X, Y, Y, Y;
-      2, X, Y, 6, 4;
-      9, X, Y, 4, 1
-    )
- $ 
-
-  Cuánto decrece la cota? La suma de los elementos de la fila 2 fila, que sean más grandes que `i` (porque la cota sólo suma cosas que vengan después de o exactamente en `i`, recordar que `cota == value(I + list(range(i, n)))`), y que no haya ya cruzado con $X$. Esto es `10 + 9 + 9 + 6 + 10 + 9 + 6 = 2 * (10 + 9 + 9 + 6) - 9 = 2 * sum(M[i][j] for j in range(n) if j >= i or j in I) + M[i][i]`. Las `Y` de la primer fila y la columna las restamos por `j in I`, las otras por `j >= i`.
+  Cuánto decrece la cota? La suma de
+    + Las celdas de la fila 2, cuya columna sea más grande que `i` (porque la cota sólo suma cosas que vengan después de o exactamente en `i`, recordar que `cota == value(I + list(range(i, n)))`), y que no haya ya cruzado con rojo.
+    + Análogamente, las celdas de la columna 2, cuya fila sea más grande que `i`.
+    + Las celdas que tengan una fila igual a `i`, y columna en `I`.
+    + Análogamente, las celdas que tengan columna igual a `i`, y fila en `I`.
+  Esto es restarle ```python 10 + 9 + 9 + 6 + 10 + 9 + 6 = 2 * (10 + 9 + 9 + 6) - 9 = 2 * sum(M[i][j] for j in range(n) if j >= i or j in I) - M[i][i]```. Las celdas azules de la primer fila y la primer columna (los dos "10" azules) las restamos por `j in I`, las otras por `j >= i`.
 
   También vamos a aprovechar y computar el valor de la sub-solución actual a medida que hacemos recursión.
 
@@ -104,10 +141,9 @@ def f(M: list[list[int]], k: int) -> list[int]:
     mejor_valor_hasta_ahora = 0
 
     def g(I: list[list[int]], i: int,
-          lenI: int, valI: int,
-          cota: int) -> list[int] | None:
+          valI: int, cota: int) -> list[int] | None:
       nonlocal mejor_valor_hasta_ahora, mejor_solucion_hasta_ahora
-      if lenI == k:
+      if len(I) == k:
         if valI > mejor_valor_hasta_ahora:
           mejor_valor_hasta_ahora = valI
           mejor_solucion_hasta_ahora = I
@@ -118,16 +154,16 @@ def f(M: list[list[int]], k: int) -> list[int]:
       # Rama 1: Decidimos no-agregar i a I.
       nueva_cota = cota - 2 * sum(M[i][j] for j in range(n)
                                   if j >= i or j in I) + M[i][i]
-      g(I, i + 1, lenI, valI, nueva_cota)
+      g(I, i + 1, valI, nueva_cota)
       # Rama 2: Decidimos agregar i a I.
       nuevos_valores = M[i][i] + 2 * sum(M[k][i] for k in I)
-      g(I + [i], i + 1, lenI + 1, valI + nuevos_valores, cota)    
+      g(I + [i], i + 1, valI + nuevos_valores, cota)    
     
-    g([], 0, 0, 0, S) 
+    g([], 0, 0, S) 
     return mejor_solucion_hasta_ahora
   ```
 
-  Los invariantes que mantenemos son que `valI = value(I)`, `lenI = len(I)`, `lenI <= i <= n`, que todos los elementos de `I` son menores estrictos que `i`, que `cota == value(I + list(range(i, n)))`, y que `valI <= cota`.
+  Los invariantes que mantenemos son que `valI = value(I)`, `len(I) <= i <= n`, que todos los elementos de `I` son menores estrictos que `i`, que `cota == value(I + list(range(i, n)))`, y que `valI <= cota`.
 
   Podemos ver que esta cota es efectiva, cuando frecuentemente tendríamos que explorar el árbol entero de otra forma (es decir, cuando $k$ es grande):
 
@@ -146,3 +182,14 @@ def f(M: list[list[int]], k: int) -> list[int]:
   %timeit fc(M, 10)
   # 15.2 ms ± 3.72 ms per loop (mean ± std. dev. of 7 runs, 100 loops each)
     ```
+  
+  Sin embargo, cuando $k$ es chico, el costo adicional de calcular la cota ralenta más el programa que lo que podemos acelerar podando ramas:
+
+  ```python
+  %timeit f(M, 2)
+  # 210 µs ± 37.7 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+  %timeit fc(M, 2)
+  # 265 µs ± 6.21 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+  ```
+
+  Esto nos recuerda que toda poda tiene que ser evaluada en la práctica, y no por recortar vértices necesariamente estamos haciendo nuestro programa más rápido.
