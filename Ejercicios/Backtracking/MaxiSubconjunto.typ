@@ -51,7 +51,7 @@ def f(M: list[list[int]], k: int) -> list[int]:
 
 + Cada vez que decidimos no usar un elemento, acotamos por arriba el máximo valor de cualquier extensión de nuestra sub-solución actual. El invariante que vamos a mantener es que `cota == value(I + list(range(i, n)))`. Es decir, `cota` es el valor que obtendríamos si, empezando con esta sub-solución actual `I`, agregamos _todos_ los índices mayores o iguales a `i`.
 
-  Claramente podemos tomar `cota = value(list(range(n)))` como cota inicial, porque es cota superior de todas las soluciones. En particular, es la cota correcta para mantener el invariante que dijimos arriba, dado que empezamos con `I = []`.
+  Claramente podemos tomar `cota = value(list(range(n)))` $ = sum_(i = 0)^n sum_(j = 0)^n M_(i, j)$ como cota inicial, porque es cota superior de todas las soluciones. En particular, es la cota correcta para mantener el invariante que dijimos arriba, dado que empezamos con `I = [], i = 0`.
 
   Cuando decidimos no-usar un elemento, tenemos que restarle a `cota` todos los elementos que nunca van a formar parte de una extensión a `I`. Estos van a ser todos los elementos que podríamos haber tenido en nuestra suma final hasta ahora, pero a partir de ahora, sabemos que nunca van a estar. Si el elemento que decidimos no-usar es $i$, los elementos que no vamos a usar son $M_(i, j)$ y $M_(j, i)$ tales que $j >= i$, o $j in I$. Veámoslo con un ejemplo:
 
@@ -193,4 +193,4 @@ def f(M: list[list[int]], k: int) -> list[int]:
   # 265 µs ± 6.21 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
   ```
 
-  Esto nos recuerda que toda poda tiene que ser evaluada en la práctica, y no por recortar vértices necesariamente estamos haciendo nuestro programa más rápido.
+  Esto nos recuerda que toda poda tiene que ser evaluada en la práctica, y no por recortar vértices necesariamente estamos acelerando nuestro programa.
