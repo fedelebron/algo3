@@ -179,7 +179,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   Por el *Lema 4*, sabemos que existe un árbol de sumas $T^*$, óptimo para $q$, donde $x$ e $y$ son hojas hermanas, a distancia máxima de la raíz. Sea $z$ el padre de $x$ e $y$. Sea entonces $T''$ igual a $T^*$, excepto que reemplazamos a $z$ por una hoja de valor $x + y$. Tenemos que $"costo"(T'') = "costo"(T^*) - (x + y)$, porque ahora $z$ es una hoja, y el costo de un árbol no incluye los valores de las hojas.
 
-  Veamos que $T''$ es óptimo para $q'$. Sea $S$ un árbol de sumas óptimo para $q'$. Como $(x + y)$ es un elemento de $q'$, hay una hoja con valor $x + y$ en $S$. Si expandimos esa hoja a un padre con valor $(x + y)$ y dos hijos, $x$ e $y$, tenemos un árbol $S'$ de sumas para $q$. Tenemos que $"costo"(S') = "costo"(S) + (x + y)$, por haber agregado un vértice interno $x+y$ al construir $S'$. Recordemos que $T^*$ es óptimo para $q$, y $T'''$ es óptimo para $q'$. Luego, $"costo"(S') = "costo"(S) + (x + y) gt.eq "costo"(T^*)$. Luego:
+  Veamos que $T''$ es óptimo para $q'$. Sea $S$ un árbol de sumas óptimo para $q'$. Como $(x + y)$ es un elemento de $q'$, hay una hoja con valor $x + y$ en $S$. Si expandimos esa hoja a un padre con valor $(x + y)$ y dos hijos, $x$ e $y$, tenemos un árbol $S'$ de sumas para $q$. Tenemos que $"costo"(S') = "costo"(S) + (x + y)$, por haber agregado un vértice interno $x+y$ al construir $S'$. Recordemos que $T^*$ es óptimo para $q$. Luego, $"costo"(S') = "costo"(S) + (x + y) gt.eq "costo"(T^*)$. Luego:
 
   $
     "costo"(S) + (x + y) &gt.eq "costo"(T^*) \
@@ -187,7 +187,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
                &= "costo"(T'')
   $
 
-  Como $S$ es óptimo para $q'$, luego $T''$ también es óptimo para $q'$.
+  Como $S$ es óptimo para $q'$, y $T''$ es un árbol de sumas para $q'$, luego $T''$ también es óptimo para $q'$.
 
   Finalmente, sabíamos que $"costo"(T'') = "costo"(T^*) - (x + y)$.  Sabemos que $T'$ es óptimo para $q$, y $T^*$ también es óptimo para $q$, luego $"costo"(T') = "costo"(T^*)$. Entonces, $"costo"(T'') = "costo"(T^') - (x + y)$.
 
