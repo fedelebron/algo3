@@ -191,7 +191,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   Finalmente, sabíamos que $"costo"(T'') = "costo"(T^*) - (x + y)$.  Sabemos que $T'$ es óptimo para $q$, y $T^*$ también es óptimo para $q$, luego $"costo"(T') = "costo"(T^*)$. Entonces, $"costo"(T'') = "costo"(T^') - (x + y)$.
 
-  Luego, encontramos un árbol de sumas $T''$, óptimo para $q'$, tal que $"costo"(T'') = "costo"(T') - (x + y)$. Esto muestra que el invariante se mantiene al finalizar el cuerpo del ciclo.
+  Luego, *encontramos un árbol de sumas $T''$, óptimo para $q'$, tal que $"costo"(T'') = "costo"(T') - (x + y)$*. Esto muestra que el invariante se mantiene al finalizar el cuerpo del ciclo.
 
   === El invariante y la negación de la guarda implican la postcondición
   Como vale el invariante, sabemos que $i lt n$. Como vale la negación de la guarda, sabemos que $i gt.eq n - 1$. Luego, sabemos que $i = n - 1$. Como vale el invariante, sabemos que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $"costo"(T) = "costo"(T') + c$. Pero como vale el invariante, $|q| = n - i = n - (n - 1) = 1$, y por ende $T'$ tiene un sólo elemento, la raíz, que es una hoja por no tener hijos. Por ende, $"costo"(T') = 0$, y tenemos que existe un árbol de sumas $T$, óptimo para $m$, tal que $"costo"(T) = c$. Esto es precísamente la postcondición.
