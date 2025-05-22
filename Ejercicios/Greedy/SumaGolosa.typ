@@ -136,7 +136,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   Consideremos ahora $T'$, igual a $T$, pero cambiando de lugar la hoja $x$, y la hoja $a$. Como $T$ es óptimo para $M$, y $T'$ es un árbol de sumas para $M$, entonces $"costo"(T) lt.eq "costo"(T')$. Usando el *Lema 3*, tenemos $"costo"(T') = "costo"(T) - x dot d_T (x) - a dot d_T (a) + x dot d_T (a) + a dot d_T (x) = "costo"(T) - (a - x)(d_T (a) - d_T (x))$. Como $x lt.eq a$, $a - x gt.eq 0$. Como $a$ era una hoja de máxima distancia hasta la raíz, $d_T (a) gt.eq d_T (x)$. Luego $(a - x)(d_T (a) - d_T (x)) gt.eq 0$, y luego $"costo"(T') lt.eq "costo"(T)$. Como sabíamos que $"costo"(T) lt.eq "costo"(T')$, tenemos que $"costo"(T) = "costo"(T')$. Luego $T'$ es un árbol de sumas óptimo para $M$.
 
-  Por el mismo argumento, podemos construir $T''$, que es $T'$, cambiando la hoja $b$ y la hoja $y$ de lugar, y obtenemos $"costo"(T'') = "costo"(T)$, luego $T''$ es un árbol de paréntesis óptimo para $M$, donde $x$ e $y$ son hojas a la máxima distancia desde la raíz.
+  Por el mismo argumento, podemos construir $T''$, que es $T'$, cambiando la hoja $b$ y la hoja $y$ de lugar, y obtenemos $"costo"(T'') = "costo"(T)$, luego $T''$ es un árbol de sumas óptimo para $M$, donde $x$ e $y$ son hojas a la máxima distancia desde la raíz.
 
   == Teorema del invariante
   Como siempre que tenemos un ciclo, vamos a usar el teorema del invariante para probar que es correcto. Para esto tenemos que definir 5 cosas:
