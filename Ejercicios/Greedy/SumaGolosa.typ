@@ -34,7 +34,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
   #algorithm({
   import algorithmic: *
   Procedure(
-    "Suma",
+    "SumaGolosa",
     ($m in ZZ^n$),
     {
       Comment[Inicializamos $q$ teniendo todos los elementos de $m$.]
@@ -46,7 +46,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
         Assign($y$, FnInline[Min-Heap-Pop][$q$])
         Assign[$z$][$x + y$]
         Comment[Agregamos a $q$ la suma de $x$ e $y$.]
-        Fn[Min-Heap-Push][$Q, z$]
+        Fn[Min-Heap-Push][$q, z$]
         Assign[$c$][$c + z$]
       })
       Return[$c$]
@@ -194,6 +194,6 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
   Luego, *encontramos un árbol de sumas $T''$, óptimo para $q'$, tal que $"costo"(T'') = "costo"(T') - (x + y)$*. Esto muestra que el invariante se mantiene al finalizar el cuerpo del ciclo.
 
   === El invariante y la negación de la guarda implican la postcondición
-  Como vale el invariante, sabemos que $i lt n$. Como vale la negación de la guarda, sabemos que $i gt.eq n - 1$. Luego, sabemos que $i = n - 1$. Como vale el invariante, sabemos que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $"costo"(T) = "costo"(T') + c$. Pero como vale el invariante, $|q| = n - i = n - (n - 1) = 1$, y por ende $T'$ tiene un sólo elemento, la raíz, que es una hoja por no tener hijos. Por ende, $"costo"(T') = 0$, y tenemos que existe un árbol de sumas $T$, óptimo para $m$, tal que $"costo"(T) = c$. Esto es precísamente la postcondición.
+  Como vale el invariante, sabemos que $i lt n$, que $|q| = n - i$, y que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $"costo"(T) = "costo"(T') + c$. Como vale la negación de la guarda, sabemos que $i gt.eq n - 1$. Luego, sabemos que $i = n - 1$, y luego que $|q| = n - i = n - (n - 1) = 1$. Como $T'$ es un árbol de sumas para $q$, y $q$ tiene un sólo elemento, entonces $T'$ tiene un sólo elemento. Ese elemento, que es la raíz, es una hoja por no tener hijos. Por lo tanto, $"costo"(T') = 0$, y tenemos que existe un árbol de sumas $T$, óptimo para $m$, tal que $"costo"(T) = c$. Esto es precísamente la postcondición.
 
 + El algoritmo en pseudocódigo es el que mostramos en a). Usamos la estructura _heap_ para obtener el mínimo de un conjunto de $k$ elementos en $O(log k)$ operaciones, e insertar algo en el _heap_ en $O(log k)$ operaciones. Nuestro heap $q$ tiene siempre a lo sumo $n$ elementos, y hacemos tres operaciones en cada iteración del ciclo. Luego, en cada iteración hacemos $O(log n)$ operaciones, y en total haremos $O(n log n)$ operaciones.
