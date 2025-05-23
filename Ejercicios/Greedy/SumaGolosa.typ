@@ -210,7 +210,7 @@ f q | H.size q <= 1 = 0
     | Just (x, q1) <- H.view q,
       Just (y, q2) <- H.view q1 = let z = x + y
                                       q' = H.insert z q2
-                                  in  z + f q'
+                                  in  f q' + z
 main = let h = (H.fromList [1, 2, 5] :: H.MinHeap Int) 
        in  print (f h)
 ```
@@ -228,15 +228,15 @@ Si probamos que $P(k)$ vale para todo $k$, terminamos.
 #set enum(numbering: "1.")
 + Caso base. Nuestros casos base son $P(0)$ y $P(1)$, es decir $k lt.eq 1$. En ambos casos, caemos en la rama ```haskell H.size q <= 1```. El mínimo costo de sumar los elementos de `q` cuando $|q| lt.eq 1$ es cero. Precísamente en esta rama, devolvemos ```haskell 0```, y luego vale $P(k)$ para $k lt.eq 1$.
 
-+ Paso inductivo. Asumimos que vale $P(k)$, probemos que vale $P(k + 1)$. Como estamos fuera de los casos base, tenemos que $|q| = k + 1 gt.eq 2$. Como $|q| gt.eq 2$, entonces, caemos en la segunda rama de `f`. Le sacamos los dos elementos más pequeños $x$ e $y$ a $q$, obteniendo $q_2$, y agregamos $x + y$ a $q_2$, obteniendo $q'$. Luego, $|q'| = |q| - 2 + 1 = |q| - 1 = k + 1 - 1 = k$. Como sabemos $P(k)$, usamos la hipótesis inductiva, y sabemos que estamos devolviendo $R(q') + (x + y)$.
++ Paso inductivo. Asumimos que vale $P(k)$, probemos que vale $P(k + 1)$. Como estamos fuera de los casos base, tenemos que $|q| = k + 1 gt.eq 2$. Como $|q| gt.eq 2$, entonces, caemos en la segunda rama de `f`. Le sacamos los dos elementos más pequeños $x$ e $y$ a $q$, obteniendo $q_2$, y agregamos $x + y$ a $q_2$, obteniendo $q'$. Luego, $|q'| = |q| - 2 + 1 = |q| - 1 = k + 1 - 1 = k$. Como sabemos $P(k)$, usamos la hipótesis inductiva para obtener `f q'` $= R(q')$, y vemos que estamos devolviendo `f q' + z` = $R(q') + (x + y)$.
 
   *Probemos, entonces, que $R(q) = R(q') + (x + y)$*.
 
-  Como vimos antes, toda forma de sumar un multiconjunto está dada por un árbol de sumas, y cuando un tal árbol para $q$ tiene costo $R(q)$, se lo llama óptimo para $q$. Luego, sea $T'$ un árbol óptimo para $q'$, tal que $"costo"(T') = R(q)$. Como $(x + y) in q'$, $T'$ tiene una hoja con valor $x + y$. Luego, sea $T$ un árbol idéntico a $T'$, sólo que reemplazamos la hoja $x + y$, por un vértice interno $x + y$, con dos hijos que son hojas, $x$ e $y$. Tenemos que $"costo"(T) = "costo"(T') + (x + y) = R(q') + (x + y)$, puesto que estamos agregando un vértice interno $(x + y)$, y el costo de un árbol es la suma de los valores de sus vértices internos.
+  Como vimos antes, toda forma de sumar un multiconjunto está dada por un árbol de sumas, y cuando un tal árbol para $q$ tiene costo $R(q)$, se lo llama óptimo para $q$. Luego, sea $T'$ un árbol óptimo para $q'$, tal que $"costo"(T') = R(q')$. Como $(x + y) in q'$, $T'$ tiene una hoja con valor $x + y$. Luego, sea $T$ un árbol idéntico a $T'$, sólo que reemplazamos la hoja $x + y$, por un vértice interno $x + y$, con dos hijos que son hojas, $x$ e $y$. Tenemos que $"costo"(T) = "costo"(T') + (x + y) = R(q') + (x + y)$, puesto que estamos agregando un vértice interno $(x + y)$, y el costo de un árbol es la suma de los valores de sus vértices internos.
 
-  Por cómo construímos $q'$ partiendo de $q$, vemos que $T$ es un árbol de sumas para $q$. Nos falta ver que es óptimo para $q$, es decir, que $R(q) = "costo"(T)$. Como sabemos que $"costo"(T) = R(q') + (x + y)$, probando esto bastaría para probar que $R(q) = R(q') + (x + y)$, terminando nuestra demostración.
+  Por cómo construímos $q' = q without {x, y} union {x + y}$ partiendo de $q$, vemos que $T$ es un árbol de sumas para $q$, puesto que las hojas de $T$ son precísamente $q$. Nos falta ver que $T$ es óptimo para $q$, es decir, que $R(q) = "costo"(T)$. Como sabemos que $"costo"(T) = R(q') + (x + y)$, probando esto bastaría para probar que $R(q) = R(q') + (x + y)$, terminando nuestra demostración.
 
-  Usando el *Lema 4*, sea $T^*$ un árbol de sumas óptimo para $q$, que tenga a $x$ e $y$ como hojas hermanas. Tomemos $T^*'$, que es reemplazar $x$, $y$, y su padre en $T^*$, con un único vértice $(x + y)$, que es una hoja. Tenemos $"costo"(T^*') = "costo"(T^*) - (x + y)$.
+  Usando el *Lema 4*, sea $T^*$ un árbol de sumas óptimo para $q$, que tenga a $x$ e $y$ como hojas hermanas. Tomemos $T^*'$, que es reemplazar $x$, $y$, y su padre en $T^*$, con un único vértice $(x + y)$, que es una hoja. Tenemos $"costo"(T^*') = "costo"(T^*) - (x + y)$. Vemos que $T^*'$ es un árbol de sumas para $q'$.
 
   Como $T^*$ es óptimo para $q$, y $T$ es un árbol de sumas para $q$, $"costo"(T^*) lt.eq "costo"(T)$. Como $T'$ es óptimo para $q'$, y $T^*'$ es un árbol de sumas para $q'$, $"costo"(T') lt.eq "costo"(T^*')$.
 
@@ -250,5 +250,5 @@ Si probamos que $P(k)$ vale para todo $k$, terminamos.
 
   Como sabíamos que $"costo"(T^*) lt.eq "costo"(T)$, tenemos que $"costo"(T) = "costo"(T^*)$.
 
-  Luego $T$ tiene igual costo que $T^*$, que era óptimo para $q$, luego $T$ también es óptimo para $q$, y *tenemos que $"costo"(T) = R(q)$*, y luego que *$R(q) = R(q') + (x + y)$*, que es lo que quereiamos demostrar.
+  Luego $T$ tiene igual costo que $T^*$, que era óptimo para $q$, y entonces $T$ también es óptimo para $q$. Terminando, *tenemos que $"costo"(T) = R(q)$*, y luego que *$R(q) = R(q') + (x + y)$*, que es lo que quereiamos demostrar.
 
