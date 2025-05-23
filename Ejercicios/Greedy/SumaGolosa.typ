@@ -2,8 +2,19 @@
 #import algorithmic: algorithm
 #import "@preview/cetz:0.3.4": canvas, draw
 #import draw: line, content, circle
+#import "@preview/theorion:0.3.3": *
+#import cosmos.fancy: *
+// #import cosmos.rainbow: *
+// #import cosmos.clouds: *
+#show: show-theorion
 
-#outline(title:"SumaGolosa", depth:3)
+#set text(
+  lang: "es"
+)
+
+#align(center, text(17pt)[
+  *SumaGolosa*
+])
 
 == Enunciado
 
@@ -105,39 +116,41 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   Vamos a probar, entonces, que nuestro algoritmo crea un árbol de sumas, de mínima suma de costos entre todos los árboles de suma para ese multiconjunto. 
 
-  *Lema 1*. El algoritmo es correcto para $n lt.eq 1$.\
-  *Demostración*. Esto es obvio, puesto que no entramos nunca al ciclo, y devolvemos cero. Cero es efectivamente el mínimo número de sumas que hay que hacer, si nos dan cero o un número como entrada.
+  #theorem[El algoritmo es correcto para $n lt.eq 1$.]<thm:basic>
+  #proof[Esto es obvio, puesto que no entramos nunca al ciclo, y devolvemos cero. Cero es efectivamente el mínimo número de sumas que hay que hacer, si nos dan cero o un número como entrada.]
 
   *En lo que sigue, entonces, vamos a asumir que $n gt.eq 2$.*
 
-  *Definición 1*. Dado un árbol de sumas $T$, *$"costo"(T)$* se define como la suma de los valores de los vértices de $T$ que no son hojas.
+  #definition[Dado un árbol de sumas $T$, *$"costo"(T)$* se define como la suma de los valores de los vértices de $T$ que no son hojas.]
 
-  *Definición 2.* Dado un multiconjunto de números $M$, llamamos a un árbol binario $T$ *árbol de sumas para $M$* cuando los valores de las hojas de $T$ son los elementos de $M$, y los valores de los vértices internos de $T$ son la suma de los valores de sus hijos.
+  #definition[Dado un multiconjunto de números $M$, llamamos a un árbol binario $T$ *árbol de sumas para $M$* cuando los valores de las hojas de $T$ son los elementos de $M$, y los valores de los vértices internos de $T$ son la suma de los valores de sus hijos.]
 
-  *Definición 3.* Dado un multiconjunto de números $M$, y un árbol de sumas $T$ para $M$, decimos que $T$ es *óptimo para $M$* cuando $T$ tiene el mínimo $"costo"(T)$ entre todos los árboles de sumas para $M$.
+  #definition[Dado un multiconjunto de números $M$, y un árbol de sumas $T$ para $M$, decimos que $T$ es *óptimo para $M$* cuando $T$ tiene el mínimo $"costo"(T)$ entre todos los árboles de sumas para $M$.]
 
-  *Lema 2*. Sea un $M$ multiconjunto de números. Existe un árbol de sumas óptimo para $M$.\
-  *Demostración*. Primero vemos que si $cal(T)(M)$ es el conjunto el conjunto de árboles de sumas para $M$, entonces $cal(T)(M)$ no es vacío. Podemos, por ejemplo, crear un árbol $T$ que representa $( dots ((((M_1 + M_2) + M_3) + M_4) + M_5) + dots )$, donde $M_i$ son los elementos de $M$. Este árbol tiene como hojas a los elementos de $M$, y cada vértice tiene como valor la suma de sus dos hijos (por ser una suma de dos sub-árboles). Por ende, es un árbol de sumas para $M$. Como existe al menos un árbol de sumas para $M$, vemos que $cal(T)(M) eq.not emptyset$. También vemos que $cal(T)(M)$ es finito, puesto que hay sólo finitas formas de poner paréntesis anidados en la expresión $M_1 + M_2 + M_3 + dots + M_n$. Luego, la función $"costo"$ alcanza su mínimo en $cal(T)(M)$, y luego existe al menos un árbol de sumas óptimo para $M$.
+  #lemma[Sea un $M$ multiconjunto de números. Existe un árbol de sumas óptimo para $M$.]<lemma:exists>
+  #proof[Primero vemos que si $cal(T)(M)$ es el conjunto el conjunto de árboles de sumas para $M$, entonces $cal(T)(M)$ no es vacío. Podemos, por ejemplo, crear un árbol $T$ que representa $( dots ((((M_1 + M_2) + M_3) + M_4) + M_5) + dots )$, donde $M_i$ son los elementos de $M$. Este árbol tiene como hojas a los elementos de $M$, y cada vértice tiene como valor la suma de sus dos hijos (por ser una suma de dos sub-árboles). Por ende, es un árbol de sumas para $M$. Como existe al menos un árbol de sumas para $M$, vemos que $cal(T)(M) eq.not emptyset$. También vemos que $cal(T)(M)$ es finito, puesto que hay sólo finitas formas de poner paréntesis anidados en la expresión $M_1 + M_2 + M_3 + dots + M_n$. Luego, la función $"costo"$ alcanza su mínimo en $cal(T)(M)$, y luego existe al menos un árbol de sumas óptimo para $M$.]
 
-  *Lema 3*. Sea $M$ un multiconjunto de números, y $T$ un árbol de sumas para $M$. Para cada $x in M$, sea $d_T (x)$ la longitud del único camino en $T$ entre la raíz de $T$ y $x$. Es decir, $d_T (x)$ es la altura de $x$ en $T$. Entonces
+  #lemma[Sea $M$ un multiconjunto de números, y $T$ un árbol de sumas para $M$. Para cada $x in M$, sea $d_T (x)$ la longitud del único camino en $T$ entre la raíz de $T$ y $x$. Es decir, $d_T (x)$ es la altura de $x$ en $T$. Entonces
     $
       "costo"(T) = sum_(x in M) x dot d_T (x)
     $
-  *Demostración*. Consideremos el camino en $T$ entre la raíz y $x$. Cada vértice interno va a tener, como valor, la suma de sus dos hijos. Luego, en este camino, $x$ va a ser sumado una vez por cada vértice que aparezca, puesto que cada vértice acumula en su valor los valores de todos sus hijos. Luego, si sumamos $x dot d(x)$ por cada $x in M$, vamos a tener la suma de los valores de todos los vértices internos de $T$, que es precísamente el costo de $T$.
+  ]<lemma:cost>
+  #proof[Consideremos el camino en $T$ entre la raíz y $x$. Cada vértice interno va a tener, como valor, la suma de sus dos hijos. Luego, en este camino, $x$ va a ser sumado una vez por cada vértice que aparezca, puesto que cada vértice acumula en su valor los valores de todos sus hijos. Luego, si sumamos $x dot d(x)$ por cada $x in M$, vamos a tener la suma de los valores de todos los vértices internos de $T$, que es precísamente el costo de $T$.]
 
-  *Lema 4*. Sea $M$ un multiconjunto de números con $|M| gt.eq 2$. Sean $x$ e $y$ dos elementos de mínimo valor en $M$. Entonces existe un árbol de sumas óptimo para $M$ donde $x$ e $y$ son hojas hermanas, y están a distancia máxima de la raíz, entre todas las hojas.\
-  *Demostración*. Consideremos cualquier árbol de sumas óptimo $T$ para $M$. 
+  #lemma[Sea $M$ un multiconjunto de números con $|M| gt.eq 2$. Sean $x$ e $y$ dos elementos de mínimo valor en $M$. Entonces existe un árbol de sumas óptimo para $M$ donde $x$ e $y$ son hojas hermanas, y están a distancia máxima de la raíz, entre todas las hojas.]<lemma:leaves>
+  #proof[Consideremos cualquier árbol de sumas óptimo $T$ para $M$. 
 
   Este árbol tiene hojas hermanas, porque en algún momento va a tener que tener una suma que no tiene sumas como hijos, siendo el árbol finito. Tomemos entonces dos hojas hermanas, y de todas las hojas hermanas, elegimos el par que estén a la máxima distancia de la raíz. Sean $a, b$ estas hojas.
 
   Si $(a, b) = (x, y)$, o $(a, b) = (y, x)$, terminamos. 
   Si no, sin pérdida de generalidad asumo que $a lt.eq b$ (si no, intercambiamos sus nombres). Igualmente sin pérdida de generalidad asumimos que $x lt.eq y$ (si no, intercambiamos sus nombres). Como $x$ e $y$ eran los dos elementos más pequeños de $M$, y $a$ y $b$ son elementos de $M$, tenemos que $x lt.eq a$, y que $y lt.eq b$.
 
-  Consideremos ahora $T'$, igual a $T$, pero cambiando de lugar la hoja $x$, y la hoja $a$. Como $T$ es óptimo para $M$, y $T'$ es un árbol de sumas para $M$, entonces $"costo"(T) lt.eq "costo"(T')$. Usando el *Lema 3*, tenemos $"costo"(T') = "costo"(T) - x dot d_T (x) - a dot d_T (a) + x dot d_T (a) + a dot d_T (x) = "costo"(T) - (a - x)(d_T (a) - d_T (x))$. Como $x lt.eq a$, $a - x gt.eq 0$. Como $a$ era una hoja de máxima distancia hasta la raíz, $d_T (a) gt.eq d_T (x)$. Luego $(a - x)(d_T (a) - d_T (x)) gt.eq 0$, y luego $"costo"(T') lt.eq "costo"(T)$. Como sabíamos que $"costo"(T) lt.eq "costo"(T')$, tenemos que $"costo"(T) = "costo"(T')$. Luego $T'$ es un árbol de sumas óptimo para $M$.
+  Consideremos ahora $T'$, igual a $T$, pero cambiando de lugar la hoja $x$, y la hoja $a$. Como $T$ es óptimo para $M$, y $T'$ es un árbol de sumas para $M$, entonces $"costo"(T) lt.eq "costo"(T')$. Usando el @lemma:cost, tenemos $"costo"(T') = "costo"(T) - x dot d_T (x) - a dot d_T (a) + x dot d_T (a) + a dot d_T (x) = "costo"(T) - (a - x)(d_T (a) - d_T (x))$. Como $x lt.eq a$, $a - x gt.eq 0$. Como $a$ era una hoja de máxima distancia hasta la raíz, $d_T (a) gt.eq d_T (x)$. Luego $(a - x)(d_T (a) - d_T (x)) gt.eq 0$, y luego $"costo"(T') lt.eq "costo"(T)$. Como sabíamos que $"costo"(T) lt.eq "costo"(T')$, tenemos que $"costo"(T) = "costo"(T')$. Luego $T'$ es un árbol de sumas óptimo para $M$.
 
   Por el mismo argumento, podemos construir $T''$, que es $T'$, cambiando la hoja $b$ y la hoja $y$ de lugar, y obtenemos $"costo"(T'') = "costo"(T)$, luego $T''$ es un árbol de sumas óptimo para $M$, donde $x$ e $y$ son hojas a la máxima distancia desde la raíz.
+  ]
 
-  === Teorema del invariante
+  #theorem(title:"Teorema del invariante")[
   Como siempre que tenemos un ciclo, vamos a usar el teorema del invariante para probar que es correcto. Para esto tenemos que definir 5 cosas:
 
   + Una precondición. Esto es algo que vale antes de correr el ciclo. En nuestro caso, la precondición es que $i = 0$, que $c = 0$, y que $q = m$. Por $q = m$ nos referimos a que los elementos de $q$ son los mismos elementos de $m$. 
@@ -145,13 +158,13 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
   + Un invariante del ciclo. Esto es algo que vale antes y después de cada iteración del ciclo. En nuestro caso, el invariante es que $0 lt.eq i lt n$, que $|q| = n - i$, y que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $"costo"(T) = "costo"(T') + c$.
   + Una guarda. Esto es algo que vale cada vez que entramos al ciclo, y está dado sintácticamente por la condición del ciclo. En nuestro caso esto es $i lt n - 1$.
   + Una función variante. Esto es un número que decrece con cada iteración del ciclo. En nuestro caso esto es $n - 1 - i$.
+  ]
 
-  Probemos, entonces, las cosas que hay que probar para usar el teorema del invariante.
-
+  #proof[
   ==== La precondición vale
   En nuestro caso esto es simple, dado que $i = 0$ es el valor inicial de $i$, que $0$ es el valor inicial de $c$, y que construímos $q$ teniendo exactamente los elementos de $m$.
   ==== La precondición implica el invariante
-  Como sabemos que $i = 0$ al comenzar el ciclo, y asumimos por el *Lema 1* que $n gt.eq 2$, claramente vale $0 lt.eq i lt n$. Asimismo, como $q = m$, tenemos que $|q| = n$, y como $i = 0$, esto implica que $|q| = n - i$. Por último, por el *Lema 2* sabemos que existe al menos un árbol de sumas óptimo para $M$. Sea $T$ un tal árbol. Podemos tomar $T' = T$, que al ser óptimo para $m$, y $m = q$, resulta ser también óptimo para $q$. Finalmente, como $c = 0$, tenemos que $"costo"(T) = "costo"(T') + c$.
+  Como sabemos que $i = 0$ al comenzar el ciclo, y asumimos por el @thm:basic que $n gt.eq 2$, claramente vale $0 lt.eq i lt n$. Asimismo, como $q = m$, tenemos que $|q| = n$, y como $i = 0$, esto implica que $|q| = n - i$. Por último, por el @lemma:exists sabemos que existe al menos un árbol de sumas óptimo para $M$. Sea $T$ un tal árbol. Podemos tomar $T' = T$, que al ser óptimo para $m$, y $m = q$, resulta ser también óptimo para $q$. Finalmente, como $c = 0$, tenemos que $"costo"(T) = "costo"(T') + c$.
   ==== La función variante decrece en cada iteración
   Esto es obvio por cómo funcionan los ciclos. En cada iteración aumenta $i$, y por lo tanto la función variante, $n - 1 - i$, decrece.
   ==== Si la función variante es cero, la guarda no se cumple
@@ -165,7 +178,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
   Sabemos que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $
   "costo"(T) = "costo"(T') + c$. Sean $x$ e $y$ los dos elementos más pequeños de $q$. El cuerpo del ciclo construye $q' = q without {x, y} union {x+y}$, y le asigna $q'$ a $q$, y también construye $c' = c + x + y$, y le asigna $c'$ a $c$.
   
-  *Vamos a ver que existe un árbol de sumas $T''$, óptimo para $q'$, tal que $"costo"(T'') = "costo"(T') - (x + y)$*. Con un poco de aritmética vemos que:
+  #note-box[Vamos a ver que existe un árbol de sumas $T''$, óptimo para $q'$, tal que $"costo"(T'') = "costo"(T') - (x + y)$]. Con un poco de aritmética vemos que:
 
   $
   "costo"(T'') + c' &= "costo"(T') - (x + y) + c' \
@@ -176,7 +189,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   Luego, si probamos que existe tal $T''$, vemos que el invariante queda reestablecido, puesto que $T''$ es óptimo para $q'$, y $"costo"(T) = "costo"(T'') + c'$, que es lo que pide el invariante al terminar el cuerpo del ciclo.
 
-  Por el *Lema 4*, sabemos que existe un árbol de sumas $T^*$, óptimo para $q$, donde $x$ e $y$ son hojas hermanas. Sea $z$ el padre en $T^*$ de $x$ e $y$. Sea entonces $T''$ igual a $T^*$, excepto que reemplazamos a $z$ por una hoja de valor $x + y$, y sacamos a $x$ e $y$. Tenemos que $"costo"(T'') = "costo"(T^*) - (x + y)$, porque ahora $z$ es una hoja, y el costo de un árbol no incluye los valores de las hojas.
+  Por el @lemma:leaves, sabemos que existe un árbol de sumas $T^*$, óptimo para $q$, donde $x$ e $y$ son hojas hermanas. Sea $z$ el padre en $T^*$ de $x$ e $y$. Sea entonces $T''$ igual a $T^*$, excepto que reemplazamos a $z$ por una hoja de valor $x + y$, y sacamos a $x$ e $y$. Tenemos que $"costo"(T'') = "costo"(T^*) - (x + y)$, porque ahora $z$ es una hoja, y el costo de un árbol no incluye los valores de las hojas.
 
   Como $T''$ tiene las mismas hojas que $T^*$, que es un árbol de sumas para $q$, pero agregando $x+y$ y sacando $x$ e $y$, entonces $T''$ es un árbol de sumas para $q' = q without {x, y} union {x+y}$. Veamos que es _óptimo_ para $q'$. Sea $S$ un árbol de sumas óptimo para $q'$. Como $(x + y)$ es un elemento de $q'$, hay una hoja con valor $x + y$ en $S$. Si expandimos esa hoja a un padre con valor $(x + y)$ y dos hijos, $x$ e $y$, tenemos un árbol $S'$ de sumas para $q$. Tenemos que $"costo"(S') = "costo"(S) + (x + y)$, por haber agregado un vértice interno $x+y$ al construir $S'$. Recordemos que $T^*$ es óptimo para $q$. Luego, $"costo"(S') = "costo"(S) + (x + y) gt.eq "costo"(T^*)$. Luego:
 
@@ -190,10 +203,11 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   Finalmente, sabíamos que $"costo"(T'') = "costo"(T^*) - (x + y)$.  Sabemos que $T'$ es óptimo para $q$, y $T^*$ también es óptimo para $q$, luego $"costo"(T') = "costo"(T^*)$. Entonces, $"costo"(T'') = "costo"(T^') - (x + y)$.
 
-  Luego, *encontramos un árbol de sumas $T''$, óptimo para $q'$, tal que $"costo"(T'') = "costo"(T') - (x + y)$*. Esto muestra que el invariante se mantiene al finalizar el cuerpo del ciclo.
+  #note-box[Encontramos un árbol de sumas $T''$, óptimo para $q'$, tal que $"costo"(T'') = "costo"(T') - (x + y)$. Esto muestra que el invariante se mantiene al finalizar el cuerpo del ciclo.]
 
   ==== El invariante y la negación de la guarda implican la postcondición
   Como vale el invariante, sabemos que $i lt n$, que $|q| = n - i$, y que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $"costo"(T) = "costo"(T') + c$. Como vale la negación de la guarda, sabemos que $i gt.eq n - 1$. Luego, sabemos que $i = n - 1$, y luego que $|q| = n - i = n - (n - 1) = 1$. Como $T'$ es un árbol de sumas para $q$, y $q$ tiene un sólo elemento, entonces $T'$ tiene un sólo elemento. Ese elemento, que es la raíz, es una hoja por no tener hijos. Por lo tanto, $"costo"(T') = 0$, y tenemos que existe un árbol de sumas $T$, óptimo para $m$, tal que $"costo"(T) = c$. Esto es precísamente la postcondición.
+  ]
 
 + El algoritmo en pseudocódigo es el que mostramos en a). Usamos la estructura _heap_ para obtener el mínimo de un conjunto de $k$ elementos en $O(log k)$ operaciones, e insertar algo en el _heap_ en $O(log k)$ operaciones. Nuestro heap $q$ tiene siempre a lo sumo $n$ elementos, y hacemos tres operaciones en cada iteración del ciclo. Luego, en cada una de las $n - 1$ iteraciones hacemos $O(log n)$ operaciones, y en total hacemos $O(n log n)$ operaciones.
 
@@ -216,14 +230,18 @@ main = let h = (H.fromList [1, 2, 5] :: H.MinHeap Int)
 
 === Demostración
 
-Vamos a mostrar que el programa es correcto por inducción en $|q|$. Definimos, entonces, $R(q)$ como el mínimo costo para sumar un multiconjunto $q$, y creamos la propiedad:
+#definition[Dado un multiconjunto de números $q$, llamamos $R(q)$ al mínimo costo para sumar los elementos de $q$]
 
+#definition[
+  Definimos la propiedad a demostrar $P$ como:
 $
   P(k): f(q) = R(q) "para todo" q "tal que" |q| = k.
 $
+]
 
-Si probamos que $P(k)$ vale para todo $k$, terminamos.
+Para mostrar que nuestro algoritmo recursivo `f` es correcto, tenemos que probar que vale $P(k)$ para todo $k$, y lo vamos a hacer por inducción.
 
+#proof[
 #set enum(numbering: "1.")
 + Caso base. Nuestros casos base son $P(0)$ y $P(1)$, es decir $k lt.eq 1$. En ambos casos, caemos en la rama ```haskell H.size q <= 1```. El mínimo costo de sumar los elementos de `q` cuando $|q| lt.eq 1$ es cero. Precísamente en esta rama, devolvemos ```haskell 0```, y luego vale $P(k)$ para $k lt.eq 1$.
 
@@ -235,7 +253,7 @@ Si probamos que $P(k)$ vale para todo $k$, terminamos.
 
   Por cómo construímos $q' = q without {x, y} union {x + y}$ partiendo de $q$, vemos que $T$ es un árbol de sumas para $q$, puesto que las hojas de $T$ son precísamente $q$. Nos falta ver que $T$ es óptimo para $q$, es decir, que $R(q) = "costo"(T)$. Como sabemos que $"costo"(T) = R(q') + (x + y)$, probando esto bastaría para probar que $R(q) = R(q') + (x + y)$, terminando nuestra demostración.
 
-  Usando el *Lema 4*, sea $T^*$ un árbol de sumas óptimo para $q$, que tenga a $x$ e $y$ como hojas hermanas. Tomemos $T^*'$, que es reemplazar $x$, $y$, y su padre en $T^*$, con un único vértice $(x + y)$, que es una hoja. Tenemos $"costo"(T^*') = "costo"(T^*) - (x + y)$. Vemos que $T^*'$ es un árbol de sumas para $q'$.
+  Usando el @lemma:leaves, sea $T^*$ un árbol de sumas óptimo para $q$, que tenga a $x$ e $y$ como hojas hermanas. Tomemos $T^*'$, que es reemplazar $x$, $y$, y su padre en $T^*$, con un único vértice $(x + y)$, que es una hoja. Tenemos $"costo"(T^*') = "costo"(T^*) - (x + y)$. Vemos que $T^*'$ es un árbol de sumas para $q'$.
 
   Como $T^*$ es óptimo para $q$, y $T$ es un árbol de sumas para $q$, $"costo"(T^*) lt.eq "costo"(T)$. Como $T'$ es óptimo para $q'$, y $T^*'$ es un árbol de sumas para $q'$, $"costo"(T') lt.eq "costo"(T^*')$.
 
@@ -249,5 +267,6 @@ Si probamos que $P(k)$ vale para todo $k$, terminamos.
 
   Como sabíamos que $"costo"(T^*) lt.eq "costo"(T)$, tenemos que $"costo"(T) = "costo"(T^*)$.
 
-  Luego $T$ tiene igual costo que $T^*$, que era óptimo para $q$, y entonces $T$ también es óptimo para $q$. Terminando, *tenemos que $"costo"(T) = R(q)$*, y luego que *$R(q) = R(q') + (x + y)$*, que es lo que quereiamos demostrar.
+  Luego $T$ tiene igual costo que $T^*$, que era óptimo para $q$, y entonces $T$ también es óptimo para $q$. Terminando, *tenemos que $"costo"(T) = R(q)$*, y luego que *$R(q) = R(q') + (x + y)$*, que es lo que queríamos demostrar.
+]
 
