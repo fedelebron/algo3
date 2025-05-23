@@ -143,9 +143,9 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   + Una precondición. Esto es algo que vale antes de correr el ciclo. En nuestro caso, la precondición es que $i = 0$, que $c = 0$, y que $q = m$. Por $q = m$ nos referimos a que los elementos de $q$ son los mismos elementos de $m$. 
   + Una postcondición. Esto es algo que vale luego de finalizar el ciclo. En nuestro caso, la postcondición es que existe un árbol de sumas $T$ óptimo para $m$, cuyo costo es $c$. Como devolvemos $c$, si probamos que la postcondición vale al terminar el ciclo, estamos probando que nuestro algoritmo es correcto.
-  + Un invariante del ciclo. Esto es algo que vale antes y después de cada iteración del ciclo. En nuestro caso, el invariante es que $0 lt.eq i lt n$, que $|q| = n - i$, y que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $"costo"(T) = "costo"(T') + c$.:
+  + Un invariante del ciclo. Esto es algo que vale antes y después de cada iteración del ciclo. En nuestro caso, el invariante es que $0 lt.eq i lt n$, que $|q| = n - i$, y que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $"costo"(T) = "costo"(T') + c$.
   + Una guarda. Esto es algo que vale cada vez que entramos al ciclo, y está dado sintácticamente por la condición del ciclo. En nuestro caso esto es $i lt n - 1$.
-  + Una función variante. Esto es un número que decrece con cada iteración del ciclo. En nuestro caso esto es $n - i$.
+  + Una función variante. Esto es un número que decrece con cada iteración del ciclo. En nuestro caso esto es $n - 1 - i$.
 
   Probemos, entonces, las cosas que hay que probar para usar el teorema del invariante.
 
@@ -154,9 +154,9 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
   === La precondición implica el invariante
   Como sabemos que $i = 0$ al comenzar el ciclo, y asumimos por el *Lema 1* que $n gt.eq 2$, claramente vale $0 lt.eq i lt n$. Asimismo, como $q = m$, tenemos que $|q| = n$, y como $i = 0$, esto implica que $|q| = n - i$. Por último, por el *Lema 2* sabemos que existe al menos un árbol de sumas óptimo para $M$. Sea $T$ un tal árbol. Podemos tomar $T' = T$, que al ser óptimo para $m$, y $m = q$, resulta ser también óptimo para $q$. Finalmente, como $c = 0$, tenemos que $"costo"(T) = "costo"(T') + c$.
   === La función variante decrece en cada iteración
-  Esto es obvio por cómo funcionan los ciclos. En cada iteración aumenta $i$, y por lo tanto la función variante, $n - i$, decrece.
+  Esto es obvio por cómo funcionan los ciclos. En cada iteración aumenta $i$, y por lo tanto la función variante, $n - 1 - i$, decrece.
   === Si la función variante es cero, la guarda no se cumple
-  Como la función variante es $n - i$, si la función variante es cero entonces $n - i = 0$, y luego $i = n$. La guarda es $i lt n - 1$. Efectivamente, vemos que $i < n - 1$ no es cierto cuando $i = n$.
+  Como la función variante es $n - 1 - i$, si la función variante es cero entonces $n - 1 - i = 0$, y luego $i = n - 1$. La guarda es $i lt n - 1$. Efectivamente, vemos que $i < n - 1$ no es cierto cuando $i = n - 1$.
 
   === El invariante es preservado por las iteraciones
   Saquémonos de encima la parte simple del invariante. Como sabemos que vale el invariante al comenzar el ciclo, tenemos que $0 lt.eq i lt n$. También sabemos que, al haber entrado en el cuerpo del ciclo, vale la guarda, y luego $i < n - 1$. Llamemos $i'$ al estado de $i$ al terminar el cuerpo del ciclo. Sabemos que $i' = i + 1$, por cómo funcionan los ciclos. Como teníamos que $i < n - 1$, debemos tener que $0 lt.eq i' lt n$. También, si llamamos $q'$ al estado de $q$ al terminar el cuerpo del ciclo, tenemos que $|q'| = |q| - 1$, puesto que estamos sacando dos cosas de $q$, y agregando una. Luego, Pero como $|q| = n - i$, esto es lo mismo que $|q'| = (n - i) - 1 = n - (i + 1) = n - i'$, y por lo tanto las dos partes sencillas del invariante se cumplen.
@@ -196,4 +196,59 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
   === El invariante y la negación de la guarda implican la postcondición
   Como vale el invariante, sabemos que $i lt n$, que $|q| = n - i$, y que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $"costo"(T) = "costo"(T') + c$. Como vale la negación de la guarda, sabemos que $i gt.eq n - 1$. Luego, sabemos que $i = n - 1$, y luego que $|q| = n - i = n - (n - 1) = 1$. Como $T'$ es un árbol de sumas para $q$, y $q$ tiene un sólo elemento, entonces $T'$ tiene un sólo elemento. Ese elemento, que es la raíz, es una hoja por no tener hijos. Por lo tanto, $"costo"(T') = 0$, y tenemos que existe un árbol de sumas $T$, óptimo para $m$, tal que $"costo"(T) = c$. Esto es precísamente la postcondición.
 
-+ El algoritmo en pseudocódigo es el que mostramos en a). Usamos la estructura _heap_ para obtener el mínimo de un conjunto de $k$ elementos en $O(log k)$ operaciones, e insertar algo en el _heap_ en $O(log k)$ operaciones. Nuestro heap $q$ tiene siempre a lo sumo $n$ elementos, y hacemos tres operaciones en cada iteración del ciclo. Luego, en cada iteración hacemos $O(log n)$ operaciones, y en total haremos $O(n log n)$ operaciones.
++ El algoritmo en pseudocódigo es el que mostramos en a). Usamos la estructura _heap_ para obtener el mínimo de un conjunto de $k$ elementos en $O(log k)$ operaciones, e insertar algo en el _heap_ en $O(log k)$ operaciones. Nuestro heap $q$ tiene siempre a lo sumo $n$ elementos, y hacemos tres operaciones en cada iteración del ciclo. Luego, en cada una de las $n - 1$ iteraciones hacemos $O(log n)$ operaciones, y en total hacemos $O(n log n)$ operaciones.
+
+== Anexo: Versión recursiva
+
+El problema nos pide dar un algoritmo iterativo. Sin embargo, quiero mostrarles cómo cambia la demostración cuando usamos un algoritmo recursivo. Este algoritmo no es nada más que la traducción mecánica entre cualquier ciclo a una recursión. Al usar un algoritmo que no muta variables, sino que llama a funciones puras, podemos usar inducción sin la estructura del teorema del invariante. La demostración queda más corta.
+
+=== Código
+
+```haskell
+import qualified Data.Heap as H
+f q | H.size q <= 1 = 0
+    | Just (x, q1) <- H.view q,
+      Just (y, q2) <- H.view q1 = let z = x + y
+                                      q' = H.insert z q2
+                                  in  z + f q'
+main = let h = (H.fromList [1, 2, 5] :: H.MinHeap Int) 
+       in  print (f h)
+```
+
+=== Demostración
+
+Vamos a mostrar que el programa es correcto por inducción en $|q|$. Definimos, entonces, $R(q)$ como el mínimo costo para sumar un multiconjunto $q$, y creamos la propiedad:
+
+$
+  P(k): f(q) = R(q) "para todo" q "tal que" |q| = k.
+$
+
+Si probamos que $P(k)$ vale para todo $k$, terminamos.
+
+#set enum(numbering: "1.")
++ Caso base. Nuestros casos base son $P(0)$ y $P(1)$, es decir $k lt.eq 1$. En ambos casos, caemos en la rama ```haskell H.size q <= 1```. El mínimo costo de sumar los elementos de `q` cuando $|q| lt.eq 1$ es cero. Precísamente en esta rama, devolvemos ```haskell 0```, y luego vale $P(k)$ para $k lt.eq 1$.
+
++ Paso inductivo. Asumimos que vale $P(k)$, probemos que vale $P(k + 1)$. Como estamos fuera de los casos base, tenemos que $|q| = k + 1 gt.eq 2$. Como $|q| gt.eq 2$, entonces, caemos en la segunda rama de `f`. Le sacamos los dos elementos más pequeños $x$ e $y$ a $q$, obteniendo $q_2$, y agregamos $x + y$ a $q_2$, obteniendo $q'$. Luego, $|q'| = |q| - 2 + 1 = |q| - 1 = k + 1 - 1 = k$. Como sabemos $P(k)$, usamos la hipótesis inductiva, y sabemos que estamos devolviendo $R(q') + (x + y)$.
+
+  *Probemos, entonces, que $R(q) = R(q') + (x + y)$*.
+
+  Como vimos antes, toda forma de sumar un multiconjunto está dada por un árbol de sumas, y cuando un tal árbol para $q$ tiene costo $R(q)$, se lo llama óptimo para $q$. Luego, sea $T'$ un árbol óptimo para $q'$, tal que $"costo"(T') = R(q)$. Como $(x + y) in q'$, $T'$ tiene una hoja con valor $x + y$. Luego, sea $T$ un árbol idéntico a $T'$, sólo que reemplazamos la hoja $x + y$, por un vértice interno $x + y$, con dos hijos que son hojas, $x$ e $y$. Tenemos que $"costo"(T) = "costo"(T') + (x + y) = R(q') + (x + y)$, puesto que estamos agregando un vértice interno $(x + y)$, y el costo de un árbol es la suma de los valores de sus vértices internos.
+
+  Por cómo construímos $q'$ partiendo de $q$, vemos que $T$ es un árbol de sumas para $q$. Nos falta ver que es óptimo para $q$, es decir, que $R(q) = "costo"(T)$. Como sabemos que $"costo"(T) = R(q') + (x + y)$, probando esto bastaría para probar que $R(q) = R(q') + (x + y)$, terminando nuestra demostración.
+
+  Usando el *Lema 4*, sea $T^*$ un árbol de sumas óptimo para $q$, que tenga a $x$ e $y$ como hojas hermanas. Tomemos $T^*'$, que es reemplazar $x$, $y$, y su padre en $T^*$, con un único vértice $(x + y)$, que es una hoja. Tenemos $"costo"(T^*') = "costo"(T^*) - (x + y)$.
+
+  Como $T^*$ es óptimo para $q$, y $T$ es un árbol de sumas para $q$, $"costo"(T^*) lt.eq "costo"(T)$. Como $T'$ es óptimo para $q'$, y $T^*'$ es un árbol de sumas para $q'$, $"costo"(T') lt.eq "costo"(T^*')$.
+
+  Luego tenemos:
+  $
+  "costo"(T) &= "costo"(T') + (x + y)\
+             &lt.eq "costo"(T^*') + (x + y)\
+             &= "costo"(T^*) - (x + y) + (x + y)\
+             &= "costo"(T^*)
+  $
+
+  Como sabíamos que $"costo"(T^*) lt.eq "costo"(T)$, tenemos que $"costo"(T) = "costo"(T^*)$.
+
+  Luego $T$ tiene igual costo que $T^*$, que era óptimo para $q$, luego $T$ también es óptimo para $q$, y *tenemos que $"costo"(T) = R(q)$*, y luego que *$R(q) = R(q') + (x + y)$*, que es lo que quereiamos demostrar.
+
