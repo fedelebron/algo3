@@ -112,16 +112,16 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
   line("v21", "v23")
   line("v21", "v24")
 })
-  El costo del primer árbol es $3+8 = 11$, el del segundo es $6+8=14$, y el del tercero es $7+8 = 15$. En general, podemos ver que el costo del árbol va a ser la suma de los valores todos sus vértices, menos la suma de la lista original. Para el primer árbol, esto es $2+1+3+5+8 - 2+1+5 = 11$. Como queremos minimizar la suma del costo del árbol, pero _todos_ los árboles van a tener el mismo multiconjunto de valores de hojas, este último es una constante. Luego podemos minimizar la suma de los valores de todo el árbol, y va a ser lo mismo que minimizar la suma de todos los valores _internos_ del árbol.
+  El costo del primer árbol es $3+8 = 11$, el del segundo es $6+8=14$, y el del tercero es $7+8 = 15$. En general, podemos ver que el costo del árbol va a ser la suma de los valores todos sus vértices, menos la suma de la lista original. Para el primer árbol, esto es $2+1+3+5+8 - 2+1+5 = 11$. Los valores de la lista original son los valores de las hojas del árbol. Luego, queremos minimizar la suma de los valores de los vértices internos del árbol.
 
-  Vamos a probar, entonces, que nuestro algoritmo crea un árbol de sumas, de mínima suma de costos entre todos los árboles de suma para ese multiconjunto. 
-
+  #definition[Dado un árbol de sumas $T$, *$"costo"(T)$* se define como la suma de los valores de los vértices de $T$ que no son hojas.]
+  
+  Vamos a probar, entonces, que nuestro algoritmo crea un árbol de sumas, de mínimo costo entre los árboles de suma para ese multiconjunto.
+  
   #theorem[El algoritmo es correcto para $n lt.eq 1$.]<thm:basic>
   #proof[Esto es obvio, puesto que no entramos nunca al ciclo, y devolvemos cero. Cero es efectivamente el mínimo número de sumas que hay que hacer, si nos dan cero o un número como entrada.]
 
   *En lo que sigue, entonces, vamos a asumir que $n gt.eq 2$.*
-
-  #definition[Dado un árbol de sumas $T$, *$"costo"(T)$* se define como la suma de los valores de los vértices de $T$ que no son hojas.]
 
   #definition[Dado un multiconjunto de números $M$, llamamos a un árbol binario $T$ *árbol de sumas para $M$* cuando los valores de las hojas de $T$ son los elementos de $M$, y los valores de los vértices internos de $T$ son la suma de los valores de sus hijos.]
 
@@ -269,7 +269,7 @@ main = let h = (H.fromList [1, 2, 5] :: H.MinHeap Int)
 
 === Demostración
 
-#definition[Dado un multiconjunto de números $q$, llamamos $R(q)$ al mínimo costo para sumar los elementos de $q$]
+#definition[Dado un multiconjunto de números $q$, llamamos $R(q)$ al mínimo costo para sumar los elementos de $q$.]
 
 #definition[
   Definimos la propiedad a demostrar $P$ como:
