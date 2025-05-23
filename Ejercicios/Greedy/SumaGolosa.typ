@@ -1,7 +1,7 @@
 #import "@preview/algorithmic:1.0.0"
 #import algorithmic: algorithm
 #import "@preview/cetz:0.3.4": canvas, draw
-#import draw: line, content, circle
+#import draw: line, content, circle, polygon
 #import "@preview/theorion:0.3.3": *
 #import cosmos.fancy: *
 // #import cosmos.rainbow: *
@@ -135,7 +135,46 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
       "costo"(T) = sum_(x in M) x dot d_T (x)
     $
   ]<lemma:cost>
-  #proof[Consideremos el camino en $T$ entre la raíz y $x$. Cada vértice interno va a tener, como valor, la suma de sus dos hijos. Luego, en este camino, $x$ va a ser sumado una vez por cada vértice que aparezca, puesto que cada vértice acumula en su valor los valores de todos sus hijos. Luego, si sumamos $x dot d(x)$ por cada $x in M$, vamos a tener la suma de los valores de todos los vértices internos de $T$, que es precísamente el costo de $T$.]
+  #proof[Consideremos el camino en $T$ entre la raíz y $x$. Cada vértice interno va a tener, como valor, la suma de sus dos hijos. Luego, en este camino, $x$ va a ser sumado una vez por cada vértice que aparezca, puesto que cada vértice acumula en su valor los valores de todos sus hijos.
+  
+  En el siguiente ejemplo, $d_T (x) = 3$, y sumamos $x$ tres veces al calcular el costo del árbol.
+
+  #set align(center)
+  #canvas({
+  let node-sep = 1.5
+  let level-sep = 1.5
+  let node-radius = 0.75
+  let arrow-style = (mark: (end: "stealth", fill: black, scale: 0.2, offset: 0.03))
+
+  let draw-node(pos, label, name: none) = {
+    circle(pos, radius: node-radius, name: name)
+    content(pos, label)
+  }
+
+  let draw-triangle(pos, name: none) = {
+    polygon(pos, 3, angle:90deg, name:name, radius:0.75)   
+  }
+
+  draw-node((0, 0), text($x$, fill:red) + " " + text($+ dots$), name: "v00")
+  draw-node((-node-sep, -level-sep), text($x\ $, fill:red) + " " + text($+ dots$), name: "v01")
+  draw-triangle((node-sep, -level-sep), name: "v02")  
+  draw-triangle((-node-sep + node-sep, 2 * -level-sep), name: "v03")
+  draw-node((2 * -node-sep, 2 * -level-sep), text($x$, fill:red) + " " + text($+ dots$), name: "v04")
+  draw-node((3 * -node-sep, 3 * -level-sep), text($x$, fill:red), name: "v05")
+  draw-triangle((3 * -node-sep + 2* node-sep, 3 * -level-sep), name: "v06")
+
+  line("v00", "v01")
+  line("v00", "v02")
+  line("v01", "v03")
+  line("v01", "v04")
+  line("v04", "v05")
+  line("v04", "v06")
+  })
+  #set align(left)
+
+  Luego, si sumamos $x dot d_T (x)$ por cada $x in M$, vamos a tener la suma de los valores de todos los vértices internos de $T$, que es precísamente el costo de $T$.
+  ]
+
 
   #lemma[Sea $M$ un multiconjunto de números con $|M| gt.eq 2$. Sean $x$ e $y$ dos elementos de mínimo valor en $M$. Entonces existe un árbol de sumas óptimo para $M$ donde $x$ e $y$ son hojas hermanas, y están a distancia máxima de la raíz, entre todas las hojas.]<lemma:leaves>
   #proof[Consideremos cualquier árbol de sumas óptimo $T$ para $M$. 
