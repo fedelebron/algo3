@@ -3,8 +3,7 @@
 #import "@preview/cetz:0.3.4": canvas, draw
 #import draw: line, content, circle
 
-
-= SumaGolosa
+#outline(title:"SumaGolosa", depth:3)
 
 == Enunciado
 
@@ -138,7 +137,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   Por el mismo argumento, podemos construir $T''$, que es $T'$, cambiando la hoja $b$ y la hoja $y$ de lugar, y obtenemos $"costo"(T'') = "costo"(T)$, luego $T''$ es un árbol de sumas óptimo para $M$, donde $x$ e $y$ son hojas a la máxima distancia desde la raíz.
 
-  == Teorema del invariante
+  === Teorema del invariante
   Como siempre que tenemos un ciclo, vamos a usar el teorema del invariante para probar que es correcto. Para esto tenemos que definir 5 cosas:
 
   + Una precondición. Esto es algo que vale antes de correr el ciclo. En nuestro caso, la precondición es que $i = 0$, que $c = 0$, y que $q = m$. Por $q = m$ nos referimos a que los elementos de $q$ son los mismos elementos de $m$. 
@@ -149,16 +148,16 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   Probemos, entonces, las cosas que hay que probar para usar el teorema del invariante.
 
-  === La precondición vale
+  ==== La precondición vale
   En nuestro caso esto es simple, dado que $i = 0$ es el valor inicial de $i$, que $0$ es el valor inicial de $c$, y que construímos $q$ teniendo exactamente los elementos de $m$.
-  === La precondición implica el invariante
+  ==== La precondición implica el invariante
   Como sabemos que $i = 0$ al comenzar el ciclo, y asumimos por el *Lema 1* que $n gt.eq 2$, claramente vale $0 lt.eq i lt n$. Asimismo, como $q = m$, tenemos que $|q| = n$, y como $i = 0$, esto implica que $|q| = n - i$. Por último, por el *Lema 2* sabemos que existe al menos un árbol de sumas óptimo para $M$. Sea $T$ un tal árbol. Podemos tomar $T' = T$, que al ser óptimo para $m$, y $m = q$, resulta ser también óptimo para $q$. Finalmente, como $c = 0$, tenemos que $"costo"(T) = "costo"(T') + c$.
-  === La función variante decrece en cada iteración
+  ==== La función variante decrece en cada iteración
   Esto es obvio por cómo funcionan los ciclos. En cada iteración aumenta $i$, y por lo tanto la función variante, $n - 1 - i$, decrece.
-  === Si la función variante es cero, la guarda no se cumple
+  ==== Si la función variante es cero, la guarda no se cumple
   Como la función variante es $n - 1 - i$, si la función variante es cero entonces $n - 1 - i = 0$, y luego $i = n - 1$. La guarda es $i lt n - 1$. Efectivamente, vemos que $i < n - 1$ no es cierto cuando $i = n - 1$.
 
-  === El invariante es preservado por las iteraciones
+  ==== El invariante es preservado por las iteraciones
   Saquémonos de encima la parte simple del invariante. Como sabemos que vale el invariante al comenzar el ciclo, tenemos que $0 lt.eq i lt n$. También sabemos que, al haber entrado en el cuerpo del ciclo, vale la guarda, y luego $i < n - 1$. Llamemos $i'$ al estado de $i$ al terminar el cuerpo del ciclo. Sabemos que $i' = i + 1$, por cómo funcionan los ciclos. Como teníamos que $i < n - 1$, debemos tener que $0 lt.eq i' lt n$. También, si llamamos $q'$ al estado de $q$ al terminar el cuerpo del ciclo, tenemos que $|q'| = |q| - 1$, puesto que estamos sacando dos cosas de $q$, y agregando una. Luego, Pero como $|q| = n - i$, esto es lo mismo que $|q'| = (n - i) - 1 = n - (i + 1) = n - i'$, y por lo tanto las dos partes sencillas del invariante se cumplen.
 
   Ahora viene la parte principal del teorema, realmente la única que no es trivial, que es ver que el valor de $c$ sigue siendo el que queremos.
@@ -193,7 +192,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
 
   Luego, *encontramos un árbol de sumas $T''$, óptimo para $q'$, tal que $"costo"(T'') = "costo"(T') - (x + y)$*. Esto muestra que el invariante se mantiene al finalizar el cuerpo del ciclo.
 
-  === El invariante y la negación de la guarda implican la postcondición
+  ==== El invariante y la negación de la guarda implican la postcondición
   Como vale el invariante, sabemos que $i lt n$, que $|q| = n - i$, y que existe un árbol de sumas $T$, óptimo para $m$, y un árbol de sumas $T'$, óptimo para $q$, tal que $"costo"(T) = "costo"(T') + c$. Como vale la negación de la guarda, sabemos que $i gt.eq n - 1$. Luego, sabemos que $i = n - 1$, y luego que $|q| = n - i = n - (n - 1) = 1$. Como $T'$ es un árbol de sumas para $q$, y $q$ tiene un sólo elemento, entonces $T'$ tiene un sólo elemento. Ese elemento, que es la raíz, es una hoja por no tener hijos. Por lo tanto, $"costo"(T') = 0$, y tenemos que existe un árbol de sumas $T$, óptimo para $m$, tal que $"costo"(T) = c$. Esto es precísamente la postcondición.
 
 + El algoritmo en pseudocódigo es el que mostramos en a). Usamos la estructura _heap_ para obtener el mínimo de un conjunto de $k$ elementos en $O(log k)$ operaciones, e insertar algo en el _heap_ en $O(log k)$ operaciones. Nuestro heap $q$ tiene siempre a lo sumo $n$ elementos, y hacemos tres operaciones en cada iteración del ciclo. Luego, en cada una de las $n - 1$ iteraciones hacemos $O(log n)$ operaciones, y en total hacemos $O(n log n)$ operaciones.
