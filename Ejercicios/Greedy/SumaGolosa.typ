@@ -263,7 +263,7 @@ f q | H.size q <= 1 = 0
       Just (y, q2) <- H.view q1 = let z = x + y
                                       q' = H.insert z q2
                                   in  f q' + z
-main = let h = (H.fromList [1, 2, 5] :: H.MinHeap Int) 
+main = let h = H.fromList [1, 2, 5] :: H.MinHeap Int
        in  print (f h)
 ```
 
