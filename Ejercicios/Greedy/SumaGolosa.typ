@@ -4,8 +4,6 @@
 #import draw: line, content, circle, polygon
 #import "@preview/theorion:0.3.3": *
 #import cosmos.fancy: *
-// #import cosmos.rainbow: *
-// #import cosmos.clouds: *
 #show: show-theorion
 
 #set text(
