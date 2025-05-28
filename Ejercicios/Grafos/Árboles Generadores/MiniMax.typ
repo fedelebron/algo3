@@ -1,3 +1,6 @@
+#import "@preview/cetz:0.3.4": draw, canvas
+#import "@preview/cetz-venn:0.1.3": venn2
+#import draw: content, circle, scale
 #import "@preview/theorion:0.3.3": *
 #import cosmos.fancy: *
 #show: show-theorion
@@ -47,18 +50,44 @@ Como ${V_1, V_2}$ particiona $V$, cada uno de los $x_i$ está en $V_1$ o $V_2$. 
 
 #definition[Sean $A$ y $B$ conjuntos. Notamos $Delta(A, B) = (A without B) union.sq  (B without A)$ a la diferencia simétrica entre $A$ y $B$.]
 
-#proposition[Sean $A$ y $B$ conjuntos de igual tamaño $|A| = |B|$. Entonces:
+#proposition[Sean $A$ y $B$ conjuntos tal que $|A| = |B|$. Entonces:
 
   1. $|A without B| = |B without A|$.
   2. $|Delta(A, B)|$ es par.
   3. Si $Delta(A, B) eq.not emptyset$, entonces $(A without B) eq.not emptyset$ y $(B without A) eq.not emptyset$.
 ]<prop:4>
 
-#proof[Usemos esta imagen para recordar cómo funcionan las uniones e intersecciones.
+#proof[Recordemos cómo funcionan las uniones e intersecciones de conjuntos.
 
-#figure(
-  image("venn.png", width: 50%),
-)
+
+#set align(center)
+#canvas({
+  scale(1.5)
+
+  venn2(
+    name: "venn",
+    a-fill: red.transparentize(40%),
+    b-fill: blue.transparentize(40%),
+    ab-fill: purple.transparentize(40%),
+    not-ab-stroke: 0mm
+  )
+
+  content("venn.center", [$A$], padding: (0, -3))
+
+  content("venn.east", [$B$], padding: (0, -1))
+
+  draw.hobby((rel: (0.1, 0.85), to: "venn.a"), (-0.95, 0.9), (-0.99, 1.1), name: "arrow")
+  content("arrow.end", text(fill:red)[$A without B$], padding: -0.5)
+
+  draw.hobby((rel: (0.1, 0.7), to: "venn.b"), (1.22, 1), (1.2, 1.1), name: "arrow2")
+  content("arrow2.end", text(fill:blue)[$B without A$], padding: -0.5)
+
+  draw.hobby((rel: (0, 0.5), to: "venn.ab"), (0.1, 0.7), (0.1, 1), name: "arrow3")
+  content("arrow3.end", text(fill:purple)[$A inter B$], padding: -0.5)
+  content("venn.south", $A = $ + " " + text(fill:red, $(A without B)$) + " " + $union.sq$ + " " + text(fill:purple, $(A inter B)$), padding: (-1, 0))
+  content("venn.south", $B = $ + " " + text(fill:blue, $(B without A)$) + " " + $union.sq$ + " " + text(fill:purple, $(A inter B)$), padding: (-0.5, 0))
+})
+#set align(left)
 
 Sabemos que $A = (A without B) union.sq  (A inter B)$, y $B = (B without A) union.sq  (A inter B)$. Llamando a $|A without B| = alpha$, $|B without A| = beta$, y $|A inter B| = gamma$, tenemos que $|A| = alpha + gamma$, y $|B| = beta + gamma$. Como $|A| = |B|$, tenemos que $alpha + gamma = beta + gamma$. Luego, $alpha = beta$, es decir, $|A without B| = |B without A|$.
 Para el segundo punto, como $Delta(A, B) = (A without B) union.sq  (B without A)$, tenemos que $|Delta(A, B)| = |(A without B)| + |(B without A)| = alpha + beta = 2 alpha = 2 beta$, luego es par.
@@ -80,7 +109,7 @@ Finalmente, si $Delta(A, B) eq.not emptyset$, entonces $|Delta(A, B)| = 2alpha =
   image("agm.jpeg", width: 50%),
 )
 
-Sea $P'$ cualquier camino en $G$ entre $u$ y $v$. Queremos ver que $c^*(P) lt.eq c^*(P')$. Es decir, que la arista más pesada de $P$, es tan o más ligera que la arista más pesada de $P'$. Como corolario, vamos a tener que si $P'$ es minimax, entonces $P$ también lo es. Como $P'$ es arbitrario entre $u$ y $v$, vamos a poder _elegirlo_ minimax, y tenemos que cualquier camino en un árbol generador mínimo entre $u$ y $v$ también va a ser minimax en $G$.
+Sea $P'$ un camino minimax en $G$ entre $u$ y $v$. Queremos ver que $c^*(P) lt.eq c^*(P')$. Es decir, que la arista más pesada de $P$, es tan o más ligera que la arista más pesada de $P'$. Como corolario, vamos a tener que como $P'$ es minimax, entonces $P$ también lo es. Como $P$ es cualquier camino en $T$, esto va a mostrar que $T$ es minimax.
 
 Asumamos que no es cierto, y que $c^*(P) > c^*(P')$. Luego, sea $e in P$ una arista de máximo peso en $P$. Entonces tenemos que, para toda arista $e' in P'$:
 
