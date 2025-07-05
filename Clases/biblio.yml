@@ -1,0 +1,76 @@
+elementa:
+  type: Book
+  author: "Euclides"
+  title: "Elementos"
+  date: -300
+
+chvatal:
+  type: Article
+  title: "On Hamilton's ideals"
+  author: "Václav Chvátal"
+  date: 1972
+  page-range: 163-168
+  issn: 0095-8956
+  doi: https://doi.org/10.1016/0095-8956(72)90020-2
+  parent:
+    type: Periodical
+    title: Journal of Combinatorial Theory, Series B
+    volume: 12
+    number: 2
+
+floorrecurrence:
+  type: Article
+  title: "Floors and Ceilings in Divide-and-Conquer Recurrences"
+  author: ["William Kuszmaul", "Charles Eric Leiserson"]
+  date: 2021
+  serial-number:
+    doi: "10.1137/1.9781611976496.15"
+  page-range: 133-141
+  url: "https://epubs.siam.org/doi/abs/10.1137/1.9781611976496.15"
+  parent:
+    type: Periodical
+    title: Symposium on Simplicity in Algorithms
+    
+clrs:
+  type: Book
+  title: "Introduction to Algorithms"
+  author: ["Thomas H. Cormen", "Charles Eric Leiserson", "Ronald Linn Rivest", "Clifford Stein"]
+  publisher: "The MIT Press"
+  edition: 3
+  date: 2009
+  serial-number:
+    isbn: 0262033844
+
+
+#karatsuba:
+#  type: Article
+#  title: "Multiplication of Many-Digital Numbers by Automatic Computers"
+#  author: ["Anatoly Alexeyevich Karatsuba", "Yuri Petrovich Ofman"]
+#  date: 1962
+#  page-range: 293-294
+#  parent:
+#    type: Periodical
+#    title: Proceedings of the USSR Academy of Sciences
+#    volume: 12
+
+choice:
+  type: Book
+  title: "Zermelo's Axiom of Choice: Its Origins, Development, and Influence"
+  author: ["Gregory H. Moore"]
+  date: 1982
+  edition: 1
+  publisher: "Springer"
+  serial-number:
+    isbn: "0-387-90670-3"
+
+dantzig:
+  type: Article
+  title: All shortest routes in a graph
+  author: George Bernard Dantzig
+  date: 1966-11
+  parent:
+    type: Report
+    number: 66-3
+    publisher: Operations Research House, Stanford University
+    location: California
+
