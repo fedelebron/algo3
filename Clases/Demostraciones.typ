@@ -1197,7 +1197,7 @@ Por ejemplo, el siguiente teorema era probablemente sabido por Aristóteles, y a
     $sqrt(2) in.not QQ$.
   ]
 #demo[
-    Asumamos $sqrt(2) in QQ$. Luego, existen $a, b in ZZ$ tal que $sqrt(2) = a/b$, con $b eq.not 0$. Podemos elegir a $a, b$ coprimos.
+    Asumamos $sqrt(2) in QQ$. Luego, existen $a, b in ZZ$ tal que $sqrt(2) = a/b$, con $b eq.not 0$. Podemos elegir a $a, b$ coprimos, dado que si no lo fueran, tomamos $a / b = (a / d) / (b / d)$, con $d = gcd(a, b)$, y ahora teniendo el numerador y denominador coprimos.
 
     Como $sqrt(2) = a/b$, tenemos que $a^2/b^2 = 2$, y luego $a^2 = 2b^2$. Luego $a$ es par, pues $a^2$ lo es, y el cuadrado de un número impar sería impar.
 
