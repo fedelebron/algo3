@@ -402,10 +402,10 @@ Acá vemos otra vez que el contexto es importante. Podemos asumir, al momento de
 Veamos un ejemplo de una demostración no rigurosa:
 
 #ej[
-Sea $A subset.eq NN$. Demostrar que existe un $a in A$ tal que para todo $b in A$, $a < b$.
+Sea $A subset.eq NN, A eq.not emptyset$. Demostrar que existe un $a in A$ tal que para todo $b in A$, $a lt.eq b$.
 ]
 #demo[
-Supongamos por contradicción que $A$ no tiene un tal mínimo elemento. Sea $x_0$ cualquier elemento de $A$. Como $A$ no tiene un mínimo elemento, sea $x_1 in NN$ tal que $x_1 < x_0$. Como $A$ no tiene un mínimo elemento, sea $x_2 in NN$ tal que $x_2 < x_1$.  Siguiendo de esta manera tenemos una sucesión infinitamente decreciente de naturales, que no puede suceder. Por lo tanto, lo que asumimos debe haber sido falso, y $NN$ tiene un mínimo elemento.]
+Supongamos por contradicción que $A$ no tiene un tal mínimo elemento. Sea $x_0$ cualquier elemento de $A$. Como $A$ no tiene un mínimo elemento, sea $x_1 in NN$ tal que $x_0 > x_1$ (si $x_1$ no existiera, $x_0$ sería menor o igual a todo elemento en $A$, que asumimos no sucede). Como $A$ no tiene un mínimo elemento, sea $x_2 in NN$ tal que $x_1 > x_2$.  Siguiendo de esta manera tenemos una sucesión infinitamente decreciente de naturales, que no puede suceder. Por lo tanto, lo que asumimos debe haber sido falso, y $NN$ tiene un mínimo elemento.]
 
 El lenguaje en el que está escrito esto es razonablemente formal. Sin embargo, esta demostración no es rigurosa. Un lector se va a preguntar qué exactamente está pasando cuando decimos "Siguiendo de esta manera". Estamos haciendo alusión a un proceso implícito, y usando alguna noción no definida de límite. Después de todo, todos los procesos que podríamos enumerar en una demostración son finitos, entonces hacer alusión a que primero elegimos $x_0$, luego $x_1$, luego $x_2$, "$dots$", esconde la dificultad en explicitar exactamente qué es ese "$dots$".
 
@@ -1239,6 +1239,8 @@ Si tenemos que probar un si-y-sólo-si ($iff$), podemos probar por separado $imp
   ]
 
  Probar que una secuencia gráfica cumple eso es fácil. El probar que si eso se cumple para una secuencia, entonces existe un grafo con esa secuencia gráfica, es bastante difícil. Una demostración constructiva es dada por el algoritmo de Havel-Hakimi.
+
+ Esencialmente lo que está pasando en esa demostración es que uno de los lados del si-y-sólo-si es una condición global (el existir un grafo que cumple con lo pedido), mientras que el otro lado es un montón de condiciones locales (una por cada $k$). Es fácil implicar cada condición local, pero probar que la unión de todas las condiciones locales implica la condición global es difícil.
 
 
 #grid(columns: (1fr, 1fr),
