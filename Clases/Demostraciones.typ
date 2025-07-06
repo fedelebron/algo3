@@ -3022,7 +3022,7 @@ Vamos a querer obtener, en cada caso, una forma de obtener una solución de meno
     ..($=$, $=$, $dots$, $=$, $eq.not$, [], []).map((x)=>rotate(x, 90deg)),
     $w_1$, $w_2$, $dots$, $w_(i-1)$, $w_i$, $dots$, $w_(|w|)$,
   ),
-  place(dx: 2em, math.underbrace(h(9em), $sum_(j gt.eq i) w_j = n'$))
+  place(dx: 2em, math.underbrace(h(9em), $sum_(r gt.eq i) w_r = n'$))
 ))]
 
 Partimos en casos:
