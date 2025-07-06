@@ -1224,7 +1224,22 @@ not top &iff bot
 
 $]
 
-Vemos frecuentemente el error #text(red)[$not (P implies Q) iff not P implies not Q$], y #text(red)[$not (P implies Q) iff Q implies P$].
+Vemos frecuentemente el error #text(red)[$not (P implies Q) iff not P implies not Q$], y #text(red)[$not (P implies Q) iff Q implies P$]. A continuación hay varios ejemplos de usos de negación y contradicción, sólo algunos son correctos.
+
+#let reddish = red.lighten(80%)
+#let greenish = green.lighten(80%)
+#grid(
+  columns: 2,
+  stroke: 0.5pt + black,
+  fill: (_, y) => if y in (0,2,4) { reddish } else { greenish },
+  inset: 5pt,
+  [Si la inflamación no se va, el dolor vuelve. Luego, voy a tomar Anaflex, porque saca la inflamación.], [$P = $ La inflamación se va, $Q = $ El dolor vuelve, $R = $ Tomo Anaflex. Asumimos que $(not P) implies Q$, y que $R implies P$. No podemos concluir que $R implies not Q$. Perfectamente puede ser que $Q = top$, y el dolor siempre vuelve. Tomar Anaflex no hace nada para el dolor. La "demostración" asume que $(not P implies Q) iff (P implies not Q)$, que es mentira.#footnote[El autor de este documento ha odiado esa publicidad más de 20 años, precísamente por ser un mal uso de operaciones lógicas.].],
+  [Sea $A$ un conjunto que contiene a todos los conjuntos. Sea $B = {x in A | x in.not x}$. Si $B in B$, entonces por definición de $B$, $B in.not B$, que no puede suceder. Si no, $B in.not B$, y por definición de $B$, $B in B$, que no puede suceder. Luego, $A$ no puede existir.], [Esto es correcto. En ambas ramas, llegamos a una contradicción. Si $P implies Q$ y $not(P) implies Q$, entonces vale $Q$. En este caso, $Q = bot$, $P = B in B$. Luego, si asumimos que $A$ existe, probamos $bot$, y por ende concluimos que $A$ no existe.#footnote[Esta es la paradoja de Russell@russell.]],
+  [Queremos ver si vale la siguiente proposición: "Sea $k gt.eq 1$, con $k in ZZ$. Si $k$ es tal que $2^k equiv 0 (mod 3)$, entonces $8 equiv 1 (mod 3)$". Vemos que hay un contraejemplo, con $k = 1$, tenemos $8^1 = 8 equiv.not 3 (mod 2)$, pues $8 = 2 times 3 + 2 equiv 2 (mod 3)$.], [Esto está mal. Tenemos una proposición $P(k): Q(k) implies R(k)$ sobre todos los $k in ZZ, k gt.eq 1$, con $Q(k): 2^k equiv 0 (mod 3)$, y $R(k): 8 equiv 1 (mod 3)$. Lo que encontramos es un contraejemplo a $R(k)$, pero esto no implica que $P(k)$ sea falsa. De hecho $P(k)$ siempre es cierta, pues $Q(k)$ es falsa para todo tal $k$. $P(k)$ es equivalente a $not Q(k) or R(k)$, y como $Q(k)$ es siempre $bot$, entonces $P(k)$ es equivalente a $top or R(k)$, que es equivalente a $top$. Luego, $P(k)$ siempre es cierta para tales $k$.],
+  [Queremos ver que si $a^2 = 0$, con $a in RR$, entonces $a = 0$. Supongamos que $a eq.not 0$. Entonces existe $a^(-1) in RR$. Luego, $a^2 = 0 implies a^(-1) a^2 = 0 implies a = 0$, con lo cual concluimos que $a = 0$, una contradicción pues asumimos que $a eq.not 0$. Luego, lo que asumimos no puede suceder, y tenemos que $a = 0$.], [Está bien. Asumimos $not P$, y llegamos a una contradicción. En particular, llegamos a $P$. Luego, no puede suceder que valga $not P$, y efectivamente tenemos que vale $P$ sin asumir nada.],
+  [Sea $n in NN$, y $f: {1, dots, n} arrow {1, dots, n}$. Queremos probar que si $f$ es inyectiva, entonces es sobreyectiva. Asumimos, entonces, que $f$ no es inyectiva. Luego existen $1 lt.eq a, b lt.eq n$ tales que $f(a) = f(b)$. Como a algún elemento del codominio le llegan dos flechas, hay algún elemento del codominio al que no le llega ninguna. Luego $f$ no es sobreyectiva.], [Esto confunde $A implies B$ con $not A implies not B$. Lo que el autor quizo probar, quizás, es $not B implies not A$, que sí es equivalente a $A implies B$. Se confundió, quizás, por no ser suficientemente formal.],
+  [Queremos ver que existe un irracional $x in RR$ tal que $x^x$ es racional. Sea $x$ una solución real a $x^x = 2$, que existe en $(1, 2)$ por el teorema del valor medio, pues $1^1 = 1$ y $2^2 = 4$, con $x^x$ continua. Supongamos que $x = p/q$, con $p$ y $q$ enteros positivos coprimos. Como $x > 1$, entonces $p > q$, y luego $p - q > 0$. Tomando $q$-ésimas potencias a ambos lados de $x^x = 2$, obtenemos $(p/q)^p = 2^q$, y luego $p^p = q^p 2^q$. Luego $p$ es par, $p = 2k$ para algún $k in NN$. Tenemos $(2k)^(2k) = q^p 2^q implies 2^(2k) k^(2k) = q^p 2^q implies 2^(2k - q) k^(2k) = q^p implies 2^(p - q) k^(2k) = q^p$. Como una potencia de $q$ es par, $q$ es par, lo cual contradice que $p$ y $q$ eran coprimos. Luego no pueden existir $p, q$, y $x$ es irracional. ], [Está bien. Asumimos $P: exists p, q in NN. gcd(p, q) = 1 and p, q > 0 and x = p/q$, que es equivalente a que $x$ es un racional positivo. Llegamos a un absurdo, pues $2 divides gcd(p, q)$, y $2 divides.not 1$. Luego no puede ser que valga $P$, o equivalentemente, no puede ser que $x in QQ$. Como $x in RR$, entonces $x in RR without QQ = II$.],
+)
 
 
 === Si y sólo si
@@ -1476,6 +1491,14 @@ Este es *de lejos* el error que más cometen los alumnos. En este momento de su 
     ]
 
   + No usen el mismo nombre para dos cosas distintas. Si están modificando un objeto, no usen el mismo nombre para el objeto antes y después de modificarlo.
+    #ej[Sean $a, b in ZZ$, tal que $a equiv 1 (mod 3)$ y $b equiv 2 (mod 3)$. Probar que $a + b equiv 0 (mod 3)$.]
+    #text(red)[
+    #demo[
+      Como $a equiv 1 (mod 3)$, entonces existe un $k in ZZ$ tal que $a = 3k + 1$. Como $b equiv 2 (mod 3)$, existe un $k in ZZ$ tal que $b = 3k + 2$. Luego, $a + b = (3k + 1) + (3k + 2) = 6k + 3 = 3(2k + 1)$, y luego $a + b equiv 0 (mod 3)$.
+    ]
+    ]
+    Esto está mal, porque usa $k$ para dos cosas distintas. En particular, esto asume que $b = 3k + 2 = (3k + 1) + 1 = a + 1$, lo cual no podemos asumir.
+  
   + Si el objeto $X$ depende de un objeto $Y$, nómbrenlo $X_Y$ o $X(Y)$, para recordar la dependencia.
   + Si terminan definiendo un sustantivo y no lo usan para su conclusión, o no es necesario, pueden removerlo al terminar. Pero si no empezamos dándole nombre, seguro no lo podemos usar.
 + Cuantifiquen todo.
@@ -2976,9 +2999,9 @@ Primero, veamos que #gc termina. En cada iteración, $n$ decrece en como mínimo
 
 Ahora veamos que #gc devuelve una lista $v$ de mínima longitud, tal que $v$ contiene sólo elementos de $C$, y $sum_(c in v) c = n$. Vamos a hacer esto mediante un *argumento de intercambio*. Supongamos que existe una forma $w$ de devolver el vuelto de $n$ centavos, con menos monedas que $v$. De todas las posibles $w$ de mínima longitud, tomemos cualquier que, al ser ordenada de forma no-creciente, tenga el máximo número de elementos en común con $v$. Es decir, $w$ maximiza $max {i | 0 lt.eq i lt.eq min(|w|, |v|), forall 0 lt.eq j < i, w_j = v_j}$, donde estamos ordenando $w$ de forma no-creciente, entre todas las soluciones óptimas.
 
-Sea $i$ ese número. Entonces sabemos que antes de $i$, $w$ y $v$ tienen los mismos elementos, mientras que $v_i eq.not w_i$. Como #gc produjo $v$ de forma no-creciente, al elegir $v_i$, teníamos que $v_i = max_(c in C) {c | c lt.eq n'}$, con $n' < n$ el cambio que hace falta hacer todavía. Entonces, $n' = n - sum_(j = 1)^(i - 1) v_j = sum_(j = 1)^(i - 1) w_j$, porque dijimos que para todos esos índices $j$, $v_j = w_j$. Luego, como $n = sum_(j = 1)^|w| w_j gt.eq sum_(j = 1)^i w_j = n - n' + w_i$, o vemos que $0 gt.eq -n' + w_i$, o también, $w_i lt.eq n'$. Cómo elegimos $v_i$ como el máximo $c in C$ tal que $c lt.eq n'$, y $w_i in C$, sabemos que $w_i < v_i$.
+Sea $i$ ese número. Entonces sabemos que antes de $i$, $w$ y $v$ tienen los mismos elementos, mientras que $v_i eq.not w_i$. Como #gc produjo $v$ de forma no-creciente, al elegir $v_i$, teníamos que $v_i = max_(c in C) {c | c lt.eq n'}$, con $n' < n$ el cambio que hace falta hacer todavía. Entonces, $n' = n - sum_(j = 1)^(i - 1) v_j = sum_(j = 1)^(i - 1) w_j$, porque dijimos que para todos esos índices $j$, $v_j = w_j$. Luego, como $n = sum_(j = 1)^(|w|) w_j gt.eq sum_(j = 1)^i w_j = n - n' + w_i$, o vemos que $0 gt.eq -n' + w_i$, o también, $w_i lt.eq n'$. Cómo elegimos $v_i$ como el máximo $c in C$ tal que $c lt.eq n'$, y $w_i in C$, sabemos que $w_i < v_i$.
 
-Vamos a querer obtener, en cada caso, una forma de obtener una solución de menor largo que $w$, o de igual largo pero que tiene un prefijo más largo en común con $v$. Como $w$ era una forma óptima que tiene el prefijo más largo con común con $v$, esto es una contradicción. Por lo tanto $w$ no puede existir, y luego $v$ es una solución óptima.
+Vamos a querer obtener, en cada caso, una forma de obtener una solución de menor largo que $w$, o de igual largo pero que tiene un prefijo más largo en común con $v$. Como $w$ era una forma óptima que tiene el prefijo más largo con común con $v$, esto es una contradicción. Por lo tanto $w$ no puede existir, y luego $v$ es una solución óptima. Recordemos que $|w| < |v|$, por cómo definimos $w$.
 
 #align(center)[
 #block(
