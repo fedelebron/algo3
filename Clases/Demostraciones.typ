@@ -219,7 +219,7 @@ Una demostración matemática es un argumento convincente de la veracidad de una
     #wrap-content(drawing, body)
   ]
 
-  ¿Los convence esa demostración? ¿Por qué $angle F A C$ es igual a la suma de $angle A B C$ y $angle A C B$? En su momento, esta demostración no sólo era convincente, sino que fue parte del libro de demostraciones de geometría más famoso y celebrado de la historia. ¿Por qué puede ser que hoy en día nos resulta confusa?
+  ¿Los convence esa demostración? ¿Dónde precísamente está $F$? ¿Por qué $angle F A C$ es igual a la suma de $angle A B C$ y $angle A C B$? En su momento, esta demostración no sólo era convincente, sino que fue parte del libro de demostraciones de geometría más famoso y celebrado de la historia. ¿Por qué puede ser que hoy en día nos resulta confusa?
 
   Viajamos luego al 1758, donde en "De numeris qui sunt aggregata duorum quadratorum" ("Sobre números que son la suma de dos cuadrados") Leonhard Euler prueba el siguiente teorema.
 
@@ -397,7 +397,7 @@ Mencioné dos veces la palabra "rigor", pero ¿qué significa? En el contexto de
 
 #important-box[Mientras que la formalidad se refiere a *la forma en la que escribimos*, el rigor se refiere a *la implicación lógica de nuestras oraciones*.]
 
-Acá vemos otra vez que el contexto es importante. Podemos asumir, al momento de escribir demostraciones en una materia universitaria, que el lector ha completado las materias correlativas a la que están cursando. Por ejemplo, si ya vieron que diferenciabilidad implica continuidad, pueden asumir que el lector sabe eso, y no tienen que demostrarlo. 
+Acá vemos otra vez que el contexto es importante. Podemos asumir, al momento de escribir demostraciones en una materia universitaria, que el lector ha completado las materias correlativas a la que están cursando. Por ejemplo, si ya vieron que diferenciabilidad implica continuidad, pueden asumir que el lector sabe eso, y no tienen que demostrarlo.
 
 Veamos un ejemplo de una demostración no rigurosa:
 
@@ -409,7 +409,7 @@ Supongamos por contradicción que $A$ no tiene un tal mínimo elemento. Sea $x_0
 
 El lenguaje en el que está escrito esto es razonablemente formal. Sin embargo, esta demostración no es rigurosa. Un lector se va a preguntar qué exactamente está pasando cuando decimos "Siguiendo de esta manera". Estamos haciendo alusión a un proceso implícito, y usando alguna noción no definida de límite. Después de todo, todos los procesos que podríamos enumerar en una demostración son finitos, entonces hacer alusión a que primero elegimos $x_0$, luego $x_1$, luego $x_2$, "$dots$", esconde la dificultad en explicitar exactamente qué es ese "$dots$".
 
-Una vez más, esto depende del contexto. Los antiguos Griegos usaban este tipo de argumentos todo el tiempo, y esa demostración hubiera sido considerada rigurosa. Fue sólo a principios del 1900, con el trabajo de Ernst Zermelo@choice, que nos dimos cuenta que ese tipo de razonamientos, si no tenemos cuidado, llevan a paradojas.
+Una vez más, esto depende del contexto. Los antiguos griegos usaban este tipo de argumentos todo el tiempo, y esa demostración hubiera sido considerada rigurosa. Fue sólo a principios del 1900, con el trabajo de Ernst Zermelo@choice, que nos dimos cuenta que ese tipo de razonamientos, si no tenemos cuidado, llevan a paradojas.
 
 = ¿Cuándo, qué, y para qué demostramos?  
 Un computador científico escribe demostraciones cuando quiere establecer sin dudas la veracidad de una proposición lógica. Por ejemplo, si queremos probar que nuestro sistema no va a quedarse sin memoria independientemente de las consultas que arriven, si queremos probar que nuestro programa no se va a ralentar desmedidamente a medida que se aumente el tamaño de su entrada, o si queremos probar que no va a haber "deadlock" en ninguna circumstancia.
@@ -956,7 +956,7 @@ La diferencia está en que no todo grafo cuyos vértices tienen grados mayores o
 */
   #warning-box[Si nuestra demostración de $P(n)$ requiere que $P(n - 1), P(n - 2), dots, P(n - k)$ sea cierto para algún $k gt.eq 1$ fijo, entonces vamos a necesitar $k$ casos base. Esto es porque nuesta demostración no va a tener sentido cuando $n < k$, porque estaríamos diciendo que $P(n - k)$ vale, con $n - k < 0$, que no tiene sentido pues $P$ es una proposición sobre los naturales. Veamos un ejemplo.]
 
-  Veamos primero una demostración correcta que toma esto en cuenta, y luego dos que son incorrectas por no hacerlo.
+  Veamos primero una demostración correcta que toma esto en cuenta, y luego tres que son incorrectas por no hacerlo.
 
   #ej(title: "Fórmula cerrada para la sucesión de Fibonacci")[
     Sea $a_0 = 0, a_1 = 1$, y para todo $n > 1$, definamos $a_n = a_(n-1) + a_(n-2)$. Entonces para todo $n in NN$, tenemos $a_n = (phi^n - psi^n)/sqrt(5)$, con $phi = (1 + sqrt(5))/2$, y $psi = (1 - sqrt(5))/2$.
@@ -981,6 +981,22 @@ La diferencia está en que no todo grafo cuyos vértices tienen grados mayores o
   ]
 
   Ahora veamos qué pasa si no somos cuidadosos al usar la hipótesis inductiva.
+  #let txt = text(red)[
+    #prop[En cualquier conjunto de caballos, todos los caballos son del mismo color.]
+    #demo[
+    Sea $S$ un conjunto de caballos de $n$ elementos. Si $n = 1$, $S$ tiene un único caballo, y obviamente es del mismo color que todos los caballos de $S$. Si $n > 1$, entonces sea $x$ cualquier caballo en $S$. Si sacamos a $x$ de $S$, obtenemos un conjunto $S' = S without {x}$ de $n - 1$ caballos. Por hipótesis inductiva, todos los caballos en $S'$ son del mismo color. Ahora sea $y$ otro caballo, distinto de $x$. Por hipótesis inductiva, en $T = S without {y}$, todos los caballos son del mismo color. Como $x$ e $y$ tienen el mismo color que todos los otros caballos, entonces $x$ e $y$ también son del mismo color entre sí, y luego todos los caballos en $S$ son del mismo color.
+    
+    Por inducción, en cualquier conjunto de caballos, todos los caballos son del mismo color. 
+  ]
+  ]
+
+  #let im = image("horses.png", width: auto)
+  #wrap-content(im, txt, align: left)
+
+
+  Sin embargo, han visto dos caballos de colores distintos. ¿Cómo puede ser? El error está en ser informal, pues al decir "$x$ e $y$ tienen el mismo color que todos los otros caballos", e intentar argumentar algo con eso, uno tiene que asegurarse de que el conjunto "todos los otros caballos" no es vacío, pues en ese caso no podemos inferir nada. Luego, esta demostración se cae en el caso $n = 2$. Al ser informal y razonar vagamente, miente.
+
+  Otra demostración erronea más. ¿Pueden encontrar el error?
   #prop[
     Para todo $n in NN$, $2^n = 1$.
   ]
@@ -1208,7 +1224,9 @@ Por ejemplo, el siguiente teorema era probablemente sabido por Aristóteles, y a
 
 El motivo por el que la demostración es por contradicción es porque el que $x$ no esté en $QQ$ nos dice poco, sólo que $x in RR without QQ$, pero no es cómodo hablar sobre los irracionales. El demostrar por contradicción nos deja "imaginar" que $x in QQ$, y el objetivo es llegar a $bot$, algo falso. Usando esta hipótesis concluímos cosas útiles sobre $x$, como que $x = n/m$ con $n, m in ZZ, m eq.not 0$.
 
-#warning-box[Frecuentemente vemos alumnos empezar usando esta estrategia automáticamente, sin pensar en por qué se lo está haciendo. Imaginamos que es porque les da algo que escribir, y "se parece a progreso". Pero realmente no sugerimos hacer esto sin tener una razón específica, muchas veces se confunden con la cantidad (y paridad) de negaciones, ya que cada vez que hacen esto agregan una negación más. Eventualmente cometen algún error, llegan a un absurdo, y dicen "¡Listo, terminé!", pero el absurdo vino de hacer otra cosa mal en el medio.]
+#warning-box[Frecuentemente vemos alumnos empezar usando esta estrategia automáticamente, sin pensar en por qué se lo está haciendo. Imaginamos que es porque les da algo que escribir, y "se parece a progreso". Pero realmente no sugerimos hacer esto sin tener una razón específica, muchas veces se confunden con la cantidad (y paridad) de negaciones, ya que cada vez que hacen esto agregan una negación más. Eventualmente cometen algún error, llegan a un absurdo, y dicen "¡Listo, terminé!", pero el absurdo vino de hacer otra cosa mal en el medio.
+
+Las demostraciones por contradicción son una fuente clásica de errores de alumnos.@contra]
 
 Si van a usar esta estrategia, recuerden las reglas de negación.
 #align(center)[
@@ -1228,10 +1246,13 @@ Vemos frecuentemente el error #text(red)[$not (P implies Q) iff not P implies no
 
 #let reddish = red.lighten(80%)
 #let greenish = green.lighten(80%)
+#let yellowish = yellow.lighten(80%)
 #grid(
   columns: 2,
   stroke: 0.5pt + black,
-  fill: (_, y) => if y in (0,2,4) { reddish } else { greenish },
+  fill: (_, y) => if y in (0,2,4,8, 10) { reddish }
+                  else if y in (6,) { yellowish }
+                  else { greenish },
   inset: 5pt,
   [Si la inflamación no se va, el dolor vuelve. Luego, voy a tomar Anaflex, porque saca la inflamación.], [$P = $ La inflamación se va, $Q = $ El dolor vuelve, $R = $ Tomo Anaflex. Asumimos que $(not P) implies Q$, y que $R implies P$. No podemos concluir que $R implies not Q$. Perfectamente puede ser que $Q = top$, y el dolor siempre vuelve. Tomar Anaflex no hace nada para el dolor. La "demostración" asume que $(not P implies Q) iff (P implies not Q)$, que es mentira.#footnote[El autor de este documento ha odiado esa publicidad más de 20 años, precísamente por ser un mal uso de operaciones lógicas.].],
   [Sea $A$ un conjunto que contiene a todos los conjuntos. Sea $B = {x in A | x in.not x}$. Si $B in B$, entonces por definición de $B$, $B in.not B$, que no puede suceder. Si no, $B in.not B$, y por definición de $B$, $B in B$, que no puede suceder. Luego, $A$ no puede existir.], [Esto es correcto. En ambas ramas, llegamos a una contradicción. Si $P implies Q$ y $not(P) implies Q$, entonces vale $Q$. En este caso, $Q = bot$, $P = B in B$. Luego, si asumimos que $A$ existe, probamos $bot$, y por ende concluimos que $A$ no existe.#footnote[Esta es la paradoja de Russell@russell.]],
@@ -1239,6 +1260,42 @@ Vemos frecuentemente el error #text(red)[$not (P implies Q) iff not P implies no
   [Queremos ver que si $a^2 = 0$, con $a in RR$, entonces $a = 0$. Supongamos que $a eq.not 0$. Entonces existe $a^(-1) in RR$. Luego, $a^2 = 0 implies a^(-1) a^2 = 0 implies a = 0$, con lo cual concluimos que $a = 0$, una contradicción pues asumimos que $a eq.not 0$. Luego, lo que asumimos no puede suceder, y tenemos que $a = 0$.], [Está bien. Asumimos $not P$, y llegamos a una contradicción. En particular, llegamos a $P$. Luego, no puede suceder que valga $not P$, y efectivamente tenemos que vale $P$ sin asumir nada.],
   [Sea $n in NN$, y $f: {1, dots, n} arrow {1, dots, n}$. Queremos probar que si $f$ es inyectiva, entonces es sobreyectiva. Asumimos, entonces, que $f$ no es inyectiva. Luego existen $1 lt.eq a, b lt.eq n$ tales que $f(a) = f(b)$. Como a algún elemento del codominio le llegan dos flechas, hay algún elemento del codominio al que no le llega ninguna. Luego $f$ no es sobreyectiva.], [Esto confunde $A implies B$ con $not A implies not B$. Lo que el autor quizo probar, quizás, es $not B implies not A$, que sí es equivalente a $A implies B$. Se confundió, quizás, por no ser suficientemente formal.],
   [Queremos ver que existe un irracional $x in RR$ tal que $x^x$ es racional. Sea $x$ una solución real a $x^x = 2$, que existe en $(1, 2)$ por el teorema del valor medio, pues $1^1 = 1$ y $2^2 = 4$, con $x^x$ continua. Supongamos que $x = p/q$, con $p$ y $q$ enteros positivos coprimos. Como $x > 1$, entonces $p > q$, y luego $p - q > 0$. Tomando $q$-ésimas potencias a ambos lados de $x^x = 2$, obtenemos $(p/q)^p = 2^q$, y luego $p^p = q^p 2^q$. Luego $p$ es par, $p = 2k$ para algún $k in NN$. Tenemos $(2k)^(2k) = q^p 2^q implies 2^(2k) k^(2k) = q^p 2^q implies 2^(2k - q) k^(2k) = q^p implies 2^(p - q) k^(2k) = q^p$. Como una potencia de $q$ es par, $q$ es par, lo cual contradice que $p$ y $q$ eran coprimos. Luego no pueden existir $p, q$, y $x$ es irracional. ], [Está bien. Asumimos $P: exists p, q in NN. gcd(p, q) = 1 and p, q > 0 and x = p/q$, que es equivalente a que $x$ es un racional positivo. Llegamos a un absurdo, pues $2 divides gcd(p, q)$, y $2 divides.not 1$. Luego no puede ser que valga $P$, o equivalentemente, no puede ser que $x in QQ$. Como $x in RR$, entonces $x in RR without QQ = II$.],
+  [Queremos probar que si $x$ e $y$ son racionales, entonces $x + y$ es racional. Escribimos $x = a/b, y = c/d$, con $b eq.not 0$, $c eq.not 0$, y $a, b, c, d in ZZ$. Asumimos que $x + y in.not QQ$. Luego vemos que $x + y = a/b + c/d = (a d + b c)/(b d)$. Como $b eq.not 0$, y $d eq.not 0$, entonces $b d eq.not 0$. Como $a, b, c, d in ZZ$, entonces $a d + b c in ZZ$, y $b d in ZZ, b d eq.not 0$. Luego $x + y in QQ$, que contradice que $x + y$ era irracional. Luego lo que asumimos no puede suceder, y concluímos que $x + y in QQ$.], [Esta demostración no está "mal", pero no usa la contradicción en ningún momento. Es de la forma "Asumo $not P$. Pruebo $P$ sin usar $not P$. Esto contradice que $not P$, luego vale $P$." Pero $P$ vale porque probamos $P$, no por la contradicción con $not P$. La contradicción es enteramente superflua, y sólo hace más difícil leer la demostración, ambos para el que la corrige, y para el alumno que intenta ver si cometió un error.
+  
+  Esto pasa cuando los alumnos mecánicamente intentan usar contradicción, sin pensar por qué lo está haciendo.],
+  [Queremos ver que existen dos irracionales $x, y in RR without QQ$, tales que $x^y in QQ$. Sea $A = sqrt(2)^(sqrt(2))$. Si $A$ es racional, terminamos, pues $x = sqrt(2), y = sqrt(2)$ resuelve lo pedido. Si no, $A$ es irracional. Pero luego, $A^(sqrt(2)) = sqrt(2)^(sqrt(2) sqrt(2)) = sqrt(2)^2 = 2 in QQ$, y luego $x = A, y = sqrt(2)$ resuelve lo pedido.], [Está bien. Si $P: A in QQ$, y $Q: exists x, y in II. x^y in QQ$, entonces probamos que $P implies Q$, y que $(not P) implies Q$. Juntando ambas oraciones, tenemos que $(P or not P) implies Q$, que es equivalente a $top implies Q$, que es equivalente a $Q$. Luego, probamos $Q$. Notar que esta demostración no prueba que $A$ es racional.#footnote[Uno puede usar el teorema de Gelfond-Schneider@niven para probar que $A$ no sólo es irracional, sino que es transcendental.].],
+  [Queremos probar que para todo $n in NN$, si $2n + 1 equiv 0 (mod 3)$, entonces $n^2 + 1 equiv 0 (mod 3)$. Por contrarecíproco, asumimos que $2n + 1 equiv.not 0 (mod 3)$. Entonces partimos en casos:
+    - Si $n = 3k + 1$ con $k in NN$, entonces $n^2 + 1 = 9k^2 + 6k + 2 equiv 2 equiv.not 0 (mod 3)$.
+    - Si $n = 3k + 2$ con $k in NN$, entonces $n^2 + 1 = 9k^2 + 12k + 5 equiv 2 equiv.not 0 (mod 3)$.
+
+    En ambos casos, $n^2 + 1 equiv.not 0 (mod 3)$. Por contrarecíproco, si $2n + 1 equiv 0 (mod 3)$, entonces $n^2 + 1 equiv 0 (mod 3)$, que es lo que queríamos demostrar.], [
+Esto está mal, confunde $A(n) implies B(n)$ con $not A(n) implies not B(n)$, donde $A(n): 2n + 1 equiv 0 (mod 3)$, y $B(n): n^2 + 1 equiv 0 (mod 3)$. Lo que queríamos probar es $A(n) implies B(n)$, pero lo que esto prueba es $not A(n) implies not B(n)$.
+
+    ],
+  [Sean $u, v, w$ vectores linealmente independientes en un espacio vectorial real $V$, y $T: V arrow W$ una transformación lineal inyectiva. Queremos probar que ${T(u), T(v), T(w)}$ es linealmente independiente. Asumamos que no. Luego, como ${T(u), T(v), T(w)}$ es linealmente dependiente, existen $alpha, beta, gamma in RR$, no todas cero, tal que $alpha T(u) + beta T(v) + gamma T(w) = 0$. Asumamos sin pérdida de generalidad que $alpha eq.not 0$. Luego $T(u) = -beta/alpha T(v) - gamma/alpha T(w)$. Esto es lo mismo que decir que $T(u) = T(-beta v / alpha - gamma w / alpha)$. Pero $T$ es inyectiva, luego $u = -beta v / alpha - gamma w / alpha$. Esto no puede suceder, pues $u$ sería una combinación lineal de $v$ y $w$, y sabemos que ${u, v, w}$ son linealmente independientes.], [Está bien. Notar cómo asumimos $alpha eq.not 0$ sin pérdida de generalidad. Esto significa que como alguno de los tres coeficientes no es cero, podemos renombrar las variables para que se coeficiente sea $alpha$. Nada en la demostración depende de cuál exactamente es $u$, $v$, o $w$, o $alpha$, $beta$, o $gamma$.
+
+  Asumimos que vale $not ({T(u), T(v), T(w)}$ es linealmente independiente$)$, y llegamos a una contradicción. Esto nos dice que ${T(u), T(v), T(w)}$ es linealmente independiente, que es lo que queríamos probar.],
+  [Queremos ver que para todo $x in RR, x^2 gt.eq 0$. Asumimos, por contradicción, que para todo $x in RR, x^2 lt 0$. Tomemos $x = 3$, y vemos que $3^2 = 9 gt.eq 0$. Esto contradice lo que asumimos, y por lo tanto $x^2 gt.eq 0$ para todo $x in RR$.], [Esto está mal. Intenta negar $forall x in RR. x^2 gt.eq 0$, y dice que eso es $forall x in RR. x^2 < 0$. La negación correcta es $exists x in RR. x^2 < 0$. La demostración no prueba lo pedido.],
+  [Queremos ver que no existe un programa $H$ que, dado cualquier programa $P$, devuelve #smallcaps("True") si y sólo si $P()$ se detiene, y #smallcaps("False") si no. Asumamos que $H$ existe. Sea $A$ el siguiente program:
+  
+  #algorithm({
+    import algorithmic: *
+    Procedure(
+      "A",
+      (),
+      {
+        If($H(A)$, {
+          While(smallcaps("True"))
+        })
+      }
+    )
+  })
+
+  Consideremos $H(A)$. Si $H(A) = #smallcaps("True")$, entonces $A()$ debe detenerse, con lo cual nunca entramos al ciclo infinito, pero entonces $not H(A)$, que no puede suceder pues asumimos $H(A)$.
+  Por otro lado, si $H(A) = #smallcaps("False")$, entonces $A$ tuvo que entrar al ciclo, y luego $H(A)$, que no puede suceder pues asumimos $not H(A)$.
+
+  Luego $H$ no puede existir. 
+  ], [Está bien. Partimos en casos, dependiendo del valor de $H(A)$. En ambas ramas, llegamos a una contradicción asumiendo la rama. Luego lo que asumimos inicialmente es falso, es decir, $H$ no puede existir. Este es un caso particular del "halting theorem"@halting.],
 )
 
 
@@ -2969,7 +3026,7 @@ Para muchos problemas, una solución greedy es fácil de imaginar. Por ejemplo, 
 Vamos a mostrarles algunos ejemplos de cada una.
 
 #ej[
-Queremos devolver el vuelto a un cliente, y tenemos monedas de 1, 5, 10, y 25 centavos. Diseñar un algoritmo greedy que resuelva el problema. Demostrar su correctitud, y su comportamiento asintótico.]
+Queremos devolver el vuelto a un cliente, y tenemos monedas de 1, 5, 10, y 25 centavos. Diseñar un algoritmo greedy que resuelva el problema. Demostrar su correctitud.]
 #demo[
 Un algoritmo como el que nos piden es el siguiente, donde $n$ es el número de centavos que queremos devolver:
 

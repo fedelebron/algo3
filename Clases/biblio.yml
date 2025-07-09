@@ -74,3 +74,42 @@ dantzig:
     publisher: Operations Research House, Stanford University
     location: California
 
+russell:
+  type: Book
+  author: Bertrand Russell
+  date: 1901
+  title: Correspondence with Frege
+  parent:
+    type: Book
+    title:  Gottlob Frege Philosophical and Mathematical Correspondence
+    publisher: University of Chicago Press
+    location: Chicago
+
+niven:
+  type: Book
+  author: Ivan Niven
+  title: Irrational Numbers
+  date: 1985
+  publisher: The Mathematical Association of America
+
+halting:
+  type: Article
+  title: An impossible program
+  author: Christopher Strachey
+  date: 1965-01-01
+  page-range: 313-313
+  parent:
+    type: Periodical
+    title: The Computer Journal
+    volume: 7
+    number: 4
+
+contra:
+  type: Article
+  title: Sources of Students’ Difficulties with Proof By Contradiction
+  author: [David Quarfoot, Jeffrey M. Rabin]
+  date: 2021
+  parent:
+    type: Periodical
+    title: International Journal of Research in Undergraduate Mathematics Education
+
