@@ -7,6 +7,7 @@
 #import "@preview/cetz:0.3.4": canvas, draw, tree, decorations
 #import "@preview/chatter:0.1.0" : *; 
 #import "@preview/finite:0.5.0": automaton
+#import "@preview/cetz-venn:0.1.3": venn2
 
 
 #import algorithmic: algorithm
@@ -1724,6 +1725,50 @@ Probar que para todo $A, B$ subconjuntos de $Y$, $f^(-1)(A triangle B) = f^(-1)(
   + Si $x in f^(-1)(A) without f^(-1)(B)$, entonces $f(x) in A$, pero $f(x) in.not B$. Luego $f(x) in (A without B) subset.eq A triangle B$, y por lo tanto $x in f^(-1)(A triangle B)$.
   + Si $x in f^(-1)(B) without f^(-1)(A)$, pasa algo análogo, y tenemos que $x in f^(-1)(A triangle B)$.
 ]
+
+#ej[
+Denotemos por $A triangle B$ la diferencia simétrica entre conjuntos, es decir, $A triangle B = (A without B) union (B without A)$.
+Sean $A$ y $B$ conjuntos tal que $|A| = |B|$. Entonces:
+
+  1. $|A without B| = |B without A|$.
+  2. $|Delta(A, B)|$ es par.
+  3. Si $Delta(A, B) eq.not emptyset$, entonces $(A without B) eq.not emptyset$ y $(B without A) eq.not emptyset$.
+]
+#demo[Recordemos cómo funcionan las uniones e intersecciones de conjuntos.
+
+#set align(center)
+#canvas({
+  draw.scale(1.5)
+
+  venn2(
+    name: "venn",
+    a-fill: red.transparentize(40%),
+    b-fill: blue.transparentize(40%),
+    ab-fill: purple.transparentize(40%),
+    not-ab-stroke: 0mm
+  )
+
+  draw.content("venn.center", [$A$], padding: (0, -3))
+
+  draw.content("venn.east", [$B$], padding: (0, -1))
+
+  draw.hobby((rel: (0.1, 0.85), to: "venn.a"), (-0.95, 0.9), (-0.99, 1.1), name: "arrow")
+  draw.content("arrow.end", text(fill:red)[$A without B$], padding: -0.5)
+
+  draw.hobby((rel: (0.1, 0.7), to: "venn.b"), (1.22, 1), (1.2, 1.1), name: "arrow2")
+  draw.content("arrow2.end", text(fill:blue)[$B without A$], padding: -0.5)
+
+  draw.hobby((rel: (0, 0.5), to: "venn.ab"), (0.1, 0.7), (0.1, 1), name: "arrow3")
+  draw.content("arrow3.end", text(fill:purple)[$A inter B$], padding: -0.5)
+  draw.content("venn.south", $A = $ + " " + text(fill:red, $(A without B)$) + " " + $union.sq$ + " " + text(fill:purple, $(A inter B)$), padding: (-1, 0))
+  draw.content("venn.south", $B = $ + " " + text(fill:blue, $(B without A)$) + " " + $union.sq$ + " " + text(fill:purple, $(A inter B)$), padding: (-0.5, 0))
+})
+#set align(left)
+Sabemos que $A = (A without B) union.sq  (A inter B)$, y $B = (B without A) union.sq  (A inter B)$. Llamando a $|A without B| = alpha$, $|B without A| = beta$, y $|A inter B| = gamma$, tenemos que $|A| = alpha + gamma$, y $|B| = beta + gamma$. Como $|A| = |B|$, tenemos que $alpha + gamma = beta + gamma$. Luego, $alpha = beta$, es decir, $|A without B| = |B without A|$.
+
+Para el segundo punto, como $Delta(A, B) = (A without B) union.sq  (B without A)$, tenemos que $|Delta(A, B)| = |(A without B)| + |(B without A)| = alpha + beta = 2 alpha = 2 beta$, luego es par.
+
+Finalmente, si $Delta(A, B) eq.not emptyset$, entonces $|Delta(A, B)| = 2alpha = 2beta > 0$, luego $alpha = beta > 0$, y luego $(A without B) eq.not emptyset$, como también $(B without A) eq.not emptyset$.]
 
 == Funciones y análisis asintótico
 #ej[
@@ -4892,10 +4937,15 @@ Sean $P, Q$ proposiciones. Demostrar que $(P implies Q) or (Q implies P)$.
 ]
 #ej[
 Para cada una de las siguientes proposiciones:
+  + $exists x. x^2 = 2$.
+  + $forall x. exists y. x^2 = y$.
+  + $forall y. exists x. x^2 = y$.
+  + $forall x. (x eq.not 0 implies exists y. x y = 1)$.
   + $forall x exists y. 2x - y = 0$
   + $forall x exists y. x - 2y = 0$
   + $forall x. ((x > 10) implies (forall y. (y < x implies y < 9)))$
   + $forall x. exists y. (y > x and exists z. (y + z = 100))$
+  + $exists x. exists y. x + 2y = 2 and 2x + 4y = 5$
 
 Indicar cuáles son *falsas* cuando $x, y, z$ son:
   + Números naturales.
