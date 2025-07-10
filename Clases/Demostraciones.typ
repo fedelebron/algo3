@@ -4888,9 +4888,31 @@ Sean $a, n in NN$. Probar que si $a^n$ es par, entonces $a$ es par.
 Sean $a, b in RR$, y sea $c = a b$. Probar que $a lt.eq sqrt(c)$, o $b lt.eq sqrt(c)$.
 ]
 #ej[
+Sean $P, Q$ proposiciones. Demostrar que $(P implies Q) or (Q implies P)$.
+]
+#ej[
+Para cada una de las siguientes proposiciones:
+  + $forall x exists y. 2x - y = 0$
+  + $forall x exists y. x - 2y = 0$
+  + $forall x. ((x > 10) implies (forall y. (y < x implies y < 9)))$
+  + $forall x. exists y. (y > x and exists z. (y + z = 100))$
+
+Indicar cuáles son *falsas* cuando $x, y, z$ son:
+  + Números naturales.
+  + Números enteros.
+  + Números reales.
+]
+#ej[
+Mostrar que la siguiente proposición es falsa para algún conjunto $D$, y alguna proposición $P$:
+
+$
+(forall x in D. exists y in D. P(x, y)) implies (forall z in D. P(z, z))
+$
+]
+#ej[
 Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 4T(n/3) + O(n log n)$. Probar que $T in O(n^1.5)$.
 ]
-#ej[Se tienen dos arreglos de $n$ naturales, $A$ y $B$. $A$ está ordenado de manera creciente, y $B$ de manera decreciente. Ningún valor aparece más de una vez en el mismo array. Para cada posición $i$, consideramos la diferencia absoluta entre los valores de los arrays, $|A[i] - B[i]|$. Se desea buscar el mínimo valor posible de dicha cuenta. Por ejemplo, si los arrays son $A = [1,2,3,4]$, y $B = [6, 4, 2, 1]$, los valores de las diferencias son $[5, 2, 1, 3]$, y el resultado es $1$.
+#ej[Se tienen dos arrays de $n$ naturales, $A$ y $B$. $A$ está ordenado de manera creciente, y $B$ de manera decreciente. Ningún valor aparece más de una vez en el mismo array. Para cada posición $i$, consideramos la diferencia absoluta entre los valores de los arrays, $|A[i] - B[i]|$. Se desea buscar el mínimo valor posible de dicha cuenta. Por ejemplo, si los arrays son $A = [1,2,3,4]$, y $B = [6, 4, 2, 1]$, los valores de las diferencias son $[5, 2, 1, 3]$, y el resultado es $1$.
 
 + Diseñar un algoritmo basado en divide-and-conquer que resuelva este problema.
 + Demostrar que es correcto.
