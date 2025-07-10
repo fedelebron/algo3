@@ -1511,6 +1511,18 @@ OK, creo que eso cierra. A ver cómo se puede escribir bien...
 
 Si sólo ven la demostración final, parece compacta, no comete errores, no intenta varias cosas, no nombra cosas que no usa, no deja cosas sin demostrar para después, tiene notación sensible, y hasta tiene estructura, probando un sub-lema antes de usarlo. No piensen que la demostración nació así - como ven, uno pasa por jugar, probar cosas, planear, y emprolijar. No se frustren si sus demostraciones no se ven como esta última, en su primer pasada.
 
+#tip-box[
+Las siguientes son cosas que pueden hacer al pasar en limpio una demostración:
+  - Introducir notación útil. A veces un argumento complejo puede ser simplificado introduciendo un símbolo y usándolo repetidamente.
+  - Extraer sub-lemas. Si en el medio de su demostración tienen que demostrar un lema sobre algún objeto, pueden extraerlo como un sub-lema, que se puede entender por separado. Al extraerlo, tengan cuidado que las variables que mencionan en la demostración del lema, sean parte del enunciado lema, y estén cuantificadas correctamente en el mismo.
+
+    Esto a veces acorta nuestras demostraciones mucho, pues podemos reutilizar el mismo lema varias veces con distintos objetos en la misma demostración.
+  - Evitar usar simbolismo innecesario. Si no están trabajando explícitamente con fórmulas lógicas, usen "para todo" en vez de $forall$, "existe" en vez de $exists$, "entonces" en vez de $implies$, etcétera. Su lector tiene décadas de experiencia usando el idioma español, sabemos leer oraciones mucho más rápidamente en se idioma que en notación simbólica de lógica formal.
+  - Usar conectores lógicos y explicaciones entre sus ecuaciones. Una demostración es un argumento, no una serie de ecuaciones sin semántica.
+  - Si no necesitan usar contrarecíproco o contradicción, intenten estructurar su demostración para argumentar de forma directa. Es muy difícil leer un argumento que contiene contradicciones anidadas.
+  - Revisar si en algún lugar dijeron que algo es "obvio", si realmente pueden asumir que el lector lo va a considerar obvio. Es tentador decir que algo es "obvio" como táctica de intimidación para que el lector acepte nuestras proposiciones, pero no va a funcionar en una instancia de evaluación, y es de mal gusto al escribir a un par científico.
+]
+
 = Errores comunes
 == Ser informal
 
