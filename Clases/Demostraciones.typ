@@ -4873,7 +4873,19 @@ Como las aristas de $M$ no comparten vértices, si marcamos todos los vértices 
 
 = Ejercicios
 #ej[
+Sean $x, y in RR$. Probar que $min(x, y) + max(x, y) = x + y$.
+]
+#ej[
+Sean $x, y in RR$. Probar que $|x + y| lt.eq |x| + |y|$.
+]
+#ej[
 Sean $x, y in RR_(gt.eq 0)$. Probar que $(x + y)/2 gt.eq sqrt(x y)$, y que la igualdad vale si y sólo si $x = y$.
+]
+#ej[
+Sean $a, n in NN$. Probar que si $a^n$ es par, entonces $a$ es par.
+]
+#ej[
+Sean $a, b in RR$, y sea $c = a b$. Probar que $a lt.eq sqrt(c)$, o $b lt.eq sqrt(c)$.
 ]
 #ej[
 Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 4T(n/3) + O(n log n)$. Probar que $T in O(n^1.5)$.
