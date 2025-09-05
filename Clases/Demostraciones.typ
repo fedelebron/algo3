@@ -698,6 +698,24 @@ Algunos ejemplos de cuantificadores y qué significan:
  [Sea $G$ un grafo con $n gt.eq 3$ vértices. Si todos los vértices de $G$ tienen grado mayor o igual a $n/2$, entonces $G$ es Hamiltoniano.], [Debemos recordar la definición de "$G$ es Hamiltoniano", y es que existe un ciclo simple en $G$ que toca todos los vértices. La proposición nos dice que si tenemos un grafo $G = (V, E)$ de $n = |V| gt.eq 3$ vértices, donde para todo vértice $v in V$, tenemos $d(v) gt.eq n/2$, entonces existe en $G$ un ciclo simple $C$, tal que $|C| = n$.], [Nos van a dar un grafo, $G$. Llamamos $n$ al número de vértices de $G$. No sabemos quién es $n$, sólo sabemos que $n gt.eq 3$. También sabemos que para todo vértice $v$ en $G$, tenemos $d(v) gt.eq n/2$. Tenemos que probar que existe un ciclo simple $C$ en $G$, tal que $|C| = n$. Este es el teorema de Dirac sobre grafos Hamiltonianos.],
 )
 
+Noten cómo usé cuantificadores en Español, no usando símbolos. No sugiero enfocarse en escribir usando el mayor número de símbolos posibles. Comparen "$forall x in X. exists y in Y. x > y implies (exists z in Z. z = x + y or z = x - y)$", con "Sea $x in X$. Entonces existe un $y in Y$, tal que si $x > y$, entonces $x + y in Z$, o $x - y in Z$." Al saber leer lenguaje natural, nos es más fácil entender qué significa la segunda oración. ¡Esto es a pesar de ser más larga! Cuando escribimos cuidadosamente, usando lenguaje standard, podemos tener ambos precisión, y comprensión del lector.
+
+De cualquier forma, la siguiente es una tabla sobre símbolos lógicos, como refresco.
+
+#table(
+  columns: (1fr, 1fr),
+  [Símbolo], [Definición],
+  [$and$], ["Y". La expresión $A and B$ significa que valen ambas proposiciones $A$ y $B$.],
+  [$or$], ["O". La expresión $A or B$ significa que vale al menos una de las proposiciones $A$ o $B$. En particular, si vale $A$, entonces vale $A or B$, sin importar si vale o no $B$. Lo mismo si vale $B$.],
+  [$not$], ["No". La expresión $not A$ significa que no vale la proposición $A$. Si vale $A$, entonces no vale $not A$. Si no vale $A$, entonces vale $not A$. Notar que $not$ liga fuertemente a una variable o expresión, luego $not A or B$ significa $(not A) or B$.],
+  [$implies$], ["Implica". La expresión $A implies B$ significa que si vale la proposición $A$, entonces vale la proposición $B$. Si no vale $A$, entonces no hay nada que probar, y la expresión es cierta. Si vale $A$, tenemos que probar que vale $B$. Notar que esto es equivalente a decir que "o no vale $A$, o vale $B$", es decir, que $not A or B$ es equivalente a $A implies B$.],
+  [$iff$], ["Si y sólo si". La expresión $A iff B$ significa que ambas proposiciones son equivalentes: Si vale una, entonces vale la otra, y viceversa. Es decir, $A iff B$ es lo mismo que $(A implies B) and (B implies A)$.],
+  [$forall$], ["Para todo", o "Sea". La oración $forall x. P(x)$ significa que la propiedad $P$ vale para todo $x$. Algo común es escribir $forall x in X. P(x)$, que es una abreviación de $forall x. x in X implies P(x)$. Notar cómo el $forall$ captura todo lo que viene después del "." que le sigue al símbolo, luego no es necesario aclarar que la oración anterior es lo mismo que $forall x. (x in X implies P(x))$.],
+  [$exists$], ["Existe". La oración $exists y. P(y)$ significa que hay al menos un $y$ tal que la propiedad $P$ vale para $y$. Algo común es escribir $exists y in Y. P(y)$, que es una abreviación de $exists y. y in Y and P(y)$. Al igual que $forall$, el símbolo $exists$ captura todo lo que viene después del "." que le sigue al símbolo, luego no es necesario aclarar que la oración anterior es lo mismo que $exists y. (y in Y and P(y))$.
+
+  Como abreviación, se usa $exists! x in X. P(x)$ para significa "Existe un _único_ $x$ en $X$, tal que $P(x)$". Puede haber otros $x$ que cumplan $P(x)$, pero en $X$ sólo hay uno.]
+)
+
 == Considerar ejemplos
 
 En general, las cosas que probamos van a ser de la forma $A implies B$, con $A$ algo que podemos asumir, y $B$ algo que queremos demostrar. Para demostrar esto, es frecuentemente útil considerar ejemplos de cosas que cumplen $A$, y ver "por qué" se tiene que cumplir $B$ para ellas. Podemos empezar con ejemplos pequeños, si nuestra estructura tiene alguna noción de "tamaño" (la longitud de una lista, el valor absoluto de un número real, el número de vértices mas aristas de un grafo, el numero de líneas de un programa, el número de reglas de una gramática, etc).
