@@ -5161,12 +5161,104 @@ Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = sqrt
 #ej[
 Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 3T(n/3) + sqrt(n)$, y $T(0) = 0$. Probar que $T in Theta(n)$.
 ]
+
+#ej[
+Encontrar el número de operaciones que realiza este algoritmo para una entrada de valor $n$.
+
+#algorithm({
+  import algorithmic: *
+  Procedure(
+    "Fib",
+    ($n in NN$),
+    {
+      If($n <= 1$, {
+        Return[$1$]
+      })
+      Return(FnInline[Fib][$n - 1$] + " + " + FnInline[Fib][$n - 2$])
+    }
+  )
+})
+]
+
+#ej[
+El siguiente es el algoritmo de Strassen para multiplicar dos matrices de $n times n$.
+
+#algorithm({
+  import algorithmic: *
+  Procedure(
+    "Strassen",
+    ($A in ZZ^(n times n)$, $B in ZZ^(n times n)$),
+    {
+      // Base case (you can switch to a small threshold if desired)
+      If($n lt.eq n_0$, {
+        Return[$A times B$]
+      })
+
+      // Split into quadrants (assume n is even; otherwise pad)
+      Assign($m$, $n / 2$)
+      Assign(($mat(A_(1,1), A_(1, 2); A_(2, 1), A_(2, 2))$), FnInline[Split][$A, m$])
+      Assign(($mat(B_(1, 1), B_(1, 2); B_(2, 1), B_(2, 2))$), FnInline[Split][$B, m$])
+
+      // Seven Strassen products
+      Assign($M_1$, FnInline[Strassen][$A_(1, 1) + A_(2, 2), B_(1, 1) + B_(2, 2)$])
+      Assign($M_2$, FnInline[Strassen][$A_(2, 1) + A_(2, 2), B_(1, 1)$])
+      Assign($M_3$, FnInline[Strassen][$A_(1, 1), B_(1, 2) - B_(2, 2)$])
+      Assign($M_4$, FnInline[Strassen][$A_(2, 2), B_(2, 1) - B_(1, 1)$])
+      Assign($M_5$, FnInline[Strassen][$A_(1, 1) + A_(1, 2), B_(1, 1)$])
+      Assign($M_6$, FnInline[Strassen][$A_(2, 1) - A_(1, 1), B_(1, 1) + B_(1, 2)$])
+      Assign($M_7$, FnInline[Strassen][$A_(1, 2) - A_(2, 2), B_(2, 1) + B_(2, 2)$])
+
+      // Combine to get the result blocks
+      Assign($C_(1, 1)$, $M_1 + M_4 - M_5 + M_7$)
+      Assign($C_(1, 2)$, $M_3 + M_5$)
+      Assign($C_(2, 1)$, $M_2 + M_4$)
+      Assign($C_(2, 2)$, $M_1 - M_2 + M_3 + M_6$)
+
+      // Reassemble the full matrix
+      Return[$mat(C_(1, 1), C_(1, 2); C_(2, 1), C_(2, 2))$]
+    }
+  )
+})
+
+Sabiendo que el caso base usa un algoritmo cúbico para multiplicar matrices, y despreciando las operaciones necesarias para las sumas y restas que hace el algoritmo, cuántas operaciones realiza este algoritmo, al ser llamado con dos matrices de tamaño $n times n$, con $n = 2^k$? Probar formalmente que este algoritmo necesita, en el peor caso, $O(n^(log_2 7))$ operaciones, con $log_2 7 < 3$.
+]
 == Divide and conquer
 #ej[Se tienen dos arrays de $n$ naturales, $A$ y $B$. $A$ está ordenado de manera creciente, y $B$ de manera decreciente. Ningún valor aparece más de una vez en el mismo array. Para cada posición $i$, consideramos la diferencia absoluta entre los valores de los arrays, $|A[i] - B[i]|$. Se desea buscar el mínimo valor posible de dicha cuenta. Por ejemplo, si los arrays son $A = [1,2,3,4]$, y $B = [6, 4, 2, 1]$, los valores de las diferencias son $[5, 2, 1, 3]$, y el resultado es $1$.
 
 + Diseñar un algoritmo basado en divide-and-conquer que resuelva este problema.
 + Demostrar que es correcto.
 + Dar una cota superior ajustada de su complejidad temporal asintótica.]
+
+#ej[
+Probar que el siguiente algoritmo multiplica dos enteros $x, y$ dados, para cualquier valor entero de $c gt.eq 2$.
+
+#algorithm({
+  import algorithmic: *
+  Procedure(
+    "F",
+    ($x in ZZ$, $y in NN$),
+    {
+      If($y = 0$, {
+        Return[$0$]
+      })
+      Assign($t$, FnInline[F][$c times x, floor(y / c)$])
+      Return[$t + x times (y mod c)$]
+    }
+  )
+})
+]
+
+#ej[
+Diseñar un algoritmo que, dada una lista de longitud $n$ con los primeros $n$ números naturales, en orden, excepto un elemento faltante, encuentre tal elemento faltante. Por ejemplo, para la lista $[0, 1, 3, 4, 5]$, debe devolver $2$, y para la lista $[1, 2, 3]$, debe devolver $0$.
+
+Probar formalmente que es correcto, y dar una cota superior ajustada de su complejidad temporal asintótica. Dicha cota debe estar en $O(log n)$.
+]
+
+#ej[
+Un array se dice monotónico si está compuesto por un prefijo de enteros creciente, y luego un sufijo de enteros decreciente. Por ejemplo, $[5, 8, 9, 3, 1]$ es unimodal.
+
+Diseñar un algoritmo que, dado un array unimodal de longitud $n$, encuentre su valor máximo en tiempo $O(log n)$. Demostrar formalmente que es correcto, y dar una cota superior ajustada de su complejidad temporal asintótica en el peor caso.
+]
 
 == Caminos mínimos
 #ej[
