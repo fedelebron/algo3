@@ -106,10 +106,20 @@ halting:
 
 contra:
   type: Article
-  title: Sources of Students’ Difficulties with Proof By Contradiction
+  title: Sources of Students' Difficulties with Proof By Contradiction
   author: [David Quarfoot, Jeffrey M. Rabin]
   date: 2021
   parent:
     type: Periodical
     title: International Journal of Research in Undergraduate Mathematics Education
 
+peirce:
+  type: Article
+  title: "On the Algebra of Logic: A Contribution to the Philosophy of Notation"
+  author: Charles Sanders Peirce
+  date: 1885
+  parent:
+    type: Periodical
+    title: American Journal of Mathematics
+    volume: 7
+    page-range: 180-202

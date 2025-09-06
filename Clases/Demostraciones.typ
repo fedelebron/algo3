@@ -698,7 +698,12 @@ Algunos ejemplos de cuantificadores y qué significan:
  [Sea $G$ un grafo con $n gt.eq 3$ vértices. Si todos los vértices de $G$ tienen grado mayor o igual a $n/2$, entonces $G$ es Hamiltoniano.], [Debemos recordar la definición de "$G$ es Hamiltoniano", y es que existe un ciclo simple en $G$ que toca todos los vértices. La proposición nos dice que si tenemos un grafo $G = (V, E)$ de $n = |V| gt.eq 3$ vértices, donde para todo vértice $v in V$, tenemos $d(v) gt.eq n/2$, entonces existe en $G$ un ciclo simple $C$, tal que $|C| = n$.], [Nos van a dar un grafo, $G$. Llamamos $n$ al número de vértices de $G$. No sabemos quién es $n$, sólo sabemos que $n gt.eq 3$. También sabemos que para todo vértice $v$ en $G$, tenemos $d(v) gt.eq n/2$. Tenemos que probar que existe un ciclo simple $C$ en $G$, tal que $|C| = n$. Este es el teorema de Dirac sobre grafos Hamiltonianos.],
 )
 
-Noten cómo usé cuantificadores en Español, no usando símbolos. No sugiero enfocarse en escribir usando el mayor número de símbolos posibles. Comparen "$forall x in X. exists y in Y. x > y implies (exists z in Z. z = x + y or z = x - y)$", con "Sea $x in X$. Entonces existe un $y in Y$, tal que si $x > y$, entonces $x + y in Z$, o $x - y in Z$." Al saber leer lenguaje natural, nos es más fácil entender qué significa la segunda oración. ¡Esto es a pesar de ser más larga! Cuando escribimos cuidadosamente, usando lenguaje standard, podemos tener ambos precisión, y comprensión del lector.
+#let t = [Noten cómo usé cuantificadores en Español, no usando símbolos. No sugiero enfocarse en escribir usando el mayor número de símbolos posibles. Comparen "$forall x in X. exists y in Y. x > y implies (exists z in Z. z = x + y or z = x - y)$", con "Sea $x in X$. Entonces existe un $y in Y$, tal que si $x > y$, entonces $x + y in Z$, o $x - y in Z$." Al saber leer lenguaje natural, nos es más fácil entender qué significa la segunda oración. ¡Esto es a pesar de ser más larga! Cuando escribimos cuidadosamente, usando lenguaje standard, podemos tener ambos precisión, y comprensión del lector.]
+#let img = block({
+    image("soviet.png", width: 100%)
+    place(center + horizon, dx: 9.5mm, dy: -16mm, text(size: 8pt)[$forall x. forall y. x = y$])
+})
+#wrap-content(img, t, align: bottom + right)
 
 De cualquier forma, la siguiente es una tabla sobre símbolos lógicos, como refresco.
 
@@ -1445,6 +1450,74 @@ Otro ejemplo de unicidad, pero en grafos y árboles.
 
 A veces vamos a usar el contrarecíproco para probar unicidad, postulando que existen dos objetos distintos que cumplen una propiedad, y llegando a un absurdo. Les reitero que no usan el contrarecíproco mecánicamente, pero sí que lo conozcan como herramienta.
 
+=== Análisis asintótico
+
+Al igual que la correctitud en ciclos tiene el teorema del invariante, para analizar el comportamiento de una función entre naturales, a medida que la evaluamos en números cada vez más grandes, podemos usar el Teorema Maestro.
+
+Frecuentemente las funciones para las que vamos a usar este teorema miden algo sobre un algoritmo. Por ejemplo, dado un algoritmo $cal(A)$, uno puede definir una función $T(n)$ como el máximo número de bytes de memoria que usa $cal(A)(x)$ al ejecutar, para todas las entradas $x$ con tamaño exactamente $n$ bytes. Otro ejemplo sería el promedio de segundos que toma correr $cal(A)(x)$, para todas las entradas con tamaño a lo sumo $n$ bytes.
+
+#defi[
+Sea $f:NN arrow NN$ una función. El conjunto $O(f)$ se define como
+
+$
+  O(f) = {g:NN arrow NN | exists c > 0 in RR, n_0 in NN$, tal que para todo $n > n_0, g(n) lt.eq c f(n)}
+$
+
+Es decir, $O(f)$ es el conjunto de funciones $g:NN arrow NN$, tales que a partir de un punto ($n > n_0$) $g$ está acotada por un múltiplo positivo de $f$ ($g(n) lt.eq c f(n)$).
+
+Análogamente, definimos el conjunto $Omega(f)$ como
+
+$
+  Omega(f) = {g:NN arrow NN | exists c > 0 in RR, n_0 in NN$, tal que para todo $n > n_0, g(n) gt.eq c f(n)}
+$
+
+Finalmente, para cualquier función $f:NN arrow NN$, definimos $Theta(f) = Omega(f) inter O(f)$.
+]
+
+#teo(title: [Teorema Maestro])[
+  Sea $T:NN arrow NN$ una función, y $n_0 in NN$, tal que para todo $n in NN$, con $n gt.eq n_0$, tenemos
+
+  $
+    T(n) = a T(floor(n/b)) + f(n)
+  $
+
+  con $a gt.eq 1 in RR$, $b > 1 in RR$, y $f:NN arrow NN$ una función. Entonces:
+
+  - Si $f in O(n^(log_b a - epsilon))$ para algún $epsilon > 0 in RR$, entonces $T in Theta(n^(log_b a))$.
+  - Si $f in Theta(n^(log_b a))$, entonces $T in Theta(n^(log_b a) log n)$.
+  - Si $f in Omega(n^(log_b a + epsilon))$ para algún $epsilon > 0 in RR$, y también existen $c < 1 in RR$ y $m_0 in NN$ tal que para todo $m > m_0$, tenemos $a f(m / b) lt.eq c f(m)$, entonces tenemos $T in Theta(f)$.
+]
+
+Veamos un ejemplo del uso de este teorema.
+
+#ej[
+Consideremos el siguiente algoritmo en C++:
+
+```cpp
+#include <iostream>
+int main() {
+  int n;
+  std::cin >> n;
+  int i = 1;
+  while (i < n) {
+    i *= 2;
+  }
+  std::cout << i;
+}
+```
+
+Este programa computa la primer potencia de dos mayor o igual a $n$, dado $n$. Podemos preguntarnos la pregunta vagamente definida "Cuánto tarda en correr el programa?". Una forma más precisa de hacer esta pregunta es definir una función $T:NN arrow NN$ que nos dice cuántos segundos tarda en correr este programa, dada una entrada. Por ejemplo, $T(9)$ sería el número de segundos que tarda en correr este programa, dada la entrada $9$. Esto va a depender de muchas cosas, como ser la computadora donde lo corramos. Sin embargo, esas cosas van a tener un efecto predecible en $T$, y van a ser insignificantes a medida que $n$ crezca. Estos factores insignificantes, al menos para el análisis asintótico, son los que descartan los conjuntos $O$, $Omega$, y $Theta$.
+
+Notemos también como definimos la noción de "tamaño". Para este problema, es útil definirla como el valor de la entrada. Para otros problemas va a ser el número de bits de la entrada, por ejemplo.
+
+Vemos que $T$ va a cumplir que $T(n) = T(n/2) + f(n)$, con $f in Theta(1)$. Esto nos dice que si duplicamos el tamaño de nuestra entrada (es decir, el valor de la misma), el tiempo que tarda en correr va a crecer en un número constante de segundos, como mucho y como mínimo. Eso es porque el número de segundos en que crece $T$ ($f$), está acotado superiormente por una constante ($f in O(1)$), y por debajo por otra ($f in Omega(1)$).
+
+En esta recurrencia tenemos $a = 1, b = 2$, y $f in Theta(1)$. Vemos que $Theta(n^(log_2 1)) = Theta(n^0) = Theta(1)$. Luego, como $f in Theta(1)$, caemos en el segundo caso del teorema, y podemos concluir que $T in Theta(log n)$.
+]
+
+Notemos que no vamos a poder aplicar el teorema a todas las funciones entre naturales, ni siquiera a todas las que cumplan la forma de recurrencia que pide. Por ejemplo, la función $T(n) = 2T(n/2) + n/(log n)$, o $T(n) = T(n/2) + n(2 - cos n)$.
+
+
 == Pasar en limpio
 
 Gran parte de una demostración es jugar con los objetos, e intentar ver qué sucede. Eventualmente, uno llega a un argumento formal sólido. Sin embargo, al comunicarle este argumento a alguien, no hace falta comunicar todas las cosas que pensamos, las ecuaciones que no llevaron a nada, los errores que cometimos, los ejemplos que intentamos, los dibujos que nos confundieron, etcétera. 
@@ -1611,7 +1684,7 @@ Este es *de lejos* el error que más cometen los alumnos. En este momento de su 
   + Si terminan definiendo un sustantivo y no lo usan para su conclusión, o no es necesario, pueden removerlo al terminar. Pero si no empezamos dándole nombre, seguro no lo podemos usar.
 + Cuantifiquen todo.
   + Si usan una variable, cuantifíquenla. Una variable sin cuantificar es inútil. "$G$ es conexo." ¿Quién es $G$? ¿Vale para todo $G$? ¿Existe algún $G$? ¿Es un $G$ particular que definimos nosotros?
-  + Presten atención al anidado de cuantificadores. En $forall x in X. exists y in Y. P(x, y)$, $y$ puede depender de $x$, pero $x$ no puede depender de $y$. En $exists x in X. forall y in Y. P(x, y)$ es una oración completamente distinta, no tienen nada que ver una con la otra. Recuerden la @conversacionn, donde interpretamos demostraciones como una conversación entre nosotros y alguien que no está pidiendo demostrarles algo.
+  + Presten atención al anidado de cuantificadores. En $forall x in X. exists y in Y. P(x, y)$, $y$ puede depender de $x$, pero $x$ no puede depender de $y$. La oración "$exists x in X. forall y in Y. P(x, y)$" es completamente distinta, no tienen nada que ver una con la otra. Recuerden la @conversacionn, donde interpretamos demostraciones como una conversación entre nosotros y alguien que no está pidiendo demostrarles algo.
 + Usen ecuaciones y desigualdades. En vez de decir "El peor caso es que $m = n$", digan explícitamente que $m lt.eq n$, o $m gt.eq n$, sea cual fuere el caso. Muchas veces cometen el error de asumir que un objeto es "un peor caso" (y luego basta probar lo que tienen que probar sólo para ese objeto), pero están confundiéndose con la dirección de la desigualdad. Razonen formalmente, usen ecuaciones y desigualdades.
 + Usen lenguaje formal, cuando existe. La oración "La función seno se ve igual cada $2 pi$." es vaga. ¿Qué significa "se ve igual"? ¿Quién la "ve", y cómo? Escribir esto con precisión resultaría en "Para todo $x in RR$, $sin(x) = sin(x + 2 pi)$.", que es preciso, y nos da una ecuación con la cual trabajar y reemplazar en el futuro.
 
@@ -3865,7 +3938,7 @@ Diseñar un algoritmo que, dado un tal mapa y dos ciudades $a$ y $b$, devuelva u
         b: int):
     def w(i, j):
       return - log(1.0 - p(i, j))
-    G = (Cidades, Rutas, w)
+    G = (Ciudades, Rutas, w)
     return Dijkstra(G, a)[b]
   ```
 ]
@@ -4955,6 +5028,7 @@ Como las aristas de $M$ no comparten vértices, si marcamos todos los vértices 
 */
 
 = Ejercicios
+== Lógica
 #ej[
 Sean $x, y in RR$. Probar que $min(x, y) + max(x, y) = x + y$.
 ]
@@ -4972,6 +5046,12 @@ Sean $a, b in RR$, y sea $c = a b$. Probar que $a lt.eq sqrt(c)$, o $b lt.eq sqr
 ]
 #ej[
 Sean $P, Q$ proposiciones. Demostrar que $(P implies Q) or (Q implies P)$.
+]
+
+#ej[
+Sean $P, Q$ proposiciones. Probar que $((P implies Q) implies P) implies P$.
+
+Esta fórmula se conoce como la Ley de Peirce@peirce.
 ]
 #ej[
 Para cada una de las siguientes proposiciones:
@@ -4997,19 +5077,60 @@ $
 (forall x in D. exists y in D. P(x, y)) implies (forall z in D. P(z, z))
 $
 ]
+== Inducción
 #ej[
-Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 4T(n/3) + O(n log n)$. Probar que $T in O(n^1.5)$.
+Probar que para todo $n in NN$, $sum_(i = 1)^n i = 1 + 2 + 3 + dots + n = n(n + 1)/2$.
 ]
+
+#ej[
+Probar que todo número natural se puede expresar como un producto de números primos.
+]
+
+#ej[
+Probar que $4 | 5^n - 1$ para todo $n in NN, n gt.eq 1$.
+]
+
+#ej[
+Probar que para todo $n in NN$, $1^3 + 2^3 + 3^3 + dots + n^3$ es un cuadrado perfecto.
+]
+
+#ej[
+Probar que para todo $n in NN$, $sum_(i=1)^n 1/((2i-1)(2i+1)) = n/(2n + 1)$.
+]
+
+== Análisis asintótico
+#ej[
+Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 4T(n/3) + O(n log n)$, y $T(0) = 0$. Probar que $T in Theta(n^1.5)$.
+]
+
+#ej[
+Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 2T (n/2) + n log n$, y $T(0) = 7$. Probar que $T in Theta(n log^2 n)$.
+]
+
+#ej[
+Sea $T: NN arrow NN$ una función que cumple que para todo $n > 4$, $T (n) = 16T (n/4) + n!$, y $T(k) = k^2$ para $0 lt.eq k lt.eq 4$. Probar que $T in Theta(n!)$.
+]
+
+#ej[
+Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = sqrt(2) T(n/2) + log n$, y $T(0) = 0$. Probar que $T in Theta(sqrt(n))$.
+]
+
+#ej[
+Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 3T(n/3) + sqrt(n)$, y $T(0) = 0$. Probar que $T in Theta(n)$.
+]
+== Divide and conquer
 #ej[Se tienen dos arrays de $n$ naturales, $A$ y $B$. $A$ está ordenado de manera creciente, y $B$ de manera decreciente. Ningún valor aparece más de una vez en el mismo array. Para cada posición $i$, consideramos la diferencia absoluta entre los valores de los arrays, $|A[i] - B[i]|$. Se desea buscar el mínimo valor posible de dicha cuenta. Por ejemplo, si los arrays son $A = [1,2,3,4]$, y $B = [6, 4, 2, 1]$, los valores de las diferencias son $[5, 2, 1, 3]$, y el resultado es $1$.
 
 + Diseñar un algoritmo basado en divide-and-conquer que resuelva este problema.
 + Demostrar que es correcto.
 + Dar una cota superior ajustada de su complejidad temporal asintótica.]
 
+== Caminos mínimos
 #ej[
 Demostrar la correctitud del algoritmo de Dijkstra para caminos mínimos.
 ]
 
+== Árboles generadores mínimos
 #ej[
 Demostrar la correctitud del algoritmo de Kruskal para árboles generadores mínimos.
 ]
@@ -5017,89 +5138,5 @@ Demostrar la correctitud del algoritmo de Kruskal para árboles generadores mín
 #ej[
 Demostrar la correctitud del algoritmo de Prim para árboles generadores mínimos.
 ]
-
-#ej[
-Se tiene un algoritmo $A$ que multiplica dos matrices de $n times n$ en tiempo $O(n^omega)$. Sea $G = (V, E)$ un grafo dirigido pesado, con $|V| = n$.
-
-Dar un algoritmo que determine el camino de peso mínimo entre todo par de vértices en $G$, en tiempo $O(n^omega log n)$. Demostrar que es correcto.
-]
-
-
-
-/*#algorithm({
-  import algorithmic: *
-  Procedure(
-    "Insert",
-    ($A$, $i$),
-    {
-      Assign[$j$][$0$]
-      While($j lt.eq i and A[j] < A[i]$, {
-        Assign[$j$][$j + 1$]
-      })
-      Assign[$x$][$A[i]$]
-      Assign[$k$][$j$]
-      While($k < i$, {
-        Assign[$A[k + 1]$][$A[k]$]
-      })
-      Assign[$A[j]$][$x$]
-    }
-  )
-  Procedure(
-    "Insertion-Sort",
-    ($A$),
-    {
-      Assign[$n$][$|A|$]
-      Assign[$i$][$0$]
-      While($i < n$, {
-        Call[Insert][$A$, $i$]
-      })
-    }
-  )
-})
-*/
-/*== Abstraer de los ejemplos
-// Tengo que reescribir esta parte.
-
-Al considerar ejemplos, vamos a darnos una idea sobre "por qué" algo está pasando. Sin embargo, cada ejemplo va a tener particularidades que no influyen en el problema general. Por ejemplo, en el ejercicio anterior, el haber permutado los vértices no hubiera cambiado significativamente ninguno de los ejemplos. Al darnos cuenta de esto, sabemos que nuestra demostración no necesita usar nada que dependa del orden o nombres de los vértices. En general, entonces, va a ser útil entender qué parte de nuestros ejemplos es lo que está forzando la conclusión.
-
-Por el otro lado, cuando tenemos un ejemplo $X$ que nos muestra que $A(X) implies B(X)$, podemos ver qué pasa si lo cambiamos un poco, obteniendo $Y$ tal que deje de valer $A(Y)$. ¿Sigue valiendo $B(Y)$? Si deja de valer $B(Y)$, entonces algo que rompimos cuando cambiamos nuestro objeto es *necesario* para la demostración - no puede ser que una demostración no dependa de la diferencia entre $X$ e $Y$, porque entonces la demostración también concluiría que $B(Y)$, de la misma manera que concluyó $B(X)$.
-
-*Estas dos cosas, entonces, nos indican qué no necesita usar nuestra demostración, y qué tiene sí o sí que usar nuestra demostración.*
-
-¡Esto es super valioso! Cuando estén perdidos, entonces, intenten jugar con ejemplos. Modifíquenlos, vean si se rompe algo. No importa lo que pase, esto les va a dar información sobre cómo tiene que ser la demostración.
-
-#ej[
-  Demostrar que para cada número $x in QQ$, si $x eq.not 0$, entonces existe un único número $y in QQ$, tal que $x y = 1$.
-]
-Queremos ver que los números racionales tienen inversos. Los números racionales cumplen muchas propiedades - por ejemplo, que para todo par de racionales $x, y$, tenemos o bien $x lt.eq y$, o bien $y > x$. Sin embargo, lo que queremos mostrar también es cierto para los números complejos, o para $ZZ \/ p ZZ$ con $p in NN$ primo. Luego, nuestra demostración en principio no _necesita_ usar ni que $QQ$ tiene un orden total, ni que $QQ$ es infinito, aunque _puede_.
-
-Por otro lado, la proposición no es cierta para $ZZ \/ 6 ZZ$, el anillo de enteros módulo 6, puesto que $2 in ZZ \/ 6 ZZ$ no tiene inverso. Tampoco es cierta en $CC[z]$, el anillo de polinomios de una variable con coeficientes complejos, dado que $z$ no tiene inverso. Luego, vamos a tener que hacer uso de algo que es distinto en $ZZ \/ 6 ZZ$ y $CC[z]$ versus $QQ$. En particular, en $QQ$ tenemos una estructura simple en términos de pares de enteros.
-
-#demo[
-  Sea $x in QQ$. Por definición, existen $n, m in ZZ$, con $m eq.not 0$, tal que $x = n / m$. Como $x eq.not 0$, tenemos que $n eq.not 0$.
-
-  Consideremos entonces $y = m / n$. Vemos que $x y = (n / m) (m / n) = (n m) / (m n) = 1$.
-
-  Sea $z$ otro número tal que $x z = 1$. Entonces $x z = (n / m) z = 1$ implica que $n z = m$, y a su vez, $z = m / n$, con lo cual $z = y$.
-
-  Luego, existe un único $y in QQ$ tal que $x y = 1$, que es lo que queríamos demostrar.
-]
-
-/*
-Otro ejemplo, esta vez de teoría de lenguajes. No se preocupen si no vieron teoría de lenguajes todavía, es sólo otro ejemplo más.
-
-#teo(title: [Pumping lemma para lenguajes regulares])[
-  Sea $L$ un lenguaje regular. Entonces existe un $p gt.eq 1 in NN$, tal que par toda cadena $w in L$, con $|w| gt.eq p$, podemos escribir $w = x y z$, y para todo $n in NN$, $x y^n z in L$.
-]
-
-Vemos que si esto es cierto, no importa particularmente qué símbolos estemos usando, si son $a, b, c$ o $1, 2, 3$ o lo que sea. Nuestra demostración entonces no puede basarse en el alfabeto particular de $L$. Por otro lado, intuitivamente, un lenguaje muy complejo va a carecer de esta regularidad con cadenas cortas que puedo bombear ($x y^n z in L$ para todo $n in NN$), entonces vamos a tener que valernos de alguna noción de complejidad de un lenguaje. Una tal noción es el número de estados de un autómata que acepta exactamente este lenguaje regular. ¿Qué pasaría si nuestra cadena es aún más larga que el número de estados de un tal autómata?
-
-#demo[
-Sea $A$ un autómata que acepta exactamente $L$, y $p gt.eq 1 in NN$ el número de estados de $A$. Sea $w in L$ cualquier cadena con $|w| gt.eq p$, y sean $q_0, q_1, dots, q_p$ los $p + 1$ estados por los que pasa $A$ al aceptar $w$. Como $A$ tiene sólo $p$ estados, tiene que haber algún estado repetido, $q_i = q_j$ con $j > i$, en esta secuencia. Sea $y$ la sub-cadena de texto de $w$ que fue aceptada durante la transición de $q_i$ a $q_j$. Entonces podemos escribir $w = x y z$ con $x$ el prefijo y $z$ el sufijo de $w$. Como al terminar la subcadena $y$ estamos en el mismo estado ($q_j$) que al comenzarla ($q_i$), tenemos un ciclo en $A$. Entonces podemos considerar $x y^n z$ para todo $n in NN$, y vamos a tener exactamente las mismas transiciones una y otra vez (incluso si $n = 0$, caso en cual recorremos el ciclo cero veces), terminando en aceptar la cadena $x y^n z$, y como dijimos que este autómata acepta exactamente $L$, tenemos que $x y^n z in L$.
-]
-*/
-
-En general van a tener que probar varias ideas, y fijarse cuál sirve. No siempre se les va a ocurrir una idea útil (como el número de estados de un autómata que acepta $L$) inicialmente. Tómense tiempo, tranquilos, y calmados, evitando frustrarse cuando $n - 1$ estrategias les fallan. Sólo tienen que encontrar una que sirva.
-*/
 
 #bibliography("biblio.yml", full: true)
