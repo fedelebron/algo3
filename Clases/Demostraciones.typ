@@ -3318,7 +3318,7 @@ Vamos a probar $P(k)$ para todo $1 lt.eq k lt.eq n + 1$ por inducción. Nuestro 
   En ambos casos probamos $P(r)$, partiendo de $P(r+1)$. Por inducción, probamos $P(1)$, y esto completa la demostración.
 ]
 
-Analizar el comportamiento asintótico de este algoritmo es también simple. Notemos cómo, al haber retornos dentro del ciclo, no vamos a poder saber exactamente cuántas iteraciones va a hacer en cada llamada. Vamos a definir $X(n)$ como el número de operaciones que realiza #smallcaps("n-queens")$(n)$. Vamos a encontrar una función $T(n)$ tal que $X in O(T)$.
+Analizar el comportamiento asintótico de este algoritmo es también simple. Notemos cómo, al haber retornos dentro del ciclo, no vamos a poder saber exactamente cuántas iteraciones va a hacer en cada llamada. Vamos a definir $X(n)$ como el número de operaciones que realiza #smallcaps("n-queens")$(n)$. Vamos a encontrar una función $T$ tal que $X in O(T)$.
 
 #prop[
 $T(n) = (n+1)!$ es tal que $X in O(T)$.
