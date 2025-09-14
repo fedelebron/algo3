@@ -5398,6 +5398,60 @@ Un array se dice monotónico si está compuesto por un prefijo de enteros crecie
 Diseñar un algoritmo que, dado un array unimodal de longitud $n$, encuentre su valor máximo en tiempo $O(log n)$. Demostrar formalmente que es correcto, y dar una cota superior ajustada de su complejidad temporal asintótica en el peor caso.
 ]
 
+== Programación dinámica
+
+#ej[
+Se tiene una escalera de $n$ escalones. En cada momento, podemos subir de a un escalón, o de a tres escalones. Por ejemplo, si $n = 9$, desde el cuarto escalón podemos ir o bien al quinto, o al séptimo. Si estamos en el séptimo u octavo escalón, sólo podemos subir de a un escalón, y si estamos en el noveno escalón hemos terminado.
+
+- Diseñar un algoritmo basado en programación dinámica que calcule de cuántas maneras distintas se puede subir la escalera entera.
+- Demostrar formalmente que es correcto.
+- Dar una cota superior ajustada de su complejidad temporal asintótica, y demostrar que es correcta. Su algoritmo debería usar $O(n)$ operaciones en todo caso, y $O(1)$ memoria.
+]
+
+#ej[
+Se tiene una grilla de $n times m$ casillas. Empezamos en la casilla superior izquierda. En cada casilla nos podemos mover a la casilla de abajo, o a la casilla de la derecha. Por ejemplo, si estamos en la casilla $(2, 3)$, podemos ir a la casilla $(3, 3)$ o a la casilla $(2, 4)$. Si estamos en la última fila, sólo podemos movernos a la derecha, y si estamos en la última columna, sólo podemos movernos hacia abajo. Si llegamos a la casilla inferior derecha hemos terminado.
+
+- Diseñar un algoritmo basado en programación dinámica que, dados dos enteros positivos $n$ y $m$, calcule de cuántas maneras distintas se puede llegar a la casilla inferior derecha.
+- Demostrar formalmente que es correcto.
+- Dar una cota superior ajustada de su complejidad temporal asintótica, y demostrar que es correcta. Su algoritmo debería usar $O(n m)$ operaciones en todo caso, y $O(min(n, m))$ memoria.
+]
+
+#ej[
+Similar al ejercicio anterior, pero ahora en cada casilla tenemos un entero, el entero en la celda $(i, j)$ está en $A[i][j]$. Si el entero es positivo o cero, indica la ganancia que obtenemos al pasar por esa casilla. Si el entero es negativo, indica que no podemos pasar por esa casilla.
+
+- Diseñar un algoritmo basado en programación dinámica que, dada una matriz $A$ de $n times m$ enteros, calcule la máxima ganancia posible al llegar a la casilla inferior derecha, partiendo desde la superior izquierda, y nuevamente yendo siempre o hacia abajo, o hacia la derecha.
+- Demostrar formalmente que es correcto.
+- Dar una cota superior ajustada de su complejidad temporal asintótica, y demostrar que es correcta. Su algoritmo debería usar $O(n m)$ operaciones en todo caso, y $O(min(n, m))$ memoria.
+]
+
+#ej[
+Se tiene un array $A$A de $l$ cadenas de ceros y unos, por ejemplo $A = ["10", "0001", "111", "100101", "111001", "1", "0"]$, con $l = 7$. Dados enteros positivos $n$ y $m$, encontrar el máximo número de cadenas de $A$ con a lo sumo $n$ unos y $m$ ceros.
+
+Sea $k$ la suma de las longitudes de las cadenas en $A$, es decir, $k = sum_(i=1)^l |A_i|$.
+
+- Diseñar un algoritmo basado en programación dinámica que resuelva este problema.
+- Demostrar formalmente que es correcto.
+- Dar una cota superior ajustada de su complejidad temporal asintótica, y demostrar que es correcta. Su algoritmo debería usar $O(l n m + k)$ operaciones en todo caso, y $O(n m)$ espacio.
+]
+
+#ej[
+Dada una matriz $A$ de $n times m$ de enteros, encontrar la longitud del camino creciente más largo en $A$. El camino va desde una celda hacia arriba, abajo, a la derecha, o a la izquierda, pero no en diagonal.
+
+Por ejemplo, en la siguiente matriz:
+
+#table(columns: 3, rows: 3,
+  [9], [9], [4],
+  [6], [6], [8],
+  [2], [1], [1]
+)
+
+El camino creciente más largo es `[1, 2, 6, 9]`, de longitud 4.
+
+- Diseñar un algoritmo basado en programación dinámica que resuelva este problema.
+- Demostrar formalmente que es correcto.
+- Dar una cota superior ajustada de su complejidad temporal asintótica, y demostrar que es correcta. Su algoritmo debería usar $O(n m)$ operaciones en todo caso, y $O(n m)$ espacio.
+]
+
 == Caminos mínimos
 #ej[
 Demostrar la correctitud del algoritmo de Dijkstra para caminos mínimos.
