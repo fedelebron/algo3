@@ -5452,6 +5452,82 @@ El camino creciente más largo es `[1, 2, 6, 9]`, de longitud 4.
 - Dar una cota superior ajustada de su complejidad temporal asintótica, y demostrar que es correcta. Su algoritmo debería usar $O(n m)$ operaciones en todo caso, y $O(n m)$ espacio.
 ]
 
+#ej[
+Tenemos un árbol arraigado, con $n$ vértices. Podemos instalar cámaras en algunos vértices. Cada cámara puede monitorear al vértice donde está instalada, y a sus vecinos inmediatos, es decir su padre (si existe) y todos sus hijos inmediatos (si existen).
+Queremos saber cuántas cámaras como mínimo necesitamos para monitorear todos los vértices del árbol.
+
+La entrada consiste de dos líneas. La primera línea contiene $n$, el número de vértices del árbol. La segunda línea contiene $n$ enteros. El $i$-ésimo entero es el índice del vértice padre del vértice $i$, o $-1$ si se trata de la raíz del árbol.
+
+Por ejemplo,
+
+```
+4
+-1 0 1 1
+```
+
+Esto representa el siguiente árbol:
+```
+     0
+    /
+   1
+ /   \
+2     3
+```
+
+Y la respuesta correcta es $1$, pues podemos instalar una cámara en el vértice $1$ y monitorear todos los vértices.
+
+La entrada
+
+```
+8
+-1 0 1 2 3 3 3 1
+```
+
+representa el siguiente árbol:
+```
+          0
+         /
+        1
+       / \
+      2   7
+     /
+    3
+  / | \
+ 4  5  6
+```
+
+Y la respuesta correcta es $2$, pues podemos instalar cámaras en los vértices $1$ y $3$.
+
+- Diseñar un algoritmo basado en programación dinámica que calcule el número mínimo de cámaras necesarias para monitorear todos los vértices del árbol.
+- Demostrar formalmente que es correcto.
+- Dar una cota superior ajustada de su complejidad temporal asintótica, y demostrar que es correcta. Su algoritmo debería usar $O(n)$ operaciones en todo caso, y $O(n)$ espacio.
+]
+
+
+#ej[
+Se nos dan precios de acciones en días consecutivos en un array $A$, donde $A[i]$ es el precio de una acción el día $i$. También se nos da un entero $k$.
+
+Queremos maximizar la ganancia total haciendo a lo sumo $k$ transacciones. Una transacción es comprar una acción en un día, y venderla en un día posterior. No podemos tener más de una acción a la vez, es decir, debemos vender la acción antes de comprar otra.
+
+Por ejemplo, si $A = [3,2,6,5,0,3]$ y $k = 2$, podemos comprar en el día 2 (precio 2) y vender en el día 3 (precio 6), ganando 4, y luego comprar en el día 5 (precio 0) y vender en el día 6 (precio 3), ganando 3, para un total de 7.
+
+- Diseñar un algoritmo basado en programación dinámica que calcule la máxima ganancia posible haciendo a lo sumo $k$ transacciones.
+- Demostrar formalmente que es correcto.
+- Dar una cota superior ajustada de su complejidad temporal asintótica, y demostrar que es correcta. Su algoritmo debería usar $O(n k)$ operaciones en todo caso, y $O(k)$ espacio.
+]
+
+#ej[
+Se tiene una grilla de $m$ filas y $n$ columnas, con $m < n$. Cada celda debe ser pintada de color blanco o negro. Dos celdas son consideradas vecinas si comparten un borde y tienen el mismo color. Dos celdas $A$ y $B$ se consideran en la misma componente si son vecinas, o si hay un vecino de $A$ en la misma componente que $B$.
+
+Llamamos a una forma de pintar la grilla "linda" si tiene exactamente $k$ componentes.
+
+- Diseñar un algoritmo que, dados $n$ y $m$, determine el número de formas lindas de pintar la grilla.
+- Demostrar que el algoritmo es correcto.
+- Dar una cota superior ajustada de su complejidad temporal asintótica, y demostrar que es correcta. Su algoritmo debería usar $O(n^2 4^m)$ operaciones en todo caso.
+
+Sugerencia: Resolver para $m = 1$ y $m = 2$ antes de intentar el caso general.
+]
+
 == Caminos mínimos
 #ej[
 Demostrar la correctitud del algoritmo de Dijkstra para caminos mínimos.
