@@ -84,7 +84,7 @@ Cuánto espacio toma esta solución? En cada iteración del ciclo de `solucion_t
 
 ### Divide and conquer
 
-Pensando un poco más, podemos pensar que si ponemos el $i$-ésimo puesto de bondiolas en $d_i$ , entonces no podemos poner un puesto en ninguna posición en $[d_i - k, d_i + k]$. Como hicimos muchas veces en programación dinámica, vamos a ir construyendo la solución agregando elementos en alguna posición, en este caso al final. Luego, si $i$ es el último puesto que pusimos, sabemos que no pusimos a ningún puesto en $[d_i - k, d_i]$. OK, perfecto. Consideremos una solución óptima que termina poniendo un puesto en la posición $i$, como queremos hacer. Consideremos los puestos que tiene nuestra solución, antes del $i$-ésimo. Seguro que todos esos puestos están _en o antes_ de $d_i - k$. Asimismo, a _cualquier_ forma válida de poner puestos que terminen en o antes de $d_i - k$, le podemos agregar un puesto en la posición $d_i$, y sigue siendo válida. Luego, para buscar la mejor forma de poner puestos que terminen _en o antes_ de el $i$-ésimo, podemos tomar el máximo beneficio entre:
+Pensando un poco más, podemos pensar que si ponemos el $i$-ésimo puesto de bondiolas en $d_i$ , entonces no podemos poner un puesto en ninguna posición en $[d_i - k, d_i + k]$. Como hicimos muchas veces en programación dinámica, vamos a ir construyendo la solución agregando elementos en alguna posición, en este caso al final. Luego, si $i$ es el último puesto que pusimos, sabemos que no pusimos a ningún puesto en $[d_i - k, d_i]$. OK, perfecto. Consideremos una solución óptima que termina poniendo un puesto en la posición $i$, como queremos hacer. Consideremos los puestos que tiene nuestra solución, antes del $i$-ésimo. Seguro que todos esos puestos están _en o antes_ de $d_i - k$. Asimismo, a _cualquier_ forma válida de poner puestos que terminen en o antes de $d_i - k$, le podemos agregar un puesto en la posición $d_i$, y sigue siendo válida. Luego, para buscar la mejor forma de poner puestos que terminen _en o antes_ dell $i$-ésimo, podemos tomar el máximo beneficio entre:
 
 *  Poner un puesto de bondiola en la posición $i$, y luego buscar la mejor forma de poner puestos que vengan antes de $d_i - k$.
 * No poner un puesto de bondiola en la posición $i$, y buscar la mejor solución hasta el puesto $i - 1$.
@@ -93,10 +93,13 @@ Pensando un poco más, podemos pensar que si ponemos el $i$-ésimo puesto de bon
 
 Creamos entonces una función recursiva, le damos semántica, y escribimos una ecuación correcta para la misma. La semántica es:
 $$
-f(i) = \text{La mejor ganancia que podemos obtener poniendo puestos de bondiola, usando sólo los primeros $i + 1$ puestos.}
+\begin{align}
+f(i) =\ &\text{La mejor ganancia que podemos obtener poniendo puestos de bondiola,}\\
+       &\text{usando sólo los primeros $i + 1$ puestos.}
+\end{align}
 $$
 
-El "+1" es para poder definir fácilmetne que $f(0)$ es `plata[0]`. Podríamos sacar ese " + 1", y tendríamos que definir $f(0) = -\infty$. Para hacer fácil la implementación, evitamos eso.
+El "+1" es para poder definir fácilmente que $f(0)$ es `plata[0]`. Podríamos sacar ese " + 1", y tendríamos que definir $f(0) = -\infty$. Para hacer fácil la implementación, evitamos eso.
 
 Por el argumento que dimos arriba, una ecuación que define a $f$ es:
 $$
@@ -151,7 +154,7 @@ int solucion_dq(const vint& pos, const vint& plata, int n, int k) {
 }
 ```
 
-Cuánto tiempo toma nuestra solución? Planteemos una función $T(i)$, que nos de una cota superior de cuántas operaciones hacemos cuando nos dan una entrada de tamaño $i$. Para este problema, el tamaño de la llamada `solucion_dq_f(const vint& pos, const vint& plata, int i, int k) ` es `i`.
+Cuánto tiempo toma nuestra solución? Planteemos una función $T(i)$, que nos dé una cota superior de cuántas operaciones hacemos cuando nos dan una entrada de tamaño $i$. Para este problema, el tamaño de la llamada `solucion_dq_f(const vint& pos, const vint& plata, int i, int k) ` es `i`.
 
 Podemos ver que llamar a $T(i)$ llama a $T(i - 1)$, y a lo sumo a algún $T(j)$ para $j < i$. Podemos acotar $T(j)$ con $T(i - 1)$ también, porque todo $f(x)$ eventualmente llama a $f(y)$ para todo $0 \le y < x$. Como lo único que nos queda es un ciclo de $O(i)$ iteraciones, tenemos que $T(i) \le 2T(i - 1) + O(i)$. Esto nos dice que $T(i) \in O(2^i)$, lo cual es una mejora cuadrática con respecto a la solución trivial. Les dejo como ejercicio probar que efectivamente $T(i) \in O(2^i)$.
 
