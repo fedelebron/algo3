@@ -110,7 +110,7 @@ Queremos encontrar la forma de sumar que tenga costo mínimo, por lo que en nues
   line("v21", "v23")
   line("v21", "v24")
 })
-  El costo del primer árbol es $3+8 = 11$, el del segundo es $6+8=14$, y el del tercero es $7+8 = 15$. En general, podemos ver que el costo del árbol va a ser la suma de los valores todos sus vértices, menos la suma de la lista original. Para el primer árbol, esto es $2+1+3+5+8 - 2+1+5 = 11$. Los valores de la lista original son los valores de las hojas del árbol. Luego, queremos minimizar la suma de los valores de los vértices internos del árbol.
+  El costo del primer árbol es $3+8 = 11$, el del segundo es $6+8=14$, y el del tercero es $7+8 = 15$. En general, podemos ver que el costo del árbol va a ser la suma de los valores todos sus vértices, menos la suma de la lista original. Para el primer árbol, esto es $2+1+3+5+8 - (2+1+5) = 11$. Los valores de la lista original son los valores de las hojas del árbol. Luego, queremos minimizar la suma de los valores de los vértices internos del árbol.
 
   #definition[Dado un árbol de sumas $T$, *$"costo"(T)$* se define como la suma de los valores de los vértices de $T$ que no son hojas.]
   
