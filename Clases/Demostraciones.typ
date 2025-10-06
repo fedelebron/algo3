@@ -413,12 +413,8 @@ El lenguaje en el que está escrito esto es razonablemente formal. Sin embargo, 
 Una vez más, esto depende del contexto. Los antiguos griegos usaban este tipo de argumentos todo el tiempo, y esa demostración hubiera sido considerada rigurosa. Fue sólo a principios del 1900, con el trabajo de Ernst Zermelo@choice, que nos dimos cuenta que ese tipo de razonamientos, si no tenemos cuidado, llevan a paradojas.
 
 = ¿Cuándo, qué, y para qué demostramos?  
-Un computador científico escribe demostraciones cuando quiere establecer sin dudas la veracidad de una proposición lógica. Por ejemplo, si queremos probar que nuestro sistema no va a quedarse sin memoria independientemente de las consultas que arriven, si queremos probar que nuestro programa no se va a ralentar desmedidamente a medida que se aumente el tamaño de su entrada, o si queremos probar que no va a haber "deadlock" en ninguna circumstancia.
+Un computador científico escribe demostraciones cuando quiere establecer sin dudas la veracidad de una proposición lógica. Por ejemplo, si queremos probar que nuestro sistema no va a quedarse sin memoria independientemente de las consultas que arriven, si queremos probar que nuestro programa no se va a ralentar desmedidamente a medida que se aumente el tamaño de su entrada, o si queremos probar que en nuestro programa con ejecución en paralelo no va a haber "deadlock"#footnote[Un deadlock ocurre cuando hay al menos dos componentes en un programa, cada una esperando a que la otra haga algo, y ninguna pudiendo avanzar.] o livelock#footnote[Un livelock ocurre cuando hay al menos dos componentes en un programa, y cada una cambia su estado en respuesta a la otra, pero ninguna progresa.] en ninguna circumstancia. El siguiente es un ejemplo clásico de un algoritmo concurrente que resuelve el problema de los filósofos comensales@dining. Probar que este programa nunca va a sufrir deadlock debe hacerse formalmente, no basta con probarlo varias veces y ver cómo se comporta.
 
-No está muy lejos de la verdad el decir que *la ciencia de la computación sin demostraciones es ingeniería*#footnote[Un ingeniero respondería, "la ingeniería irrelevante y pedante es ciencia de la computación".]. Vamos a ver luego cómo podemos usar herramientas formales para referirnos a los algoritmos que escribimos, y demostrar propiedades sobre los mismos.
-
-#pad(x: 110pt)[
-#box(stroke: 1pt, width: 82mm)[
 #algorithm({
   import algorithmic: *
   Procedure(
@@ -435,7 +431,9 @@ No está muy lejos de la verdad el decir que *la ciencia de la computación sin 
       })
     }
   )
-})]]
+})
+
+No está muy lejos de la verdad el decir que *la ciencia de la computación sin demostraciones es ingeniería*#footnote[Un ingeniero respondería, "la ingeniería irrelevante y pedante es ciencia de la computación".]. Vamos a ver luego cómo podemos usar herramientas formales para referirnos a los algoritmos que escribimos, y demostrar propiedades sobre los mismos.
 
 No todas las cosas que querramos saber las vamos a demostrar formalmente. El motivo por el cual la computación es una ciencia, y no sólo matemática, es que hay propiedades de nuestro sistema que vamos a evaluar con argumentos prácticos (por ejemplo, tomando mediciones de nuestro sistema). A veces vamos a usar ambas cosas: Vamos a ver que nuestro programa se comporta bien en tamaños pequeños, y luego mostramos que su comportamiento asintótico es bueno. Al usar nociones asintóticas de complejidad, nos van a quedar constantes sin resolver analíticamente. Para encontrar esas constantes, vamos a medir el sistema real.
 
@@ -581,7 +579,7 @@ Podemos acá elegir $alpha = a$, $n_0 = 0$, $g(n) = 2^(n/4)$, y vemos que $T in 
 
 Para un computador científico, la segunda demostración tiene otro "sabor". Al leerla, nos lleva de la mano, de paso a paso, explicitando cada uno. Uno llega a la conclusión con una seguridad de que cada paso está bien fundado, sin tener que adivinar qué quiere decir cada oración, y sin tener que preguntarse "¿y qué pasa si tal cosa no se cumple?". Las demostraciones que ustedes escriban tienen que dejarlos, y dejar al lector, con la misma sensación. Parece poco serio lo que estoy diciendo, pero realmente es una buena guía para saber cuándo están haciendo las cosas bien. Esa sensación la van a afilar practicando, haciendo demostraciones, recibiendo correcciones de sus docentes, cometiendo errores, viendo dónde les faltó definir algo, asumieron algo, no se acordaron de un caso, o no entendieron la consigna.
 
-Finalmente, la longitud de la demostración no es algo a intentar emular en sí. De hecho, lo contrario es cierto: si pueden ser precisos y concisos, ¡mejor! Es muy común, sin embargo, que erren por el otro lado, haciendo demostraciones extremadamente escuetas, de una o dos oraciones, pretendiendo que eso le demuestre al lector lo que dijimos que una demostración tiene que mostrar. A veces es porque piensan que, como no saben probar algo, mejor ni lo mencionan y "si pasa pasa". Otras veces es porque no se dan cuenta que están asumiendo algo. Otras es porque no entendieron qué se les está pidiendo demostrar. En las próximas secciones vamos a ver errores clásicos y cómo no cometerlos.
+Finalmente, la longitud de la demostración no es algo a intentar emular en sí. De hecho, lo contrario es cierto: si pueden ser precisos y concisos, ¡mejor! Es muy común, sin embargo, que erren por el otro lado, haciendo demostraciones extremadamente escuetas, de una o dos oraciones, pretendiendo que eso le demuestre al lector lo que dijimos que una demostración tiene que mostrar. A veces es porque piensan que, como no saben probar algo, mejor ni lo mencionan y "si pasa pasa"#footnote[En mi experiencia como docente, esto no funciona nunca. El docente ya sabe cómo demostrar lo que hay que demostrar, y cuál es la parte difícil de la demostración. Si su demostración no menciona y resuelve esa parte explícitamente, es inmediato darse cuenta que el/la alumno/a está mandando fruta.]. Otras veces es porque no se dan cuenta que están asumiendo algo. Otras es porque no entendieron qué se les está pidiendo demostrar. En las próximas secciones vamos a ver errores clásicos y cómo no cometerlos.
 
 = ¿Cómo aprendemos a demostrar? <comoaprender>
 
@@ -625,13 +623,13 @@ Finalmente, al momento de empezar una demostración, sepan que les debería toma
 Ahora miremos cómo se construye una demostración, proceduralmente. En el contexto de la carrera, los siguientes pasos van a ser necesarios cuando intenten escribir una demostración de algo.
 
 == Formalizar la consigna
-En su vida profesional rara vez les van a dar un problema pre-formalizado, en términos de secuencias de enteros, o grafos. Esta parte es *crucial*: Si formalizan incorrectamente, todo lo que hagan después es totalmente irrelevante. Parte de esto es lectura y comprensión, y la otra parte es poder usar lenguaje formal. Consideremos la diferencia entre:
+En su vida profesional rara vez les van a dar un problema pre-formalizado, en términos de secuencias de enteros, o grafos. Luego, van a tener que transformar el problema que tienen, a uno donde puedan usar las herramientas que conocen. Esto se llama formalizar. Esta parte es *crucial*: Si formalizan incorrectamente, todo lo que hagan después es totalmente irrelevante. Parte de esto es lectura y comprensión, y la otra parte es poder usar lenguaje formal. Consideremos la diferencia entre:
 
 #ej[
 Probar que en todo grupo de amigos, si cada par de amigos tiene sólo un amigo en común, entonces existe una persona que es amigo de todos.
 ]
 
-La oración habla sobre grupos de amigos, no de algo que veamos diréctamente en la carrera. Para usar las herramientas que tenemos, lo traducimos a alguna estructura que nos sirva. En la carrera vemos varias, como ser números reales, listas, registros, números enteros, árboles, grafos, lenguajes formales, matrices, redes, autómatas, interrupciones del procesador, etc. De todas esas, tenemos que fijarnos cuál es la que probablemente nos sirva para este problema. Como el enunciado habla sobre la relación "tener amigos", queremos algo que modele una relación de amistad. El enunciado no aclara que la amistad es simétrica y antireflexiva, así que es algo que deberíamos preguntar. Si podemos asumir eso, parecería que un grafo $G = (V, E)$, donde $E$ es un subconjunto de pares sin orden de $V$, es un buen modelo. Podemos traducir el enunciado al siguiente enunciado sobre grafos.
+La oración habla sobre grupos de amigos, no de algo que veamos diréctamente en la carrera. Para usar las herramientas que tenemos, lo traducimos a alguna estructura que nos sirva. En la carrera vemos varias, como ser números reales, listas, registros, números enteros, árboles, grafos, lenguajes formales, matrices, redes, autómatas, interrupciones del procesador, etc. De todas esas, tenemos que fijarnos cuál es la que probablemente nos sirva para este problema. Como el enunciado habla sobre la relación "tener amigos", queremos algo que modele una relación de amistad. El enunciado no aclara que la amistad es simétrica y antireflexiva, así que es algo que deberíamos preguntar. Si podemos asumir eso, parecería que un grafo $G = (V, E)$, donde $E$ es un subconjunto de pares sin orden de $V$, es un buen modelo. Podemos traducir el enunciado al siguiente enunciado sobre grafos - no se preocupen si todavía no vieron nada sobre grafos, es sólo un ejemplo:
 
 #ej(title: "Teorema de la amistad (Erdős et. al., 1966)")[
   Sea $G = (V, E)$ un grafo. Dado $v in V$, definimos $N(v) = {w | {v, w} in E}$. Probar que si para todo $u, v in V$ tenemos que $|N(v) inter N(w)| = 1$, entonces existe un $w in V$ tal que $|N(w)| = |V| - 1$.
@@ -695,7 +693,6 @@ Algunos ejemplos de cuantificadores y qué significan:
  [Para todo $n in NN$ tal que $n > 1$, para todo $m in NN$ tal que $m gt.eq 2n$, existe un $p in NN$ tal que $n < p < m$, y $p$ es primo.],[Esto nos dice que siempre que tengamos dos numeros naturales $n$ y $m$, si sabemos que $n > 1$ y $m gt.eq 2n$, entonces vamos a poder encontrar un primo entre $n$ y $m$.],[Nos van a dar dos números naturales, $n$ y $m$, y sabemos que $n > 1$ y $m gt.eq 2n$. Tenemos que probar que existe un primo $p$ tal que $n < p < m$.
 
  Esta proposición es un corolario del postulado de Bertrand.],
- [Sea $G$ un grafo con $n gt.eq 3$ vértices. Si todos los vértices de $G$ tienen grado mayor o igual a $n/2$, entonces $G$ es Hamiltoniano.], [Debemos recordar la definición de "$G$ es Hamiltoniano", y es que existe un ciclo simple en $G$ que toca todos los vértices. La proposición nos dice que si tenemos un grafo $G = (V, E)$ de $n = |V| gt.eq 3$ vértices, donde para todo vértice $v in V$, tenemos $d(v) gt.eq n/2$, entonces existe en $G$ un ciclo simple $C$, tal que $|C| = n$.], [Nos van a dar un grafo, $G$. Llamamos $n$ al número de vértices de $G$. No sabemos quién es $n$, sólo sabemos que $n gt.eq 3$. También sabemos que para todo vértice $v$ en $G$, tenemos $d(v) gt.eq n/2$. Tenemos que probar que existe un ciclo simple $C$ en $G$, tal que $|C| = n$. Este es el teorema de Dirac sobre grafos Hamiltonianos.],
 )
 
 #let t = [Noten cómo usé cuantificadores en Español, no usando símbolos. No sugiero enfocarse en escribir usando el mayor número de símbolos posibles. Comparen "$forall x in X. exists y in Y. x > y implies (exists z in Z. z = x + y or z = x - y)$", con "Sea $x in X$. Entonces existe un $y in Y$, tal que si $x > y$, entonces $x + y in Z$, o $x - y in Z$." Al saber leer lenguaje natural, nos es más fácil entender qué significa la segunda oración. ¡Esto es a pesar de ser más larga! Cuando escribimos cuidadosamente, usando lenguaje standard, podemos tener ambos precisión, y comprensión del lector.]
@@ -708,8 +705,9 @@ Algunos ejemplos de cuantificadores y qué significan:
 De cualquier forma, la siguiente es una tabla sobre símbolos lógicos, como refresco.
 
 #table(
-  columns: (1fr, 1fr),
+  columns: (0.1fr, 1fr),
   [Símbolo], [Definición],
+  align: ((x,y) => if x == 0 { center + horizon } else { left }),
   [$and$], ["Y". La expresión $A and B$ significa que valen ambas proposiciones $A$ y $B$.],
   [$or$], ["O". La expresión $A or B$ significa que vale al menos una de las proposiciones $A$ o $B$. En particular, si vale $A$, entonces vale $A or B$, sin importar si vale o no $B$. Lo mismo si vale $B$.],
   [$not$], ["No". La expresión $not A$ significa que no vale la proposición $A$. Si vale $A$, entonces no vale $not A$. Si no vale $A$, entonces vale $not A$. Notar que $not$ liga fuertemente a una variable o expresión, luego $not A or B$ significa $(not A) or B$.],
@@ -1358,7 +1356,7 @@ Si tenemos que probar un si-y-sólo-si ($iff$), podemos probar por separado $imp
 
  Esencialmente lo que está pasando en esa demostración es que uno de los lados del si-y-sólo-si es una condición global (el existir un grafo que cumple con lo pedido), mientras que el otro lado es un montón de condiciones locales (una por cada $k$). Es fácil implicar cada condición local, pero probar que la unión de todas las condiciones locales implica la condición global es difícil.
 
-
+#show figure: set align(center)
 #grid(columns: (1fr, 1fr),
  column-gutter: 0pt,
  figure(
@@ -3373,6 +3371,125 @@ Para muchos problemas, una solución greedy es fácil de imaginar. Por ejemplo, 
 #wrap-content(img, t, align: bottom + right)
 
 Vamos a mostrarles algunos ejemplos de cada una.
+
+#ej[
+Tomás quiere viajar de Buenos Aires a Mar del Plata en su flamante Renault 12. Como está preocupado por la autonomía de su vehículo, se tomó el tiempo de anotar las distintas estaciones de servicio que se encuentran en el camino. Modeló el mismo como un segmento de 0 a $M$, donde Buenos aires está en el kilómetro 0, Mar del Plata en el $M > 0$, y las distintas estaciones de servicio están ubicadas en los kilómetros $0 = x_1 lt.eq x_2 lt.eq dots x_n = M$.
+Razonablemente, Tomás quiere minimizar el número de paradas para cargar nafta. Él sabe que su auto es capaz de hacer hasta $C$ kilómetros con el tanque lleno, y que al comenzar el viaje este está vacío.
+
++ Diseñar un algoritmo greedy que le indique a Tomás en qué estaciones debe detenerse para cargar nafta, de forma tal que el número de paradas sea mínimo.
+
++ Demostrar su correctitud.
+
++ Mostrar la complejidad temporal y espacial del algoritmo. El mejor algoritmo posible tiene complejidad temporal y espacial $O(n)$.
+]
+
+#sol[
+Un posible algoritmo greedy para este problema es el siguiente:
+
+```python
+def g(estaciones: list[int], C: int) -> list[int] | None:
+  n = len(estaciones)
+  i = 0
+  cargas = []
+  while i != n - 1:
+    j = i
+    while j < n - 1 and estaciones[j+1] - estaciones[i] <= C:
+      j += 1
+    if j == i: return None
+    cargas.append(i + 1)
+    i = j
+  return cargas
+```
+
+Vamos a dar tres demostraciones de la correctitud de este algoritmo. La primer demostración es un argumento del estilo greedy-stays-ahead.
+
+#demo[
+Definimos una solución como una sucesión estríctamente creciente de índices, $S = (s_1, dots, s_h) subset.eq {1, dots, n}$, tal que $s_1 = 1$ (se carga en el kilómetro cero, la primer estación), $s_h = n$ (se llega a Mar Del Plata desde la última estación), y tal que para todo $1 lt.eq j < h$, $|x_(s_(j+1)) - x_(s_j)| lt.eq C$ (se puede llegar de una estación a la otra con el tanque lleno). Notar que podemos simplificar la última condición a $x_(s_(j+1)) - x_(s_j) lt.eq C$, pues las estaciones están ordenadas crecientemente en $x$. En general, el auto se puede mover de la estación $x_i$ a la estación $x_j$ cuando $|x_i - x_j| lt.eq C$.
+
+Si el problema no tiene solución, es porque ni siquiera cargando en cada estación podemos llegar. Esto implica que existe al menos una estación $i$, tal que $x_(i+1) - x_i gt C$. En este caso, nuestro algoritmo devuelve ```python None``` al considerar ```python if j == i: return None```, y es la respuesta correcta. Por otra parte, si nuestro algoritmo devuelve ```python None``` es porque no puede llegar a la próxima estación desde la actual ($i$), y por lo tanto no existe ninguna solución, pues toda solución tiene que pasar por $x_i$, cargue o no cargue ahí, y llegar a $x_(i+1)$. Luego, en este caso nuestro algoritmo es correcto, pues devuelve ```python None``` si y sólo si no existe solución.
+
+Asumimos entonces que el problema tiene solución. Sea $G = {g_1, dots, g_k}$ una solución producida por nuestro algoritmo. Sea $O = {o_1, dots, o_h}$ cualquier solución óptima, con lo cual $h lt.eq k$. Vamos a demostrar la siguiente proposición por inducción, para todo $t in NN, t gt.eq 1$.
+
+
+$
+P(t): &"Si" t lt.eq h, "entonces" o_t lt.eq g_t.
+$
+
++ Caso base, $t = 1$. Como empezamos con el tanque vacío en $x_1 = 0$, y $M > 0$, el auto tiene que moverse y no tiene combustible al empezar. Luego toda solución debe cargar en la primer estación, y $g_1 = o_1 = 1$. Luego vale $P(1)$.
++ Paso inductivo. Sabemos que vale $P(t)$, queremos demostrar $P(t+1)$. Si $t = h$, entonces $P(t+1)$ es trivial, pues es una implicación con antecedente falso. Luego basta considerar $t < h$, y por lo tanto $t + 1 lt.eq h$. Sabemos por $P(t)$ que $o_t lt.eq g_t$. Sea $A_t = {j | j > g_t, x_j - x_(g_t) lt.eq C}$ el conjunto de estaciones alcanzables yendo hacia adelante desde $g_t$. Como el problema tiene solución, $A_t eq.not emptyset$, y podemos llegar al menos a la próxima estación. Sea entonces $j^* = max A_t$. Nuestro algoritmo elije $g_(t+1) = j^*$.
+
+  Como $O$ es una solución válida, $|x_(o_(t+1)) - x_(o_t)| lt.eq C$, y como los valores de $O$ están ordenados de forma creciente, $x_(o_(t+1)) > x_(o_t)$, y por lo tanto $x_(o_(t+1)) - x_(o_t) lt.eq C$. Luego, como $o_t lt.eq g_t$, tenemos $x_(o_t) lt.eq x_(g_t)$, y luego $x_(o_(t+1)) - x_(g_t) lt.eq C$. Notemos que $o_(t+1)$ puede ser mayor o menor que $g_t$, y por lo tanto el lado izquierdo de esta suma puede ser negativo. Partimos en casos:
+
+  - Si $o_(t+1) < g_t$, entonces $x_(g_(t+1)) gt.eq x_(g_t) gt.eq x_(o_(t+1))$. Como las estaciones están ordenadas crecientemente en $x$, concluímos $g_(t+1) gt.eq o_(t+1)$, y luego vale $P(t+1)$.
+  - Si $o_(t+1) gt.eq g_t$, entonces $o_(t+1) in A_t$, y por lo tanto $o_(t+1) lt.eq j^* = g_(t+1)$. Luego vale $P(t+1)$.
+
+Luego vale $P(t)$ par todo $t in NN, t gt.eq 1$. En particular, vale $P(h)$, y vemos que $o_h lt.eq g_h$. Como $O$ es una solución, $o_h = n$. Como nuestro algoritmo sólo devuelve estaciones, $g_h lt.eq n$. Luego, $g_h = n$, y $G$ es una solución. Como $g_h = n - 1$, nuestro algoritmo agregó $g_h = $ `i + 1`, y por lo tanto `i == `$n - 1$. Nuestro algoritmo se detiene cuando ```python i == n - 1```, con lo cual $k = h$. Luego, como $|G| = k = h = |O|$, y $O$ es una solución óptima, $G$ también es una solución óptima.]
+
+La siguiente demostración usa un argumento de intercambio.
+#demo[
+En la demostración anterior vimos que si el problema no tiene solución, nuestro algoritmo devuelve ```python None```, y si devuelve ```python None```, el problema no tiene solución. Luego, en este caso el algoritmo es correcto. Asumimos entonces que el problema tiene solución.
+
+Sea $G = {g_1, dots, g_k}$ la solución que devuelve nuestro algoritmo. De todas las soluciones óptimas, consideremos la solución $O = {o_1, dots, o_h}$ que tenga un prefijo más largo en común con $G$. Sea $i$ la longitud de ese prefijo en común. Como $O$ es óptima, $h lt.eq k$. Como $i$ es la longitud de un prefijo de $O$, $i lt.eq h$, y a fortiori $i lt.eq k$.
+
+Si $i = h$, entonces $o_i$ es la estación final. Como $g_i = o_i$, nuestro algoritmo habría llegado a la estación final, y terminaría, con lo cual $i = k$, y tendríamos $G = O$, mostrando el algoritmo correcto.
+
+Si no, entonces $i < h$, y existe $o_(i+1)$. Como $i < h$ y $h lt.eq k$, entonces $i < k$, y también existe $g_(i+1)$. Como $i$ es la longitud del prefijo en común entre $G$ y $O$, entonces $g_(i+1) eq.not o_(i+1)$.
+
+Nuestro algoritmo eligió a $g_(i+1)$ como la estación más lejana a la que puede llegar, habiendo cargado en $g_i$. Por ende, como $O$ es una solución válida, y $g_i = o_i$, debemos tener $o_i = g_i lt.eq o_(i+1) < g_(i+1)$. Como $O$ está ordenada crecientemente, entonces $g_(i+1) in.not {o_1, dots, o_i}$. Consideremos entonces $X = {o_1, o_2, dots, o_i, g_(i+1)}$. Al tener $X_1 = o_1, dots, X_i = o_i$, y $O$ siendo una solución, el prefijo de longitud $i$ de $X$ es válido. Para ver que $X_(i+1) - X_i lt.eq C$, basta ver que $X_i = o_i = g_i$ y $X_(i+1) = g_(i+1)$, y sabíamos que $g_(i+1) - g_i lt.eq C$ pues nuestro algoritmo sólo hace saltos con distancia menor o igual a $C$. Por lo tanto, el salto de $X_i$ a $X_(i+1)$ es válido.
+
+Sea $t = min {t | t in [i+2, dots, h], o_t > g_(i+1)}$. Primero vemos que el conjunto no es vacío: De otra forma, $g_(i+1)$ sería la última estación (recordando que $x_n$ debe estar en $O$ para ser solución válida), y luego $i + 1 = k$ es donde termina el algoritmo. Como $h = |O| gt.eq i + 1 = k$, entonces $G$ sería una solución óptima. Basta entonces considerar el caso en que el conjunto no es vacío, y por lo tanto $t$ está bien definido.
+
+Consideremos entonces $Y = {o_t, o_(t+1), dots, o_h}$. Claramente los saltos son válidos pues es un sufijo de $O$. Finalmente, vamos a considerar $O^* = X union Y$. Lo único que tenemos que ver para ver que $O^*$ es una solución válida es que $Y_1 - X_(i+1) lt.eq C$. Esto es ver que $o_t - g_(i+1) lt.eq C$. Como $O$ es una solución, $o_t - o_(t-1) lt.eq C$. Por cómo definimos $t$, $o_(t-1) lt.eq g_(i+1)$. Por lo tanto, tenemos $o_t - g_(i+1) lt.eq o_t - o_(t-1) lt.eq C$, que es lo que queríamos demostrar.
+
+Luego, $O^*$ es una solución válida. Su longitud es $|X| + |Y|$, con $|X|$ = $i + 1$, y $|Y| = h - t + 1$. Como $t gt.eq i + 2$, tenemos que $|O^*| = i + 1 + h - t + 1 lt.eq i + 2 + h - (i + 2) = h$, con lo cual $O^*$ es una solución óptima.
+
+Vemos que $O^*$ es una solución óptima que tiene un prefijo de longitud $i + 1$ en común con $G$, pero esto no puede suceder, pues $O$ era una solución óptima con el más largo prefijo en común con $G$, y ese prefijo tenía longitud $i$. Luego tal $O$ no existe, y $G$ ya es óptima.
+]
+
+Finalmente, veamos una demostración usando un argumento de completación.
+#demo[
+Al igual que antes, vamos a dar por demostrado (porque lo hicimos en la primer demostración) que el algoritmo es correcto cuando no hay solución. Luego vamos a asumir acá que hay solución.
+
+Vamos a usar el teorema del invariante para probar la correctitud de nuestro algoritmo. Entre iteraciones del ciclo exterior, nuestro algoritmo mantiene un array $"cargas" = [g_1, dots, g_t]$, donde $t$ es el número de iteraciones completadas. Como vamos a usar el teorema del invariante, necesitamos explicitar las siguientes proposiciones:
+
+- Guarda $B(i)$: $i eq.not n - 1$.
+- Función variante $V(i) = n - 1 - i in NN$.
+- Precondición $P$: $0 = x_1 lt.eq x_2 lt.eq dots lt.eq x_n = M$, $C gt.eq 0$, y el problema tiene solución.
+- Postcondición $Q$: $G$ es una solución óptima.
+- Invariante $I(i)$:
+  + $0 lt.eq i < n$.
+  + Si $t > 0$, entonces $x_(i+1) - x_(g_t) lt.eq C$. Es decir, podemos llegar desde la última estación donde cargamos ($x_(g_p) = "estaciones[cargas["t-1] - 1]$), hasta la estación actual ($x_(i+1) = "estaciones"[i]$). El $-1$ al indexar `estaciones` es porque $"cargas"$ contiene índices comenzando en $1$, mientras que en Python los índices de arrays comienzan en $0$.
+  + Si $t > 0$ y $B(i)$, entonces para todo $r > i+1$, $x_r - x_(g_t) > C$. Es decir, mientras que podemos llegar a $x_(i+1)$, pero no podemos llegar a ninguna estación posterior.
+  + $exists O = {o_1, dots, o_h} "solución óptima" | (o_1, dots, o_t) = (g_1, dots, g_t)$
+
+Y necesitamos demostrar las siguientes proposiciones:
+- La función variante decrece en cada iteración. Como siempre asignamos $i arrow.l j$, con $j > i$, vemos que $V(i) = n - 1 - i$ decrece en cada iteración.
+- Si la función variante se anula, la guarda es falsa. Si $V(i) = 0$, entonces $i = n - 1$, que es precísamente $not B(i)$.
+- La negación de la guarda, y el invariante, implican la postcondición. Si tenemos la negación de la guarda ($not B(i)$), tenemos $not (i eq.not n - 1) iff i = n - 1$, y como si también vale el invariante ($I(i)$) tenemos $I(n - 1)$. Luego existe una solución óptima $O$ tal que $(o_1, dots, o_t) = (g_1, dots, g_t)$, y como $i = n - 1$, y si $t > 0$, $"estaciones"[i] - "estaciones"["cargas"[t-1]-1] = "estaciones"[n - 1] - "estaciones"["cargas"[t-1]-1] = x_n - x_(g_t) lt.eq C$, entonces podemos llegar desde la última estación de `cargas` hasta la estación final, Mar del Plata. Como existe una solución óptima $O$ que es extensión de $G$, y $G$ ya puede llegar a Mar del Plata, entonces $O$ debe ser $G$. Luego, $G = {g_1, dots, g_t}$ es una solución válida. Como $O$ es una solución óptima, entonces $O$ no puede tener ninguna estación posterior a la $n$-ésima, y $O$ no sólo _extiende_ a $G$, sino que _es_ $G$. Luego $G$ es una solución óptima. Luego vale la postcondición.
+- El invariante vale inicialmente, $I(0)$. El estado inicial es $i = 0, "cargas"=[]$. La lista vacía es trivialmente extensible a cualquier solución óptima. Por la precondición, existe al menos una solución, y luego existe una solución óptima. Las otras condiciones de $I(0)$ son o simples (pues $0 lt.eq 0 < n$) o trivialmente ciertas (pues $not (t > 0)$). Luego, $I(0)$ vale.
+- Si el invariante vale antes de una iteración, y la guarda es verdadera, entonces el invariante vale después de la iteración. Asumimos que valen $I(i) and B(i)$. Vamos a probar $I(j)$. Notemos que $j$ es el valor que obtiene $i$ al terminar cada iteración. Tenemos un pequeño ciclo interior que calcula $j = max { l | i lt.eq l < n, x_(l+1) - x_(i + 1) lt.eq C}$ (recordemos que los índices de $x$ empiezan en $1$, mientras que en Python estamos indexando ```python estaciones``` a partir de ```python 0```, por eso los $+1$).
+  + Por cómo definimos $j$, tenemos que $j gt.eq i$, y luego $j gt.eq i gt.eq 0$. Asimismo definimos $j$ como el máximo de un conjunto cuyo elementos más grandde es a lo sumo $n - 1$, luego $j lt.eq n - 1$, es decir $j < n$. Luego $0 lt.eq j < n$, que es la primer parte de $I(j)$.
+  + Llamemos $p = i + 1$. Estamos agregando $p$ a $G$, obteniendo $G' = {g_1, dots, g_t, i + 1}$. Tenemos que ver que $x_(j+1) - x_p lt.eq C$. Esto es justamente cómo definimos $j$, como el mayor índice que cumple $x_(j+1) - x_p lt.eq C$. Esta es la segunda cláusula de $I(j)$, recordando que $g_t = i + 1$ pues lo acabamos de insertar.
+  + Si $B(j)$, entonces $j eq.not n - 1$. Si ocurriese $x_n - x_(i + 1) lt.eq C$, entonces $j$ no sería el máximo índice que cumple $x_(j+1) - x_(i+1) lt.eq C$, pues $n - 1$ también lo cumpliría, y dijimos que $j eq.not n - 1$. Esto no puede suceder, entonces $x_n - x_(i + 1) > C$. Esta es la tercer cláusula de $I(j)$.
+  + Sabemos por $I(i)$ que existe una solución óptima $O$ que extiende a $G$. Si $t = 0$, entonces al comenzar con el tanque vacío, vamos a agregar la primer parada, $x_1 = 1$. Como toda solución tiene que hacer esto, en particular cualquier solución óptima tiene que hacer esto, y tenemos que $G$ sigue siendo extensible a una solución óptima.
+    Si $t > 0$, entonces como vale $B(i)$, por $I(i)$ tenemos que $x_n - x_(g_t) gt C$. Luego toda solución óptima, en particular $O$, necesita al menos una estación más, y luego existe $o_(t+1)$. Sea $s = o_(t+1) > g_t$. Sea $p = i + 1$.
+
+    Por $I(i)$ y $B(i)$, sabemos que para todo $r > i + 1$, $x_r - x_(g_t) > C$. También sabemos que $g_t = o_t$, y $p = i + 1$. Luego, para todo $r > p$, tenemos $x_r - x_(o_t) > C$. Como $O$ es una solución válida, $O$ no puede entonces seguir a $o_t$ con $x_r$ para ningún $r > p$, y tenemos $s lt.eq p$.
+
+    Si $s = p$, ya tenemos en $O$ un prefijo de longitud $i + 1$ en común con $G$, y $G$ sigue siendo extensible a una solución óptima. Luego debemos ver el caso $s < p$.
+
+    Si $s < p$, entonces $O$ carga antes de $p$. Recordemos que $O$ tiene la forma $O = {o_1, dots, o_h} = {g_1, dots, g_t, s, o_(t+2), dots, o_h}$. Quisiéramos reemplazar a $s$ por $p$, pero no sabemos si $o_(t+2) gt.eq p$, y si esto no sucediera, no estaríamos formando una solución válida (recordando que los índices en una solución son crecientes). Consideremos el primer índice $j$ en $O$, tal que $j > t + 1$, y $o_j > p$. 
+
+    Si $j$ no existe, entonces $O$ está llegando a Mar del Plata desde $s$, y como $p > s$, también vamos a poder llegar a Mar del Plata desde $p$. El algoritmo encontrará entonces que `j == i`, y terminará, con lo cual tenemos una solución $G = {g_1, dots, g_t, p}$ con longitud $t + 1$, que es también la longitud de $O = {o_1, dots, o_t, s}$.
+
+    Si por otro lado $j$ existe, consideremos $O' = {o_1, dots, o_t, p, o_j, o_(j+1), dots, o_h}$. Claramente $G' = {g_1, dots, g_t, p}$ es un prefijo de $O'$. El único salto que hay que justificar en $O'$ es entre $p$ y $o_j$. Como $j$ es el primer índice mayor que $t + 1$ tal que $o_j > p$, tenemos que $o_(j-1) lt.eq p$. Como $O$ es una solución válida, $x_(o_j) - x_(o_(j-1)) lt.eq C$. Luego, como $o_(j-1) lt.eq p$, tenemos $x_(o_j) - x_p lt.eq C$. Luego, todos los saltos de $O'$ son válidos. También por cómo definimos $j$, tenemos $o_j gt.eq p$, y luego $O'$ está ordenada crecientemente. Finalmente, $|O'| lt.eq |O|$ pues removimos los elementos ${o_(t+2), dots, o_(j-1)}$ (puede ser vacío este conjunto), y como $O$ es óptima, $O'$ también lo es.
+
+    Luego, $O'$ es una solución óptima que extiende a $G'$, y tenemos la última cláusula de $I(j)$.
+
+Por el teorema del invariante, entonces, vale la postcondición al terminar el ciclo, y nuestro algoritmo es correcto.
+]
+
+]
 
 #ej[
 Queremos devolver el vuelto a un cliente, y tenemos monedas de 1, 5, 10, y 25 centavos. Diseñar un algoritmo greedy que resuelva el problema. Demostrar su correctitud.]
