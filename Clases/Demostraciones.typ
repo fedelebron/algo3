@@ -2672,6 +2672,19 @@ $
 $
 ]
 
+#ej[
+Sea $G$ un grafo con $n > 1$ vértices. Probar que existen en $G$ dos vértices del mismo grado.
+]
+#demo[
+Sea $G = (V, E)$ un grafo. El grado de un vértice es el número de aristas que inciden en él. Notemos por $d(v)$ al grado de cada vértice $v in V$. Como un vértice puede estar conectado como mínimo con cero otros vértices, y como máximo con todos los otros $n - 1$ vértices, tenemos que $0 lt.eq d(v) lt.eq n - 1$ para todo $v in V$.
+
+Si existe un vértice $v$ tal que $d(v) = n - 1$, entonces no puede existir un vértice distinto $w$ con grado $d(w) = 0$ (no conectado con nadie), pues sabemos que ${v, w} in E$. Como $n eq.not 1$, tampoco podemos tener $v = w$, pues $d(v) = n - 1 eq.not 0 = d(w)$. Luego, si existe un vértice con grado $n - 1$, no puede existir ningún vértice con grado $0$, y luego los grados posibles son $1, 2, dots, n - 1$, es decir, $n - 1$ posibles grados.
+
+De otra manera, si no existe ningún vértice con grado $n - 1$, entonces los grados posibles son $0, 1, 2, dots, n - 2$, que también son $n - 1$ posibles grados.
+
+Entonces tenemos $n$ vértices, y sólo $n - 1$ posibles grados. Por el principio del palomar, existen al menos dos vértices con el mismo grado.
+]
+
 == Divide and conquer y programación dinámica
 
 #let t = [La computación está llena de algoritmos que se basan en dividir un problema en subproblemas más pequeños, resolver esos, y luego combinar los resultados. Estos en general van a tener demostraciones por inducción, donde hacemos inducción en el tamaño de los subproblemas que estamos resolviendo. Nuestra tarea es darle semántica al resultado del algoritmo, definir la noción de tamaño, y probar por inducción en el tamaño de una sub-solución, que el algoritmo es correcto con respecto a su semántica, para todos los subproblemas.]
