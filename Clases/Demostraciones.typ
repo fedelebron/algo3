@@ -313,7 +313,7 @@ theorem hay_infinitos_primos (n : ℕ) : ∃ p, n ≤ p ∧ Primo p :=
 
   Para la primer parte, el temario de la carrera incluye esos temas en distintas materias. Para la segunda es que se los entrena en demostrar formalmente la veracidad de proposiciones, y la correctitud#footnote[Nota pedante: La RAE no reconoce el término "correctitud", sino "corrección". Sin embargo, el término "corrección" tiene otros significados que pueden confundirlos en el contexto de una carrera universitaria (e.g. corrección de un parcial, corrección de una aproximación numérica). Es común, entonces, usar el término "correctitud" para referirse a la propiedad de ser correcto. Es la diferencia en Inglés entre "correctness" y "correction", que la RAE no hace.] de argumentos. Se usan los objetos de estudio como grafos o números enteros como sujetos de las proposiciones y algoritmos que desarrollen.
   
-  Es por esto que la pregunta clásica de "¿pero cuándo voy a usar esto?" está mal planteada. Asume que se les enseña sobre grafos porque alguien les va a "dar un grafo" en su vida profesional. En cambio, se les enseña sobre grafos para que ustedes los introduzcan para modelar problemas que tengan, y para que los usen como sujetos en proposiciones al aprender a demostrar. Podrían estos sujetos ser otros, como fluídos y campos eléctricos en física, o anillos y ecuaciones diferenciales en matemática. En computación, se usan los objetos de ese campo de estudio.
+  Es por esto que la pregunta clásica de "¿pero cuándo voy a usar esto?" está mal planteada. Asume que se les enseña sobre, por ejemplo, grafos, porque alguien les va a "dar un grafo" en su vida profesional. En cambio, se les enseña sobre grafos para que ustedes los introduzcan al modelar problemas que tengan, y para que los usen como sujetos en proposiciones al aprender a demostrar. Podrían estos sujetos ser otros, como fluídos y campos eléctricos en física, o anillos y ecuaciones diferenciales en matemática. En computación, se usan los objetos de ese campo de estudio.
 
   Sus demostraciones, entonces, cumplen un doble propósito. Tienen que:
   
@@ -351,6 +351,7 @@ Cuando uno habla de "formalidad" en matemática, se está refiriendo a la _forma
 
 Razonar informalmente es parte de hacer matemática y computación, pero es sólo la primer parte. Al intentar argumentos, primero los vamos a pensar de forma vaga, no formal. Luego, si queremos asegurarnos de su veracidad, los formalizamos, para estar seguros de ser rigurosos.
 
+La siguiente tabla muestra ejemplos de niveles de formalidad. No es importante que sepan o recuerden cómo tomar derivadas o que sepan lo que es un grafo, el objetivo es que vean el tipo de oración que se usa.
 #let row_color(_, y) = {
   let alpha = y / 5
   let beta = 1 - alpha
@@ -645,13 +646,13 @@ Finalmente, al momento de empezar una demostración, sepan que les debería toma
 Ahora miremos cómo se construye una demostración, proceduralmente. En el contexto de la carrera, los siguientes pasos van a ser necesarios cuando intenten escribir una demostración de algo.
 
 == Formalizar la consigna
-En su vida profesional rara vez les van a dar un problema pre-formalizado, en términos de secuencias de enteros, o grafos. Luego, van a tener que transformar el problema que tienen, a uno donde puedan usar las herramientas que conocen. Esto se llama formalizar. Esta parte es *crucial*: Si formalizan incorrectamente, todo lo que hagan después es totalmente irrelevante. Parte de esto es lectura y comprensión, y la otra parte es poder usar lenguaje formal. Consideremos la diferencia entre:
+En su vida profesional muy rara vez les van a dar un problema pre-formalizado, en términos de secuencias de enteros, permutaciones, o teoría de grafos. En cambio, van a tener que transformar el problema que tienen, a uno donde puedan usar las herramientas que conocen. Esto se llama formalizar. Esta parte es *crucial*: Si formalizan incorrectamente, todo lo que hagan después es totalmente irrelevante. Parte de esto es lectura y comprensión de lo que les piden, y la otra parte es poder usar lenguaje formal. Consideremos la diferencia entre:
 
-#ej[
+mej[
 Probar que en todo grupo de amigos, si cada par de amigos tiene sólo un amigo en común, entonces existe una persona que es amigo de todos.
 ]
 
-La oración habla sobre grupos de amigos, no de algo que veamos diréctamente en la carrera. Para usar las herramientas que tenemos, lo traducimos a alguna estructura que nos sirva. En la carrera vemos varias, como ser números reales, listas, registros, números enteros, árboles, grafos, lenguajes formales, matrices, redes, autómatas, interrupciones del procesador, etc. De todas esas, tenemos que fijarnos cuál es la que probablemente nos sirva para este problema. Como el enunciado habla sobre la relación "tener amigos", queremos algo que modele una relación de amistad. El enunciado no aclara que la amistad es simétrica y antireflexiva, así que es algo que deberíamos preguntar. Si podemos asumir eso, parecería que un grafo $G = (V, E)$, donde $E$ es un subconjunto de pares sin orden de $V$, es un buen modelo. Podemos traducir el enunciado al siguiente enunciado sobre grafos - no se preocupen si todavía no vieron nada sobre grafos, es sólo un ejemplo:
+La oración habla sobre grupos de amigos, no de algo que veamos diréctamente en la carrera. Para usar las herramientas que tenemos, lo traducimos a alguna estructura que nos sirva. En la carrera vemos varias, como ser números reales, listas, registros, números enteros, árboles, grafos, lenguajes formales, matrices, redes, autómatas, interrupciones del procesador, etc. De todas esas, tenemos que fijarnos cuál es la que probablemente nos sirva para este problema. Como el enunciado habla sobre la relación "tener amigos", queremos algo que modele una relación de amistad. El enunciado no aclara que la amistad es simétrica y antireflexiva, así que es algo que deberíamos preguntar, o darnos cuenta que lo estamos asumiendo. Más adelante en el libro vamos a ver qué es un grafo, pero parecería que un buen modelo es un grafo $G = (V, E)$, donde $E$ es un subconjunto de pares sin orden de $V$. Podemos traducir el enunciado al siguiente enunciado sobre grafos - no se preocupen si todavía no vieron nada sobre grafos, es sólo un ejemplo:
 
 #ej(title: "Teorema de la amistad (Erdős et. al., 1966)")[
   Sea $G = (V, E)$ un grafo. Dado $v in V$, definimos $N(v) = {w | {v, w} in E}$. Probar que si para todo $u, v in V$ tenemos que $|N(v) inter N(w)| = 1$, entonces existe un $w in V$ tal que $|N(w)| = |V| - 1$.
@@ -2073,6 +2074,90 @@ Esto parece funcionar. Probémoslo por inducción, entonces. Sea $P(n): n gt.eq 
 Luego vemos que tomando $n_0 = 1$, $alpha = max(beta, (max_(i=0)^n_0 h(i))/3)$, tenemos que para todo $n gt.eq n_0$, $T(n) lt.eq alpha 3^n$, y por lo tanto $T in O(3^n)$.]
 
 #ej[
+Mergesort es un algoritmo de ordenamiento a base de comparaciones.
+
+```py
+def merge(left: list[int], right: list[int]) -> list[int]:
+  result = []
+  i = 0
+  j = 0
+  while i < len(left) and j < len(right):
+    if left[i] <= right[j]:
+      result.append(left[i])
+      i += 1
+    else:
+      result.append(right[j])
+      j += 1
+  result.extend(left[i:])
+  result.extend(right[j:])
+  return result
+
+def mergesort(arr: list[int]) -> list[int]:
+  if len(arr) <= 1:
+    return arr
+  mid = len(arr) // 2
+  left = mergesort(arr[:mid])
+  right = mergesort(arr[mid:])
+  return merge(left, right)
+```
+
+Dada una lista de enteros $x$, sea $C(x)$ el número de comparaciones que hace `mergesort(x)`. Se define $T:NN arrow NN$ como $T(n) = max_x {C(x) | "len"(x) = n}$. Es decir, el máximo número de comparaciones que realiza ```py mergesort(x)```, entre todas las listas `x` tales que ```py len(x) = n```. 
+
+Probar que $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$.
+]
+#demo[
+Llamemos $M(l, r)$ al número de comparaciones que hace `merge` al ser llamados con dos listas de longitud $l$ y $r$ respectivaente. Probemos algo sobre el comportamiento de `merge`.
+#lemma[
+$M(l, r) lt.eq l + r - 1$.
+]
+#demo[
+Sea `left` y `right` las dos listas que se le pasan a `merge`, de longitudes $l$ y $r$ respectivamente. En cada iteración del `while`, se hace una comparación entre `left[i]` y `right[j]`. Si `left[i] <= right[j]`, entonces se avanza en la lista `left`, es decir, se incrementa `i` en uno. Si no, se avanza en la lista `right`, es decir, se incrementa `j` en uno.
+
+Al comenzar la $t$-ésima iteración, tenemos $i + j = t$. Para salir del ciclo, debemos haber tenido una iteración que hace o bien $i = l$, o bien $j = r$. En el primer caso, tenemos $j < r$ (pues si no no hubieramos entrado al ciclo y aumentado $i$ tal que ahora $i = t$). Luego $t = i + j = l + j < l + r$, es decir $t lt.eq l + r - 1$. El otro caso es análogo, y en ambas ramas obtenemos $t lt.eq l + r - 1$ al salir del ciclo.
+
+Como hacemos una comparación por cada iteración del ciclo, tenemos que el número de comparaciones que se hacen es $M(l, r) = t lt.eq l + r - 1$.
+]
+
+En `mergesort`, recibimos una lista $x$ de longitud $n$. La dividimos en dos partes, de tamaño $l$ y $r$ respectivamente, y por lo tanto tenemos que $n = l + r$. Podemos ver por inducción que la longitud de `mergesort(x)` es igual a `len(x)`. Por ende, cuando llamamos a `mergesort` en ambas mitades, obtendremos listas de longitud $l$ y $r$ respectivamente. Como luego llamamos a `merge`, estamos llamando a `merge` con dos listas de lognitud $l$ y $r$, con $l + r = n$, y luego el número de comparaciones que haremos al llamar a `merge` será a lo sumo $n - 1$.
+
+Las mitades en las que dividimos la lista cumplen que $l = floor(n/2)$, y $r = ceil(n/2)$. Luego, el número máximo de comparaciones que hará `mergesort` al recibir una lista de longitud $n$ es $T(n) = T(floor(n/2)) + T(ceil(n/2)) + n - 1$, y $T(1) = 0$.
+
+Vamos a probar por inducción que $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$. Formalmente, sea $P(n): T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$. Vamos a probar $P(n)$ para todo natural $n gt.eq 1$.
+
+- Para $n = 1$, $T(1) = 0$, y asimismo $1 ceil(log_2 1) - 2^(ceil(log_2 1)) + 1 = 1 ceil(0) - 2^0 + 1 = 0$, con lo cual vale $P(1)$.
+- Sea $n > 1$ un natural. Asumimos que $P(k)$ vale para todo $k < n$, queremos probar $P(n)$. Sea $k = ceil(log_2 n)$, con lo cual $2^(k-1) < n lt.eq 2^k$. Sea $l = floor(n/2)$, y $r = ceil(n/2)$, con $l + r = n$. Sabemos que $T(n) = T(l) + T(r) + n - 1$.
+
+  Como $n lt.eq 2^k$, entonces $r lt.eq 2^(k-1)$. Como $n > 2^(k-1)$, entonces $r > 2^(k-2)$. Luego, $r$ está en el intervalo $(2^(k-2), 2^(k-1)]$, y por lo tanto, $ceil(log_2 r) = k - 1$. Usando la hipótesis inductiva, obtenemos $T(r) = r (k - 1) - 2^(k - 1) + 1$.
+
+  Para encontrar $T(a)$, partimos en casos sobre $n$. Recordemos que $2^(k-1) + 1 lt.eq n lt.eq 2^k$.
+    - Si $n = 2^(k-1) + 1$ exactamente, entonces $l = 2^(k-2)$, y $r = 2^(k-2) + 1$. Luego, $ceil(log_2 l) = k - 2$. Aplicando la hipótesis inductiva a $l$, tenemos $T(l) = l (k - 2) - 2^(k - 2) + 1$. Sumando lo que teníamos, sabemos que:
+    
+    $
+    T(n) &= T(l) + T(r) + n - 1 \
+         &= l (k - 2) - 2^(k - 2) + 1 + r (k - 1) - 2^(k - 1) + 1 + n - 1\
+         & "Usando que" 2^(k-2)=l ", y luego "2^(k-1) = 2l", obtenemos:"\
+         &= l (k - 2) - l + 1 + r (k - 1) - 2l + 1 + (l + r) - 1\
+         &= k (l + r) - 2l - l + 1 - r - 2l + 1 + (l + r) - 1\
+         &= k (l + r) - 4l + 1\
+         &= k n - 4 times 2^(k-2) + 1\
+         &= k n - 2^k + 1
+    $
+
+    que es lo que queríamos demostrar.
+    - Si $2^(k-1) + 1 < n lt.eq 2^k$, entonces $l > 2^(k-2)$. Luego, $ceil(log_2 l) = k - 1$. Aplicando la hipótesis inductiva a $l$, tenemos $T(l) = l (k - 1) - 2^(k - 1) + 1$. Sumando lo que teníamos, sabemos que:
+
+    $
+    T(n) &= T(l) + T(r) + n - 1 \
+         &= l (k - 1) - 2^(k - 1) + 1 + r (k - 1) - 2^(k - 1) + 1 + n - 1\
+         &= (l + r) (k - 1) - 2^k + 2 + (l + r) - 1\
+         &= n k - 2^k + 1
+    $
+
+    que es lo que queríamos demostrar.
+
+Luego, hemos probado por inducción que para todo $n gt.eq 1$, $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$.
+]
+#ej[
 Determinar cuánto tiempo va a tomar el siguiente algoritmo, en el caso promedio:
 
 ```py
@@ -2916,8 +3001,8 @@ La respuesta al enunciado es $f(n, P)$. Las ecuaciones recursivas para $f$ son:
 
 $
 f(i, x) = cases(
-  0 ", si" i = 0\
-  f(i - 1, x) ", si" p_i > x\
+  0 ", si" i = 0,
+  f(i - 1, x) ", si" p_i > x,
   max(f(i - 1, x), f(i - 1, x - p_i) + v_i) ", si no"
 )
 $
