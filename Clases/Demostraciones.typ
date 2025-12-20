@@ -91,6 +91,7 @@
   }, stroke: 0.5pt + orange.lighten(10%), inset: 5mm, radius: 5pt)
 }
 #let implies = $arrow.double$
+#let implied = $arrow.double.l$
 #let iff = $arrow.double.l.r$
 
 // Sólo ponemos números a las ecuaciones que tienen etiqueta.
@@ -643,16 +644,47 @@ Finalmente, al momento de empezar una demostración, sepan que les debería toma
 
 = ¿Cómo demostramos?
 
-Ahora miremos cómo se construye una demostración, proceduralmente. En el contexto de la carrera, los siguientes pasos van a ser necesarios cuando intenten escribir una demostración de algo.
+Ahora miremos cómo se construye una demostración, proceduralmente.
 
 == Formalizar la consigna
-En su vida profesional muy rara vez les van a dar un problema pre-formalizado, en términos de secuencias de enteros, permutaciones, o teoría de grafos. En cambio, van a tener que transformar el problema que tienen, a uno donde puedan usar las herramientas que conocen. Esto se llama formalizar. Esta parte es *crucial*: Si formalizan incorrectamente, todo lo que hagan después es totalmente irrelevante. Parte de esto es lectura y comprensión de lo que les piden, y la otra parte es poder usar lenguaje formal. Consideremos la diferencia entre:
+En su vida profesional muy rara vez les van a dar un problema pre-formalizado, en términos de secuencias de enteros, permutaciones, o teoría de grafos. En cambio, van a tener que transformar el problema que tienen, a uno donde puedan usar las herramientas que conocen. Esto se llama formalizar. Esta parte es *crucial*: Si formalizan incorrectamente, todo lo que hagan después es totalmente irrelevante. Parte de esto es lectura y comprensión de lo que les piden, y la otra parte es poder usar lenguaje formal.
 
-mej[
+#ej[
+Tenemos una máquina vendedora, y queremos devolver cambio. Necesitamos saber si usando sólo monedas de 3 y 5 centavos, podemos devolver cualquier cambio mayor o igual a 8 centavos.
+]
+
+La oración habla sobre monedas, no de algo que veamos diréctamente en la carrera. Para usar las herramientas que tenemos, lo traducimos a alguna estructura que nos sirva. En la carrera vemos varias, como ser números reales, listas, registros, números enteros, árboles, grafos, lenguajes formales, matrices, redes, autómatas, interrupciones del procesador, etc. De todas esas, tenemos que fijarnos cuál es la que probablemente nos sirva para este problema. Como el enunciado habla sobre armar combinaciones de monedas, queremos algo que modele combinaciones lineales. Podríamos formalizarlo de esta manera:
+
+#ej[
+Sea $n in NN$, $n gt.eq 8$. Probar que existen $a, b in ZZ$ tales que $3a + 5b = n$.  
+]
+
+Acá podríamos usar lo que sabemos sobre combinaciones lineales de enteros, es decir, que esto sucede si y sólo si $gcd(3, 5) | n$. Como $gcd(3, 5) = 1$, y $1 | n$ para todo $n in NN$, la proposición es cierta. Sin embargo, *esto está mal formalizado*, y la demostración usando $gcd$ es irrelevante. El problema es que no podemos devolver números negativos de monedas. Por ejemplo, si queremos mostrar que podemos devolver 13 centavos de cambio, es irrelevante decir que $13 = 3 times 6 + 5 times (-1)$, porque no podemos devolver "-1" monedas de 5 centavos.
+
+Luego, tenemos que restringir $a, b$ a ser números naturales, no enteros.
+
+#ej[
+Sea $n in NN$, $n gt.eq 8$. Probar que existen $a, b in NN$ tales que $3a + 5b = n$.
+]
+
+Demostrar esto se hace de forma totalmente diferente. Una forma es usar inducción.
+
+#demo[
+Sea $P(n)$ el predicado "existen $a, b in NN$ tales que $3a + 5b = n$". Queremos probar que para todo $n in NN$ tal que $n > 7$, vale $P(n)$.
+
+Probamos por separado $P(8)$, $P(9)$, y $P(10)$.
+- $P(8)$: Tomamos $a = 1$, $b = 1$, pues $3 times 1 + 5 times 1 = 8$.
+- $P(9)$: Tomamos $a = 3$, $b = 0$, pues $3 times 3 + 5 times 0 = 9$.
+- $P(10)$: Tomamos $a = 0$, $b = 2$, pues $3 times 0 + 5 times 2 = 10$.
+Ahora para $n in NN$, con $n > 10$, podemos asumir que vale $P(k)$ para todo $8 < k < n$. Como $n > 10$, entonces $7 < n - 3 < n$. Luego, tomamos $k = n - 3$, y por hipótesis inductiva ($P(k)$), existen $a', b' in NN$ tales que $3a' + 5b' = k$. Entonces, tomando $a = a' + 1 in NN$, $b = b' in NN$, tenemos que $3a + 5b = 3(a' + 1) + 5b' = 3a' + 5b' + 3 = k + 3 = n$. Luego, vale $P(n)$.
+]
+
+/*
+#ej[
 Probar que en todo grupo de amigos, si cada par de amigos tiene sólo un amigo en común, entonces existe una persona que es amigo de todos.
 ]
 
-La oración habla sobre grupos de amigos, no de algo que veamos diréctamente en la carrera. Para usar las herramientas que tenemos, lo traducimos a alguna estructura que nos sirva. En la carrera vemos varias, como ser números reales, listas, registros, números enteros, árboles, grafos, lenguajes formales, matrices, redes, autómatas, interrupciones del procesador, etc. De todas esas, tenemos que fijarnos cuál es la que probablemente nos sirva para este problema. Como el enunciado habla sobre la relación "tener amigos", queremos algo que modele una relación de amistad. El enunciado no aclara que la amistad es simétrica y antireflexiva, así que es algo que deberíamos preguntar, o darnos cuenta que lo estamos asumiendo. Más adelante en el libro vamos a ver qué es un grafo, pero parecería que un buen modelo es un grafo $G = (V, E)$, donde $E$ es un subconjunto de pares sin orden de $V$. Podemos traducir el enunciado al siguiente enunciado sobre grafos - no se preocupen si todavía no vieron nada sobre grafos, es sólo un ejemplo:
+La oración habla sobre grupos de amigos, no de algo que veamos diréctamente en la carrera. Para usar las herramientas que tenemos, lo traducimos a alguna estructura que nos sirva. En la carrera vemos varias, como ser números reales, listas, registros, números enteros, árboles, grafos, lenguajes formales, matrices, redes, autómatas, interrupciones del procesador, etc. De todas esas, tenemos que fijarnos cuál es la que probablemente nos sirva para este problema. Como el enunciado habla sobre la relación "tener amigos", queremos algo que modele una relación de amistad. El enunciado no aclara que la amistad es simétrica (si $X$ es amigo/a de $Y$, entonces $Y$ es amigo/a de $X$) y antireflexiva (nadie es amigo/a de sí mismo/a), así que es algo que deberíamos preguntar, o darnos cuenta que lo estamos asumiendo. Más adelante en el libro vamos a ver qué es un grafo, pero parecería que un buen modelo es un grafo $G = (V, E)$, $V$ es un conjunto de personas, y $E$ es un subconjunto de pares sin orden de $V$. Podemos traducir el enunciado de la siguiente manera - no se preocupen si todavía no vieron nada sobre grafos, es sólo un ejemplo:
 
 #ej(title: "Teorema de la amistad (Erdős et. al., 1966)")[
   Sea $G = (V, E)$ un grafo. Dado $v in V$, definimos $N(v) = {w | {v, w} in E}$. Probar que si para todo $u, v in V$ tenemos que $|N(v) inter N(w)| = 1$, entonces existe un $w in V$ tal que $|N(w)| = |V| - 1$.
@@ -665,6 +697,9 @@ Ahora podemos usar las herramientas que nos da la carrera para atacar el problem
 ]
 
 No sólo es difícil de leer, sino que distintas personas lo van a interpretar de distintas maneras, y eso aumenta el riesgo de no comprender la consigna correctamente. No se usan variables para referirse a la misma cosa, las relaciones entre los elementos no están explícitas, los cuantificadores son o inexistentes o imprecisos, y los conectores lógicos implícitos.
+*/
+
+Vemos cuán importante es leer detenidamente, y tener cuidado a la hora de formalizar el enunciado. Cuando modelamos algo del mundo real (como monedas) con un concepto matemático (como números naturales), tenemos que pensar si el modelo tiene sentido, y si estamos modelando exactamente los objetos que queremos modelar. Si nuestro modelo es demasiado amplio, como ocurrió con nuestro primer intento de formalización del problema de las monedas, las soluciones que encontramos no van a tener contraparte en el mundo real. Si, por otra parte, nuestro modelo es demasiado restrictivo, puede que no podamos encontrar soluciones que sí existen en el mundo real.
 
 == Comprender qué se nos pide <conversacionn>
 
@@ -686,61 +721,26 @@ Probar un "para todo" es equivalente a la siguiente conversación, entre el que 
 ]
 
 #let image_forall = block({
-    image("speech_forall.jpeg", width: 90%)
-    place(center + horizon, dx: -8mm, dy: -19mm, text(size: 20pt)[$exists$])
-    place(center + horizon, dx: 5mm, dy: -19mm, text(size: 20pt)[$forall$])
+    image("speech_forall.png", width: 90%)
+    place(center + horizon, dx: -18mm, dy: -17mm, text(size: 20pt)[$forall$])
+    place(center + horizon, dx: 17mm, dy: -17mm, text(size: 20pt)[$exists$])
 })
 #let body_forall = [Nosotros vamos a tomar el rol de Alicia. Nos van a dar un $epsilon$, y tenemos que decir quién es $delta$. Como nos están dando un $epsilon$, nuesto $delta$ puede (y en general va a) depender de $epsilon$. Por ejemplo, a veces vamos a concluir que $delta = epsilon / 8$. Este es el baile del "para todo / existe". El término "para todo" resulta en "se nos va a dar un". El término "existe" resulta en "tenemos que devolver".
 
-Por el contrario, si tuvieramos probar "existe un $x$ tal que para todo $y gt.eq x, x = y$", entonces tenemos que dar un $x$ explícito, y mostrar que sin importar cuál $y$ elija Beto, podemos probar que $x = y$.]
+Por el contrario, si tuvieramos probar "existe un $x$ tal que para todo $y gt.eq x, x = y$", entonces tenemos que dar un $x$ explícito#footnote[Hay maneras de probar la existencia de algo sin darlo explícitamente, y es común en matemática. Inicialmente, sugiero que consideren que demostrar existencia se hace dando un objeto explícito.], y mostrar que sin importar cuál $y$ elija Beto, podemos probar que $x = y$.]
 #wrap-content(image_forall, body_forall)
 
 Luego de que devolvemos ese $delta$, le sigue otro "para todo", "para todo $x in RR$". Entonces, nos van a dar otro $x$. A ese "para todo", le sigue un "si", "si $|x - x_0| < delta$". Un "si" nos deja asumir algo - para probar que "si $X$, entonces $Y$" (que se escribe $X implies Y$), podemos _asumir_ $X$, puesto que de otra manera no hay nada que probar ("falso implica todo"). Entonces, esto se traduce en "nos van a dar un $x$, y podemos asumir que $|x - x_0| < delta$". El "entonces" de un "si" es lo que tenemos que probar. Luego, tenemos que probar que para ese $x$ que nos dieron, vale $|e^x - e^(x_0)| < epsilon$.
 
-Notemos cómo al igual que ocurre en la conversación, tuvimos que decir quién es $delta$ sin saber quién es $x$. Entonces, no puede ser que $delta$ dependa de $x$! En la conversación, las únicas variables que vinieron antes de $delta$ fueron $epsilon$ y $x_0$. Entonces, sólo de esas dos puede depender $delta$.
+Noten cómo al igual que ocurre en la conversación, tuvimos que decir quién es $delta$ sin saber quién es $x$. Entonces, no puede ser que $delta$ dependa de $x$! En la conversación, las únicas variables que vinieron antes de $delta$ fueron $epsilon$ y $x_0$. Entonces, sólo de esas dos puede depender $delta$.
 
-Algunos ejemplos de cuantificadores y qué significan:
 
-#table(
-  columns: (0.75fr, 1fr, 1fr),
-  inset: 10pt,
-  stroke: 0.5pt + black,
-  align: left,
- [*Oración*],[*Significado*],[*Cómo probarla*],
- [Para todo $x in RR$, tenemos que $x^2 gt.eq 0$.],[Para cualquier $x$ que elijamos en los reales, $x^2$ es mayor o igual a cero. Otra forma de escribir esto es $forall x. (x in RR implies x^2 gt.eq 0)$. Es decir, para todo $x$, si $x$ está en los reales, entonces $x^2 gt.eq 0$.],[Nos van a dar un $x$, y sabemos que $x in RR$. Tenemos que probar que $x^2 gt.eq 0$. Podemos partir en casos, dependiendo de si $x gt.eq 0$ o $x < 0$. En el primero, el producto de dos números no-negativos es no-negativo, y en el segundo caso, $x = -y$ con $y > 0$, y luego $x^2 = (-y)(-y) = y^2 > 0$, y luego en ambas ramas tenemos $x^2 gt.eq 0$.],
- [Para todo $x in RR$, existe un $y in NN$, tal que $y > x$.], [Para cualquier $x$ que elijamos en el conjunto $RR$, hay algún $y$ en $NN$ que es más grande. Otra forma de escribir esto es $forall x. (x in RR implies (exists y. (y in NN and y > x)))$. Es decir, para todo $x$, si $x$ está en $RR$, entonces existe un $y$, tal que $y$ está en $NN$, y también $y > x$.],[Nos van a dar un $x$, y sabemos que $x in RR$. Tenemos que mostrar que existe un $y$ tal que $y in NN$, e $y > x$. A veces vamos a poder encontrar $y$ explícitamente, otras veces sólo vamos a saber que existe. $y$ puede depender de $x$. En este caso, podemos elegir $y = ceil(x) + 1$, y sabiendo que $ceil(x) gt.eq x$, y que $ceil(space):RR arrow NN$, concluímos que $y = ceil(x) + 1 > x$, con $y in NN$. Notar que puede haber otros $y$ posibles, por ejemplo $ceil(x) + 5$, pero basta con encontrar uno y estamos.],
- [Existe un $x in RR$, tal que para todo $y in {0, 1, dots, 8}$, $y > x$.],[Hay alguien en $RR$ que es menor a todo elemento de ${0, 1, dots, 8}$.],[Tenemos que probar que existe un tal $x$. A veces vamos a poder decir quién es $x$ explícitamente, otras veces sólo vamos a poder probar que existe. Tenemos que mostrar que para este $x$ que elegimos, sin importar qué $y in {0, 1, dots, 8}$ alguien elija, tendremos $y > x$. Podemos elegir $x = -1$, y vemos que $-1 < 0$, $-1 < 1$, $dots$, $-1 < 8$, y por lo tanto $x < y$ para todo $y in {0, 1, dots, 8}$.],
- [Existe un $x in RR$, tal que para todo $y in {0, 1, dots, ceil(x)}$, $x > y$.],[Hay algún real $x$, tal que $x$ es más grande que cualquier elemento en ${0, 1, dots, ceil(x)}$.],[Tenemos que dar un tal $x in RR$. Llamemos $X = {0, 1, dots, ceil(x)}$. Veamos a quién podemos elegir:
-   - Si elegimos un $x > -1$, entonces $X$ tiene al menos 1 elemento ($ceil(x) gt.eq 0$). Como $ceil(x) gt.eq x$, y $ceil(x) in X$, nunca vamos a poder probar que $x > y$ para todo $y in X$, pues alguien podría darnos $y = ceil(x) gt.eq x$.
-   - Si elegimos un $x lt.eq -1$, entonces $X = {0, 1, dots, ceil(x)}$ con $ceil(x) < 0$, y luego $X = emptyset$. Luego, "para todo $y in emptyset$, $x > y$" es trivialmente cierto sobre $x$, puesto que no hay ningún tal $y in emptyset$. Luego, podemos elegir $x = -1$ (o si quisiéramos, $x = -47$), y vemos que este $x$ cumple lo pedido.],
- [Para todo $n in NN$ tal que $n > 1$, para todo $m in NN$ tal que $m gt.eq 2n$, existe un $p in NN$ tal que $n < p < m$, y $p$ es primo.],[Esto nos dice que siempre que tengamos dos numeros naturales $n$ y $m$, si sabemos que $n > 1$ y $m gt.eq 2n$, entonces vamos a poder encontrar un primo entre $n$ y $m$.],[Nos van a dar dos números naturales, $n$ y $m$, y sabemos que $n > 1$ y $m gt.eq 2n$. Tenemos que probar que existe un primo $p$ tal que $n < p < m$.
-
- Esta proposición es un corolario del postulado de Bertrand.],
-)
-
-#let t = [Noten cómo usé cuantificadores en Español, no usando símbolos. No sugiero enfocarse en escribir usando el mayor número de símbolos posibles. Comparen "$forall x in X. exists y in Y. x > y implies (exists z in Z. z = x + y or z = x - y)$", con "Sea $x in X$. Entonces existe un $y in Y$, tal que si $x > y$, entonces $x + y in Z$, o $x - y in Z$." Al saber leer lenguaje natural, nos es más fácil entender qué significa la segunda oración. ¡Esto es a pesar de ser más larga! Cuando escribimos cuidadosamente, usando lenguaje standard, podemos tener ambos precisión, y comprensión del lector.]
+#let t = [Noten también cómo usé cuantificadores en Español, no usando símbolos. No sugiero enfocarse en escribir usando el mayor número de símbolos posibles. Comparen "$forall x in X. exists y in Y. x > y implies (exists z in Z. z = x + y or z = x - y)$", con "Sea $x in X$. Entonces existe un $y in Y$, tal que si $x > y$, entonces $x + y in Z$, o $x - y in Z$." Al saber leer lenguaje natural, nos es más fácil entender qué significa la segunda oración. ¡Esto es a pesar de ser más larga! Cuando escribimos cuidadosamente, usando lenguaje estándar, podemos tener ambas precisión, y comprensión del lector.]
 #let img = block({
     image("soviet.png", width: 100%)
     place(center + horizon, dx: 9.5mm, dy: -16mm, text(size: 8pt)[$forall x. forall y. x = y$])
 })
 #wrap-content(img, t, align: bottom + right)
-
-De cualquier forma, la siguiente es una tabla sobre símbolos lógicos, como refresco.
-
-#table(
-  columns: (0.1fr, 1fr),
-  [Símbolo], [Definición],
-  align: ((x,y) => if x == 0 { center + horizon } else { left }),
-  [$and$], ["Y". La expresión $A and B$ significa que valen ambas proposiciones $A$ y $B$.],
-  [$or$], ["O". La expresión $A or B$ significa que vale al menos una de las proposiciones $A$ o $B$. En particular, si vale $A$, entonces vale $A or B$, sin importar si vale o no $B$. Lo mismo si vale $B$.],
-  [$not$], ["No". La expresión $not A$ significa que no vale la proposición $A$. Si vale $A$, entonces no vale $not A$. Si no vale $A$, entonces vale $not A$. Notar que $not$ liga fuertemente a una variable o expresión, luego $not A or B$ significa $(not A) or B$.],
-  [$implies$], ["Implica". La expresión $A implies B$ significa que si vale la proposición $A$, entonces vale la proposición $B$. Si no vale $A$, entonces no hay nada que probar, y la expresión es cierta. Si vale $A$, tenemos que probar que vale $B$. Notar que esto es equivalente a decir que "o no vale $A$, o vale $B$", es decir, que $not A or B$ es equivalente a $A implies B$.],
-  [$iff$], ["Si y sólo si". La expresión $A iff B$ significa que ambas proposiciones son equivalentes: Si vale una, entonces vale la otra, y viceversa. Es decir, $A iff B$ es lo mismo que $(A implies B) and (B implies A)$.],
-  [$forall$], ["Para todo", o "Sea". La oración $forall x. P(x)$ significa que la propiedad $P$ vale para todo $x$. Algo común es escribir $forall x in X. P(x)$, que es una abreviación de $forall x. x in X implies P(x)$. Notar cómo el $forall$ captura todo lo que viene después del "." que le sigue al símbolo, luego no es necesario aclarar que la oración anterior es lo mismo que $forall x. (x in X implies P(x))$.],
-  [$exists$], ["Existe". La oración $exists y. P(y)$ significa que hay al menos un $y$ tal que la propiedad $P$ vale para $y$. Algo común es escribir $exists y in Y. P(y)$, que es una abreviación de $exists y. y in Y and P(y)$. Al igual que $forall$, el símbolo $exists$ captura todo lo que viene después del "." que le sigue al símbolo, luego no es necesario aclarar que la oración anterior es lo mismo que $exists y. (y in Y and P(y))$.
-
-  Como abreviación, se usa $exists! x in X. P(x)$ para significa "Existe un _único_ $x$ en $X$, tal que $P(x)$". Puede haber otros $x$ que cumplan $P(x)$, pero en $X$ sólo hay uno.]
-)
 
 == Considerar ejemplos
 
@@ -748,15 +748,79 @@ En general, las cosas que probamos van a ser de la forma $A implies B$, con $A$ 
 
 Por ejemplo, veamos el siguiente enunciado formal:
 
-#ej(title: "Fórmula de suma de grados")[
-Sea $G = (V, E)$ un grafo, $m = |E|$, y $d_G:V arrow NN$ el grado de cada vértice. Entonces:
+#ej[
+Dar una fórmula cerrada para la suma de los primeros $n$ números naturales impares, $sum_(i=1)^n (2i - 1)$.
+]
+Primero les voy a mostrar la serie de pensamientos que sigo al intentar resolver este ejercicio. No es una demostración formal, sólo una serie de ideas.
 
-$
-sum_(v in V) d_G (v) = 2m
-$
+#quote-box[
+
+Podemos considerar ejemplos pequeños:
+#align(center)[
+#table(
+  columns: (1fr, 1fr, 1fr, 1fr, 1fr, 1fr),
+  $n$, $1$, $n$, $3$, $4$, $5$,
+  $sum_(i=1)^n (2i - 1)$, $1$, $1 + 3 = 4$, $1 + 3 + 5 = 9$, $1 + 3 + 5 + 7 = 16$, $1 + 3 + 5 + 7 + 9 = 25$,
+)]
+
+Vemos cómo los resultados son los cuadrados consecutivos, $1$, $4$, $9$, $16$, $25$. Podemos pensar, entonces, en cómo los cuadrados se relacionan con la suma. Si dibujamos estos cuadrados a medida que aumenta $n$, podemos ver un patrón. Acá el bloque rojo es la suma de los anteriores números impares, y los cuadrados azul, verde, y amarillo, es el nuevo número impar que estamos sumando.
+
+#let draw_blocks(n, bloque: red, columna: blue, fila: yellow, esquina: green, label: true) = {
+  let nn = n + 1
+  stack(
+  dir: ttb,
+  spacing: 2mm,
+  if label { $n = #nn$ } else { none },
+  grid(
+    columns: n+1,
+    rows: n+1,
+    stroke: 0.7pt,
+    inset: (2mm, 2mm),
+    fill: (x, y) => {
+      if (x < n and y < n) {
+        return bloque
+      } else if (x == n and y < n) {
+        return columna
+      } else if (x < n and y == n) {
+        return fila
+      } else if (x == n and y == n) {
+        return esquina
+      } else {
+        return none
+      }
+    },
+  ))
+}
+
+#align(center)[
+#stack(
+  dir: ltr, 
+  spacing: 6mm, 
+  ..range(6).map(i => draw_blocks(i))
+)
 ]
 
-Para ver "por qué" se tiene que cumplir esa ecuación, podemos comenzar viendo grafos pequeños.
+Vemos que cada vez empezamos con el cuadrado anterior, y luego le sumamos una fila amarilla de longitud $n$, una columna azul de longitud $n$, y tenemos que restar 1, el cuadrado verde, pues si no lo estaríamos contando dos veces, pues pertenece a ambas la columna y la fila. Esto es lo mismo que tener un rectángulo (rosa) de $n times (n + 1)$, y agregarle una fila (naranja) de longitud $n + 1$:
+
+#align(center)[
+#stack(dir:ltr,
+  spacing: 5mm,
+  draw_blocks(6, label: false),
+  align(horizon)[$=$],
+  draw_blocks(6, bloque: fuchsia, columna: fuchsia, fila: orange, esquina: orange, label: false)
+)]
+
+Es decir, $n^2 + 2n - 1 = n times (n + 1) + (n + 1) = (n + 1)^2$. Esto no es una demostración, es sólo una intuición que nos va a guiar hacia cómo demostrarlo. Para ver cómo podemos demostrar esto, podemos usar inducción, pues estamos asumiendo la forma que tiene la suma de los primeros $n$ números impares, y calculando lo mismo para $n + 1$.
+]
+
+Ahora dadas esas ideas, podemos hacer una demostración formal.
+
+#demo[
+Sea $S_n = sum_(i=1)^n (2i - 1)$ la suma de los primeros $n$ números impares. Sea el predicado $P(n): S_n = n^2$. Queremos probar que para todo $n in NN$ tal que $n gt.eq 1$, vale $P(n)$.
+- Probamos el caso base, $P(1)$. Tenemos que $S_1$ es la suma del primer $1$ número impar, que es símplemente $1$, y luego $S_1 = 1$. Por otro lado, $1 = 1^2$, luego vale $P(1)$.
+- Para el paso inductivo, podemos asumir que vale $P(k)$ para todo $1 lt.eq k < n$, y queremos probar $P(n)$. Por definición de $S_n$, tenemos que $S_n = S_(n-1) + (2n - 1)$. Como vale $P(n-1)$ por hipótesis inductiva, dado que $1 lt.eq n - 1 < n$, tenemos que $S_(n-1) = (n - 1)^2$. Luego, $S_n = (n - 1)^2 + (2n - 1) = (n - 1)^2 + (n - 1) + n = (n - 1) times n + n = n^2$, que es lo que queríamos demostrar.
+]
+
 
 #let draw_circle_graph(nodes, edges, directed: false) = {
 	for (i, (n, c)) in nodes.enumerate() {
@@ -768,6 +832,18 @@ Para ver "por qué" se tiene que cumplir esa ecuación, podemos comenzar viendo 
 		edge(label(str(from)), label(str(to)), if directed {"-|>"} else {"-"}, bend: bend)
 	}
 }
+
+/*
+#ej(title: "Fórmula de suma de grados")[
+Sea $G = (V, E)$ un grafo, $m = |E|$, y $d_G:V arrow NN$ el grado de cada vértice. Entonces:
+
+$
+sum_(v in V) d_G (v) = 2m
+$
+]
+
+Para ver "por qué" se tiene que cumplir esa ecuación, podemos comenzar viendo grafos pequeños.
+
 
 #align(center)[
 #grid(
@@ -869,10 +945,11 @@ Para el grafo $G_5$ que dibujamos arriba, esto se ve así:
 })]
 
 Como $|e| = 2$ para todo $e in E$, tenemos que $|E'| = 2|E| = 2m$. También, como sabemos que $d_G (v)$ es el número de veces que $v$ aparece en una arista, tenemos que $sum_(v in V) d_G (v) = sum_(v in V) |{e in E | v in e}| = |{{v, e} | e in E, v in e}| = |E'|$. Luego, tenemos que $sum_(v in V) d_G (v) = 2m$.]
-
 Vemos cómo el considerar ejemplos nos guió primero a una demostración informal, y luego la formalizamos. El hacer cálculos manuales también nos mostró otra estrategia posible para demostrar (contar lo mismo de dos formas distintas, una estrategia combinatórica clásica).
 
-Veamos otro ejemplo de cómo jugar con ejemplos pequeños nos revela cómo lidiar con casos generales. Esta es la cadena de pensamientos que sigo al intentar resolver este ejercicio. No es una demostración formal, sólo una serie de ideas.
+*/
+
+Veamos otro ejemplo de cómo jugar con ejemplos pequeños nos revela cómo lidiar con casos generales. 
 #ej[
 Demostrar que para todo $n in NN$, $sum_(i = 0)^n i^2 = (n(n+1)(2n+1))/6$.
 ]
@@ -950,9 +1027,156 @@ En general vamos a usar varias de ellas en la misma demostración.
 === Inducción
 Si los objetos con los que estamos trabajando tienen una estructura recursiva, como los números naturales, los árboles, los grafos, o las cadenas de texto, entonces podemos considerar inducción como técnica de demostración. 
 
-#warning-box[Sugiero ser formal cuando hacen inducción. Es muy común que se confundan y prueben algo como "Si $G = (V, E)$ es tal que $|V| = n$, entonces me armo $G'$ de $n + 1$ agregándole un vértice conectado con una arista a $G$. Como asumo que vale mi propiedad para $G$, y pruebo que vale mi propiedad para $G'$, entonces queda probada la propiedad para todos los grafos". Eso es incorrecto. Vamos a ver luego más ejemplos de errores. En general, se usa la formalidad para no cometer errores, cuando están aprendiendo a demostrar.]
+Vamos a plantear un predicado sobre los naturales, $P$. Vamos a probar que $P$ vale para los primeros $k$ números naturales (es posible que $k = 0$, o $k = 1$, o $k > 1$). Luego vamos a probar que dado un $n gt.eq k$, si vale $P(j)$ para todo $j < n$, entonces vale $P(n)$. Esto nos permite concluir que vale $P(n)$ para todo $n in NN$.
 
-El siguiente es un ejemplo de una demostración incorrecta de una proposición falsa, por ser informal y no definir explícitamente una proposición sobre los números naturales, con cuantificadores.
+Veamos un caso simple, con $k = 1$.
+
+#prop[
+Para todo $n in NN$, $sum_(i=1)^n i = (n(n+1))/2$.
+]
+#demo[
+Sea el predicado $P(n): sum_(i=1)^n i = (n(n+1))/2$. Vamos a probar que vale $P(n)$ para todo $n in NN$.
+- Caso base, $P(0)$. Tenemos que $sum_(i=1)^1 i = 1$, y $(1(1+1))/2 = 1$, luego vale $P(1)$.
+- Paso inductivo, $P(n)$ con $n gt.eq 1$. Asumimos $P(j)$ para todo $j < n$, queremos probar $P(n)$. 
+  Tenemos:
+  $
+  sum_(i=1)^n i &= (sum_(i=1)^(n-1) i) + n \
+                &= ((n-1)n)/2 + n, "por hipótesis inductiva" P(n-1) \
+                &= (n^2 - n + 2n)/2 \
+                &= (n(n+1))/2,
+  $
+  que es lo que queríamos demostrar.
+]
+
+Veamos un caso con $k = 0$. Quizás les resulte extraño que no sean necesarios casos base. Esto sucede cuando la demostración de $P(n)$ no siempre usa $P(n-r)$ para algún $r$, sino que la estructura inductiva es otra. En el siguiente caso, la estructura es multiplicativa, no aditiva. Los "casos base" son los números primos, si uno quisiera llamarlos así.
+
+#prop[
+Sea $n in NN$, $n > 0$. Entonces $n$ se puede escribir como un producto de números primos.
+]
+#demo[
+Sea el predicado $P(n):$ "Si $n > 0$, entonces $n$ se puede escribir como un producto de números primos". Vamos a probar que vale $P(n)$ para todo $n in NN$ con $n > 0$.
+
+Sea $n in NN$, $n > 0$. Asumimos que vale $P(j)$ para todo $j < n$. Como $n > 0$, o bien $n$ es primo, o no lo es.
+- Si $n$ es primo, entonces $n$ se puede escribir como un producto de números primos, símplemente $n$.
+- Si $n$ no es primo, entonces existen $a, b in NN$, con $1 lt.eq a, b < n$, tales que $n = a times b$. Como $a < n$ y $b < n$, sabemos que valen $P(a)$ y $P(b)$. Como $a > 0$ y $b > 0$, $P(a)$ y $P(b)$ nos dan formas de escribir a $a$ y $b$ como productos de números primos, $a = q_1 times dots times q_s$ y $b = r_1 times dots times r_t$. Luego vemos que $n = q_1 times dots times q_s times r_1 times dots times r_t$ es una forma de escribir $n$ como producto de números primos, que es lo que queríamos demostrar.
+]
+#note-box[
+Noten en la anterior demostración que $P(a)$ y $P(b)$ son implicaciones. No nos dicen que existe una factorización de $a$ y $b$ como producto de primos, nos dicen que *si* $a > 0$, *entonces* existe una factorización de $a$ como producto de primos. Lo mismo para $b$. Por eso es importante que tomamos $a$ y $b$ mayores que cero, pues de otra forma no sirve la hipótesis inductiva.
+]
+
+Una generalización de la inducción es la inducción en conjuntos bien-fundados, también conocida como inducción Noetheriana#footnote[El nombre es en honor a la matemática Emmy Noether (1882 - 1935), que fue la primera en usar una técnica similar para probar propiedades sobre ciertos anillos, hoy llamados anillos Noetherianos.] o inducción estructural. No es necesario para los temas de este libro, pero es útil para entender una forma de inducción sobre tipos de datos algebraicos.
+
+#def(title:[Inducción estructural])[
+Sea $A$ un conjunto, y $prec.eq$ un orden parcial sobre $A$. Escribimos $a prec b$ para significar que $a prec.eq b$ y $a eq.not b$. Dado un subconjunto $M$ de $A$, llamamos a un elemento $m in M$ *$prec.eq$-minimal* cuando no existe ningún $m' in M$ tal que $m' prec m$.
+
+Decimos que $(A, prec.eq)$ es un *orden bien fundado* si para todo subconjunto no vacío $M$ de $A$, $M$ tiene un elemento $prec.eq$-minimal.
+
+Sea $P$ un predicado sobre $A$, con $(A, prec.eq)$ un orden bien fundado. Para probar que vale $P(a)$ para todo $a in A$, alcanza con probar dos cosas:
+- $P(a)$ vale para todo elemento $prec.eq$-minimal de $A$.
+- Para todo $a in A$ no $prec.eq$-minimal, si vale $P(a')$ para todo $a' prec a$, entonces vale $P(a)$.
+]
+
+Por ejemplo, veamos cómo usar inducción estructural para probar una propiedad sobre árboles.
+
+#ej[
+Definimos el tipo de datos algebraico `Tree` como:
+
+```haskell
+data Tree = Nil | Node Int Tree Tree
+```
+
+Es decir, un `Tree` es o bien `Nil`, o bien es un nodo que contiene un entero y dos `Tree`s, cada uno posiblemente `Nil`. Luego definimos:
+
+```haskell
+espejar :: Tree -> Tree
+espejar Nil = Nil
+espejar (Node x l r) = Node x (espejar r) (espejar l)
+```
+
+Demostrar que para todo ```haskell t :: Tree```, vale que ```haskell espejar (espejar t) = t```.
+]
+#demo[
+Sea $T$ el conjunto de todos los ```haskell Tree```. Definimos un orden parcial $prec.eq$ sobre $T$ como: para todo $t_1, t_2 in T$, tenemos $t_1 prec.eq t_2$ cuando $t_1$ es un sub-árbol de $t_2$. Es decir, si $t_1 = t_2$, o bien $t_2 =$ ```hs Node x l r```, y $t_1 prec.eq l$ o $t_1 prec.eq r$.
+
+El único elemento minimal es ```hs Nil```, pues para todo $t =$ `Node x l r`, tenemos que $l prec.eq t$, y $r prec.eq t$, con $l eq.not t$ y $r eq.not t$, y luego $l prec t$ y $r prec t$, con lo cual $t$ no es minimal.
+
+Probemos la propiedad $P(t):$ "```haskell espejar (espejar t) = t```", para todo $t in T$, usando inducción estructural sobre $(T, prec.eq)$.
+- Caso base, $t =$ ```hs Nil```. Probemos $P($```hs Nil```$)$. Tenemos que ```haskell espejar (espejar Nil) = espejar Nil = Nil```, luego vale $P($```hs Nil```$)$.
+- Paso inductivo, $t =$ ```hs Node x l r```. Como $l prec t$ y $r prec t$, podemos asumir que vale $P(l)$ y $P(r)$, queremos probar $P(t)$. Tenemos:
+  ```haskell
+  espejar (espejar (Node x l r)) 
+    = espejar (Node x (espejar r) (espejar l)) 
+    = Node x (espejar (espejar l)) (espejar (espejar r)) 
+    = Node x l r -- por hipótesis inductiva P(l) y P(r)
+  ```
+  que es lo que queríamos demostrar.
+]
+
+Para estructuras finitas, la inducción estructural es equivalente a la inducción matemática "clásica" sobre $NN$, pues podemos asignar a cada elemento de la estructura un número natural que mide su "tamaño", que induce un órden parcial, y hacer inducción sobre ese número. Veamos un ejemplo.
+
+#ej[
+Definimos el tipo de datos algebraico `List` como:
+
+```haskell
+data List = Nil | Cons Int List
+```
+
+Es decir, una `List` es o bien `Nil`, o bien es un par formado por un entero y otra `List`. Luego definimos:
+
+```haskell
+length :: List -> Int
+length Nil = 0
+length (Cons _ xs) = 1 + length xs
+
+concat :: List -> List -> List
+concat Nil ys = ys
+concat (Cons x xs) ys = Cons x (concat xs ys)
+```
+
+Demostrar que para todas dos ```haskell xs :: List``` y ```haskell ys :: List```, vale que ```haskell length (concat xs ys) = length xs + length ys```.
+]
+#demo[
+Vamos a probar el predicado sobre los números naturales $P(n):$ "Para toda ```haskell xs :: List``` tal que ```haskell length xs = n```, y para toda ```haskell ys :: List```, vale que ```haskell length (concat xs ys) = n + length ys```".
+
+- Caso base, $P(0)$. Sea ```haskell xs :: List``` tal que ```haskell length xs = 0```. Entonces, usando la definición de ```haskell length```, ```haskell xs = Nil```. Sea ```haskell ys :: List``` cualquiera. Entonces:
+  ```haskell
+  length (concat xs ys) 
+    = length (concat Nil ys) 
+    = length ys
+    = 0 + length ys
+  ```
+  que es lo que queríamos demostrar.
+- Paso inductivo. Tenemos $n > 0 in NN$, sabemos que vale $P(j)$ para todo $0 < j < n$, y queremos probar $P(n)$. Sea ```haskell xs :: List``` tal que ```haskell length xs = n```. Como $n > 0$, tenemos que ```haskell xs = Cons x xs'```, para algún ```haskell x :: Int```, y ```haskell xs' :: List```. Además, como ```haskell length xs = n```, tenemos que ```haskell length xs' = n - 1```. Sea ```haskell ys :: List``` cualquiera. Entonces:
+  ```haskell
+  length (concat xs ys) 
+    = length (concat (Cons x xs') ys) 
+    = length (Cons x (concat xs' ys)) 
+    = 1 + length (concat xs' ys)
+    = 1 + (n - 1) + length ys -- por hipótesis inductiva P(n-1)
+    = n + length ys
+  ```
+  que es lo que queríamos demostrar.
+
+  Notar que usamos $P(n-1)$ para saber que ```haskell length (concat xs' ys) = (n - 1) + length ys```, pues ```haskell length xs' = n - 1```.
+]
+
+
+#warning-box[Sugiero ser formal cuando hacen inducción. Es muy común que se confundan cuando son informales. El siguiente es un ejemplo de una demostración incorrecta de una proposición falsa, por ser informal y no definir explícitamente una proposición sobre los números naturales, con cuantificadores.
+
+#text(red)[
+#prop[
+Sea $P(n):$ Para todo conjunto $S$ de enteros de tamaño $n$, si $1 in S$, entonces $max(S) = |S|$.
+]
+#demo[
+  + Caso base. Sea $S$ un conjunto de tamaño $1$, con $1 in S$. Entonces $S = {1}$, y luego $max(S) = 1 = |S|$.
+  + Paso inductivo. Asumimos $P(n)$, vamos a probar $P(n+1)$. Sea $S$ un conjunto de tamaño $n$, tal que $1 in S$. Por $P(n)$ sabemos que $max(S) = |S|$. Construimos $S' = S union {k}$, con $k = |S| + 1 = n + 1$. Como $max(S) = |S| = n$, en particular $n + 1 in.not S$, y luego $|S'| = n + 1$. Además, $1 in S'$, porque $1 in S$, y $S subset.eq S'$. Entonces, $max(S') = k = n + 1 = |S'|$, que es lo que queríamos demostrar.
+]
+]
+
+Esto es claramente incorrecto, puesto que existe $S = {1, 100}$, con $1 in S$, pero $max(S) = 100 eq.not |S| = 2$. El problema es que la demostración es informal, y no usa $P(n)$, sólo lo menciona. Para probar $P(n+1)$, tendríamos que probar que _cualquier_ conjunto $S'$ de tamaño $n + 1$ que contiene al $1$, cumple que $max(S') = |S'|$. Pero en la demostración, sólo se prueba para un conjunto particular, el que se construye agregando un elemento específico al conjunto $S$. El problema es que no todo conjunto de tamaño $n + 1$ que contiene al $1$, se puede construir de esa forma a partir de un conjunto de tamaño $n$ que contiene al $1$.
+]
+
+/*
 #prop[
 Sea $G$ un grafo. Si todos los vértices de $G$ tienen grado mayor o igual a $1$, entonces $G$ es conexo.
 ]
@@ -988,7 +1212,7 @@ Lo que sí está probando es que si empezamos con un grafo conexo, y varias vece
 La diferencia está en que no todo grafo cuyos vértices tienen grados mayores o iguales a 1, viene de hacer ese procedimiento iterativo. Luego, la recomendación es que sean formales, que escriban cuál exactamente es la propiedad sobre números naturales que quieren demostrar.]
 #let im = image("jenga.png", width: 50mm)
 #wrap-content(im, t)
-
+*/
 
 
 /*
@@ -1019,7 +1243,7 @@ La diferencia está en que no todo grafo cuyos vértices tienen grados mayores o
 
   Esto sería más claramente erroneo si hubieramos comenzado con $G$ y removido un vértice. Tendríamos que en algún momento decir "Vale $A(G')$ porque..." y no sabríamos cómo seguir, porque no es cierto. Si usamos el formalismo de inducción, definiendo propiedades sobre los naturales (como $P(n): "Para todo grafo" G = (V, E)" con "|V| = n gt.eq 3" y "d_G (v) gt.eq 2" " forall v in V," "G" contiene un ciclo de longitud "3$), nos va a ayudar a no mandarnos estas macanas.
 */
-  #warning-box[Si nuestra demostración de $P(n)$ requiere que $P(n - 1), P(n - 2), dots, P(n - k)$ sea cierto para algún $k gt.eq 1$ fijo, entonces vamos a necesitar $k$ casos base. Esto es porque nuesta demostración no va a tener sentido cuando $n < k$, porque estaríamos diciendo que $P(n - k)$ vale, con $n - k < 0$, que no tiene sentido pues $P$ es una proposición sobre los naturales. Veamos un ejemplo.]
+  #warning-box[Si nuestra demostración de $P(n)$ requiere que $P(n - 1), P(n - 2), dots, P(n - k)$ sea cierto para algún $k gt.eq 1$ fijo, entonces vamos a necesitar $k$ casos base. Esto es porque nuesta demostración no va a tener sentido cuando $n < k$, porque estaríamos diciendo que $P(n - k)$ vale, con $n - k < 0$, que no tiene sentido pues $P$ es una proposición sobre los naturales.]
 
   Veamos primero una demostración correcta que toma esto en cuenta, y luego tres que son incorrectas por no hacerlo.
 
@@ -1319,7 +1543,7 @@ Vemos frecuentemente el error #text(red)[$not (P implies Q) iff not P implies no
                   else if y in (6,) { yellowish }
                   else { greenish },
   inset: 5pt,
-  [Si la inflamación no se va, el dolor vuelve. Luego, voy a tomar Anaflex, porque saca la inflamación.], [$P = $ La inflamación se va, $Q = $ El dolor vuelve, $R = $ Tomo Anaflex. Asumimos que $(not P) implies Q$, y que $R implies P$. No podemos concluir que $R implies not Q$. Perfectamente puede ser que $Q = top$, y el dolor siempre vuelve. Tomar Anaflex no hace nada para el dolor. La "demostración" asume que $(not P implies Q) iff (P implies not Q)$, que es mentira.#footnote[El autor de este documento ha odiado esa publicidad más de 20 años, precísamente por ser un mal uso de operaciones lógicas.].],
+  [Si la inflamación no se va, el dolor vuelve. Luego, voy a tomar Anaflex, porque saca la inflamación.], [$P = $ La inflamación se va, $Q = $ El dolor vuelve, $R = $ Tomo Anaflex. Asumimos que $(not P) implies Q$, y que $R implies P$. No podemos concluir que $R implies not Q$. Perfectamente puede ser que $Q = top$, y el dolor siempre vuelve. Tomar Anaflex no hace nada para el dolor. La "demostración" asume que $(not P implies Q) iff (P implies not Q)$, que es mentira#footnote[El autor de este documento ha odiado esa publicidad más de 20 años, precísamente por ser un mal uso de operaciones lógicas.].],
   [Sea $A$ un conjunto que contiene a todos los conjuntos. Sea $B = {x in A | x in.not x}$. Si $B in B$, entonces por definición de $B$, $B in.not B$, que no puede suceder. Si no, $B in.not B$, y por definición de $B$, $B in B$, que no puede suceder. Luego, $A$ no puede existir.], [Esto es correcto. En ambas ramas, llegamos a una contradicción. Si $P implies Q$ y $not(P) implies Q$, entonces vale $Q$. En este caso, $Q = bot$, $P = B in B$. Luego, si asumimos que $A$ existe, probamos $bot$, y por ende concluimos que $A$ no existe.#footnote[Esta es la paradoja de Russell@russell.]],
   [Queremos ver si vale la siguiente proposición: "Sea $k gt.eq 1$, con $k in ZZ$. Si $k$ es tal que $2^k equiv 0 (mod 3)$, entonces $8 equiv 1 (mod 3)$". Vemos que hay un contraejemplo, con $k = 1$, tenemos $8^1 = 8 equiv.not 3 (mod 2)$, pues $8 = 2 times 3 + 2 equiv 2 (mod 3)$.], [Esto está mal. Tenemos una proposición $P(k): Q(k) implies R(k)$ sobre todos los $k in ZZ, k gt.eq 1$, con $Q(k): 2^k equiv 0 (mod 3)$, y $R(k): 8 equiv 1 (mod 3)$. Lo que encontramos es un contraejemplo a $R(k)$, pero esto no implica que $P(k)$ sea falsa. De hecho $P(k)$ siempre es cierta, pues $Q(k)$ es falsa para todo tal $k$. $P(k)$ es equivalente a $not Q(k) or R(k)$, y como $Q(k)$ es siempre $bot$, entonces $P(k)$ es equivalente a $top or R(k)$, que es equivalente a $top$. Luego, $P(k)$ siempre es cierta para tales $k$.],
   [Queremos ver que si $a^2 = 0$, con $a in RR$, entonces $a = 0$. Supongamos que $a eq.not 0$. Entonces existe $a^(-1) in RR$. Luego, $a^2 = 0 implies a^(-1) a^2 = 0 implies a = 0$, con lo cual concluimos que $a = 0$, una contradicción pues asumimos que $a eq.not 0$. Luego, lo que asumimos no puede suceder, y tenemos que $a = 0$.], [Está bien. Asumimos $not P$, y llegamos a una contradicción. En particular, llegamos a $P$. Luego, no puede suceder que valga $not P$, y efectivamente tenemos que vale $P$ sin asumir nada.],
@@ -1705,7 +1929,7 @@ Las siguientes son cosas que pueden hacer al pasar en limpio una demostración:
 Este es *de lejos* el error que más cometen los alumnos. En este momento de su educación, todavía no les recomiendo dejar de lado la formalidad, y hacer argumentos informales. Un argumento informal puede ser riguroso, pero requiere experiencia hacer esto sin cometer errores. Todavía no tienen esa experiencia. Por ende, a la hora de argumentar, sean formales. Algunas recomendaciones sobre formalidad:
 
 + Pónganle nombre a todo.
-  + Si un sustantivo no tiene nombre, no podemos hablar de él claramente. Muchas veces se quedan "sin saber cómo seguir", porque no tienen a mano suficientes sustantivos para ver relaciones entre ellos, o ver qué cosas cumple cada uno.
+  Si un sustantivo no tiene nombre, no podemos hablar de él claramente. Muchas veces se quedan "sin saber cómo seguir", porque no tienen a mano suficientes sustantivos para ver relaciones entre ellos, o ver qué cosas cumple cada uno.
   
     Ante el siguiente ejercicio:
     
@@ -1814,58 +2038,177 @@ Finalmente, a veces lo que asumen no es explícito. Por ejemplo, si se les pide 
 #wrap-content(image_assumption, body_assumption)
 
 
-= Ejercicios resueltos
+= Temario
 
-A continuación les voy a mostrar varios ejemplos de demostraciones matemáticas. Los temas están sacados del contenido de la carrera. Todas son rigurosas y formales. La idea de estos ejemplos es que vean varias estrategias de demostración puestas en práctica en una variedad de escenarios. Es posible que haya ejercicios que mencionen objetos que no conocen todavía, no hay ningún problema con eso, no hace falta que entiendan _todos_ los ejemplos.
+En los siguientes capítulos vamos a ver los temas de la materia, con un enfoque en las demostraciones. Todas son rigurosas, y tienen el nivel de formalidad esperado de los alumnos de la carrera.
 
-Sugiero _fuertemente_ no leer la solución sin haber intentado resolver cada ejercicio, durante al menos una hora. Como dije en la @comoaprender, no aprenden cuando terminan un ejercicio, y aprenden muy poco cuando ven cómo alguién más resuelve un ejercicio. El aprendizaje sucede principalmente cuando intentan, durante horas, resolver ejercicios. Intenten jugar con los objetos, pónganle nombre a todo, usen ecuaciones, vean qué pueden deducir, y no se rindan si no les sale en los primeros 20 minutos.
+Luego de cada capítulo van a tener ejemplos de ejercicios de demostración resueltos. Sugiero _fuertemente_ no leer la solución sin haber intentado resolver cada ejercicio, durante al menos una hora. Como dije en la @comoaprender, no aprenden cuando terminan un ejercicio, y aprenden muy poco cuando leen cómo alguién más resuelve un ejercicio. El aprendizaje sucede principalmente cuando intentan, durante horas, resolver ejercicios. Intenten jugar con los objetos, pónganle nombre a todo, usen ecuaciones, vean qué pueden deducir, y no se rindan si no les sale en los primeros 20 minutos.
+
+
+== Lógica
+
+El área de lógica es rica y profunda. En este libro vamos a ver los conceptos necesarios para entender demostraciones matemáticas al nivel esperado de un estudiante de Ciencias de la Computación. Para alumnos interesados en ver más profundamente el tema, y cómo se relaciona con la computación, recomiendo el libro @logicincs. Para una mirada más matemática, incluyendo los famosos teoremas de completitud e incompletitud de Gödel, recomiendo @introtologic.
+
+#def[
+Una proposición es una afirmación que puede ser verdadera o falsa.
+]
+
+Los siguientes son ejemplos de proposiciones:
+  - $2 + 2 = 4$.
+  - El número $pi$ es irracional.
+  - Para todo número natural $n$, $n + 0 = n$.
+  - Existe un número primo par mayor que $2$.
+
+Mientras tanto, las siguientes no son proposiciones:
+  - $x + 2 = 5$ (no sabemos si es verdadera o falsa, porque no sabemos qué es $x$).
+  - "Cierre la puerta." (no es una afirmación, es una orden).
+  - "¿Cuánto es $2 + 2$?" (no es una afirmación, es una pregunta).
+
+Podemos asignarle nombres a proposiciones, por ejemplo escribiendo "Sea $P$: $2 + 2 = 4$." Luego podemos usar estos nombres para construir proposiciones más complejas, usando conectores lógicos. Por ejemplo, si decimos "Sea $P: 2 + 2 = 4$ y $Q: 3 + 3 = 6$.", entonces podemos construir la proposición "$P and Q$", que es verdadera sólo si ambas $P$ y $Q$ son verdaderas. Otros conectores lógicos son:
+  - $P or Q$: es verdadera si al menos una de $P$ o $Q$ es verdadera.
+  - $P implies Q$: es verdadera si siempre que $P$ es verdadera, $Q$ también lo es.
+  - $not P$: es verdadera si $P$ es falsa.
+
+#def[
+Un predicado es una proposición que depende de una o más variables.
+]
+
+Por ejemplo, "$x$ es par" es un predicado que depende de la variable $x$. Si le damos un valor a $x$, obtenemos una proposición. Por ejemplo, si $x = 4$, entonces el predicado "$x$ es par" se vuelve la proposición "4 es par", que es verdadera.
+
+#ej[
+Sean $P, Q$ proposiciones. Demostrar que $(P implies Q) or (Q implies P)$.
+]
+
+#ej[
+Sean $P, Q$ proposiciones. Probar que $((P implies Q) implies P) implies P$.
+
+Esta fórmula se conoce como la Ley de Peirce@peirce.
+]
+#ej[
+Para cada una de las siguientes proposiciones:
+  + $exists x. x^2 = 2$.
+  + $forall x. exists y. x^2 = y$.
+  + $forall y. exists x. x^2 = y$.
+  + $forall x. (x eq.not 0 implies exists y. x y = 1)$.
+  + $forall x exists y. 2x - y = 0$
+  + $forall x exists y. x - 2y = 0$
+  + $forall x. ((x > 10) implies (forall y. (y < x implies y < 9)))$
+  + $forall x. exists y. (y > x and exists z. (y + z = 100))$
+  + $exists x. exists y. x + 2y = 2 and 2x + 4y = 5$
+
+Indicar cuáles son *falsas* cuando $x, y, z$ son:
+  + Números naturales.
+  + Números enteros.
+  + Números reales.
+]
+#ej[
+Mostrar que la siguiente proposición es falsa para algún conjunto $D$, y alguna proposición $P$:
+
+$
+(forall x in D. exists y in D. P(x, y)) implies (forall z in D. P(z, z))
+$
+]
+
+#text(red)[CONECTAR ESTA PARTE]
+
+Algunos ejemplos de cuantificadores y qué significan:
+
+#table(
+  columns: (0.75fr, 1fr, 1fr),
+  inset: 10pt,
+  stroke: 0.5pt + black,
+  align: left,
+ [*Oración*],[*Significado*],[*Cómo probarla*],
+ [Para todo $x in RR$, tenemos que $x^2 gt.eq 0$.],[Para cualquier $x$ que elijamos en los reales, $x^2$ es mayor o igual a cero. Otra forma de escribir esto es $forall x. (x in RR implies x^2 gt.eq 0)$. Es decir, para todo $x$, si $x$ está en los reales, entonces $x^2 gt.eq 0$.],[Nos van a dar un $x$, y sabemos que $x in RR$. Tenemos que probar que $x^2 gt.eq 0$. Podemos partir en casos, dependiendo de si $x gt.eq 0$ o $x < 0$. En el primero, el producto de dos números no-negativos es no-negativo, y en el segundo caso, $x = -y$ con $y > 0$, y luego $x^2 = (-y)(-y) = y^2 > 0$, y luego en ambas ramas tenemos $x^2 gt.eq 0$.],
+ [Para todo $x in RR$, existe un $y in NN$, tal que $y > x$.], [Para cualquier $x$ que elijamos en el conjunto $RR$, hay algún $y$ en $NN$ que es más grande. Otra forma de escribir esto es $forall x. (x in RR implies (exists y. (y in NN and y > x)))$. Es decir, para todo $x$, si $x$ está en $RR$, entonces existe un $y$, tal que $y$ está en $NN$, y también $y > x$.],[Nos van a dar un $x$, y sabemos que $x in RR$. Tenemos que mostrar que existe un $y$ tal que $y in NN$, e $y > x$. A veces vamos a poder encontrar $y$ explícitamente, otras veces sólo vamos a saber que existe. $y$ puede depender de $x$. En este caso, podemos elegir $y = ceil(x) + 1$, y sabiendo que $ceil(x) gt.eq x$, y que $ceil(space):RR arrow NN$, concluímos que $y = ceil(x) + 1 > x$, con $y in NN$. Notar que puede haber otros $y$ posibles, por ejemplo $ceil(x) + 5$, pero basta con encontrar uno y estamos.],
+ [Existe un $x in RR$, tal que para todo $y in {0, 1, dots, 8}$, $y > x$.],[Hay alguien en $RR$ que es menor a todo elemento de ${0, 1, dots, 8}$.],[Tenemos que probar que existe un tal $x$. A veces vamos a poder decir quién es $x$ explícitamente, otras veces sólo vamos a poder probar que existe. Tenemos que mostrar que para este $x$ que elegimos, sin importar qué $y in {0, 1, dots, 8}$ alguien elija, tendremos $y > x$. Podemos elegir $x = -1$, y vemos que $-1 < 0$, $-1 < 1$, $dots$, $-1 < 8$, y por lo tanto $x < y$ para todo $y in {0, 1, dots, 8}$.],
+ [Existe un $x in RR$, tal que para todo $y in {0, 1, dots, ceil(x)}$, $x > y$.],[Hay algún real $x$, tal que $x$ es más grande que cualquier elemento en ${0, 1, dots, ceil(x)}$.],[Tenemos que dar un tal $x in RR$. Llamemos $X = {0, 1, dots, ceil(x)}$. Veamos a quién podemos elegir:
+   - Si elegimos un $x > -1$, entonces $X$ tiene al menos 1 elemento ($ceil(x) gt.eq 0$). Como $ceil(x) gt.eq x$, y $ceil(x) in X$, nunca vamos a poder probar que $x > y$ para todo $y in X$, pues alguien podría darnos $y = ceil(x) gt.eq x$.
+   - Si elegimos un $x lt.eq -1$, entonces $X = {0, 1, dots, ceil(x)}$ con $ceil(x) < 0$, y luego $X = emptyset$. Luego, "para todo $y in emptyset$, $x > y$" es trivialmente cierto sobre $x$, puesto que no hay ningún tal $y in emptyset$. Luego, podemos elegir $x = -1$ (o si quisiéramos, $x = -47$), y vemos que este $x$ cumple lo pedido.],
+ [Para todo $n in NN$ tal que $n > 1$, para todo $m in NN$ tal que $m gt.eq 2n$, existe un $p in NN$ tal que $n < p < m$, y $p$ es primo.],[Esto nos dice que siempre que tengamos dos numeros naturales $n$ y $m$, si sabemos que $n > 1$ y $m gt.eq 2n$, entonces vamos a poder encontrar un primo entre $n$ y $m$.],[Nos van a dar dos números naturales, $n$ y $m$, y sabemos que $n > 1$ y $m gt.eq 2n$. Tenemos que probar que existe un primo $p$ tal que $n < p < m$.
+
+ Esta proposición es un corolario del postulado de Bertrand.],
+)
+
+
+#text(red)[CONECTAR ESTA PARTE]
+
+De cualquier forma, la siguiente es una tabla sobre símbolos lógicos, como refresco.
+
+#table(
+  columns: (0.1fr, 1fr),
+  [Símbolo], [Definición],
+  align: ((x,y) => if x == 0 { center + horizon } else { left }),
+  [$and$], ["Y". La expresión $A and B$ significa que valen ambas proposiciones $A$ y $B$.],
+  [$or$], ["O". La expresión $A or B$ significa que vale al menos una de las proposiciones $A$ o $B$. En particular, si vale $A$, entonces vale $A or B$, sin importar si vale o no $B$. Lo mismo si vale $B$.],
+  [$not$], ["No". La expresión $not A$ significa que no vale la proposición $A$. Si vale $A$, entonces no vale $not A$. Si no vale $A$, entonces vale $not A$. Notar que $not$ liga fuertemente a una variable o expresión, luego $not A or B$ significa $(not A) or B$.],
+  [$implies$], ["Implica". La expresión $A implies B$ significa que si vale la proposición $A$, entonces vale la proposición $B$. Si no vale $A$, entonces no hay nada que probar, y la expresión es cierta. Si vale $A$, tenemos que probar que vale $B$. Notar que esto es equivalente a decir que "o no vale $A$, o vale $B$", es decir, que $not A or B$ es equivalente a $A implies B$.],
+  [$iff$], ["Si y sólo si". La expresión $A iff B$ significa que ambas proposiciones son equivalentes: Si vale una, entonces vale la otra, y viceversa. Es decir, $A iff B$ es lo mismo que $(A implies B) and (B implies A)$.],
+  [$forall$], ["Para todo", o "Sea". La oración $forall x. P(x)$ significa que la propiedad $P$ vale para todo $x$. Algo común es escribir $forall x in X. P(x)$, que es una abreviación de $forall x. x in X implies P(x)$. Notar cómo el $forall$ captura todo lo que viene después del "." que le sigue al símbolo, luego no es necesario aclarar que la oración anterior es lo mismo que $forall x. (x in X implies P(x))$.],
+  [$exists$], ["Existe". La oración $exists y. P(y)$ significa que hay al menos un $y$ tal que la propiedad $P$ vale para $y$. Algo común es escribir $exists y in Y. P(y)$, que es una abreviación de $exists y. y in Y and P(y)$. Al igual que $forall$, el símbolo $exists$ captura todo lo que viene después del "." que le sigue al símbolo, luego no es necesario aclarar que la oración anterior es lo mismo que $exists y. (y in Y and P(y))$.
+
+  Como abreviación, se usa $exists! x in X. P(x)$ para significa "Existe un _único_ $x$ en $X$, tal que $P(x)$". Puede haber otros $x$ que cumplan $P(x)$, pero en $X$ sólo hay uno.]
+)
 
 == Conjuntos
-#ej[
-Sean $A$, $B$ conjuntos. Entonces 
+
+#def[
+Un conjunto es una colección no-ordenada de elementos distintos.
+]
+Si $A$ es un conjunto, y $a$ es un elemento del conjunto, escribimos $a in A$. Si $b$ no es un elemento del conjunto, escribimos $b in.not A$. Podemos escribir conjuntos usando llaves, por ejemplo, $A = {1, 2, 3, 4}$ es el conjunto cuyos elementos son exactamente $1$, $2$, $3$, $4$, y ningún otro. Como los conjuntos no son ordenados, ${4, 3, 2, 1}$ es el mismo conjunto que el anterior. Asimismo, como los elementos deben ser distintos, ${1, 2, 2, 3, 4, 4}$ es también el mismo conjunto.
+
+#def[
+Dos conjuntos son iguales cuando tienen los mismos elementos. Escribimos $A = B$ si y sólo si para todo $x$, $x in A$ si y sólo si $x in B$.
+]
+
+También podemos escribir conjuntos por comprensión, diciendo que son todos los elementos que cumplen alguna propiedad. Por ejemplo, $C = {x in {1, 2, 3, 4} | x$ es par$}$ es el conjunto de todos los elementos pares en ${1, 2, 3, 4}$, es decir, $C = {2, 4}$.
+
+Si todos los elementos de $A$ están en $B$, notamos $A subset.eq B$. Si la inclusión es estricta, es decir, si $A subset.eq B$ y existe algún elemento en $B$ que no está en $A$, notamos $A subset B$.
+
+Finalmente, notamos al conjunto vacío, que no tiene elementos, como $emptyset$. Otros conjuntos conocidos son el conjunto de los números naturales, $NN$, el conjunto de los enteros, $ZZ$, el conjunto de los racionales, $QQ$, y el conjunto de los reales, $RR$.
+
+Veamos algunas propiedades fundamentales sobre conjuntos.
+
+#prop[
+Sean $A$ y $B$ conjuntos. Entonces $A = B$ si y sólo si $A subset.eq B$ y $B subset.eq A$.
+]
+#demo[
+Para probar un si-y-sólo-si, probamos ambas implicaciones.
+- $implies$) Asumimos que $A = B$, queremos probar que $A subset.eq B$ y $B subset.eq A$. Sea $x in A$. Como $A = B$, entonces $x in B$. Luego, por definición de inclusión, $A subset.eq B$. Análogamente, si $y in B$, como $A = B$, entonces $y in A$, y luego $B subset.eq A$.
+- $implied$) Asumimos que $A subset.eq B$ y $B subset.eq A$, queremos ver que $A = B$. Sea $x$ un elemento cualquiera. Vamos a probar que $x in A$ si y sólo si $x in B$.
+  + $implies$) Asumimos que $x in A$. Como $A subset.eq B$, entonces $x in B$.
+  + $implied$) Asumimos que $x in B$. Como $B subset.eq A$, entonces $x in A$.
+  Luego, $x$ está en $A$ si y sólo si $x$ está en $B$. Como $x$ era arbitrario, entonces $A = B$.
+]
+
+#prop[Sean $A$, $B$, y $C$ conjuntos. Si $A subset.eq B$ y $B subset.eq C$, entonces $A subset.eq C$.
+]
+#demo[
+Para probar que $A subset.eq C$ tenemos que probar que cualquier elemento de $A$ está también en $C$. Sea entonces $x in A$. Como $A subset.eq B$, entonces $x in B$. Luego, como $B subset.eq C$, tenemos que $x in C$. Luego, cualquier elemento de $A$ está en $C$, que es la definición de $A subset.eq C$.
+
+Notar que la vuelta no vale necesariamente. Por ejemplo, si $A = {1}$, $B = {3}$, y $C = {1, 2}$, entonces $A subset.eq C$, pero no valen ni $A subset.eq B$ ni $B subset.eq C$.
+]
+
+Dados dos conjuntos, vamos a definir operaciones útiles.
+
+#def[
+Dados dos conjuntos $A$ y $B$, definimos:
+- La intersección de $A$ y $B$, notada $A inter B$, como el conjunto de todos los elementos que están en $A$ y en $B$. Es decir, $A inter B = {x | x in A$ y $x in B}$.
+- La unión de $A$ y $B$, notada $A union B$, como el conjunto de todos los elementos que están en $A$ o en $B$. Es decir, $A union B = {x | x in A$ o $x in B}$. Notar que el "o" no es exclusivo, es decir, si $x$ está en ambos conjuntos, está en la unión. Si queremos comunicar que la unión es de conjuntos disjuntos (es decir, que $A inter B = emptyset$) escribimos $A union.sq B$.
+- La diferencia entre $A$ y $B$, notada $A without B$, como el conjunto de todos los elementos que están en $A$ pero no en $B$. Es decir, $A without B = {x | x in A$ y $x in.not B}$. Notar que la diferencia no es simétrica, es decir, en general $A without B eq.not B without A$.
+- La diferencia simétrica entre $A$ y $B$, notada $A triangle B$, es $(A without B) union (B without A)$.
+- El complemento de $A$, notado $A^c$, como el conjunto de todos los elementos que no están en $A$. Es decir, $A^c = {x | x in.not A}$.
+]
+
+Hay reglas muy útiles que relacionan estas operaciones entre sí, llamadas las Leyes de De Morgan.
+
+#prop(title: [Leyes de De Morgan])[
+Sean $A, B, C$ conjuntos. Entonces:
 
 $
-(A union B)^c = A^c inter B^c
+  A union (B inter C) = (A union B) inter (A union C)\
+  A inter (B union C) = (A inter B) union (A inter C)
 $
-]
-#demo[
-Vamos a probar una igualdad de conjuntos probando que cada uno está incluído en el otro.
-
-- $(A union B)^c subset.eq A^c inter B^c$: Sea $x in (A union B)^c$. Entonces $x in.not (A union B)$. Como $A union B = {y | y in A" o "y in B}$, entonces tenemos que es falso que $(x in A" o "x in B)$, y luego tenemos que $x in.not A$ y $x in.not B$. Pero $A^c = {y | y in.not A}$, y análogamente para $B^c$, luego $x in A^c$ y $x in B^c$. Por definición de $inter$, entonces, $x in A^c inter B^c$.
-- $A^c inter B^c subset.eq (A union B)^c$. Sea $x in A^c inter B^c$. Luego por definición de $inter$, $x in A^c$ y $x in B^c$. Luego por definición de $X^c$ para conjuntos $X$, $a in.not A$, y $x in.not B$. Luego $x in.not A union B$, dado que $A union B = {y | y in A" o "y in B}$. Luego $x in (A union B)^c$.
-]
-
-#ej[
-Sean $A, B$ conjuntos. Probar que $B without (B without A) = A inter B$.
-]
-#demo[
-  Hagamos esto enteramente por definición.
-
-  $
-    B without (B without A) &= {x | x in B and x in.not (B without A)} \
-                  &= {x | x in B and x in.not {y in B | y in.not A}}\
-                  &= {x | x in B and (x in.not B or (x in B and x in A))} \
-                  &= {x | x in B and x in A} \
-                  &= A inter B
-  $
-]
-
-#ej[
-Sean $A, B, C$ conjuntos. Probar que $(A without B) without C subset.eq A without (B without C)$. Mostrar que no vale la igualdad, en general.
-]
-#demo[
-Sea $x in (A without B) without C$. Entonces $x in A$, $x in.not B$, y $x in.not C$. Como $x in.not B$, entonces con más razon $x in.not (B without C)$, dado que $B without C subset.eq B$. Luego $x in A and x in.not (B without C)$, y luego $x in A without (B without C)$.
-
-La igualdad no vale en general. Por ejemplo, podemos tomar $A = {1, 2, 3}$, $B = {2, 3}$, y $C = {3, 4, 5}$. Entonces $(A without B) without C = {1}$, pero $A without (B without C) = {1, 3}$.
-]
-
-#ej(title: [Leyes de De Morgan])[
-  Sean $A, B, C$ conjuntos. Demostrar que:
-
-  $
-    A union (B inter C) = (A union B) inter (A union C)\
-    A inter (B union C) = (A inter B) union (A inter C)
-  $
 ]
 #demo[
 Para la primer ecuación:
@@ -1885,12 +2228,55 @@ A inter (B union C) &= {x | x in A and (x in B or x in C)}\
 $
 ]
 
-#ej[
-Denotemos por $A triangle B$ la diferencia simétrica entre conjuntos, es decir, $A triangle B = (A without B) union (B without A)$.
+La unión y la intersección son operaciones duales, usando el complemento.
 
-Sea $f: X arrow Y$, y denotemos por $f^(-1)(C) = {x in X | f(x) in C}$, para cualquier subconjunto $C subset.eq Y$.
+#prop[
+Sean $A$, $B$ conjuntos. Entonces 
 
-Probar que para todo $A, B$ subconjuntos de $Y$, $f^(-1)(A triangle B) = f^(-1)(A) triangle f^(-1)(B)$.
+$
+(A union B)^c = A^c inter B^c
+$
+
+Como corolario, $(A inter B)^c = A^c union B^c$.
+]
+#demo[
+Vamos a probar una igualdad de conjuntos probando que cada uno está incluído en el otro.
+
+- $(A union B)^c subset.eq A^c inter B^c$: Sea $x in (A union B)^c$. Entonces $x in.not (A union B)$. Como $A union B = {y | y in A" o "y in B}$, entonces tenemos que es falso que $(x in A" o "x in B)$, y luego tenemos que $x in.not A$ y $x in.not B$. Pero $A^c = {y | y in.not A}$, y análogamente para $B^c$, luego $x in A^c$ y $x in B^c$. Por definición de $inter$, entonces, $x in A^c inter B^c$.
+- $A^c inter B^c subset.eq (A union B)^c$. Sea $x in A^c inter B^c$. Luego por definición de $inter$, $x in A^c$ y $x in B^c$. Luego por definición de $X^c$ para conjuntos $X$, $a in.not A$, y $x in.not B$. Luego $x in.not A union B$, dado que $A union B = {y | y in A" o "y in B}$. Luego $x in (A union B)^c$.
+
+El corolario es inmediato, pues $(A inter B)^c = ((A^c union B^c)^c)^c = A^c union B^c$.
+]
+
+#prop[
+Sean $A, B$ conjuntos. Entonces $B without (B without A) = A inter B$.
+]
+#demo[
+Hagamos esto enteramente por definición.
+
+$
+  B without (B without A) &= {x | x in B and x in.not (B without A)} \
+                &= {x | x in B and x in.not {y in B | y in.not A}}\
+                &= {x | x in B and (x in.not B or (x in B and x in A))} \
+                &= {x | x in B and x in A} \
+                &= A inter B
+$
+]
+
+#prop[
+Sean $A, B, C$ conjuntos. Entonces $(A without B) without C subset.eq A without (B without C)$.
+]
+#demo[
+Sea $x in (A without B) without C$. Entonces $x in A$, $x in.not B$, y $x in.not C$. Como $x in.not B$, entonces con más razon $x in.not (B without C)$, dado que $B without C subset.eq B$. Luego $x in A and x in.not (B without C)$, y luego $x in A without (B without C)$.
+
+La igualdad no vale en general. Por ejemplo, podemos tomar $A = {1, 2, 3}$, $B = {2, 3}$, y $C = {3, 4, 5}$. Entonces $(A without B) without C = {1}$, pero $A without (B without C) = {1, 3}$.
+]
+
+
+#prop[
+Sea $f: X arrow Y$ una función, y denotemos por $f^(-1)(C) = {x in X | f(x) in C}$, para cualquier subconjunto $C subset.eq Y$.
+
+Entonces para todo $A, B$ subconjuntos de $Y$, tenemos que $f^(-1)(A triangle B) = f^(-1)(A) triangle f^(-1)(B)$.
 ]
 #demo[
 - $subset.eq$: Sea $x in f^(-1)(A triangle B)$. Entonces $f(x) in A triangle B$, es decir, $f(x) in (A without B) union (B without A)$. Partimos en casos:
@@ -1901,8 +2287,7 @@ Probar que para todo $A, B$ subconjuntos de $Y$, $f^(-1)(A triangle B) = f^(-1)(
   + Si $x in f^(-1)(B) without f^(-1)(A)$, pasa algo análogo, y tenemos que $x in f^(-1)(A triangle B)$.
 ]
 
-#ej[
-Denotemos por $A triangle B$ la diferencia simétrica entre conjuntos, es decir, $A triangle B = (A without B) union (B without A)$.
+#prop[
 Sean $A$ y $B$ conjuntos tal que $|A| = |B|$. Entonces:
 
   1. $|A without B| = |B without A|$.
@@ -1944,6 +2329,9 @@ Sabemos que $A = (A without B) union.sq  (A inter B)$, y $B = (B without A) unio
 Para el segundo punto, como $Delta(A, B) = (A without B) union.sq  (B without A)$, tenemos que $|Delta(A, B)| = |(A without B)| + |(B without A)| = alpha + beta = 2 alpha = 2 beta$, luego es par.
 
 Finalmente, si $Delta(A, B) eq.not emptyset$, entonces $|Delta(A, B)| = 2alpha = 2beta > 0$, luego $alpha = beta > 0$, y luego $(A without B) eq.not emptyset$, como también $(B without A) eq.not emptyset$.]
+
+=== Ejercicios
+
 
 == Funciones y análisis asintótico
 #ej[
@@ -5536,39 +5924,6 @@ Sean $a, n in NN$. Probar que si $a^n$ es par, entonces $a$ es par.
 ]
 #ej[
 Sean $a, b in RR$, y sea $c = a b$. Probar que $a lt.eq sqrt(c)$, o $b lt.eq sqrt(c)$.
-]
-#ej[
-Sean $P, Q$ proposiciones. Demostrar que $(P implies Q) or (Q implies P)$.
-]
-
-#ej[
-Sean $P, Q$ proposiciones. Probar que $((P implies Q) implies P) implies P$.
-
-Esta fórmula se conoce como la Ley de Peirce@peirce.
-]
-#ej[
-Para cada una de las siguientes proposiciones:
-  + $exists x. x^2 = 2$.
-  + $forall x. exists y. x^2 = y$.
-  + $forall y. exists x. x^2 = y$.
-  + $forall x. (x eq.not 0 implies exists y. x y = 1)$.
-  + $forall x exists y. 2x - y = 0$
-  + $forall x exists y. x - 2y = 0$
-  + $forall x. ((x > 10) implies (forall y. (y < x implies y < 9)))$
-  + $forall x. exists y. (y > x and exists z. (y + z = 100))$
-  + $exists x. exists y. x + 2y = 2 and 2x + 4y = 5$
-
-Indicar cuáles son *falsas* cuando $x, y, z$ son:
-  + Números naturales.
-  + Números enteros.
-  + Números reales.
-]
-#ej[
-Mostrar que la siguiente proposición es falsa para algún conjunto $D$, y alguna proposición $P$:
-
-$
-(forall x in D. exists y in D. P(x, y)) implies (forall z in D. P(z, z))
-$
 ]
 == Inducción
 #ej[
