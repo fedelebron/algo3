@@ -8,6 +8,7 @@
 #import "@preview/chatter:0.1.0" : *; 
 #import "@preview/finite:0.5.0": automaton
 #import "@preview/cetz-venn:0.1.3": venn2
+#import "@preview/fancy-tiling:1.0.0": diagonal-stripes
 
 
 #import algorithmic: algorithm
@@ -366,7 +367,20 @@ La siguiente tabla muestra ejemplos de niveles de formalidad. No es importante q
   align: ((x,y) => if x == 0 { center + horizon } else { left }),
  [Heurístico], [El número de subconjuntos de un conjunto de $n$ elementos es $2^n$, porque cada cosa puede o estar o no estar.],
  [Poco formal], [Como vemos en el siguiente dibujo, siempre vamos a tener suficientes aristas para que $u$ y $v$ tengan un vecino en común.],
- [Razonablemente formal], [Queremos ver que todo grafo con $n$ vértices tiene a lo sumo $n(n-1)/2$ aristas. Toda arista une dos vértices distintos, y a lo sumo hay una arista entre cada par de vértices distintos. Hay exactamente $n(n-1)/2$ pares de vértices distintos. Luego hay a lo sumo $n(n-1)/2$ aristas en total.],
+ [Razonablemente formal], [Sea $S = 1 + 2 + dots + n$ la suma de los primeros $n$ enteros positivos. Podemos escribir a $S$ de dos maneras:
+ 
+ $
+ S &= 1 &+& 2     &+& dots &+& n \
+ S &= n &+& (n-1) &+& dots &+& 1
+ $
+ 
+ Sumando término a término, cada término suma $n + 1$, con lo cual
+ 
+ $
+ 2S = n (n + 1)
+ $
+ 
+ y $S = (n (n+1))/2$.],
  [Obviamente formal], [Queremos ver que $f:RR arrow RR, f(x) = 2x$ es diferenciable en todo su dominio. Sea $x_0 in RR$. Vemos que $lim_(h arrow 0) (2(x_0+h) - 2 x_0)/h = lim_(h arrow 0) (2x_0 + 2h - 2x_0)/h = 2$. Luego, la derivada existe en $x_0$, y es igual a $2$. Luego $f$ es diferenciable en todo su dominio.
  
  #line()
@@ -594,7 +608,7 @@ Para todo $0 lt.eq n lt.eq 3$, tenemos que $T(n) lt.eq max(T(0), T(1), T(2), T(3
 Ahora el paso inductivo. Asumo $P(k)$ para todo $k < n$, quiero probar $P(n)$. Si $n lt.eq 3$, ya probamos los casos base arriba, y vale $P$ para ellos. Si $n gt.eq 4$, entonces como sabemos, $T(n) = 2T(n-4)$. Como $0 lt.eq n - 4 < n$, podemos usar la hipótesis inductiva, $P(n - 4)$, obteniendo que $T(n - 4) lt.eq a 2^((n-4)/4)$. Entonces, como $2^((n-4)/4) = 2^(n/4) 2^(-1)$, vemos que $T(n) = 2T(n-4) lt.eq 2 a 2^(n/4) 2^(-1) = a 2^(n/4)$. Esto es precísamente $P(n)$, que es lo que queríamos demostrar.
 #line(length: 100%, stroke: 0.1mm)
 
-Como sabemos que $T(n) lt.eq a 2^(n/4)$ para todo $n in NN$, podemos usar la definición de $O$, que es que $f in O(g) iff exists alpha in RR_(gt.eq 0), n_0 in NN", tal que" forall n in NN, (n gt.eq n_0 implies f(n) lt.eq alpha g(n))$.
+Como sabemos que $T(n) lt.eq a 2^(n/4)$ para todo $n in NN$, podemos usar la definición de $O$, que es que $f in O(g) iff exists alpha in RR_(gt.eq 0), n_0 in NN$, tal que para todo $n in NN$, si $n gt.eq n_0$, entonces $f(n) lt.eq alpha g(n)$.
 
 Podemos acá elegir $alpha = a$, $n_0 = 0$, $g(n) = 2^(n/4)$, y vemos que $T in O(g)$.
 ]
@@ -1173,7 +1187,7 @@ Sea $P(n):$ Para todo conjunto $S$ de enteros de tamaño $n$, si $1 in S$, enton
 ]
 ]
 
-Esto es claramente incorrecto, puesto que existe $S = {1, 100}$, con $1 in S$, pero $max(S) = 100 eq.not |S| = 2$. El problema es que la demostración es informal, y no usa $P(n)$, sólo lo menciona. Para probar $P(n+1)$, tendríamos que probar que _cualquier_ conjunto $S'$ de tamaño $n + 1$ que contiene al $1$, cumple que $max(S') = |S'|$. Pero en la demostración, sólo se prueba para un conjunto particular, el que se construye agregando un elemento específico al conjunto $S$. El problema es que no todo conjunto de tamaño $n + 1$ que contiene al $1$, se puede construir de esa forma a partir de un conjunto de tamaño $n$ que contiene al $1$.
+Esto es claramente incorrecto, puesto que existe $S = {1, 100}$, con $1 in S$, pero $max(S) = 100 eq.not |S| = 2$. El problema es que la demostración es demasiado informal, y termina siendo insuficientemente rigurosa. No usa $P(n)$, sólo lo menciona. Para probar $P(n+1)$, tendríamos que probar que _cualquier_ conjunto $S'$ de tamaño $n + 1$ que contiene al $1$, cumple que $max(S') = |S'|$. Pero en la demostración, sólo se prueba para un conjunto particular, el que se construye agregando un elemento específico al conjunto $S$. El problema es que no todo conjunto de tamaño $n + 1$ que contiene al $1$, se puede construir de esa forma a partir de un conjunto de tamaño $n$ que contiene al $1$.
 ]
 
 /*
@@ -1440,7 +1454,36 @@ Definamos una propiedad $P(n)$: Para todo $a in NN$, `Exp(`$a, n$`)`$ = a^n$.
 Vemos como es más fácil demostrar esto que un algoritmo iterativo, que cambia estados. Esto es cierto en general, y es parte del motivo por el cual la gente usa algoritmos y lenguajes de programación funcionales.
 
 === Definiciones equivalentes
-Si tenemos definiciones equivalentes para nuestro objeto, podemos hacer uso de cualquiera de ellas. Por ejemplo, si tenemos que probar que agregarle una arista a cualquier árbol crea un ciclo en el grafo resultante, podemos usar cualquiera de las definiciones equivalentes de árbol:
+Si tenemos definiciones equivalentes para nuestro objeto, podemos hacer uso de cualquiera de ellas. Por ejemplo:
+
+#ej[
+Recordemos que una función $f: RR arrow RR$ es continua en un punto $x_0 in RR$ si cumple cualquiera de las siguientes definiciones equivalentes:
+- Para todo $epsilon gt.eq 0$, existe $delta gt.eq 0$ tal que para todo $x in RR$, si $|x - x_0| < delta$, entonces $|f(x) - f(x_0)| < epsilon$.
+- Para toda sucesión $(x_n)_{n in NN}$ en $RR$ que converge a $x_0$, la sucesión $(f(x_n))_{n in NN}$ converge a $f(x_0)$.
+
+Sea $f$ la función definida por:
+$
+f:& RR arrow RR\
+f(x) &= cases(
+  1 "si" x in QQ,
+  0 "si" x in.not QQ
+)
+$
+
+Demostrar que $f$ no es continua en ningún punto.
+]
+#demo[
+La primer noción de continuidad parece difícil de usar acá, pues para cualquier $delta gt.eq 0$, podemos encontrar un número racional y un número irracional dentro del intervalo $(x_0 - delta, x_0 + delta)$, y luego no podemos encontrar un único $delta$ que funcione para todos los $x$ en ese intervalo. La segunda definición parece más manejable.
+
+Vamos a encontrar dos secuencias que convergen a $x_0$, una $(q_n)$ de números racionales y otra $(i_n)$ de números irracionales. Por ejemplo, podemos tomar la sucesión $q_n = floor(10^n x_0)/10^n$, que es truncar $x_0$ a $n$ decimales, y la sucesión $i_n = q_n + sqrt(2) / 10^n$. Como $q_n$ es racional para todo $n in NN$, $i_n$ es irracional, y la secuencia $(i_n)$ también converge a $x_0$. Entonces, tenemos que $f(q_n) = 1$ para todo $n in NN$, y $f(i_n) = 0$ para todo $n in NN$.
+
+Si asumimos que $f$ es continua en $x_0$, ambas sucesiones $(f(q_n))$ y $(f(i_n))$ convergen a $f(x_0)$. Sin embargo, la primer sucesión es constantemente $1$, y luego converge a $1$, y la segunda sucesión es constantemente $0$, y luego converge a $0$. Luego, $f(x_0) = 1$ y $f(x_0) = 0$, lo cual es una contradicción. Luego, $f$ no es continua en ningún punto $x_0 in RR$.
+]
+
+
+
+/*
+Por ejemplo, si tenemos que probar que agregarle una arista a cualquier árbol crea un ciclo en el grafo resultante, podemos usar cualquiera de las definiciones equivalentes de árbol:
 
 A un grafo $G = (V, E)$ con $n$ vértices y $m$ aristas se le dice árbol cuando cumple cualquiera de las siguientes condiciones equivalentes:
 - $G$ es conexo y acíclico.
@@ -1471,6 +1514,7 @@ En este caso, probablemente nos sea útil que un árbol es un grafo $G = (V, E)$
       edge(label("v3"), label("v5"), stroke: 1pt + red)
     })]
   ]
+*/
 
 Si tenemos que probar condiciones equivalentes, frecuentemente nos va a ser útil ordenarlas de manera que cada una implique la próxima, y la última implique la primera, estableciendo así la equivalencia entre todas, usando sólo implicaciones.
 
@@ -1589,8 +1633,35 @@ Esto está mal, confunde $A(n) implies B(n)$ con $not A(n) implies not B(n)$, do
 
 
 === Si y sólo si
-Si tenemos que probar un si-y-sólo-si ($iff$), podemos probar por separado $implies$ y $arrow.double.l$. Es muy común que uno de los dos sea prácticamente trivial, y el otro sea el difícil. Por ejemplo:
+Si tenemos que probar un si-y-sólo-si ($iff$), podemos probar por separado $implies$ y $arrow.double.l$. Es muy común que uno de los dos sea muy fácil, y el otro sea más difícil. Por ejemplo:
 
+#teo(title:[Cantor-Schröder-Bernstein])[
+Sean $A$ y $B$ dos conjuntos. Entonces son equivalentes:
+- Existe una función biyectiva $h: A arrow B$.
+- Existe una función inyectiva $f: A arrow B$, y una función inyectiva $g: B arrow A$.
+]
+#demo[
+- $implies$) Asumamos que existe una función biyectiva $h: A arrow B$. Entonces, $h$ es inyectiva, y su inversa $h^(-1): B arrow A$ también es inyectiva. Luego, existen funciones inyectivas $f=h: A arrow B$ y $g=h^(-1): B arrow A$.
+- $implied$) Esta demostración es de Dedekind@dedekind. Sea $C_0 = A without g(B)$, y para $n gt.eq 0$, definimos recursivamente $C_(n+1) = g(f(C_n))$. Definimos $C = union_(n in NN) C_n$. Definimos la función $h: A arrow B$ como:
+  $
+h(x) = cases(
+  f(x) "si" x in C,
+  g^(-1)(x) "si" x in.not C
+)
+$
+
+  Para ver que $h$ está bien definida, sea $x in A$. Si $x in.not C$, entonces $x in.not C_0$, con lo cual $x in g(B)$, y luego existe $g^(-1)(x) in B$. Luego, $h(x)$ está bien definida.
+
+  Ahora veamos que $g^(-1)(A without C)$ siempre cae en $B without f(C)$. Asumamos lo contrario, y supongamos que existe un $x in A without C$ tal que $g^(-1)(x) = f(z)$ para algún $z in C$. Llamemos $y = f(z)$. Como $C = union_(n in NN) C_n$, existe $n$ tal que $z in C_n$. Como $y = f(z)$ y $x = g(y)$ (pues $y = g^(-1)(x)$), y entonces $x = g(f(z)) in C_(n+1) subset.eq C$, lo cual contradice que $x in A without C$. Luego, $g^(-1)(A without C) subset.eq B without f(C)$.
+
+  Con esto, veamos que $h$ es inyectiva. Sabemos que $f$ y $g^(-1)$ son inyectivas. Luego, si $h$ fuera no-inyectiva, tendríamos que tener $h(x) = h(y)$ con $x in C$ e $y in.not C$, es decir, $f(x) = g^(-1)(y)$. Sin embargo, $f$ manda elementos de $C$ a elementos de $f(C)$, mientras que, como vimos, $g^(-1)$ manda elementos de $A without C$ a elementos de $B without f(C)$. Luego las imágenes de $f$ y $g^(-1)$ no intersecan, y nunca podemos tener $f(x) = g^(-1)(y)$. Luego, $h$ es inyectiva.
+
+  Ahora vamos a mostrar que si $y in B$ es tal que $g(y) in C$, entonces $y in f(C)$. Como $g(y) in C = union_(n in NN) C_n$, existe $n$ tal que $g(y) in C_n$. Si $n = 0$, entonces $g(y) in C_0 = A without g(B)$, lo cual no puede suceder. Luego, $n gt.eq 1$, y entonces $g(y) in C_n = g(f(C_(n-1)))$. Como $g$ es inyectiva, tenemos que $y in f(C_(n-1)) subset.eq f(C)$. Luego, si $g(y) in C$, entonces $y in f(C)$.
+
+  Para ver que $h$ es suryectiva, consideremos cualquier $y in B$. Queremos decir que $y in h(A)$. $y$ puede estar en $f(C)$, o no. Si $y in f(C)$, entonces existe un $x in C subset.eq A$ tal que $f(x) = y$, y por lo tanto $h(x) = y$. Si $y in.not f(C)$, por el párrafo anterior sabemos que $g(y) in A without C$. Luego, $h(g(y)) = g^(-1)(g(y)) = y$. En ambos casos, existe un $x in A$ tal que $h(x) = y$. Luego, $h$ es suryectiva.
+]
+
+/*
 #teo(title: [Erdős-Gallai])[
     Sea $d_1 gt.eq d_2 gt.eq dots gt.eq d_n$ una secuencia de números naturales no-creciente. Entonces existe un grafo $G = (V, E)$ con $|V| = n$ y $d_G (v_i) = d_i$ para todo $1 lt.eq i lt.eq n$, si y sólo si $sum_i d_i$ es par y para todo $1 lt.eq k lt.eq n$, tenemos
 
@@ -1602,17 +1673,17 @@ Si tenemos que probar un si-y-sólo-si ($iff$), podemos probar por separado $imp
  Probar que una secuencia gráfica cumple eso es fácil. El probar que si eso se cumple para una secuencia, entonces existe un grafo con esa secuencia gráfica, es bastante difícil. Una demostración constructiva es dada por el algoritmo de Havel-Hakimi.
 
  Esencialmente lo que está pasando en esa demostración es que uno de los lados del si-y-sólo-si es una condición global (el existir un grafo que cumple con lo pedido), mientras que el otro lado es un montón de condiciones locales (una por cada $k$). Es fácil implicar cada condición local, pero probar que la unión de todas las condiciones locales implica la condición global es difícil.
-
+*/
 #show figure: set align(center)
 #grid(columns: (1fr, 1fr),
  column-gutter: 0pt,
  figure(
   image("sisyphus.jpg", height: 40mm),
-  caption: [Sísifo probando la vuelta de Erdős-Gallai.]
+  caption: [Sísifo probando la vuelta de Cantor-Schröder-Bernstein.]
  ),
  figure(
   rotate(270deg, reflow: true, image("sisyphus.jpg", width: 40mm)),
-  caption: [Sísifo probando la ida de Erdős-Gallai.]
+  caption: [Sísifo probando la ida de Cantor-Schröder-Bernstein.]
  )
 )
 
@@ -1670,12 +1741,13 @@ Cuando hacemos esto, es importante tener en cuenta cuán difícil es la demostra
 Si tenemos que probar que "existe un único $x$ en $X$ tal que $P(x)$", una estrategia común es tomar dos objetos que cumplan $P(x)$, y concluir que son el mismo.
 
 #ej[
-Dado un grupo $G$, existe un elemento $e in G$ tal que para todo $g in G$, tenemos $e g = g e = g$, llamado la identidad del grupo. Probar que existe un único tal elemento.
+Probar que existe una única matriz $I$ en $M_n (ZZ)$, el conjunto de matrices $n times n$ con entradas con coeficientes enteros, tal que para toda matriz $A in M_n (ZZ)$, vale $I A = A I = A$.
 ]
 #demo[
-Sean $e_1, e_2 in G$ tal que para todo $g in G$, $e_1 g = g e_1 = g$ y $e_2 g = g e_2 = g$. Como $e_1$ es una identidad, multiplicamos a la izquierda para obtener $e_1 e_2 = e_2$. Como $e_2$ es una identidad, multiplicamos a la derecha para obtener $e_1 e_2 = e_1$. Luego $e_1 = e_2$.
+Sean $I, J$ dos matrices en $M_n (ZZ)$ tales que para toda matriz $A in M_n (ZZ)$, vale $I A = A I = A$ y $J A = A J = A$. Queremos ver que $I = J$. Consideremos la matriz $A = J$. Entonces, por definición de $I$, tenemos $J I = J$. Por otro lado, considerando $A = I$, por definición de $J$ tenemos que $J I = I$. Luego, $I = J I = J$.
 ]
 
+/*
 Otro ejemplo de unicidad, pero en grafos y árboles.
 
 #ej[
@@ -1692,6 +1764,7 @@ Otro ejemplo de unicidad, pero en grafos y árboles.
 
   Luego, $C' = C$, que es lo que queríamos demostrar.
 ]
+*/
 
 A veces vamos a usar el contrarecíproco para probar unicidad, postulando que existen dos objetos distintos que cumplen una propiedad, y llegando a un absurdo. Les reitero que no usan el contrarecíproco mecánicamente, pero sí que lo conozcan como herramienta.
 
@@ -1813,6 +1886,184 @@ Gran parte de una demostración es jugar con los objetos, e intentar ver qué su
 Es difícil comunicar el patrón incoherente de ideas que pasan por la cabeza mientras uno juega, pero el siguiente es un intento de mostrarlo, y luego la demostración final que uno pasa en limpio, obviando todos los caminos sin salida. No se supone que el texto a continuación sea totalmente comprensible, es sólo un camino vueltero que pueden transitar al jugar.
 
 #ej[
+Demostrar que para todo $n in NN$, $n > 0$, todo tablero de $2^n times 2^n$ casillas con una casilla removida, puede ser cubierto completamente con triominos (pieza que cubre tres casillas, en forma de L).
+]
+// The type of pieces is an array of pairs (color, array of positions). It
+// instead be a dictionary, but in Typst dictionary keys must be strings, and
+// it's also not possible to convert a string name to a color.
+#let striped = diagonal-stripes(size: 10pt, angle: 45deg, stripe-color: gray, thickness-ratio: 50%, mirror: true)
+#let show_dominoes = (n, missing: (-1, -1), pieces: (), highlight_axes: false) => {
+  return block(breakable: false, grid(
+    columns: calc.pow(2, n),
+    rows: calc.pow(2, n),
+    inset: (x: 10pt, y: 10pt),
+    stroke: 0.5pt + gray,
+    fill: (i, j) => {
+      if ((i, j) == missing) {
+        return striped;
+      }
+      for (c, positions) in pieces {
+        if ((i, j) in positions) {
+          return c;
+        }
+      }
+      return white;
+    }
+  ))
+}
+#quote-box[
+Hrm, dibujemos algunos ejemplos. Con $n = 1$, hay realmente sólo una grilla, salvo rotación:
+
+#show_dominoes(1, missing: (1, 1))
+
+Y no hay más de una forma de poner un triomino:
+#show_dominoes(1, missing: (1, 1), pieces: ((red.lighten(20%), ((0, 0), (0, 1), (1, 0))),))
+
+Con $n = 2$, la grilla es:
+#show_dominoes(2)
+Y realmente hay solo tres formas de poner un cuadrado faltante, salvo rotaciones y reflecciones:
+#stack(
+  dir: ltr, 
+  spacing: 6mm, 
+  show_dominoes(2, missing: (0, 0)),
+  show_dominoes(2, missing: (0, 1)),
+  show_dominoes(2, missing: (1, 1)))
+
+Parece enorme el espacio de cosas para hacer... no parece haber mucha estructura si empiezo a poner triominos al azar. El que me digan $2^n times 2^n$ me hace pensar en dividir y conquistar, quizás dividiendo el tablero en cuatro tableros $2^(n-1) times 2^(n-1)$... pero no parece fácil, porque los tableros chicos no tienen una casilla removida cada uno... por ejemplo, para la primera:
+
+#show_dominoes(2, missing: (0, 0), pieces: (
+    (red.lighten(10%), ((0, 1), (1, 1), (1, 0))),
+    (green.lighten(80%), ((2, 0), (2, 1), (3, 0), (3, 1))),
+    (blue.lighten(80%), ((0, 2), (0, 3), (1, 2), (1, 3))),
+    (orange.lighten(80%), ((2, 2), (2, 3), (3, 2), (3, 3))),
+    ))
+
+Cubrí el primero perfectamente, pero arruiné los otros tres, porque ya no se parecen al caso $n=1$, tienen cero bloques faltantes, no uno. Y si sigo poniendo triominos parece que me voy a quedar corto...
+
+#show_dominoes(2, missing: (0, 0), pieces: (
+    (red.lighten(10%), ((0, 1), (1, 1), (1, 0))),
+    (purple.lighten(10%), ((2, 0), (2, 1), (3, 0))),
+    (green.lighten(80%), ((2, 0), (2, 1), (3, 0), (3, 1))),
+    (blue.lighten(80%), ((0, 2), (0, 3), (1, 2), (1, 3))),
+    (orange.lighten(80%), ((2, 2), (2, 3), (3, 2), (3, 3))),
+    ))
+
+Voy a estar en problemas cuando intente cubrir la casilla verde... a ver de otra manera:
+
+#show_dominoes(2, missing: (0, 0), pieces: (
+    (red.lighten(10%), ((0, 1), (1, 1), (1, 0))),
+    (purple.lighten(10%), ((2, 0), (3, 1), (3, 0))),
+    (green.lighten(80%), ((2, 0), (2, 1), (3, 0), (3, 1))),
+    (blue.lighten(80%), ((0, 2), (0, 3), (1, 2), (1, 3))),
+    (orange.lighten(80%), ((2, 2), (2, 3), (3, 2), (3, 3))),
+    ))
+
+Mismo problema... no puedo entonces cubrir la casilla verde poniendo un triomino enteramente en ella. Hrm... pero podría poner otro triomino en el centro, que cubra una casilla de cada uno de los otros tres tableros... así:
+
+#show_dominoes(2, missing: (0, 0), pieces: (
+    (red.lighten(10%), ((0, 1), (1, 1), (1, 0))),
+    (green.lighten(80%), ((2, 0), (3, 1), (3, 0))),
+    (blue.lighten(80%), ((0, 2), (0, 3), (1, 3))),
+    (orange.lighten(80%), ((2, 3), (3, 2), (3, 3))),
+    (purple.lighten(10%), ((1, 2), (2, 1), (2, 2))),
+    ))
+
+Hrm eso parece funcionar... pero no fue algo divide-and-conquer, sólo tuve suerte... cómo puedo hacer esto mediante divide-and-conquer?
+
+Hrm y si lo hago en el otro orden? Puedo poner el triomino violeta primero:
+
+#show_dominoes(2, missing: (0, 0), pieces: (
+    (purple.lighten(10%), ((1, 2), (2, 1), (2, 2))),
+    (green.lighten(80%), ((2, 0), (3, 1), (3, 0))),
+    (blue.lighten(80%), ((0, 2), (0, 3), (1, 3))),
+    (orange.lighten(80%), ((2, 3), (3, 2), (3, 3))),
+    ))
+
+Y ahora me quedaron cuatro sub-grillas, donde cada una tiene una casilla removida! Este tablero es equivalente a tener:
+
+#show_dominoes(2, missing: (0, 0), pieces: (
+    (striped, ((1, 2), (2, 1), (2, 2))),
+    (green.lighten(80%), ((2, 0), (3, 1), (3, 0))),
+    (blue.lighten(80%), ((0, 2), (0, 3), (1, 3))),
+    (orange.lighten(80%), ((2, 3), (3, 2), (3, 3))),
+    ))
+
+Y esto sí tiene estructura recursiva, porque en cada sub-grilla de $2 times 2$ tengo el mismo problema anterior. A ver cómo se ve esto en tableros más grandes, con $n = 3$...
+
+#show_dominoes(3, missing: (6, 2))
+
+Puedo poner un triomino en el centro, cubriendo una casilla de cada uno de los sub-tableros, excepto en el que se encuentra la ya-faltante:
+
+#show_dominoes(3, missing: (6, 2), pieces: (
+    (purple.lighten(10%), ((3, 3), (3, 4), (4, 4))),
+))
+
+Y ahora tenemos cuatro sub-tableros, cada uno con una casilla removida:
+
+#show_dominoes(3, missing: (6, 2), pieces: (
+    (striped, ((3, 3), (3, 4), (4, 4))),
+    (red.lighten(80%), range(4).map(x => range(4).map(y => (x, y))).sum()),
+    (green.lighten(80%), range(4).map(x => range(4).map(y => (x + 4, y))).sum()),
+    (blue.lighten(80%), range(4).map(x => range(4).map(y => (x, y + 4))).sum()),
+    (orange.lighten(80%), range(4).map(x => range(4).map(y => (x + 4, y + 4))).sum())
+))
+
+Y podemos aplicar divide-and-conquer. Bueno, ahora a formalizar...
+]
+#demo[
+Sea $n in NN$, con $n > 0$. Vamos a demostrar por inducción en $n$ que todo tablero de $2^n times 2^n$ casillas con una casilla removida, puede ser cubierto completamente con triominos.
+
+Si $n = 1$, el tablero tiene $2 times 2 = 4$ casillas, y al remover una casilla quedan exactamente tres casillas, que pueden ser cubiertas con un triomino. Los cuatro casos posibles son:
+
+#stack(dir: ltr,
+  spacing: 6mm,
+  show_dominoes(1, missing: (0, 0), pieces: (
+    (red.lighten(20%), ((1, 1), (0, 1), (1, 0))), )),
+  show_dominoes(1, missing: (0, 1), pieces: (
+    (red.lighten(20%), ((1, 1), (0, 0), (1, 0))), )),
+  show_dominoes(1, missing: (1, 0), pieces: (
+    (red.lighten(20%), ((1, 1), (0, 1), (0, 0))), )),
+  show_dominoes(1, missing: (1, 1), pieces: (
+    (red.lighten(20%), ((0, 0), (0, 1), (1, 0))), ))
+)
+
+Esto prueba el caso base.
+
+Supongamos que la afirmación es cierta para todo $k < n$, y probémosla para $n$. Sea $T$ un tablero de $2^n times 2^n$ casillas con una casilla removida. Dividimos $T$ en cuatro sub-tableros $T_1, T_2, T_3, T_4$, cada uno de tamaño $2^(n-1) times 2^(n-1)$, ubicados en las cuatro esquinas de $T$. Como ejemplo, para $n = 3$ se ve así:
+
+#show_dominoes(3, missing: (-1, -1), pieces: (
+    (red.lighten(80%), range(4).map(x => range(4).map(y => (x, y))).sum()),
+    (green.lighten(80%), range(4).map(x => range(4).map(y => (x + 4, y))).sum()),
+    (blue.lighten(80%), range(4).map(x => range(4).map(y => (x, y + 4))).sum()),
+    (orange.lighten(80%), range(4).map(x => range(4).map(y => (x + 4, y + 4))).sum())
+))
+
+Sin pérdida de generalidad, supongamos que la casilla removida está en $T_1$, aunque no sabemos _dónde_ en $T_1$. A modo de ilustración, podría ser esta casilla:
+
+
+#show_dominoes(3, missing: (1, 2), pieces: (
+    //(striped, ((3, 3), (3, 4), (4, 4))),
+    (red.lighten(80%), range(4).map(x => range(4).map(y => (x, y))).sum()),
+    (green.lighten(80%), range(4).map(x => range(4).map(y => (x + 4, y))).sum()),
+    (blue.lighten(80%), range(4).map(x => range(4).map(y => (x, y + 4))).sum()),
+    (orange.lighten(80%), range(4).map(x => range(4).map(y => (x + 4, y + 4))).sum())
+))
+
+ Podemos colocar un triomino en el centro de $T$, cubriendo una casilla de cada uno de los otros tres sub-tableros, $T_2, T_3, T_4$. De esta forma, cada uno de los sub-tableros $T_1, T_2, T_3, T_4$ tiene exactamente una casilla removida. En este ejemplo quedaría así:
+
+#show_dominoes(3, missing: (1, 2), pieces: (
+    (striped, ((4, 3), (3, 4), (4, 4))),
+    (red.lighten(80%), range(4).map(x => range(4).map(y => (x, y))).sum()),
+    (green.lighten(80%), range(4).map(x => range(4).map(y => (x + 4, y))).sum()),
+    (blue.lighten(80%), range(4).map(x => range(4).map(y => (x, y + 4))).sum()),
+    (orange.lighten(80%), range(4).map(x => range(4).map(y => (x + 4, y + 4))).sum())
+))
+
+  Usando la hipótesis inductiva $P(n-1)$, como cada uno de esos cuatro sub-tableros tiene tamaño $2^(n-1) times 2^(n-1)$, y tiene exactamente una casilla faltante. cada uno de ellos puede ser cubierto completamente con triominos. Juntando estas coberturas disjuntas de las cuatro sub-grillas de $T$, obtenemos una cobertura de $T$ por triominos, que es lo que buscábamos.
+]
+
+/*
+#ej[
 Sea $G$ un grafo. Determinar si es cierto que si $G$ tiene exactamente dos vértices de grado impar, entonces existe en $G$ un camino entre ellos. Si es cierto, demostrarlo. Si es falso, dar un contraejemplo.
 ]
 #quote-box[
@@ -1880,13 +2131,15 @@ OK, creo que eso cierra. A ver cómo se puede escribir bien...
 
   Luego estos dos vértices tienen que estar en la misma componente conexa, y luego hay un camino de uno al otro.
 ]
+*/
 
 #quote-box[
 #let im = image("proof_erased.png", height: 50mm)
-#let t = [Hrm, quedó medio desordenado eso. Mejor lo emprolijo un poco. Puedo poner el lema primero así cuando lo uso ya lo tengo probado, no necesito usar $G_2$, no necesito aclarar que $d_G (v) = d_(G_1) (v)$ para $v$ en $G_1$, y quedó medio confusa la oración sobre $V_1 inter V_2 = emptyset$...]
+#let t = [Hrm, quedó medio desordenado eso. Mejor lo emprolijo un poco. Puedo ponerle nombre a los tableros, y enunciar bien mi hipótesis inductiva...]
 #wrap-content(im, t)
 ]
 
+/*
 #demo[
   Primero, probemos un lema.
   #lemma[
@@ -1908,8 +2161,9 @@ OK, creo que eso cierra. A ver cómo se puede escribir bien...
 
   Por el @parimpar, esto no puede pasar. Luego, lo que asumimos por contradicción era falso, y entonces esos dos vértices no están en componentes conexas distintas. Luego están en la misma componente conexa, y luego hay un camino entre ellos.
 ]
+*/
 
-Si sólo ven la demostración final, parece compacta, no comete errores, no intenta varias cosas, no nombra cosas que no usa, no deja cosas sin demostrar para después, tiene notación sensible, y hasta tiene estructura, probando un sub-lema antes de usarlo. No piensen que la demostración nació así - como ven, uno pasa por jugar, probar cosas, planear, y emprolijar. No se frustren si sus demostraciones no se ven como esta última, en su primer pasada.
+Si sólo ven la demostración final, parece compacta, no comete errores, no intenta varias cosas, no nombra cosas que no usa, no deja cosas sin demostrar para después, tiene notación sensible, y hasta tiene estructura, planteando una inducción formal. No piensen que la demostración nació así - como ven, uno pasa por jugar, probar cosas, planear, y emprolijar. No se frustren si sus demostraciones no se ven como esta última, en su primer pasada.
 
 #tip-box[
 Las siguientes son cosas que pueden hacer al pasar en limpio una demostración:
@@ -1930,7 +2184,10 @@ Este es *de lejos* el error que más cometen los alumnos. En este momento de su 
 
 + Pónganle nombre a todo.
   Si un sustantivo no tiene nombre, no podemos hablar de él claramente. Muchas veces se quedan "sin saber cómo seguir", porque no tienen a mano suficientes sustantivos para ver relaciones entre ellos, o ver qué cosas cumple cada uno.
+
+  Si se encuentran usando preposiciones como "el vértice vecino de ..." o "la lista $l$ pero sin el $i$-ésimo elemento", deténganse y ponganle nombre a esos objetos. Por ejemplo, "sea $u$ el vértice vecino de ...", o "sea `l' = l.remove(i)`". Ahora pueden hablar de $u$ y $l'$ directamente, y ver qué propiedades y relaciones cumplen.
   
+  /*
     Ante el siguiente ejercicio:
     
     #ej[
@@ -1957,7 +2214,7 @@ Este es *de lejos* el error que más cometen los alumnos. En este momento de su 
       + Si $d_G (v) = 0$, entonces $v$ es un vértice aislado. Esto no puede pasar, porque $G$ tiene $m > ((n-1)(n-2))/2$ aristas, y aún poniendo una arista entre _todo_ otro par de vértices en $G$, nos quedarían sólo $((n-1)(n-2))/2$ aristas. Como $m$ es mayor que $((n-1)(n-2))/2$, tiene que haber al menos una arista incidente a $v$.
       + Si $d_G (v) = n - 1$, entonces $v$ comparte una arista con cada uno de los otros vértices de $G$. Luego para cualquier par de vértices $u, w in V$, tenemos un camino $[{u, v}, {v, w}]$ en $G$, y luego $G$ es conexo, que es lo que queríamos demostrar.
       + Caso contrario, $0 < d_G (v) lt.eq n - 2$. Como sabemos que $m > ((n-1)(n-2))/2$, al sacarle $d_G (v)$ aristas a $G$, y sabiendo que $d_G (v) lt.eq n - 2$, obtenemos $|E'| = m - d_G (v) gt.eq m - (n - 2) > ((n-1)(n-2))/2 - (n - 2) = ((n-2)(n-3))/2$ aristas en $G'$. Por hipótesis inductiva, como $G'$ es un grafo de $n - 1$ vértices con más de $((n-2)(n-3))/2$ aristas, sabemos que $G'$ es conexo. Finalmente, como sabemos que $d_G (v) > 0$, al agregar $v$ a $G'$ con todas sus $d_G (v)$ aristas que tenía en $G$, estamos conectando $v$ con un grafo conexo ($G'$) con al menos una arista, y luego $G$ es conexo.
-    ]
+    ]*/
 
   + No usen el mismo nombre para dos cosas distintas. Si están modificando un objeto, no usen el mismo nombre para el objeto antes y después de modificarlo.
     #ej[Sean $a, b in ZZ$, tal que $a equiv 1 (mod 3)$ y $b equiv 2 (mod 3)$. Probar que $a + b equiv 0 (mod 3)$.]
@@ -1968,8 +2225,23 @@ Este es *de lejos* el error que más cometen los alumnos. En este momento de su 
     ]
     Esto está mal, porque usa $k$ para dos cosas distintas. En particular, esto asume que $b = 3k + 2 = (3k + 1) + 1 = a + 1$, lo cual no podemos asumir.
   
-  + Si el objeto $X$ depende de un objeto $Y$, nómbrenlo $X_Y$ o $X(Y)$, para recordar la dependencia.
-  + Si terminan definiendo un sustantivo y no lo usan para su conclusión, o no es necesario, pueden removerlo al terminar. Pero si no empezamos dándole nombre, seguro no lo podemos usar.
+  + Si el objeto $X$ depende de un objeto $Y$, nómbrenlo $X_Y$ o $X(Y)$, para recordar la dependencia. A veces se olvidan, al crear un objeto, de qué depende, y terminan concluyendo algo falso. Un ejemplo tosco:
+
+    #text(red)[
+      #demo[
+        Queremos ver que el conjunto de los números reales está acotado. Sea $x in RR$. Elegimos $M = x + 1$. Claramente, $x < x + 1$, es decir, $x < M$. Luego para cualquier $x in RR$, $x$ está acotado por $M$, y $RR$ está acotado.
+      ]
+    ]
+
+    Formalmente, el error es que esto prueba $forall x in RR. exists M in RR. x < M$, mientras que lo pedido es $exists M in RR. forall x in RR. x < M$ (y esto último es obviamente falso).
+  + #let im = block(width: 60mm, figure(
+      image("neo.png", width: 60mm),
+      caption: [Neo intentando probar algo sin darle nombre a todas las cosas.]
+    ))
+    #let t = [Si terminan definiendo un sustantivo y no lo usan para su conclusión, o no es necesario, pueden removerlo al terminar. Pero si no empezamos dándole nombre, seguro no lo podemos usar.
+    
+      Nombrar los objetos que usamos nos deja ser creativos al ver relaciones entre ellos, y crear aún más objetos a partir de ellos.]
+    #wrap-content(im, t, align: bottom + right)
 + Cuantifiquen todo.
   + Si usan una variable, cuantifíquenla. Una variable sin cuantificar es inútil. "$G$ es conexo." ¿Quién es $G$? ¿Vale para todo $G$? ¿Existe algún $G$? ¿Es un $G$ particular que definimos nosotros?
   + Presten atención al anidado de cuantificadores. En $forall x in X. exists y in Y. P(x, y)$, $y$ puede depender de $x$, pero $x$ no puede depender de $y$. La oración "$exists x in X. forall y in Y. P(x, y)$" es completamente distinta, no tienen nada que ver una con la otra. Recuerden la @conversacionn, donde interpretamos demostraciones como una conversación entre nosotros y alguien que no está pidiendo demostrarles algo.
