@@ -106,6 +106,7 @@
 #let implies = $arrow.double$
 #let implied = $arrow.double.l$
 #let iff = $arrow.double.l.r$
+#let RR0 = $RR_(gt.eq 0)$
 
 // Sólo ponemos números a las ecuaciones que tienen etiqueta.
 #show math.equation: it => {
@@ -2882,7 +2883,7 @@ La unión y la intersección son operaciones duales, usando el complemento.
   $
 ]
 
-== Funciones y análisis asintótico
+== Funciones
 
 Imagino que ya tienen en mente una noción del concepto de función. En esta sección quiero mostrarles una definición formal, y algunas propiedades básicas, para que vean cómo se hacen demostraciones sobre funciones.
 
@@ -2963,6 +2964,14 @@ Usualmente vamos a definir funciones usando expresiones de la forma $f(X) = Y$, 
   Luego $f$ es biyectiva. Para ver que $f^(-1) = g$, tenemos que probar que $f^(-1)(y) = g(y)$ para todo $y in B$. Sea $y in B$. Como $f$ es sobreyectiva, existe un $x in A$ tal que $f(x) = y$. Luego, $f^(-1)(y) = f^(-1)(f(x)) = x$ por definición de función inversa. Asimismo, $g(y) = g(f(x)) = (g compose f)(x) = id_A (x) = x$. Luego ambos $f^(-1)(y)$ y $g(y)$ son iguales a $x$, y luego $f^(-1)(y) = g(y)$ para todo $y in B$, que es precísamente la definición de $f^(-1) = g$.
 ]
 
+Finalmente, esta notación nos va a ser útil:
+
+#def[
+Sean $f, g: NN arrow RR0$, y $k in RR0$. Definimos las funciones $f + g$, $f g$, y $k f$, tal que para todo $n in NN$:
+- $(f + g)(n) = f(n) + g(n)$
+- $(f g)(n) = f(n) g(n)$
+- $(k f)(n) = k f(n)$
+]
 
 === Análisis asintótico
 
@@ -2975,11 +2984,11 @@ Muchas veces vamos a querer analizar el crecimiento de una función, cuando su e
 Para esto vamos a definir ciertos conjuntos de funciones.
 
 #def[
-  Sea $f: NN arrow NN$. Definimos los conjuntos:
+  Sea $f: NN arrow RR0$. Definimos los conjuntos:
 
   $
-    O(f) &= {g: NN arrow NN | exists alpha > 0 in RR, exists n_0 in NN, forall n in NN, (n gt.eq n_0 implies g(n) lt.eq alpha f(n))} \
-    Omega(f) &= {g: NN arrow NN | exists alpha > 0 in RR, exists n_0 in NN, forall n in NN, (n gt.eq n_0 implies g(n) gt.eq alpha f(n))} \
+    O(f) &= {g: NN arrow RR0 | exists alpha > 0 in RR, exists n_0 in NN, forall n in NN, (n gt.eq n_0 implies g(n) lt.eq alpha f(n))} \
+    Omega(f) &= {g: NN arrow RR0 | exists alpha > 0 in RR, exists n_0 in NN, forall n in NN, (n gt.eq n_0 implies g(n) gt.eq alpha f(n))} \
     Theta(f) &= O(f) inter Omega(f)
   $
 ]
@@ -2987,11 +2996,11 @@ Para esto vamos a definir ciertos conjuntos de funciones.
   Podemos leer la expresión $f in O(g)$ como "$f$ está asintóticamente dominada por $g$", y la expresión $f in Omega(g)$ como "$f$ asintóticamente domina a $g$", y la expresión $f in Theta(g)$ como "$f$ y $g$ son asintóticamente equivalentes".
 ]
 
-#note-box[
+#warning-box[
   Algo *muy* importante es que $O(f)$ y $Omega(f)$ y $Theta(f)$ son *conjuntos de funciones*. No son números, y no son funciones. Es increíblemente común que los alumnos se confundan con esto, especialmente cuando, como veremos más adelante, veamos notación como $5 n^2 + O(n)$.
 ]
 
-Veamos qué están captando estas definiciones, usando el ejemplo de arriba. Si $f: NN arrow NN$, entonces $O(f)$ es el conjunto de funciones de la forma $g: NN arrow NN$, tales que existen constantes $alpha in RR, alpha > 0$, y $n_0 in NN$, tales que a partir de $n_0$, $g(n) lt.eq alpha f(n)$. Con $f(n) = n^2$ y $g(n) = 100 log_2(n)$, podemos tomar $alpha = 100$, y $n_0 = 1$, y plantear:
+Veamos qué están captando estas definiciones, usando el ejemplo de arriba. Si $f: NN arrow RR0$, entonces $O(f)$ es el conjunto de funciones de la forma $g: NN arrow RR0$, tales que existen constantes $alpha in RR, alpha > 0$, y $n_0 in NN$, tales que a partir de $n_0$, $g(n) lt.eq alpha f(n)$. Con $f(n) = n^2$ y $g(n) = 100 log_2(n)$, podemos tomar $alpha = 100$, y $n_0 = 1$, y plantear:
 
 $
           g(n) & lt.eq alpha f(n) \
@@ -3004,7 +3013,7 @@ Como sabemos que $log_2(n) lt.eq n$ para todo $n in NN, n gt.eq 1 = n_0$, y a su
 Por otro lado, los mismos $alpha$ y $n_0$ demuestran que $f in Omega(g)$. Esto nos da la primer propiedad:
 
 #prop[
-  Sean $f, g: NN arrow NN$ funciones. Entonces, $g in O(f)$ si y sólo si $f in Omega(g)$.
+  Sean $f, g: NN arrow RR0$ funciones. Entonces, $g in O(f)$ si y sólo si $f in Omega(g)$.
 ]
 #demo[
   $
@@ -3017,9 +3026,41 @@ Por otro lado, los mismos $alpha$ y $n_0$ demuestran que $f in Omega(g)$. Esto n
   $
 ]
 
-Veamos algunos ejemplos.
+Tenemos propiedades básicas que convierten a estas clases en un orden parcial.
+#prop[
+  Sea $f: NN arrow RR0$. Entonces $f in O(f)$.
+]
+#demo[
+  Para ver que $f in O(f)$, tenemos que mostrar que existe $alpha > 0 in RR$, y $n_0 in NN$, tal que para todo $n gt.eq n_0$, tenemos que $f(n) lt.eq alpha f(n)$. Pero esto es trivialmente cierto, usando $n_0 = 0$ y $alpha=1$, pues $f(n) lt.eq f(n)$ siempre.
+]
+
+#prop[
+  Sean $f, g, h: NN arrow RR0$, tales que $f in O(g)$ y $g in O(h)$. Entonces $f in O(h)$.
+]
+#demo[
+  Como $f in O(g)$ y $g in O(h)$, existen $alpha_1, alpha_2 > 0 in RR$, y $n_1, n_2 in NN$, tales que para todo $n gt.eq n_1$, tenemos que $f(n) lt.eq alpha_1 g(n)$, y para todo $n gt.eq n_2$, tenemos que $g(n) lt.eq alpha_2 h(n)$. Luego, para todo $n gt.eq max(n_1, n_2)$, tenemos que $f(n) lt.eq alpha_1 g(n) lt.eq alpha_1 alpha_2 h(n)$, lo que demuestra que $f in O(h)$.
+]
+
+La siguiente propiedad nos va a dejar quedarnos con los términos de mayor orden.
+
+#prop[
+  Sean $f, g: NN arrow RR0$. Sea $h:NN arrow RR0$, definida como $h(n) = max(f(n), g(n))$. Entonces $f + g in O(h)$.
+]
+#demo[
+  Sea $n_0 = 0$, $alpha = 2$, y sea un $n gt.eq n_0$. Entonces tenemos que
+
+  $
+    f(n) + g(n) &= max(f(n), g(n)) + min(f(n), g(n)) \
+                &lt.eq max(f(n), g(n)) + max(f(n), g(n)) \
+                &= 2 max(f(n), g(n)) \
+                &= 2 h(n)
+  $
+
+  Luego, $f(n) + g(n) lt.eq 2 h(n) = alpha h(n)$ para todo $n gt.eq n_0$, lo que demuestra que $f + g in O(h)$.
+]
+Veamos un ejemplo en la práctica.
 #ej[
-  Sea $f: NN arrow NN$ la función dada por $f(n) = 3 n^2 + 2 n + 1$. Probar que $f in O(n^2)$.
+  Sea $f: NN arrow RR0$ la función dada por $f(n) = 3 n^2 + 2 n + 1$. Probar que $f in O(n^2)$.
 ]
 #demo[
   Tenemos que elegir un $alpha in RR, alpha > 0$, y un $n_0 in NN$, tal que para todo $n in NN, n gt.eq n_0$, se cumpla que $f(n) lt.eq alpha n^2$, y $f(n) gt.eq alpha n^2$. Intuitivamente, $f$ crece parecido a $3n^2$. Luego, si elegimos $alpha = 4$, eventualmente $f(n) lt.eq alpha n^2$. Probemos esto formalmente.
@@ -3031,7 +3072,7 @@ Veamos algunos ejemplos.
     iff & 0 lt.eq n^2 - 2n - 1 \
   $
 
-  Ahora consideremos la función $h(n) = n^2 - 2n - 1$. Para ver dónde es positiva, podemos encontrar sus raíces:
+  Ahora consideremos la función $h(n) = n^2 - 2n - 1$. Para ver dónde es no-negativa, podemos encontrar sus raíces:
 
   $
     n^2 - 2n - 1 & = 0 \
@@ -3045,7 +3086,7 @@ Veamos algunos ejemplos.
 Podemos generalizar este hecho.
 
 #prop[
-  Sea $n in NN$, y $f in NN[x]$ un polinomio de grado $n$ en la variable $x$. Entonces $f in Theta(x^n)$.
+  Sea $n in NN$, y $f in NN[x]$ un polinomio de grado $n$ en la variable $x$, con coeficientess naturales. Entonces $f in Theta(x^n)$.
 ]
 #demo[
   Sea $f(x) = sum_(i=0)^n a_i x^i$, con $a_i in NN$ y $a_n eq.not 0$.
@@ -3080,7 +3121,7 @@ Podemos generalizar este hecho.
 Tenemos una herramienta útil para probar pertenencia a estos conjuntos asintóticos, que es usar límites.
 
 #prop[
-  Sean $f, g: NN arrow NN$, tal que $g$ es positiva. Sea $L = lim_(n arrow infinity) f(n)/g(n)$, con $L in RR union {infinity}$. Entonces:
+  Sean $f, g: NN arrow RR0$, tal que $g$ es positiva a partir de algún número $n_0$. Sea $L = lim_(n arrow infinity) f(n)/g(n)$, con $L in RR union {infinity}$. En el límite podemos asumir que $n gt.eq n_0$, para que la división tenga sentido. Entonces:
 
   - Si $L < infinity$, entonces $f in O(g)$
   - Si $L > 0$, entonces $f in Omega(g)$
@@ -3097,7 +3138,7 @@ Tenemos una herramienta útil para probar pertenencia a estos conjuntos asintót
 De hecho vale algo más fuerte, una equivalencia entre las dos formas de definir conjuntos asintóticos, que no requiere que $g$ sea estríctamente positiva. No asumo que hayan visto límites superiores e inferiores, y las demostraciones son esencialmente equivalentes a las de arriba, así que no las voy a escribir acá.
 
 #prop[
-  Sean $f, g: NN arrow NN$. Entonces:
+  Sean $f, g: NN arrow RR0$. Entonces:
   - $f in O(g) iff limsup_(n arrow infinity) f(n)/g(n) < infinity$
   - $f in Omega(g) iff liminf_(n arrow infinity) f(n)/g(n) > 0$
   - $f in Theta(g) iff 0 < liminf_(n arrow infinity) f(n)/g(n) lt.eq limsup_(n arrow infinity) f(n)/g(n) < infinity$
@@ -3129,11 +3170,137 @@ Veamos cómo usar esta propiedad de límites.
   Por lo tanto, $f in O(g)$.
 ]
 
+La definición usando límites también nos permite aprender más sobre cómo se comportan los polinomios.
+#prop[
+Sea $n in NN$, y $r in RR$, con $r > 1$. Entonces $x^n in O(r^x)$.
+]
+#demo[
+Sea $L = lim_(x arrow infinity) x^n/(r^x)$. Como $f$ es un polinomio de grado $n$, podemos aplicar la regla de L'Hôpital $n$ veces. El numerador se vuelve $n!$, recordando que $(d^k x^n)/(d x^k) = n(n-1)...(n-k+1)x^(n-k)$. El denominador se vuelve $r^x ln r$, recordando que $(d^k r^x)/(d x^k) = r^x (ln r)^k$. Entonces:
+
+$
+  L & = lim_(x arrow infinity) x^n/(r^x) \
+    & = lim_(x arrow infinity) n!/(r^x (ln r)^n) \
+    & = 0
+$
+
+Por lo tanto, $x^n in O(r^x)$.
+]
+
+#warning-box[
+Notemos cómo hay un abuso de notación cuando escribimos cosas como $O(r^x)$. $O(dots)$ recibe una función, mientras que $r^x$ es una expresión. Podríamos estar quisiendo decir $O(f)$ con $f(x) = r^x$, o $O(g)$ con $g(r) = r^x$, notar cómo estas dos funciones son totalmente distintas, y por lo tanto los conjuntos son totalmente distintos. Tampoco sabemos el dominio que tiene esta función, implícita.
+
+La expresión por sí sola no es suficiente para saber a qué función nos referimos, en general. Vamos a hacer abuso de esta notación sólo cuando sea claro cuál es la variable, y cuáles las constantes. Tener cuidado con esto se va a volver aún más importante cuando veamos la notación con varias variables, como ser $O(n + m)$, en algunos capítulos.
+]
+
+Asimismo podemos ver cómo se comportan las exponenciales.
+
+#prop[
+Sean $r, s in RR$, con $1 < s < r$. Entonces $r^x in O(s^x)$, pero $s^x in.not O(r^x)$.
+]
+#demo[
+Sea $L = lim_(x arrow infinity) s^x/(r^x)$. Entonces:
+
+$
+  L & = lim_(x arrow infinity) s^x/(r^x) \
+    & = lim_(x arrow infinity) (s/r)^x \
+    & = 0
+$
+
+Por lo tanto, $r^x in O(s^x)$.
+
+Por otro lado, sea $T = lim_(x arrow infinity) r^x/(s^x)$. Entonces:
+
+$
+  T & = lim_(x arrow infinity) r^x/(s^x) \
+    & = lim_(x arrow infinity) (r/s)^x \
+    & = infinity
+$
+
+Como $T in.not R$, tenemos que $s^x in.not O(r^x)$.  
+]
+
+Al contrario que en las exponenciales, donde las bases importan, las bases _no_ importan para los logaritmos. Esto nos permite escribir $O(log n)$, sin especificar la base.
+
+#prop[
+Sean $a, b in NN$, con $a > 1, b > 1$. Entonces $log_a (x) in Theta(log_b (x))$.
+]
+#demo[
+Sea $L = lim_(x arrow infinity) (log_a (x)) / (log_b (x))$. Entonces:
+
+$
+  L & = lim_(x arrow infinity) (log_a (x)) / (log_b (x)) \
+    & = lim_(x arrow infinity) ((log x) / (log a)) / ((log x) / (log b)) \
+    &= lim_(x arrow infinity) (log x) / (log a) (log b) / (log x) \
+    &= lim_(x arrow infinity) (log b) / (log a) \
+    &= (log b) / (log a) in RR^+
+$
+
+Por lo tanto, $log_a (x) in Theta(log_b (x))$.
+]
+
+Debemos recordar que no todo par de funciones es comparable de esta forma.
+
+#example[
+Sean
+
+$
+f(n) &= cases(
+  n^3 &"si" n "es impar",
+  n &"si" n "es par"
+)\
+g(n) & = cases(
+  n &"si" n "es impar",
+  n^3 &"si" n "es par"
+)
+$
+
+Tenemos que $f in.not O(g)$, y $g in.not O(f)$. Para ver que $f in.not (g)$, podemos ver el límite, cuando $n$ tiende a infinito, de $f(n)/g(n)$. Si el límite existe, entonces podemos tomar la sucesión $1, 3, 5, 7, dots$, es decir, los naturales impares, y ver qué nos da:
+
+$
+  lim_(n arrow infinity, n "impar") f(n)/g(n) &= n^3/n = infinity
+$
+
+Como tomando esta sucesión de puntos el límite no es $0$, entonces o bien no existe el límite $lim_(n arrow infinity) f(n)/g(n)$, o no es $0$. Esto nos dice que $f in.not O(g)$. Por el mismo motivo, tomando la sucesión $2, 4, 6, 8, dots$, los naturales positivos pares, obtenemos que $g in.not O(f)$.
+]
 
 
 === Álgebra asintótica
 
+Vimos como notaciones como $O(dots)$ y $Omega(dots)$ se pueden usar para aproximar el crecimiento de funciones. Vamos a querer hacer operaciones algebraicas con estos conjuntos de funciones, como sumarlos y multiplicarlos. Esto nos va a permitir combinarlos y decir cosas más poderosas.
 
+#def[
+Sean $A, B$ conjuntos de funciones $NN arrow RR0$, y $k in RR0$. Definimos:
+
+- $A + B = {h: NN arrow RR0 | exists f in A, g in B, forall n in NN. h(n) = f(n) + g(n)}$
+- $A B = {h: NN arrow RR0 | exists f in A, g in B, forall n in NN. h(n) = f(n) g(n)}$
+- $k A = {h: NN arrow RR0 | exists f in A, forall n in NN. h(n) = k f(n)}$
+]
+
+Esto nos permite usar expresiones como $O(f) + 3 O(g)$. Veamos algunas formas simples de trabajar con estos conjuntos:
+
+#prop[
+Sean $f, g: NN arrow RR0$, y $k in RR0$. Entonces:
+
+- $O(f) + O(g) = O(f + g)$
+- $O(f) O(g) = O(f g)$
+- $k O(f) = O(k f)$
+
+Donde definimos $(f + g)(n) = f(n) + g(n)$ y $(f g)(n) = f(n) g(n)$. Las mismas tres propiedades valen para $Omega(dots)$ y $Theta(dots)$.
+]
+#demo[
+  - Sea $h in O(f) + O(g)$. Por definición, entonces para todo $n in NN$, $h(n) = a(n) + b(n)$, con $a in O(f)$, y $b in O(g)$. Como $a in O(f)$ y $b in O(g)$, entonces existen $alpha in RR > 0, beta in RR > 0, n_0 in NN, m_0 in NN$ tales que para todo $n in NN. (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$, y para todo $m in NN$, $(m gt.eq m_0 implies b(m) lt.eq beta g(m))$. Sea entonces $p_0 = max(n_0, m_0) in NN$, y $gamma = alpha + beta$. Entonces
+  
+  
+  $
+  h(n) = a(n) + b(n) &lt.eq alpha f(n) + beta g(n)\  
+   lt.eq (alpha + beta) (f(n) + g(n)) = gamma (f(n) + g(n)) = gamma (f + g) (n)$, por lo tanto $h in O(f + g)
+     
+  $
+
+
+
+
+]
 === Árboles de recursión
 
 
