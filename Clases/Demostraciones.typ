@@ -3279,30 +3279,187 @@ Sean $A, B$ conjuntos de funciones $NN arrow RR0$, y $k in RR0$. Definimos:
 Esto nos permite usar expresiones como $O(f) + 3 O(g)$. Veamos algunas formas simples de trabajar con estos conjuntos:
 
 #prop[
-Sean $f, g: NN arrow RR0$, y $k in RR0$. Entonces:
-
-- $O(f) + O(g) = O(f + g)$
-- $O(f) O(g) = O(f g)$
-- $k O(f) = O(k f)$
-
-Donde definimos $(f + g)(n) = f(n) + g(n)$ y $(f g)(n) = f(n) g(n)$. Las mismas tres propiedades valen para $Omega(dots)$ y $Theta(dots)$.
+Sean $f, g: NN arrow RR0$. Entonces $O(f) + O(g) = O(f + g)$.
 ]
 #demo[
-  - Sea $h in O(f) + O(g)$. Por definición, entonces para todo $n in NN$, $h(n) = a(n) + b(n)$, con $a in O(f)$, y $b in O(g)$. Como $a in O(f)$ y $b in O(g)$, entonces existen $alpha in RR > 0, beta in RR > 0, n_0 in NN, m_0 in NN$ tales que para todo $n in NN. (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$, y para todo $m in NN$, $(m gt.eq m_0 implies b(m) lt.eq beta g(m))$. Sea entonces $p_0 = max(n_0, m_0) in NN$, y $gamma = alpha + beta$. Entonces
+  - $subset.eq)$ Sea $h in O(f) + O(g)$. Por definición, existen $a in O(f)$ y $b in O(g)$, tal que para todo $n in NN$, $h(n) = a(n) + b(n)$. Como $a in O(f)$ y $b in O(g)$, entonces existen $alpha in RR > 0, beta in RR > 0, n_0 in NN, m_0 in NN$ tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$, y para todo $m in NN$, $(m gt.eq m_0 implies b(m) lt.eq beta g(m))$. Sea entonces $p_0 = max(n_0, m_0) in NN$, y $gamma = alpha + beta$. Entonces, para todo $p in NN, p gt.eq p_0$, tenemos que
   
+    $
+  h(n) &= a(n) + b(n)\
+       &lt.eq alpha f(n) + beta g(n)\
+       &lt.eq (alpha + beta) (f(n) + g(n)) \
+       &= gamma (f(n) + g(n)) \
+       &= gamma (f + g) (n)
+    $
+    y por lo tanto $h in O(f + g)$.
+  - $supset.eq)$ Sea $h in O(f + g)$. Entonces, existen $alpha in RR > 0, n_0 in NN$ tales que para todo $n in NN, (n gt.eq n_0 implies h(n) lt.eq alpha (f + g)(n))$. Vamos a definir las siguientes funciones:
   
-  $
-  h(n) = a(n) + b(n) &lt.eq alpha f(n) + beta g(n)\  
-   lt.eq (alpha + beta) (f(n) + g(n)) = gamma (f(n) + g(n)) = gamma (f + g) (n)$, por lo tanto $h in O(f + g)
-     
-  $
-
-
-
-
+    $
+      a(n) &= cases(
+        (h(n) f(n))/(f(n) + g(n)) & "si" f(n) + g(n) eq.not 0,
+        0 & "si" f(n) + g(n) = 0)\
+      b(n) &= cases(
+        (h(n) g(n))/(f(n) + g(n)) & "si" f(n) + g(n) eq.not 0,
+        0 & "si" f(n) + g(n) = 0)
+    $
+  
+    Notemos que para todo $n in NN$, $h(n) = a(n) + b(n)$. Ahora, veamos que $a in O(f)$ y $b in O(g)$. Sea $n gt.eq n_0$. Si $f(n) + g(n) eq.not 0$, entonces:
+  
+    $
+      a(n) & = (h(n) f(n))/(f(n) + g(n)) h(n) \
+           & lt.eq (alpha (f + g)(n) f(n))/(f(n) + g(n)) \
+           & = alpha f(n)
+    $
+  
+    Si $f(n) + g(n) = 0$, entonces $f(n) = 0$, y luego $a(n) = 0 lt.eq alpha f(n)$. Luego, en ambos casos, $a lt.eq alpha f(n)$ para todo $n gt.eq n_0$, y por lo tanto $a in O(f)$.
+  
+    De forma análoga, podemos ver que $b in O(g)$.
+  
+    Luego, como $h(n) = a(n) + b(n)$ para todo $n in NN$, con $a in O(f)$ y $b in O(g)$, tenemos que $h in O(f) + O(g)$.
 ]
-=== Árboles de recursión
 
+Esto nos da un corolario que vamos a usar mucho:
+#corollary[
+Sean $f: NN arrow RR0$, y $g in O(f)$. Entonces $O(f) + O(g) = O(f)$.
+]
+
+#example[$O(n^2) + O(n) = O(n^2)$]
+#example[$O(2^n) + O(n^3) + O(log n) = O(2^n)$.]
+
+#prop[
+Sean $f, g: NN arrow RR0$. Entonces $O(f) O(g) = O(f g)$.
+]
+#demo[
+- $subset.eq)$ Sean $a in O(f)$, y $b in O(g)$. Por definición, existen $alpha in RR > 0, beta in RR > 0, n_0 in NN, m_0 in NN$ tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$, y para todo $m in NN$, $(m gt.eq m_0 implies b(m) lt.eq beta g(m))$. Sea entonces $p_0 = max(n_0, m_0) in NN$, y $gamma = alpha beta$. Entonces, para todo $p in NN, p gt.eq p_0$, tenemos que
+
+  $
+    (a b)(n) & = a(n) b(n) \
+             & lt.eq (alpha f(n)) (beta g(n)) \
+             & = gamma (f(n) g(n)) \
+             & = gamma (f g)(n)
+  $
+
+  y por lo tanto $a b in O(f g)$. Como $O(f)O(g)$ es precísamente el conjunto de funciones de la forma $a b$ con $a in O(f)$ y $b in O(g)$, tenemos que $O(f) O(g) subset.eq O(f g)$.
+- $supset.eq)$ Sea $h in O(f g)$. Luego, existen $alpha in RR, alpha >0$, y $n_0 in NN$, tal que para todo $n in NN$, $(n gt.eq n_0 implies h(n) lt.eq alpha (f g)(n) = alpha f(n)g(n)$. Sean $a = f$, y $b: NN arrow RR0$, definida como:
+  $
+    b(n) = cases(
+      h(n)/f(n) & "si" f(n) eq.not 0,
+      0 & "si" f(n) = 0
+    )
+  $
+
+  Vemos que $h(n) = a(n) b(n)$ para todo $n in NN$. Ahora, veamos que $a in O(f)$ y $b in O(g)$. Claramente, $a = f in O(f)$. Sea $n in NN$, con $n gt.eq n_0$. Si $f(n) = 0$, entonces $b(n) = 0 lt.eq g(n)$. Si $f(n) eq.not 0$, entonces:
+
+  $
+    b(n) & = h(n)/f(n) \
+         & lt.eq (alpha (f g)(n))/f(n) \
+         & = alpha g(n) 
+  $
+
+  Luego $b in O(g)$. Como $h(n) = a(n) b(n)$ para todo $n in NN$, con $a in O(f)$ y $b in O(g)$, tenemos que $h in O(f) O(g)$.
+]
+
+#prop[
+Sean $f: NN arrow RR0$, y $k in RR0$. Entonces $k O(f) = O(k f)$.
+]
+#demo[
+- $subset.eq)$ Sea $h in k O(f)$. Entonces, existe $a in O(f)$, tal que para todo $n in NN$, $h(n) = k a(n)$. Como $a in O(f)$, existen $alpha in RR > 0$, y $n_0 in NN$, tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$. Entonces, para todo $n gt.eq n_0$, tenemos que 
+
+  $
+    h(n) & = k a(n) \
+         & lt.eq k (alpha f(n)) \
+         & = (k alpha) f(n) \
+         & = (alpha (k f))(n)
+  $
+
+  Luego, $h in O(k f)$.
+- $supset.eq)$ Sea $h in O(k f)$. Entonces, existen $alpha in RR > 0$, y $n_0 in NN$, tales que para todo $n in NN, (n gt.eq n_0 implies h(n) lt.eq alpha (k f)(n) = alpha k f(n))$. Definamos la función $a: NN arrow RR0$, como $a(n) = h(n)/k$ (si $k eq.not 0$), o $a(n) = 0$ (si $k = 0$). Entonces, para todo $n in NN$, tenemos que $h(n) = k a(n)$. Ahora, veamos que $a in O(f)$. Sea $n gt.eq n_0$. Si $k = 0$, entonces $a(n) = 0 lt.eq alpha f(n)$. Si $k eq.not 0$, entonces:
+
+  $
+    a(n) & = h(n)/k \
+         & lt.eq (alpha k f(n))/k \
+         & = alpha f(n)
+  $
+
+  Luego, en ambos casos, $a in O(f)$. Como $h(n) = k a(n)$ para todo $n in NN$, con $a in O(f)$, tenemos que $h in k O(f)$.
+]
+
+#prop[
+Demostraciones prácticamente idénticas nos dan las siguientes propiedades:
+- $Omega(f) + Omega(g) = Omega(f + g)$
+- $Omega(f) Omega(g) = Omega(f g)$
+- $k Omega(f) = Omega(k f)$
+- $Theta(f) + Theta(g) = Theta(f + g)$
+- $Theta(f) Theta(g) = Theta(f g)$
+- $k Theta(f) = Theta(k f)$
+]
+
+Finalmente, vamos a extender nuestra notación para poder operar con funciones y conjuntos en la misma expresión.
+
+#def[
+Sean $f, g: NN arrow RR0$. Definimos:
+- $f + O(g) = {f + h | h in O(g)}$
+- $f O(g) = {f h | h in O(g)}$
+]
+
+#prop[
+Sean $f, g: NN arrow RR0$. Entonces:
+- $f + O(g) subset.eq O(f + g)$
+- $f O(g) = O(f g)$
+]
+#demo[
+- $f + O(g) subset.eq O(f + g)$: Sea $h in f + O(g)$. Entonces, existe $a in O(g)$, tal que para todo $n in NN$, $h(n) = f(n) + a(n)$. Como $a in O(g)$, existen $alpha in RR > 0$, y $n_0 in NN$, tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha g(n))$. Entonces, para todo $n gt.eq n_0$, tenemos que
+
+  $
+    h(n) & = f(n) + a(n) \
+         & lt.eq f(n) + alpha g(n) \
+         & lt.eq alpha (f(n) + g(n)) \
+         & = alpha (f + g)(n)
+  $
+
+  y por lo tanto $h in O(f + g)$.
+- $f O(g) = O(f g)$: Esta demostración es el ejercicio @bigoprod.
+]
+#warning-box[
+Notemos que en general no vale la igualdad $f + O(g) = O(f + g)$. Por ejemplo, si $f(n) = n^2$, y $g(n) = n$, entonces el lado derecho, $O(f + g) = O(f) + O(g) = O(n^2) + O(n) = O(n^2)$, pero el lado izquierdo, $f + O(g)$ contiene sólo funciones de la forma $n^2 + j(n)$, con $j in O(n)$. Una función como $2n^2$ está en $O(n^2)$, pero no está en $f + O(g)$, pues no es posible encontrar una tal función $j$.
+]
+
+Tenemos entonces las siguientes propiedades:
+
+#figure(
+  table(
+    columns: (auto, 1fr, 1fr, 1fr),
+    inset: 5pt,
+    align: center + horizon,
+    stroke: 0.5pt + gray,
+    
+    table.header(
+      [*Operación*], 
+      [*$O$ (Cota superior)*], 
+      [*$Omega$ (Cota inferior)*], 
+      [*$Theta$ (Orden exacto)*]
+    ),
+
+    [*Suma*],
+    $ O(f) + O(g) \ = O(f + g) \ = O(max(f, g)) $,
+    $ Omega(f) + Omega(g) \ = Omega(f + g) \ = Omega(max(f, g)) $,
+    $ Theta(f) + Theta(g) \ = Theta(f + g) \ = Theta(max(f, g)) $,
+
+    [*Producto*],
+    $ O(f) dot O(g) \ = O(f dot g) $,
+    $ Omega(f) dot Omega(g) \ = Omega(f dot g) $,
+    $ Theta(f) dot Theta(g) \ = Theta(f dot g) $,
+
+    [*Escalar* \ (para $k > 0$)],
+    $ k dot O(f) = O(f) $,
+    $ k dot Omega(f) = Omega(f) $,
+    $ k dot Theta(f) = Theta(f) $,
+  ),
+  caption: [Resumen de propiedades algebraicas asintóticas.]
+) <tabla-algebra-asintotica>
+
+
+=== Árboles de recursión
 
 En el contexto de ciencias de la computación, nos vamos a enfocar más en la forma de computar $Y$, dado $X$. Al ver una definición como esta para $f:NN arrow NN$:
 $
@@ -3344,7 +3501,9 @@ vamos a querer considerar cómo computar valores de $f$. Una herramienta usual p
   )
 ]
 
-Esta herramienta nos va a ser útil para encontrar formas cerradas de funciones, o al menos darnos una idea de quién puede ser. Por ejemplo, consideremos la siguiente función, $f: NN_(>0) arrow NN$:
+Esta herramienta nos va a ser útil para encontrar formas cerradas de funciones, o al menos darnos una idea de quién puede ser.
+
+Por ejemplo, consideremos la siguiente función, $f: NN_(>0) arrow NN$:
 $
   f(n) = cases(
     0 & "si" n = 1,
@@ -3352,7 +3511,11 @@ $
   )
 $
 
-Queremos encontrar una forma cerrada para $f$. Veamos el árbol de recursión para $n = 7$:
+Vamos a ver cómo usar árboles de recursión para entender esta función.
+
+==== Conteo exacto
+
+Primero, encontremos una forma cerrada para $f$. Veamos el árbol de recursión para $n = 7$:
 
 #align(center)[
   #draw_recursion_tree(
@@ -3378,9 +3541,47 @@ Despejando, obtenemos que $m = n - 2^k$. Luego, como todos los niveles hasta $k$
 
 Podemos ahora o bien hacer este argumento formal (mostrando detalladamente por qué el árbol tiene esa estructura, con $k$ niveles completos, y un único nivel mixto, el nivel $k+1$, de existir), o bien hacer una demostración por inducción sobre $n$ para probar que la forma cerrada que encontramos es correcta. La demostración por inducción se hace más sencila, porque no estaremos _encontrando_ la forma cerrada, sino _probando_ que una forma cerrada que tenemos, es correcta.
 
+==== Conteo acotado
+
+Ahora intentemos encontrar una cota superior ajustada para $f$. Intuitivamente, queremos sacarnos de encima el piso ($floor(dot)$) y techo ($ceil(dot)$). Podemos primero probar por inducción que nuestra cota vale para potencias de dos, y luego extender la cota al resto de los naturales.
+
+Sea $n = 2^k$ con $k in NN$. Vamos a probar por inducción sobre $k$ el predicado $P(k): f(2^k) lt.eq 3 k 2^k$.
+- Caso base: $k = 0$. Entonces $f(2^k) = f(1) = 0 lt.eq 3 times 0 times 1 = 0$.
+- Paso inductivo: Sea $k in NN$. Asumimos $P(k)$. Queremos probar $P(k+1)$. Por $P(k)$ sabemos que que $f(2^k) lt.eq 3 times k times 2^k$. Vamos a probar que vale $P(k+1)$. Notemos que $2^(k+1) = 2 times 2^k$. Entonces: 
+$
+  f(2^(k+1)) & = f(2^k) + f(2^k) + 2^(k+1) \
+             & lt.eq 3 times k times 2^k + 3 times 2^k + 2^(k+1) \ "por hipótesis inductiva" \
+             & = 6 times k times 2^k + 2 times 2^k \
+             & = 2^k (6 k + 2) \
+             & = 2^(k+1) (3k + 1) \
+             & lt.eq 2^(k+1) (3 (k+1)) 
+$
+
+Por lo tanto, vale $P(k)$ para todo $k in NN$. Esto nos dice que para toda potencia de dos $n$, vale $f(n) lt.eq 3 log_2(n) n$. Ahora queremos rellenar los huecos entre potencias de dos. Vamos a probar que $f$ es monótona creciente, es decir, que para todo $n in NN$, vale $f(n) lt.eq f(n+1)$. Esto lo podemos probar por inducción sobre $n$.
+- Caso base: $n = 1$. Entonces, $f(1) = 0 lt.eq 1 = f(2)$.
+- Paso inductivo: Sea $n in NN$, y asumamos que vale $f(n) lt.eq f(n+1)$. Queremos probar que vale $f(n+1) lt.eq f(n+2)$. Notemos que:
+$
+  f(n+2) & = f(floor((n+2)/2)) + f(ceil((n+2)/2)) + n + 2 \
+         & = f(floor((n+1)/2) + 1) + f(ceil((n+1)/2) + 1) + n + 2 \
+         & gt.eq f(floor((n+1)/2)) + f(ceil((n+1)/2)) + n + 2 \ "por hipótesis inductiva" \
+         & = f(n+1)
+$ 
+
+
+
+
+#warning-box[
+#text(red)[
+  Explicar que $product_(i=1)^n O(1) eq.not O(1)$, y que si no tenemos cuidado, podemos probar por inducción que $T(n) = T(n-1)+ 1$ es $O(1)$, con la hipótesis inductiva $P(n): T in O(1)$ (notar que no hay $n$ en la hipótesis inductiva!).
+]
+]
+=== Teorema maestro
 
 
 === Ejercicios
+#ej[
+Sean $f, g: NN arrow RR0$ funciones. Recordando que $f dot O(g) = {f + h | h in O(g)}$, probar que $f dot O(g) = O(f dot g)$.
+]<bigoprod>
 #ej[
   Sean $f, g: NN arrow NN$ funciones. Probar que si $f in Theta(g)$, entonces $g in Theta(f)$.
 ]
