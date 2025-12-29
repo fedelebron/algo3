@@ -135,6 +135,7 @@
 #let implied = $arrow.double.l$
 #let iff = $arrow.double.l.r$
 #let RR0 = $RR_(gt.eq 0)$
+#let RRg0 = $RR_(gt 0)$
 
 #let pitagoras = canvas({
   let a = 1

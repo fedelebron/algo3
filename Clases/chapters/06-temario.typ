@@ -858,7 +858,7 @@ Esto nos permite usar expresiones como $O(f) + 3 O(g)$. Veamos algunas formas si
 Sean $f, g: NN arrow RR0$. Entonces $O(f) + O(g) = O(f + g)$.
 ]
 #demo[
-  - $subset.eq)$ Sea $h in O(f) + O(g)$. Por definición, existen $a in O(f)$ y $b in O(g)$, tal que para todo $n in NN$, $h(n) = a(n) + b(n)$. Como $a in O(f)$ y $b in O(g)$, entonces existen $alpha in RR > 0, beta in RR > 0, n_0 in NN, m_0 in NN$ tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$, y para todo $m in NN$, $(m gt.eq m_0 implies b(m) lt.eq beta g(m))$. Sea entonces $p_0 = max(n_0, m_0) in NN$, y $gamma = alpha + beta$. Entonces, para todo $p in NN, p gt.eq p_0$, tenemos que
+  - $subset.eq)$ Sea $h in O(f) + O(g)$. Por definición, existen $a in O(f)$ y $b in O(g)$, tal que para todo $n in NN$, $h(n) = a(n) + b(n)$. Como $a in O(f)$ y $b in O(g)$, entonces existen $alpha in RRg0, beta in RRg0, n_0 in NN, m_0 in NN$ tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$, y para todo $m in NN$, $(m gt.eq m_0 implies b(m) lt.eq beta g(m))$. Sea entonces $p_0 = max(n_0, m_0) in NN$, y $gamma = alpha + beta$. Entonces, para todo $p in NN, p gt.eq p_0$, tenemos que
   
     $
   h(n) &= a(n) + b(n)\
@@ -868,7 +868,7 @@ Sean $f, g: NN arrow RR0$. Entonces $O(f) + O(g) = O(f + g)$.
        &= gamma (f + g) (n)
     $
     y por lo tanto $h in O(f + g)$.
-  - $supset.eq)$ Sea $h in O(f + g)$. Entonces, existen $alpha in RR > 0, n_0 in NN$ tales que para todo $n in NN, (n gt.eq n_0 implies h(n) lt.eq alpha (f + g)(n))$. Vamos a definir las siguientes funciones:
+  - $supset.eq)$ Sea $h in O(f + g)$. Entonces, existen $alpha in RRg0, n_0 in NN$ tales que para todo $n in NN, (n gt.eq n_0 implies h(n) lt.eq alpha (f + g)(n))$. Vamos a definir las siguientes funciones:
   
     $
       a(n) &= cases(
@@ -906,7 +906,7 @@ Sean $f: NN arrow RR0$, y $g in O(f)$. Entonces $O(f) + O(g) = O(f)$.
 Sean $f, g: NN arrow RR0$. Entonces $O(f) O(g) = O(f g)$.
 ]
 #demo[
-- $subset.eq)$ Sean $a in O(f)$, y $b in O(g)$. Por definición, existen $alpha in RR > 0, beta in RR > 0, n_0 in NN, m_0 in NN$ tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$, y para todo $m in NN$, $(m gt.eq m_0 implies b(m) lt.eq beta g(m))$. Sea entonces $p_0 = max(n_0, m_0) in NN$, y $gamma = alpha beta$. Entonces, para todo $p in NN, p gt.eq p_0$, tenemos que
+- $subset.eq)$ Sean $a in O(f)$, y $b in O(g)$. Por definición, existen $alpha in RRg0, beta in RRg0, n_0 in NN, m_0 in NN$ tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$, y para todo $m in NN$, $(m gt.eq m_0 implies b(m) lt.eq beta g(m))$. Sea entonces $p_0 = max(n_0, m_0) in NN$, y $gamma = alpha beta$. Entonces, para todo $p in NN, p gt.eq p_0$, tenemos que
 
   $
     (a b)(n) & = a(n) b(n) \
@@ -939,7 +939,7 @@ Sean $f, g: NN arrow RR0$. Entonces $O(f) O(g) = O(f g)$.
 Sean $f: NN arrow RR0$, y $k in RR0$. Entonces $k O(f) = O(k f)$.
 ]
 #demo[
-- $subset.eq)$ Sea $h in k O(f)$. Entonces, existe $a in O(f)$, tal que para todo $n in NN$, $h(n) = k a(n)$. Como $a in O(f)$, existen $alpha in RR > 0$, y $n_0 in NN$, tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$. Entonces, para todo $n gt.eq n_0$, tenemos que 
+- $subset.eq)$ Sea $h in k O(f)$. Entonces, existe $a in O(f)$, tal que para todo $n in NN$, $h(n) = k a(n)$. Como $a in O(f)$, existen $alpha in RRg0$, y $n_0 in NN$, tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha f(n))$. Entonces, para todo $n gt.eq n_0$, tenemos que 
 
   $
     h(n) & = k a(n) \
@@ -949,7 +949,7 @@ Sean $f: NN arrow RR0$, y $k in RR0$. Entonces $k O(f) = O(k f)$.
   $
 
   Luego, $h in O(k f)$.
-- $supset.eq)$ Sea $h in O(k f)$. Entonces, existen $alpha in RR > 0$, y $n_0 in NN$, tales que para todo $n in NN, (n gt.eq n_0 implies h(n) lt.eq alpha (k f)(n) = alpha k f(n))$. Definamos la función $a: NN arrow RR0$, como $a(n) = h(n)/k$ (si $k eq.not 0$), o $a(n) = 0$ (si $k = 0$). Entonces, para todo $n in NN$, tenemos que $h(n) = k a(n)$. Ahora, veamos que $a in O(f)$. Sea $n gt.eq n_0$. Si $k = 0$, entonces $a(n) = 0 lt.eq alpha f(n)$. Si $k eq.not 0$, entonces:
+- $supset.eq)$ Sea $h in O(k f)$. Entonces, existen $alpha in RRg0$, y $n_0 in NN$, tales que para todo $n in NN, (n gt.eq n_0 implies h(n) lt.eq alpha (k f)(n) = alpha k f(n))$. Definamos la función $a: NN arrow RR0$, como $a(n) = h(n)/k$ (si $k eq.not 0$), o $a(n) = 0$ (si $k = 0$). Entonces, para todo $n in NN$, tenemos que $h(n) = k a(n)$. Ahora, veamos que $a in O(f)$. Sea $n gt.eq n_0$. Si $k = 0$, entonces $a(n) = 0 lt.eq alpha f(n)$. Si $k eq.not 0$, entonces:
 
   $
     a(n) & = h(n)/k \
@@ -984,20 +984,24 @@ Sean $f, g: NN arrow RR0$. Entonces:
 - $f O(g) = O(f g)$
 ]
 #demo[
-- $f + O(g) subset.eq O(f + g)$: Sea $h in f + O(g)$. Entonces, existe $a in O(g)$, tal que para todo $n in NN$, $h(n) = f(n) + a(n)$. Como $a in O(g)$, existen $alpha in RR > 0$, y $n_0 in NN$, tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha g(n))$. Entonces, para todo $n gt.eq n_0$, tenemos que
+- $f + O(g) subset.eq O(f + g)$: Sea $h in f + O(g)$. Entonces, existe $a in O(g)$, tal que para todo $n in NN$, $h(n) = f(n) + a(n)$. Como $a in O(g)$, existen $alpha in RRg0$, y $n_0 in NN$, tales que para todo $n in NN, (n gt.eq n_0 implies a(n) lt.eq alpha g(n))$. Entonces, para todo $n gt.eq n_0$, tenemos que
 
   $
     h(n) & = f(n) + a(n) \
          & lt.eq f(n) + alpha g(n) \
-         & lt.eq alpha (f(n) + g(n)) \
-         & = alpha (f + g)(n)
+         & lt.eq (1 + alpha) f(n) + (1 + alpha) g(n) \
+         & "pues "alpha > 0", y luego "1 + alpha > 1 \
+         & lt.eq (1 + alpha) (f(n) + g(n)) \
+         & = (1 + alpha) (f + g)(n)
   $
 
   y por lo tanto $h in O(f + g)$.
 - $f O(g) = O(f g)$: Esta demostración es el ejercicio @bigoprod.
 ]
+
+
 #warning-box[
-Notemos que en general no vale la igualdad $f + O(g) = O(f + g)$. Por ejemplo, si $f(n) = n^2$, y $g(n) = n$, entonces el lado derecho, $O(f + g) = O(f) + O(g) = O(n^2) + O(n) = O(n^2)$, pero el lado izquierdo, $f + O(g)$ contiene sólo funciones de la forma $n^2 + j(n)$, con $j in O(n)$. Una función como $2n^2$ está en $O(n^2)$, pero no está en $f + O(g)$, pues no es posible encontrar una tal función $j$.
+Notemos que en general no vale la igualdad $f + O(g) = O(f + g)$. Por ejemplo, si $f(n) = n^2$, y $g(n) = n$, entonces el lado derecho, $O(f + g) = O(f) + O(g) = O(n^2) + O(n) = O(n^2)$, pero el lado izquierdo, $f + O(g)$ contiene sólo funciones de la forma $n^2 + j(n)$, con $j in O(n)$. Una función como $h(n) = 2n^2$ está en $O(n^2)$, pero no está en $f + O(g)$, pues no es posible encontrar una tal función $j$.
 ]
 
 Tenemos entonces las siguientes propiedades:
@@ -1033,6 +1037,14 @@ Tenemos entonces las siguientes propiedades:
   ),
   caption: [Resumen de propiedades algebraicas asintóticas.]
 ) <tabla-algebra-asintotica>
+
+
+#warning-box[
+#text(red)[
+  TODO
+  Explicar que $product_(i=1)^n O(1) eq.not O(1)$, y que si no tenemos cuidado, podemos probar por inducción que $T(n) = T(n-1)+ 1$ es $O(1)$, con la hipótesis inductiva $P(n): T in O(1)$ (notar que no hay $n$ en la hipótesis inductiv! test 123 456 789).
+]
+]
 
 
 === Árboles de recursión
@@ -1122,6 +1134,7 @@ Podemos ahora o bien hacer este argumento formal (mostrando detalladamente por q
 Ahora intentemos encontrar una cota superior ajustada para $f$. Intuitivamente, queremos sacarnos de encima el piso ($floor(dot)$) y techo ($ceil(dot)$). Podemos primero probar por inducción que nuestra cota vale para potencias de dos, y luego extender la cota al resto de los naturales.
 
 Sea $n = 2^k$ con $k in NN$. Vamos a probar por inducción sobre $k$ el predicado $P(k): f(2^k) lt.eq 3 k 2^k$.
+#demo[
 - Caso base: $k = 0$. Entonces $f(2^k) = f(1) = 0 lt.eq 3 times 0 times 1 = 0$.
 - Paso inductivo: Sea $k in NN$. Asumimos $P(k)$. Queremos probar $P(k+1)$. Por $P(k)$ sabemos que que $f(2^k) lt.eq 3 times k times 2^k$. Vamos a probar que vale $P(k+1)$. Notemos que $2^(k+1) = 2 times 2^k$. Entonces: 
 $
@@ -1132,8 +1145,9 @@ $
              & = 2^(k+1) (3k + 1) \
              & lt.eq 2^(k+1) (3 (k+1)) 
 $
-
+]
 Por lo tanto, vale $P(k)$ para todo $k in NN$. Esto nos dice que para toda potencia de dos $n$, vale $f(n) lt.eq 3 n log_2(n)$. Ahora queremos rellenar los huecos entre potencias de dos. Vamos a probar que $f$ es monótona creciente, es decir, que para todo $n in NN$, vale $f(n) lt.eq f(n+1)$. Esto lo podemos probar por inducción sobre $n$.
+#demo[
 - Caso base: $n = 1$. Entonces, $f(1) = 0 lt.eq 1 = f(2)$.
 - Paso inductivo: Sea $n in NN$, y asumamos que vale $f(k) lt.eq f(k+1)$ para todo $k lt.eq n$. Queremos probar que vale $f(n+1) lt.eq f(n+2)$. Notemos que:
 $
@@ -1161,15 +1175,220 @@ $
 $
 
 En ambos casos, $f(n+1) lt.eq f(n+2)$.
+]
 
+Luego, tenemos que vale $f(n) lt.eq 3 n log_2(n)$ para todo $n in NN$.
 
+Probemos entonces una generalización de esto.
+#teo(title:[Monotonía Estructural])[
+  Sea $T: NN_0 arrow RR$ definida por partes:
+  $
+    T(n) = cases(
+      b_n & "si" 0 lt.eq n < n_0,
+      sum_(i=1)^m T(h_i (n)) + f(n) & "si" n gt.eq n_0
+    )
+  $
+  
+  Donde $h_i (n) < n$ son las funciones de tamaño de subproblema (e.g., $floor(n/2)$).
+  
+  Si se cumplen las siguientes condiciones:
+  
+  1. La secuencia base no decrece ($b_0 lt.eq b_1 lt.eq ... lt.eq b_(n_0-1)$).
+  2. El salto a la recursión respeta el orden ($b_(n_0-1) < T(n_0)$).
+  3. Las funciones $h_i (n)$ son no-decrecientes ($n_1 lt.eq n_2 implies h_i (n_1) lt.eq h_i (n_2)$).
+  4. $h_i (n) < n$ para todo $i$ y todo $n$.
+  5. $f(n)$ es no-decreciente ($f(n) lt.eq f(n+1)$).
+  
+  Entonces $T(n)$ es *no-decreciente* ($T(n) lt.eq T(n+1)$) para todo $n in NN$.
+]<teo:mono>
+#demo[
+  Usamos inducción fuerte sobre $n$.
+  
+  - Caso base ($n < n_0 - 1$): Por la condición 1, $T(n) lt.eq T(n+1)$.
+  - Transición ($n = n_0 - 1$): Por la condición 2, $T(n_0 - 1) < T(n_0)$.
+  
+  - Caso recursivo ($n gt.eq n_0$):
+    Queremos probar que $T(n) < T(n+1)$.
+    Expandimos $T(n+1)$:
+    $ T(n+1) = sum_(i=1)^m T(h_i (n+1)) + f(n+1) $
+    
+    Analizamos término a término:
+    + Como $h_i$ es no-decreciente por la condición 3, tenemos $h_i (n) lt.eq h_i (n+1)$.
+    + Como $h_i (n+1) < n+1$ por la condición 4, aplicamos la hipótesis inductiva (o la propiedad transitiva de la monotonía ya probada para valores menores): la función $T$ no decrece en estos argumentos.
+       $ T(h_i (n)) lt.eq T(h_i (n+1)) $
+    + Sumando sobre todo $i$:
+       $ sum T(h_i (n)) lt.eq sum T(h_i (n+1)) $
+    + Como $f$ es no-decreciente por la condición 5:
+       $ f(n) lt.eq f(n+1) $
+       
+    Sumando las dos desigualdades del paso 3 y 4, obtenemos:
+    $ T(n) lt.eq T(n+1) $
+]
+
+==== Acotado de conjuntos asintóticos
+
+Supongamos que tenemos un conjunto de funciones $T(n) = O(n)$. En general *no* vamos a poder decir que todo miembro de este conjunto es de la forma $f(n) = alpha n$, pero sí vamos a poder decir que para todo elemento $f in T$, hay una función de la forma $g(n) = alpha n$ que domina asintóticamente a $f$. Es decir, que existe un $n_0 in NN$, tal que para todo $n in NN$, $(n gt.eq n_0 implies f(n) lt.eq g(n))$.
+
+Tomando un caso más interesante, sea $T$ que cumple:
+
+$
+T(n) = cases(1 "si" n = 0,
+             T(floor(n/2)) + O(n) "si" n > 0
+)
+$
+
+Nuevamente, *no* sabemos que todo elemento de $T(n)$ es de la forma $f(n) = f(floor(n/2)) + alpha n$ para algún $alpha in RRg0$. Sí sabemos que todo elemento de $T$ es de la forma $T(n) = T(floor(n/2)) + g(n)$, en el caso recursivo, para alguna función $g in O(n)$. Lo que podemos hacer, entonces, es crear una función $W$, que tiene la misma forma que $T$ en el caso recursivo, pero que tiene una forma explícita en vez de $g$. Como $g in O(n)$, sabemos que existe $alpha in RRg0$, y $n_0 in NN$, tal que para todo $n in NN, (n gt.eq n_0 implies f(n) lt.eq alpha n)$. Definimos, entonces, el caso recursivo de $W$ como $W(n) = W(floor(n/2)) + alpha n$. Esto nos da una función que sabemos domina a al elemento de $T$, pero para a cual tenemos una forma explícita!
 
 #warning-box[
-#text(red)[
-  Explicar que $product_(i=1)^n O(1) eq.not O(1)$, y que si no tenemos cuidado, podemos probar por inducción que $T(n) = T(n-1)+ 1$ es $O(1)$, con la hipótesis inductiva $P(n): T in O(1)$ (notar que no hay $n$ en la hipótesis inductiva!).
+Esto no es obvio! Si nuestra recursión fuera $T(n) = -T(floor(n/2)) + O(n)$, _no_ podríamos símplemente cambiar $T$ por $W$, dar una forma explícita para algo que acota al elemento de $O(n)$, y decir que $W$ domina a $T$, pues eso es falso. Esto requiere una demostración.
 ]
+
+#teo(title:[Dominación recursiva])[Sea $T: NN_0 arrow RR$ una función definida por partes:
+  $ T(n) = cases(
+    b_n & "si" 0 lt.eq n < n_0,
+    Phi({T(n_0), dots, T(n-1)}) + f(n) & "si" n gt.eq n_0
+  )
+  $
+  para algunas funciones $Phi$ y $f$.
+
+  Construimos una función acotante $W: NN arrow RR0$ que imita la estructura recursiva de $T$, pero "aplana" los casos base:
+  $ W(n) = cases(
+    K & "si" 0 lt.eq n < n_0,
+    Phi({W(n_0), dots, W(n-1)}) + g(n) & "si" n gt.eq n_0
+  ) $
+
+  Entonces $T(n) lt.eq W(n)$ para todo $n in NN_0$ si se cumplen tres condiciones:
+  1. $f(n) lt.eq g(n)$ para todo $n gt.eq n_0$.
+  2. El operador $Phi$ es monótono creciente (si la entrada crece, la salida no decrece).
+  3. La constante $K$ se elige tal que cubra el máximo caso base original:
+     $ K gt.eq max { b_0, b_1, dots, b_(n_0-1) } $
+]<teo:domrec>
+#demo[
+Usamos inducción.  
+- Caso base: Sea $n in NN$, con $n < n_0$. Por definición, $W(n) = K$.
+  Por la condición 3, $K gt.eq b_n$.
+  Como $T(n) = b_n$, entonces $T(n) lt.eq W(n)$.
+  
+- Caso recursivo: Sea $n in NN$, con $n gt.eq n_0$. Por la hipótesis inductiva, asumimos $T(k) lt.eq W(k)$ para todo $k < n$. Sabemos que $T(n) = Phi({T(n_0), dots, T(n-1)}) + f(n)$. Aplicamos al hipótesis inductiva a cada argumento interno, y sabiendo que $Phi$ es monótona no-decreciente por la condición 2, obtenemos que $T(n) lt.eq Phi({W(n_0), dots, W(n-1)}) + f(n)$. Finalmente usamos la condición 1 para obtener que $T(n) lt.eq Phi({W(n_0), dots, W(n-1)}) + g(n) = W(n)$.
 ]
+
+Tenemos entonces nuestra función acotante, $W$, definida como:
+
+$
+  W(n) = cases(
+    1 "si" n = 0,
+    W(floor(n/2)) + alpha n "si" n gt.eq 1
+  )
+$
+
+donde $alpha$ es tal que para todo $n gt.eq n_0$, tenemos que $g(n) lt.eq alpha n$. Por el @teo:domrec, tenemos que $T(n) lt.eq W(n)$ para todo $n in NN_0$.
+
+=== Acotado asintótico
+Finalmente, intentemos encontrar una cota para un *conjunto de funciones* definido de form asintótica, juntando todo lo que vimos.
+
+#prop[
+Sea $T$ definida como:
+
+$
+T(n) = cases(
+  37 &"si" n = 0,
+  42 &"si" n = 1,
+  3 &"si" n = 2,
+  T(floor(n/2)) + T(ceil(n/2)) + O(n) &"si" n > 2
+)
+$
+
+Probar que $T$ está en $O(n log n)$.
+]
+#demo[
+Recordemos que $T$ no es una función, es un conjunto de funciones. En particular, $T$ es el cojunto de funciones de la forma $T(n) = T(floor(n/2)) + T(ceil(n/2)) + f(n)$ en el caso recursivo, para algún $f in O(n)$.
+
+Para mostrar que este conjunto es un subconjunto de $O(n log n)$, vamos a juntar lo que vimos hasta ahora:
+
++ Vamos a tomar un elemento de este conjunto, llamémoslo $T$ por comodidad.
++ Vamos a encontrar una cota superior $W$ para $T$, usando que sabemos qué forma tiene $T$.
++ Vamos a probar que $W$ in $O(n log n)$ si restringimos $O$ a potencias de $2$ (pues la recursión se divide en $2$ cada vez)
++ Vamos a probar que $W$ es monotónicamente creciente.
+
+Con esto vamos a concluir que $W in O(n log n)$ en general, y luego que $T in O(n log n)$.
+
++ Sea $T$ una tal función, donde en el caso recursivo está definido como $T(n) = T(floor(n/2)) + T(ceil(n/2)) + f(n)$ para algún $f in O(n)$. Como $f in O(n)$, existe un $alpha in RRg0, n_0 in NN$, tal que para todo $n in NN$, $n gt.eq n_0 implies f(n) lt.eq alpha n$.
++ Definimos $W$ como $
+  W(n) = cases(
+    50 &"si" n lt.eq 3,
+    W(floor(n/2)) + W(ceil(n/2)) + alpha n &"si" n gt.eq 3
+  )
+  $
+  que por @teo:domrec sabemos domina a $T$.
++ Si asumimos que $n$ es una potencia de $2$, entonces intentemos probar que $W(n) lt.eq beta n log_2 n + gamma$ para algún $beta in RRg0$ y $gamma in RR$. Para encontrar quién puede ser $beta$ y $gamma$, veamos que en los casos base, donde $W(n) = 50$, tenemos $W(n) lt.eq beta n log_2 n + gamma$:
+    - $n = 0$: $50 lt.eq beta 0 log_2(0) + gamma = gamma$, con lo cual tenemos $50 lt.eq gamma$.
+    - $n = 1$: $50 lt.eq beta log_2(1) + gamma = gamma$, con lo cual tenemos $50 lt.eq gamma$.
+    - $n = 2$: $50 lt.eq 2 beta log_2(2) + gamma = 2beta + gamma$, con lo cual tenemos $50 lt.eq 2beta + gamma$.
+    - $n = 3$: $50 lt.eq 3 beta log_2(3) + gamma = 3beta log_2(3) + gamma$.
+  Con lo cual eligiendo $gamma = 50$, y $beta gt.eq 0$, satisfacemos la desigualdad para los casos base.
+
+
+  Para encontrar $beta$, planteemos por inducción:
+  $
+    W(n) &= 2 W(n/2) + alpha n \
+         &lt.eq 2 (beta (n/2) log_2 (n/2) + gamma) + alpha n \
+         &lt.eq beta n (log_2(n) - 1) + 2gamma + alpha n \
+         &= beta n log_2(n) - beta n + 2gamma + alpha n \
+
+  $
+
+  obteniendo $W(n) lt.eq (beta n log_2 n + gamma) + (gamma + (alpha - beta) n)$. Queremos que esto valga para todo $n in NN$, $n gt.eq 4$. Si tuvieramos $gamma + (alpha - beta) n lt.eq 0$, estaríamos, pues podríamos simplemente descartar ese término y conseguir $W(n) lt.eq beta n log_2 n + gamma$. Como $n gt.eq 4$, queremos $gamma + 4 (alpha - beta) lt.eq 0$.
+
+  $
+    gamma + 4 (alpha - beta) &lt.eq 0 \
+    gamma &lt.eq 4 (beta - alpha) \
+    gamma &lt.eq 4 beta - 4 alpha \
+    beta &gt.eq (50 + 4alpha)/4 = 12.5 + alpha/4
+  $
+
+  Eligiendo entonces $beta = 12.5 + alpha/4$, tenemos que $W(n) lt.eq gamma n log_2 n + beta$ para todo $n$ potencia de $2$.
+
++ Queremos ver que $W$ es monotónica creciente. Para esto podemos usar el @teo:mono.
+
+Por lo tanto, al estar $T$ acotada por arriba por $W$, y $W$ estando en $O(n log n)$, tenemos que $T in O(n log n)$.
+]
+
+Esto fue bastante esfuerzo, y requirió adivinar una cota superior para $T$. Podemos intentar generalizar el trabajo que hicimos, para una clase más amplia de funciones.
+
+
+
 === Teorema maestro
+
+Vimos cómo acotar este tipo de funciones definidas asintóticamente. Como vimos, puede llevar mucho esfuerzo, especialmente el encontrar una función acotante. Afortunadamente hay un teorema que nos ayuda bastante, pues lo podemos aplicar mecánicamente, y generaliza lo que vimos.
+
+#teo(title:[Teorema maestro (versión piso)])[
+Sea $T: NN arrow RR0$ una función tal que:
+
+$
+  T(n) = cases(
+    b_i &"si" 0 lt.eq i < n_0,
+    a T(floor(n/b)) + f(n) &"si" n gt.eq n_0
+  )
+$
+
+para algunas constantes $b_0, dots, b_(n-1) in RR0$, $a in RRg0, b in NN > 1, n_0 in NN$. Entonces:
+
+- Si $f in O(n^(log_b a - epsilon))$ para algún $epsilon in RRg0$, entonces $T in Theta(n^(log_b a))$.
+- Si $f in Theta(n^(log_b a) log^k n)$ para algún $k in NN$, entonces $T in Theta(n^(log_b a) log^(k+1) n)$.
+- Si $f in Omega(n^(log_b a + epsilon))$ para algún $epsilon in RRg0$, y además existen $n_0 in NN$ y $r < 1 in RR0$ tal que $a f(n/b) lt.eq r f(n)$ para todo $n gt.eq n_0$, entonces $T in Theta(f)$.
+]
+
+#note-box[
+La intuición acá es que al considerar el árbol de recursión de $T$, vemos que tenemos aproximadamente $n^(log_b a)$ hojas. Lo siguiente no es una demostración, claramente - es sólo intuición para que tengan a mano.
+
+Pueden pasar tres cosas con el valor de $T$:
+  - El costo de las hojas domina. Si $f$ crece menos rápido que $n^(log_b a)$, entonces la mayor contribución al valor de $T$ viene, asintóticamente, dada por las hojas. Luego $T in O(n^(log_b a))$.
+  - El costo de las hojas está balanceado con el costo de $f$. Luego el costo de cada nivel es $f(n)$ o $n^(log_b a)$, cualquiera de las dos, y habiendo $log_b n$ niveles, tenemos que $T in Theta(n^(log_b a) log_b n)$.
+  - El costo de $f$ domina. El tamaño de los las entradas crece rápidamente comparado con el valor de la raíz, y el primer se vuelve irrelevante. Obtenemos $T in Theta(f)$.
+]
+
+
+
 
 
 === Ejercicios
