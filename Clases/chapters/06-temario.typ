@@ -1131,22 +1131,22 @@ Podemos ahora o bien hacer este argumento formal (mostrando detalladamente por q
 
 ==== Conteo acotado
 
-Ahora intentemos encontrar una cota superior ajustada para $f$. Intuitivamente, queremos sacarnos de encima el piso ($floor(dot)$) y techo ($ceil(dot)$). Podemos primero probar por inducción que nuestra cota vale para potencias de dos, y luego extender la cota al resto de los naturales.
+Eso fue un poco complicado, y dependió de la estructura precisa de $f$. Para otras funciones, no es obvio que vamos a poder hacer esto. En cambio, intentemos encontrar una cota superior ajustada para $f$. Intuitivamente, queremos sacarnos de encima el piso ($floor(dot)$) y techo ($ceil(dot)$). Podemos primero probar por inducción que nuestra cota vale para potencias de dos, donde desaparecen ambas $floor(dot)$ y $ceil(dot)$, y luego extender la cota al resto de los naturales.
 
-Sea $n = 2^k$ con $k in NN$. Vamos a probar por inducción sobre $k$ el predicado $P(k): f(2^k) lt.eq 3 k 2^k$.
+Sea $n = 2^k$ con $k in NN$. Vamos a probar por inducción sobre $k$ el predicado $P(k): f(2^k) lt.eq k 2^k$.
 #demo[
-- Caso base: $k = 0$. Entonces $f(2^k) = f(1) = 0 lt.eq 3 times 0 times 1 = 0$.
-- Paso inductivo: Sea $k in NN$. Asumimos $P(k)$. Queremos probar $P(k+1)$. Por $P(k)$ sabemos que que $f(2^k) lt.eq 3 times k times 2^k$. Vamos a probar que vale $P(k+1)$. Notemos que $2^(k+1) = 2 times 2^k$. Entonces: 
+- Caso base: $k = 0$. Entonces $f(2^k) = f(1) = 0 lt.eq 0 times 1 = 0$.
+- Paso inductivo: Sea $k in NN$. Asumimos $P(k)$. Queremos probar $P(k+1)$. Por $P(k)$ sabemos que que $f(2^k) lt.eq k 2^k$. Notemos que $2^(k+1) = 2 times 2^k$. Entonces: 
 $
   f(2^(k+1)) & = f(2^k) + f(2^k) + 2^(k+1) \
-             & lt.eq 3 times k times 2^k + 3 times 2^k + 2^(k+1) \ "por hipótesis inductiva" \
-             & = 6 times k times 2^k + 2 times 2^k \
-             & = 2^k (6 k + 2) \
-             & = 2^(k+1) (3k + 1) \
-             & lt.eq 2^(k+1) (3 (k+1)) 
+             & lt.eq k 2^k + k 2^k + 2^(k+1) "por hipótesis inductiva" \
+             & = 2k 2^k + 2^(k+1) \
+             & = (k + 1) 2^(k+1) 
 $
 ]
-Por lo tanto, vale $P(k)$ para todo $k in NN$. Esto nos dice que para toda potencia de dos $n$, vale $f(n) lt.eq 3 n log_2(n)$. Ahora queremos rellenar los huecos entre potencias de dos. Vamos a probar que $f$ es monótona creciente, es decir, que para todo $n in NN$, vale $f(n) lt.eq f(n+1)$. Esto lo podemos probar por inducción sobre $n$.
+Por lo tanto, vale $P(k)$ para todo $k in NN$. Esto nos dice que para toda potencia de dos $n$, vale $f(n) lt.eq n log_2(n)$. Ahora queremos rellenar los huecos entre potencias de dos. Vamos a querer "ensandwichar" a $f(n)$, teniendo $f(a) lt.eq f(n) lt.eq f(b)$, con $a lt.eq n lt.eq b$, y ambas $a$ y $b$ potencias de dos. Para eso vamos a necesitar probar que $f$ es monótona no-decreciente
+
+Probemos, entonces, que $f$ es monótona no-decreciente. Es decir, que para todo $n in NN$, vale $f(n) lt.eq f(n+1)$. Esto lo podemos probar por inducción sobre $n$.
 #demo[
 - Caso base: $n = 1$. Entonces, $f(1) = 0 lt.eq 1 = f(2)$.
 - Paso inductivo: Sea $n in NN$, y asumamos que vale $f(k) lt.eq f(k+1)$ para todo $k lt.eq n$. Queremos probar que vale $f(n+1) lt.eq f(n+2)$. Notemos que:
@@ -1172,14 +1172,13 @@ $
   f(n+2) & = f((n+1)/2) + f((n+1)/2) + n + 2 \
          & gt.eq f(n/2) + f((n+2)/2) + n + 1 ", ya que "f((n+1)/2) gt.eq f(n/2)" y "n + 2 gt.eq n + 1 \
          & = f(n+1)
-$
+$ 
 
 En ambos casos, $f(n+1) lt.eq f(n+2)$.
 ]
 
-Luego, tenemos que vale $f(n) lt.eq 3 n log_2(n)$ para todo $n in NN$.
+Por lo tanto, $f$ es monótona no-decreciente. Este argumento parece bastante general, así que para poder usar el resultado para otras funciones, vamos a probar una generalización de esto.
 
-Probemos entonces una generalización de esto.
 #teo(title:[Monotonía Estructural])[
   Sea $T: NN_0 arrow RR$ definida por partes:
   $
@@ -1225,25 +1224,57 @@ Probemos entonces una generalización de esto.
     $ T(n) lt.eq T(n+1) $
 ]
 
-==== Acotado de conjuntos asintóticos
-
-Supongamos que tenemos un conjunto de funciones $T(n) = O(n)$. En general *no* vamos a poder decir que todo miembro de este conjunto es de la forma $f(n) = alpha n$, pero sí vamos a poder decir que para todo elemento $f in T$, hay una función de la forma $g(n) = alpha n$ que domina asintóticamente a $f$. Es decir, que existe un $n_0 in NN$, tal que para todo $n in NN$, $(n gt.eq n_0 implies f(n) lt.eq g(n))$.
-
-Tomando un caso más interesante, sea $T$ que cumple:
+Volvamos ahora a nuestra $f$. Consideremos cualquier $n in NN$. Llamando $k = ceil(log_2(n))$, tenemos:
 
 $
-T(n) = cases(1 "si" n = 0,
-             T(floor(n/2)) + O(n) "si" n > 0
+  n &lt.eq 2^k \
+  f(n) &lt.eq f(2^k) "por ser "f" monótona no-decreciente" \
+       &lt.eq k 2^k "por "P(k)
+$
+
+Ahora acotemos ambos factores, en términos de $n$. Sabemos que $2^k < 2n$, pues $k = ceil(log_2(n))$. Por el mismo motivo, $k < 1 + log_2(n) = log_2(2n)$. Luego, tenemos $f(n) lt.eq 2n log_2(2n)$, para todo $n in NN$.
+
+Notemos cómo para no-potencias de $2$, tuvimos que ensanchar la cota superior, mediante la función techo. Esto es típico. Generalizemos esto.
+
+#teo(title: [Extensión eventual de potencias])[
+Sean $T, g: NN arrow RR0$ y $b, n_0 in NN$ que cumplen:
+
++ $b gt.eq 2$
++ $T(n) lt.eq T(n + 1)$ para todo $n lt.eq n_0$ (es decir, $T$ es no-decreciente a partir de $n_0$)
++ $g(n) lt.eq g(n+1)$ para todo $n gt.eq n_0$ (es decir, $g$ es no-decreciente a partir de $n_0$)
++ $T(b^k) lt.eq g(b^k)$ para todo $k in NN$ tal que $b^k gt.eq n_0$
+
+Entonces $T(n) lt.eq g(b n)$ para todo $n gt.eq n_0$.
+]<teo:extpot>
+#demo[
+Sea $n in NN$ tal que $n gt.eq n_0$. Como $b gt.eq 2$, podemos tomar $k = ceil(log_b(n))$, y tenemos que $b^k lt.eq n < b^(k+1)$. Como $n gt.eq n_0$ y $b^(k+1) > n$, entonces $b^(k+1) > n_0$. Como $T$ es no-decreciente desde $n_0$, entonces tenemos $T(n) lt.eq T(b^(k+1))$. Usando la cuarta condición, tenemos que $T(n) lt.eq T(b^(k+1)) lt.eq g(b^(k+1))$.
+
+Por otro lado, como $b^k lt.eq n$, tenemos que $b^(k+1) lt.eq b n$. Como $b gt.eq 2$ y $n gt.eq n_0$, tenemos que $b^(k+1) gt.eq n_0$, y por lo tanto podemos usar la condición 3, obteniendo $g(b^(k+1)) lt.eq g(b n)$.
+
+Juntando ambas desigualdades obtenemos $T(n) lt.eq g(b n)$.
+]
+
+==== Acotado de conjuntos asintóticos
+
+Supongamos que tenemos un conjunto de funciones como $O(n)$, y sabemos que $f in O(n)$. En general *no* vamos a poder decir que $f(n) = alpha n$ para algún $alpha in RRg0$, pero sí vamos a poder decir que existe una función $g$ de la forma $g(n) = alpha n$ que domina asintóticamente a $f$. Es decir, que existe un $n_0 in NN$, tal que para todo $n in NN$, $(n gt.eq n_0 implies f(n) lt.eq g(n))$.
+
+Tomando un caso más interesante, sea $T: NN arrow RR0$ que cumple:
+
+$
+T(n) = cases(1 &"si" n = 0,
+             T(floor(n/2)) + O(n) &"si" n > 0
 )
 $
 
-Nuevamente, *no* sabemos que todo elemento de $T(n)$ es de la forma $f(n) = f(floor(n/2)) + alpha n$ para algún $alpha in RRg0$. Sí sabemos que todo elemento de $T$ es de la forma $T(n) = T(floor(n/2)) + g(n)$, en el caso recursivo, para alguna función $g in O(n)$. Lo que podemos hacer, entonces, es crear una función $W$, que tiene la misma forma que $T$ en el caso recursivo, pero que tiene una forma explícita en vez de $g$. Como $g in O(n)$, sabemos que existe $alpha in RRg0$, y $n_0 in NN$, tal que para todo $n in NN, (n gt.eq n_0 implies f(n) lt.eq alpha n)$. Definimos, entonces, el caso recursivo de $W$ como $W(n) = W(floor(n/2)) + alpha n$. Esto nos da una función que sabemos domina a al elemento de $T$, pero para a cual tenemos una forma explícita!
+Recordemos qué significa esta notación. Esto nos dice que _existe_ una función $g: NN arrow RR0$, tal que $g in O(n)$, y el caso recursivo de $T$ es $T(n) = T(floor(n/2)) + g(n)$. Es decir, *no sabemos* quién exactamente es $T$, no podríamos decir $T(45) = dots$, pues no tenemos suficiente información. *Tampoco sabemos* que el caso recursivo de $T$ es de la forma $T(n) = T(floor(n/2)) + alpha n$ para algún $alpha in RRg0$. No vamos a poder calcular valores exactos de $T(n)$. Lo que sí vamos a poder hacer, es acotar a $T$.
+
+Vamos a crear una función $W$, que tiene la misma forma que $T$ en el caso recursivo, pero que tiene una forma explícita en vez de $O(n)$. Como la $g$ que usa $T$, está en $O(n)$, sabemos que existe $alpha in RRg0$, y $n_0 in NN$, tal que para todo $n in NN, (n gt.eq n_0 implies g(n) lt.eq alpha n)$. Definimos, entonces, el caso recursivo de $W$ como $W(n) = W(floor(n/2)) + alpha n$. Esto nos da una función que sabemos domina a $T$, pero para la cual tenemos una forma explícita.
 
 #warning-box[
 Esto no es obvio! Si nuestra recursión fuera $T(n) = -T(floor(n/2)) + O(n)$, _no_ podríamos símplemente cambiar $T$ por $W$, dar una forma explícita para algo que acota al elemento de $O(n)$, y decir que $W$ domina a $T$, pues eso es falso. Esto requiere una demostración.
 ]
 
-#teo(title:[Dominación recursiva])[Sea $T: NN_0 arrow RR$ una función definida por partes:
+#teo(title:[Dominación recursiva (mayorante)])[Sea $T: NN_0 arrow RR$ una función definida por partes:
   $ T(n) = cases(
     b_n & "si" 0 lt.eq n < n_0,
     Phi({T(n_0), dots, T(n-1)}) + f(n) & "si" n gt.eq n_0
@@ -1257,11 +1288,12 @@ Esto no es obvio! Si nuestra recursión fuera $T(n) = -T(floor(n/2)) + O(n)$, _n
     Phi({W(n_0), dots, W(n-1)}) + g(n) & "si" n gt.eq n_0
   ) $
 
-  Entonces $T(n) lt.eq W(n)$ para todo $n in NN_0$ si se cumplen tres condiciones:
-  1. $f(n) lt.eq g(n)$ para todo $n gt.eq n_0$.
-  2. El operador $Phi$ es monótono creciente (si la entrada crece, la salida no decrece).
-  3. La constante $K$ se elige tal que cubra el máximo caso base original:
-     $ K gt.eq max { b_0, b_1, dots, b_(n_0-1) } $
+  Si se cumplen tres condiciones:
+  + $f(n) lt.eq g(n)$ para todo $n gt.eq n_0$.
+  + El operador $Phi$ es no-decreciente (si la entrada crece, la salida no decrece).
+  + La constante $K$ cumple que $K gt.eq max { b_0, b_1, dots, b_(n_0-1) }$.
+  
+  Entonces $T(n) lt.eq W(n)$ para todo $n in NN$.
 ]<teo:domrec>
 #demo[
 Usamos inducción.  
@@ -1276,18 +1308,46 @@ Tenemos entonces nuestra función acotante, $W$, definida como:
 
 $
   W(n) = cases(
-    1 "si" n = 0,
-    W(floor(n/2)) + alpha n "si" n gt.eq 1
+    1 &"si" n = 0,
+    W(floor(n/2)) + alpha n &"si" n gt.eq 1
   )
 $
 
 donde $alpha$ es tal que para todo $n gt.eq n_0$, tenemos que $g(n) lt.eq alpha n$. Por el @teo:domrec, tenemos que $T(n) lt.eq W(n)$ para todo $n in NN_0$.
 
+Tenemos un teorema análogo para dominación por debajo.
+
+#teo(title:[Dominación recursiva (minorante)])[
+Sea $T: NN_0 arrow RR$ una función definida por partes:
+  $ T(n) = cases(
+    b_n & "si" 0 lt.eq n < n_0,
+    Phi({T(n_0), dots, T(n-1)}) + f(n) & "si" n gt.eq n_0
+  )
+  $
+  para algunas funciones $Phi$ y $f$.
+
+  Construimos una función acotante $V: NN arrow RR0$ que imita la estructura recursiva de $T$, pero "aplana" los casos base:
+  $ V(n) = cases(
+    K & "si" 0 lt.eq n < n_0,
+    Phi({V(n_0), dots, V(n-1)}) + g(n) & "si" n gt.eq n_0
+  ) $
+
+  Si se cumplen tres condiciones:
+  + $f(n) gt.eq g(n)$ para todo $n gt.eq n_0$.
+  + El operador $Phi$ es no-decreciente (si la entrada crece, la salida no decrece).
+  + La constante $K$ se elige tal que $K lt.eq min { b_0, b_1, dots, b_(n_0-1) }$.
+
+  Entonces $T(n) gt.eq V(n)$ para todo $n in NN$.
+]<teo:domrecmin>
+#demo[
+Sea $n in NN$. Si $n < n_0$, entonces $K = V(n) lt.eq min { b_0, dots, b_(n_0-1) } lt.eq b_n = T(n)$. De otra forma, $V(k) lt.eq T(k)$ para todo $k < n$. Como esto vale para todos los argumentos de $Phi({V(n_0), dots, V(n-1)})$, y $Phi$ es no-decreciente, tenemos que $Phi({V(n_0), dots, V(n-1)}) lt.eq Phi({T(n_0), dots, T(n-1)})$. Finalmente, como $g(n) lt.eq f(n)$, tenemos que $V(n) = Phi({V(n_0), dots, V(n-1)}) + g(n) lt.eq Phi({T(n_0), dots, T(n-1)}) + f(n) = T(n)$.
+]
+
 === Acotado asintótico
-Finalmente, intentemos encontrar una cota para un *conjunto de funciones* definido de form asintótica, juntando todo lo que vimos.
+Finalmente, intentemos encontrar una cota para una función $T$ que cumple con una forma recursiva definida asintóticamente, juntando todo lo que vimos.
 
 #prop[
-Sea $T$ definida como:
+Sea $T$ que cumple:
 
 $
 T(n) = cases(
@@ -1301,16 +1361,15 @@ $
 Probar que $T$ está en $O(n log n)$.
 ]
 #demo[
-Recordemos que $T$ no es una función, es un conjunto de funciones. En particular, $T$ es el cojunto de funciones de la forma $T(n) = T(floor(n/2)) + T(ceil(n/2)) + f(n)$ en el caso recursivo, para algún $f in O(n)$.
+Recordemos que $T$ no está definida únicamente, por el $O(n)$ en su caso recursivo.
 
-Para mostrar que este conjunto es un subconjunto de $O(n log n)$, vamos a juntar lo que vimos hasta ahora:
+Para mostrar que $T in O(n log n)$, vamos a juntar lo que vimos hasta ahora:
 
-+ Vamos a tomar un elemento de este conjunto, llamémoslo $T$ por comodidad.
 + Vamos a encontrar una cota superior $W$ para $T$, usando que sabemos qué forma tiene $T$.
 + Vamos a probar que $W$ in $O(n log n)$ si restringimos $O$ a potencias de $2$ (pues la recursión se divide en $2$ cada vez)
 + Vamos a probar que $W$ es monotónicamente creciente.
 
-Con esto vamos a concluir que $W in O(n log n)$ en general, y luego que $T in O(n log n)$.
+Con esto vamos a concluir que $W in O(n log n)$ en general, y como $T(n) lt.eq W(n)$ para todo $n in NN$, tendremos que $T in O(n log n)$.
 
 + Sea $T$ una tal función, donde en el caso recursivo está definido como $T(n) = T(floor(n/2)) + T(ceil(n/2)) + f(n)$ para algún $f in O(n)$. Como $f in O(n)$, existe un $alpha in RRg0, n_0 in NN$, tal que para todo $n in NN$, $n gt.eq n_0 implies f(n) lt.eq alpha n$.
 + Definimos $W$ como $
@@ -1349,12 +1408,12 @@ Con esto vamos a concluir que $W in O(n log n)$ en general, y luego que $T in O(
   Eligiendo entonces $beta = 12.5 + alpha/4$, tenemos que $W(n) lt.eq gamma n log_2 n + beta$ para todo $n$ potencia de $2$.
 
 + Queremos ver que $W$ es monotónica creciente. Para esto podemos usar el @teo:mono.
++ Podemos ahora extender $W$ a todos los $n in NN$ usando el @teo:extpot, y podemos acotar $W(n) lt.eq 2 gamma log_2 (2n) + beta$.
 
 Por lo tanto, al estar $T$ acotada por arriba por $W$, y $W$ estando en $O(n log n)$, tenemos que $T in O(n log n)$.
 ]
 
-Esto fue bastante esfuerzo, y requirió adivinar una cota superior para $T$. Podemos intentar generalizar el trabajo que hicimos, para una clase más amplia de funciones.
-
+Esto fue bastante esfuerzo, y requirió adivinar una cota superior para $W$ en potencias de $2$ en el paso 3. Podemos intentar generalizar el trabajo que hicimos, para una clase más amplia de funciones.
 
 
 === Teorema maestro
@@ -1367,15 +1426,15 @@ Sea $T: NN arrow RR0$ una función tal que:
 $
   T(n) = cases(
     b_i &"si" 0 lt.eq i < n_0,
-    a T(floor(n/b)) + f(n) &"si" n gt.eq n_0
+    a_1 T(floor(n/b)) + a_2 T(ceil(n/b)) + f(n) &"si" n gt.eq n_0
   )
 $
 
-para algunas constantes $b_0, dots, b_(n-1) in RR0$, $a in RRg0, b in NN > 1, n_0 in NN$. Entonces:
+para algunas constantes $b_0, dots, b_(n-1) in RR0$, $a_1, a_2 in NN$, $b in NN gt.eq 2$, $n_0 in NN$. Llamemos $a = a_1 + a_2$, y $c = log_b a$. Entonces:
 
-- Si $f in O(n^(log_b a - epsilon))$ para algún $epsilon in RRg0$, entonces $T in Theta(n^(log_b a))$.
-- Si $f in Theta(n^(log_b a) log^k n)$ para algún $k in NN$, entonces $T in Theta(n^(log_b a) log^(k+1) n)$.
-- Si $f in Omega(n^(log_b a + epsilon))$ para algún $epsilon in RRg0$, y además existen $n_0 in NN$ y $r < 1 in RR0$ tal que $a f(n/b) lt.eq r f(n)$ para todo $n gt.eq n_0$, entonces $T in Theta(f)$.
+- Si $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$, entonces $T in Theta(n^(c))$.
+- Si $f in Theta(n^(c) log^k n)$ para algún $k in NN$, entonces $T in Theta(n^(c) log^(k+1) n)$.
+- Si $f in Omega(n^(c + epsilon))$ para algún $epsilon in RRg0$, y además existen $n_1 in NN$ y $r < 1 in RR0$ tal que $a f(n/b) lt.eq r f(n)$ para todo $n gt.eq n_1$, entonces $T in Theta(f)$.
 ]
 
 #note-box[
@@ -1386,6 +1445,8 @@ Pueden pasar tres cosas con el valor de $T$:
   - El costo de las hojas está balanceado con el costo de $f$. Luego el costo de cada nivel es $f(n)$ o $n^(log_b a)$, cualquiera de las dos, y habiendo $log_b n$ niveles, tenemos que $T in Theta(n^(log_b a) log_b n)$.
   - El costo de $f$ domina. El tamaño de los las entradas crece rápidamente comparado con el valor de la raíz, y el primer se vuelve irrelevante. Obtenemos $T in Theta(f)$.
 ]
+
+La demostración está en la #xref(<demo:master>) del apéndice.
 
 
 
