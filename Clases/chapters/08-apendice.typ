@@ -6,35 +6,7 @@
 = Apéndice
 
 == Demostración del Teorema Maestro <demo:master>
-
-Primero unos lemmas elementales.
-#lemma[
-Para todo $x in RR$ con $x gt.eq 1$, se cumple
-$floor(x) gt.eq x/2$.
-]<lemma:piso-mitad>
-#demo[
-Si $1 lt.eq x lt 2$, entonces $floor(x)=1 gt.eq x/2$.
-Si $x gt.eq 2$, entonces $floor(x) gt.eq x-1$ y $x-1 gt.eq x/2$ (pues $x gt.eq 2$).
-]
-
-#lemma[
-Para todo $x in RR$ con $x gt.eq 1$, se cumple
-$ceil(x) lt.eq 2x$.
-]<lemma:techo-doble>
-#demo[
-Si $1 lt.eq x lt 2$, entonces $ceil(x) lt.eq 2 = 2 dot 1 lt.eq 2x$.
-Si $x gt.eq 2$, entonces $ceil(x) lt.eq x+1 lt.eq 2x$ (pues $x gt.eq 1$).
-]
-
-#lemma[
-Sean $x, y, z in RRg0$, con $y eq.not 1$. Entonces $x^(log_y z) = z^(log_y x)$.
-]<lemma:logaritmo-cambio-base>
-#demo[
-Sabemos que $x = y^(log_y x)$, por definición del logaritmo. Entonces $x^(log_y z) = y^(log_y x dot log_y z) = y^(log_y z dot log_y x) = z^(log_y x)$.
-]
-
-
-#teo(title:[Teorema maestro (versión piso)])[
+#teo(title:[Teorema maestro])[
 Sea $T: NN arrow RR0$ una función tal que:
 
 $
@@ -44,153 +16,383 @@ $
   )
 $
 
-para alguna función $f: NN arrow RR0$, algunas constantes $b_0, dots, b_(n_0-1) in RR0$, $a_1, a_2 in NN$, $b in NN gt.eq 2$, $n_0 in NN$, y asumiendo $n_0 gt.eq 2$ si $a_2 > 0$ para estar bien definida. Llamemos $a = a_1 + a_2$, y $c = log_b a$. Entonces:
+para alguna función $f: NN arrow RR0$, algunas constantes $b_0, dots, b_(n_0-1) in RR0$, $a_1, a_2 in NN$, $b in NN gt.eq 2$, $n_0 in NN$, y asumiendo $n_0 gt.eq 2$ si $a_2 > 0$ para estar bien definida. Llamemos $a = a_1 + a_2 gt.eq 1$, y $c = log_b a$. Entonces:
 
 - Si $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$, entonces $T in Theta(n^(c))$.
 - Si $f in Theta(n^(c) log^k n)$ para algún $k in NN$, entonces $T in Theta(n^(c) log^(k+1) n)$.
 - Si $f in Omega(n^(c + epsilon))$ para algún $epsilon in RRg0$, y además existen $n_1 in NN$ y $r < 1 in RR0$ tal que $a_1 f(floor(n/b)) + a_2 f(ceil(n/b)) lt.eq r f(n)$ para todo $n gt.eq n_1$, entonces $T in Theta(f)$.
 ]
 #demo[
-Si $n_0 = 1$, entonces el caso $a_2 > 0$ está mal definido, pues $T(ceil(1/b)) = T(1)$, que crearía un ciclo en la definición. Sin pérdida de generalidad, asumimos $n_0 gt.eq 2$. Si tuviésemos $n_0 = 1$, podríamos definir una nueva recurrencia $T'$ idéntica a $T$ pero con $n_0' = 2$, extendiendo los casos base (por ejemplo, definiendo $T'(1) = T(1)$ explícitamente como base). Como tendríamos $T'(n) = T(n)$ para todo $n$, $T in Theta(f) iff T' in Theta(f)$. Esta asunción nos asegura que en los pasos recursivos los argumentos son mayores o iguales a 2, y que términos como $log (n_0 - 1)$ están bien definidos.
 
-Vamos a definir dos funciones, una que acota $T$ por arriba, y otra por abajo.
-$
-  V(n) &= cases(
-    k_min "si" n < n_0,
-    a V(floor(n/b)) + f(n) "si" n gt.eq n_0
-  )\
-  W(n) &= cases(
-    k_max "si" n < n_0,
-    a W(ceil(n/b)) + f(n) "si" n gt.eq n_0
-  )
-$
-con $k_min = min {b_0, dots, b_(n_0-1)}$ y $k_max = max {b_0, dots, b_(n_0-1)}$. Sin pérdida de generalidad, asumimos $k_min > 0$. Si no, podemos extender el conjunto de casos base considerando $T(n_0), T(n_0+1), dots$ (calculados mediante la recurrencia) hasta encontrar al menos un valor positivo. Tal valor debe existir, pues de lo contrario $T$ sería idénticamente cero, lo cual es trivial y no requiere el teorema maestro. Por #xref(<teo:domrec>) y #xref(<teo:domrecmin>), sabemos que $V(n) lt.eq T(n) lt.eq W(n)$ para todo $n in NN$.
 
-Viendo el árbol de recursión de $V$, vemos que cada vez, $n$ se transforma en $floor(n/b)$. Como $floor(floor(n/b)/b) = floor(n/b^2)$, vemos que el valor en el $j$-ésimo nivel será $floor(n/b^j)$. Análogamente, el valor en el $j$-ésimo nivel de $W$ será $ceil(n/b^j)$.
-
-Sea $d_v$ el mínimo $k$ tal que $floor(n/b^k) < n_0$, y $d_w$ el mínimo $k$ tal que $ceil(n/b^k) < n_0$. Estas son las alturas de los árboles de recursión de $V$ y $W$, respectivamente.
-
-#lemma[
-Sea $n gt.eq n_0$. Entonces:
-- $d_v > log_b n - log_b n_0$
-- $d_w lt.eq log_b n - log_b (n_0 - 1) + 1$
-]
-#demo[
-Para todo $x in RR0$, si $floor(x) < n_0$, entonces $x < n_0$. Luego, usando la definición de $d_v$ sabemos que $n/b^(d_v) < n_0$. Por lo tanto, $b^(d_v) > n/n_0$, y tomando logaritmos, $d_v = log_b (b^(d_v)) > log_b (n/n_0)$. Esto nos da una cota inferior, $d_v > log_b n - log_b (n_0)$.
-
-Por otro lado, $d_w$ es el mínimo entero que cumple $ceil(n/b^(d_w)) < n_0$. Luego, $ceil(n/b^(d_w - 1)) gt.eq n_0$. Luego, $n/b^(d_w - 1) gt.eq n_0 - 1$, y tomando logaritmos, obtenemos $d_w - 1 = log_b (b^(d_w-1)) lt.eq log_b (n/(n_0 - 1)) = log_b n - log_b (n_0 - 1)$, y por lo tanto $d_w lt.eq log_b n - log_b (n_0 - 1) + 1$.
-]
-
-Expandiendo ambas funciones mientras caemos en los casos recursivos, obtenemos:
-
-$
-  V(n) &= k_min a^(d_v) + sum_{j=0}^(d_v-1) a^j f(floor(n/b^j))\
-  W(n) &= k_max a^(d_w) + sum_{j=0}^(d_w-1) a^j f(ceil(n/b^j))
-$
-
-El número de hojas en $V$ es $a^(d_v)$, y en $W$ es $a^(d_w)$. Queremos ver si el valor de $V$ y $W$ está dominado por el valor en las hojas, o por la sumatoria que le sigue. 
-
-#lemma[
- - $a^(d_v) in Omega(n^c)$
- - $a^(d_w) in O(n^c)$
-]
-#demo[
-- Como $d_v > log_b n - log_b (n_0)$, entonces $a^(d_v) > a^(log_b n - log_b (n_0)) = n^c/n_0^c = (1/n_0^c) n^c$, y por lo tanto $a^(d_v) in Omega(n^c)$.
-- Como $d_w lt.eq log_b n - log_b (n_0 - 1) + 1$, entonces $a^(d_w) lt.eq a^(log_b n - log_b (n_0 - 1) + 1) = a n^c/(n_0 - 1)^c = (a/(n_0 - 1)^c) n^c$, y por lo tanto $a^(d_w) in O(n^c)$.
-
-Acá usamos el @lemma:logaritmo-cambio-base con $(x,y,z)=(a,b,n)$, con $(x,y,z)=(a,b,n_0)$, y con $(x,y,z)=(a,b,n_0-1)$.
-]
-
-Comparemos, entonces, $f$ con $n^c$:
-
-- Caso 1, existe un $epsilon in RRg0$, tal que $f in O(n^(c - epsilon))$. Es decir, existe un $alpha > 0, n_1 in NN$, tal que para todo $n gt.eq n_1$, $f(n) lt.eq alpha n^(c - epsilon)$. Queremos ver que el valor de $T$ es asintóticamente igual al costo en las hojas. 
-
-  $
-    W(n) =  k_max a^(d_w) + sum_(j=0)^(d_w - 1) a^j f(ceil(n/b^j))
-  $
-
-  Llamemos $S(n) = sum_(j=0)^(d_w - 1) a^j f(ceil(n/b^j))$.
-
-  Queremos acotar $f(ceil(n/b^j))$. Notemos que en la sumatoria, el argumento de la llamada recursiva siempre cumple $ceil(n/b^j) gt.eq n_0 gt.eq 2$. Esto implica que $n/b^j gt.eq 1$, y por lo tanto $n/b^j lt.eq ceil(n/b^j)$. Además, por el @lemma:techo-doble aplicado a $x = n/b^j$, tenemos $ceil(n/b^j) lt.eq 2 n/b^j$.
+#canvas(length: 1cm, {
+  import draw: *
   
-  Si $c - epsilon gt.eq 0$, usamos la cota superior del argumento: $ceil(n/b^j)^(c - epsilon) lt.eq (2 n/b^j)^(c - epsilon)$.
-  Si $c - epsilon < 0$, usamos la cota inferior del argumento: $ceil(n/b^j)^(c - epsilon) lt.eq (n/b^j)^(c - epsilon)$.
+  // Helper function to draw a cylinder
+  let draw-cylinder(x, y, width, height, color) = {
+    // Bottom ellipse (back)
+    arc((x + width/2, y), start: 180deg, stop: 360deg, radius: (width/2, width/5), 
+        fill: color.darken(30%), stroke: (thickness: 2pt, paint: black))
+    
+    // Side rectangles (left and right edges of cylinder)
+    line((x, y), (x, y + height), stroke: (thickness: 2pt, paint: black))
+    line((x + width, y), (x + width, y + height), stroke: (thickness: 2pt, paint: black))
+    
+    // Main body filled
+    rect((x, y), (x + width, y + height), fill: color, stroke: none)
+    
+    // Redraw side lines on top
+    line((x, y), (x, y + height), stroke: (thickness: 2pt, paint: black))
+    line((x + width, y), (x + width, y + height), stroke: (thickness: 2pt, paint: black))
+    
+    // Top ellipse (visible front part)
+    arc((x + width/2, y + height), start: 180deg, stop: 360deg, radius: (width/2, width/5), 
+        fill: color.darken(20%), stroke: (thickness: 2pt, paint: black))
+    arc((x + width/2, y + height), start: 0deg, stop: 180deg, radius: (width/2, width/5), 
+        fill: color, stroke: (thickness: 2pt, paint: black))
+  }
+  
+  // Left blue cylinder
+  draw-cylinder(0.5, 6.5, 1.8, 2.2, rgb("#5B9BD5"))
+  
+  // Right orange cylinder  
+  draw-cylinder(10.8, 6.5, 1.8, 2.2, rgb("#ED7D31"))
+  
+  // Recursion Tree
+  
+  // Root node
+  circle((6.5, 7.5), radius: 0.35, fill: rgb("#5B9BD5"), stroke: (thickness: 2pt, paint: black))
+  
+  // Level 1 nodes
+  let l1-left = (4.5, 6)
+  let l1-right = (8.5, 6)
+  circle(l1-left, radius: 0.32, fill: rgb("#5B9BD5"), stroke: (thickness: 2pt, paint: black))
+  circle(l1-right, radius: 0.32, fill: rgb("#5B9BD5"), stroke: (thickness: 2pt, paint: black))
+  
+  // Edges from root to level 1
+  line((6.5, 7.15), l1-left, stroke: (thickness: 2pt))
+  line((6.5, 7.15), l1-right, stroke: (thickness: 2pt))
+  
+  // Level 2 nodes
+  let l2-positions = ((3.5, 4.5), (5.5, 4.5), (7.5, 4.5), (9.5, 4.5))
+  for pos in l2-positions {
+    circle(pos, radius: 0.28, fill: rgb("#5B9BD5"), stroke: (thickness: 2pt, paint: black))
+  }
+  
+  // Edges from level 1 to level 2
+  line((4.5, 5.68), (3.5, 4.78), stroke: (thickness: 2pt))
+  line((4.5, 5.68), (5.5, 4.78), stroke: (thickness: 2pt))
+  line((8.5, 5.68), (7.5, 4.78), stroke: (thickness: 2pt))
+  line((8.5, 5.68), (9.5, 4.78), stroke: (thickness: 2pt))
+  
+  // Leaf nodes (orange)
+  let leaf-positions = ((3, 3), (4, 3), (5, 3), (6, 3), (7, 3), (8, 3), (9, 3), (10, 3))
+  for pos in leaf-positions {
+    circle(pos, radius: 0.25, fill: rgb("#ED7D31"), stroke: (thickness: 2pt, paint: black))
+  }
+  
+  // Edges to leaves
+  line((3.5, 4.22), (3, 3.25), stroke: (thickness: 2pt))
+  line((3.5, 4.22), (4, 3.25), stroke: (thickness: 2pt))
+  line((5.5, 4.22), (5, 3.25), stroke: (thickness: 2pt))
+  line((5.5, 4.22), (6, 3.25), stroke: (thickness: 2pt))
+  line((7.5, 4.22), (7, 3.25), stroke: (thickness: 2pt))
+  line((7.5, 4.22), (8, 3.25), stroke: (thickness: 2pt))
+  line((9.5, 4.22), (9, 3.25), stroke: (thickness: 2pt))
+  line((9.5, 4.22), (10, 3.25), stroke: (thickness: 2pt))
+  
+  // Blue arrows from left side tree nodes to left cylinder
+  line((4.5, 6.2), (2.3, 7), stroke: (thickness: 2pt, paint: rgb("#5B9BD5")), mark: (end: ">", fill: rgb("#5B9BD5")))
+  line((3.5, 4.7), (2.3, 6.8), stroke: (thickness: 2pt, paint: rgb("#5B9BD5")), mark: (end: ">", fill: rgb("#5B9BD5")))
+  
+  // Yellow arrows from ALL leaves to right cylinder
+  line((10, 3), (10.8, 6.5), stroke: (thickness: 2.5pt, paint: rgb("#FFC000")), mark: (end: ">", fill: rgb("#FFC000")))
+  line((9, 3), (10.8, 6.7), stroke: (thickness: 2.5pt, paint: rgb("#FFC000")), mark: (end: ">", fill: rgb("#FFC000")))
+  line((8, 3), (11, 6.9), stroke: (thickness: 2.5pt, paint: rgb("#FFC000")), mark: (end: ">", fill: rgb("#FFC000")))
+  line((7, 3), (11.2, 7.1), stroke: (thickness: 2.5pt, paint: rgb("#FFC000")), mark: (end: ">", fill: rgb("#FFC000")))
+  
+  // Horizontal separator bar
+  line((0, 2.3), (13, 2.3), stroke: (thickness: 3pt, paint: black))
+  
+  // Bottom section - Three balance scales
+  
+  // Vertical dividing lines
+  line((4.3, 2), (4.3, -1), stroke: (thickness: 1pt, paint: gray.darken(20%)))
+  line((8.7, 2), (8.7, -1), stroke: (thickness: 1pt, paint: gray.darken(20%)))
+  
+  // Helper function for scale droplet
+  let draw-droplet(x, y, color) = {
+    circle((x, y), radius: 0.15, fill: color, stroke: (thickness: 1.5pt, paint: black))
+    line((x, y - 0.15), (x, y - 0.35), stroke: (thickness: 1.5pt, paint: black))
+  }
+  
+  // Scale 1 (left - blue heavier)
+  line((1.5, 0), (2.5, 0), stroke: (thickness: 2.5pt))
+  line((2, 0), (2, 1), stroke: (thickness: 2.5pt))
+  line((1.3, 1.3), (2.7, 0.8), stroke: (thickness: 2.5pt))
+  circle((2, 1), radius: 0.08, fill: black)
+  draw-droplet(1.3, 0.6, rgb("#5B9BD5"))
+  draw-droplet(2.7, 0.15, rgb("#ED7D31"))
+  
+  // Scale 2 (middle - balanced)
+  line((5.5, 0), (6.5, 0), stroke: (thickness: 2.5pt))
+  line((6, 0), (6, 1), stroke: (thickness: 2.5pt))
+  line((5.3, 1), (6.7, 1), stroke: (thickness: 2.5pt))
+  circle((6, 1), radius: 0.08, fill: black)
+  draw-droplet(5.3, 0.3, rgb("#5B9BD5"))
+  draw-droplet(6.7, 0.3, rgb("#ED7D31"))
+  
+  // Scale 3 (right - orange heavier)
+  line((9.5, 0), (10.5, 0), stroke: (thickness: 2.5pt))
+  line((10, 0), (10, 1), stroke: (thickness: 2.5pt))
+  line((9.3, 0.8), (10.7, 1.3), stroke: (thickness: 2.5pt))
+  circle((10, 1), radius: 0.08, fill: black)
+  draw-droplet(9.3, 0.15, rgb("#5B9BD5"))
+  draw-droplet(10.7, 0.6, rgb("#ED7D31"))
+})
 
-  En ambos casos, existe una constante $K$ ($K=2$ o $K=1$) tal que $ceil(n/b^j)^(c - epsilon) lt.eq (K n/b^j)^(c - epsilon)$.
+Vamos a asumir sin pérdida de generalidad que $n_0 gt.eq 2$. Si $n_0 = 1$, es decir hay un sólo caso base, podemos definir una función $T'$, idénticamente definida a $T$, sólo que $T'$ contiene un caso base extra, $b_(n_0) = T(n_0)$. Como $T(n) = T'(n)$ para todo $n in NN$, tendrán el mismo comportamiento asintótico, y podemos asumir que estamos analizando $T'$ con $n_0 gt.eq 2$. Hacemos esto para que expresiones como $1/(log_2 n_0)$ estén bien definidas.
 
-  Entonces, para todo $n gt.eq max(n_0, n_1)$:
-  $
-    S(n) lt.eq sum_(j=0)^(d_w - 1) a^j alpha (K n/b^j)^(c - epsilon)
-  $.
+Definamos $k_min = min_(0 lt.eq i < n_0) b_i$, y $k_max = max_(0 lt.eq i < n_0) b_i$.
 
-  Factorizando constantes:
+También vamos a asumir sin pérdida de generalidad que $k_min > 0$. Si todos los casos base son $0$, al igual que en el párrafo anterior, tomamos el primer $k$ tal que $T(k) > 0$, y creamos casos base $b_(n_0), dots, b_k$, tal que al menos un caso base no es cero. Si no hay tal primer $k$ con $T(k) > 0$, entonces $T$ es la función constantemente cero, y no hay nada que analizar.
+
+Vamos a analizar el árbol de recursión de $T(n)$. Definimos $d$ como el primer nivel en el que hay una hoja, $d = floor(log_b (n / n_0)) + 1$.
+
+Definimos el _argumento_ de un vértice como el valor que se le pasa a la función $T$ en él.
+
+Definimos el _peso_ de un vértice en el árbol de recursión de forma inductiva: la raíz tiene peso 1,
+y si un vértice tiene peso $w$, su hijo izquierdo (correspondiente a $floor(n / b)$) tiene peso
+$w dot a_1$, y su hijo derecho (correspondiente a $ceil(n / b)$) tiene peso $w dot a_2$.
+
+#lemma[
+En el nivel $j$, los argumentos de los vértices son o bien $floor(n / b^j)$ o bien $ceil(n / b^j)$.
+En particular, difieren en a lo sumo 1 entre sí.
+]
+#demo[
+Por inducción sobre $j$. Para $j = 0$, el único vértice es la raíz con argumento $n = floor(n / b^0) = ceil(n / b^0)$.
+
+Para $j gt.eq 1$, por hipótesis inductiva los argumentos en el nivel $j - 1$ están en ${floor(n / b^(j-1)), ceil(n / b^(j-1))}$. Los hijos de estos vértices tienen argumentos de la forma $floor(q / b)$ o $ceil(q / b)$ donde $q in {floor(n / b^(j-1)), ceil(n / b^(j-1))}$.
+
+Tenemos que $floor(floor(x/y)/y) = floor(x/y^2)$, y $ceil(ceil(x/y)/y) = ceil(x/y^2)$ para todo $x, y$, con $y eq.not 0$. Asimismo, $ceil(x)$ y $floor(x)$ son enteros, y difieren en a lo sumo $1$.
+
+El máximo argumento en el nivel $j$-ésimo, entonces, va a ser $ceil(n / b^j)$, y el mínimo será $floor(n / b^j)$. Como todos los otros argumentos están entre esos dos, y son enteros que difieren en a lo sumo $1$, todos los argumentos del nivel $j$ son o bien $floor(n / b^j)$ o bien $ceil(n / b^j)$.
+]
+
+#lemma[
+Si hay un vértice interno en el nivel $d$, su argumento es exactamente $n_0$.
+]
+#demo[
+En el nivel $d$, los argumentos posibles son $floor(n / b^d)$ y $ceil(n / b^d)$, que difieren en a lo sumo 1. Por definición de $d$, tenemos $floor(n / b^d) < n_0$ (esto es lo que hace que $d$ sea el primer nivel con una hoja).
+
+Para que haya un vértice interno en el nivel $d$, necesitamos $ceil(n / b^d) gt.eq n_0$. Como $ceil(n / b^d) - floor(n / b^d) lt.eq 1$ y $floor(n / b^d) < n_0$, tenemos $ceil(n / b^d) lt.eq n_0$.
+
+Combinando $ceil(n / b^d) gt.eq n_0$ y $ceil(n / b^d) lt.eq n_0$, concluimos que $ceil(n / b^d) = n_0$.
+]
+
+Por lo tanto, el árbol de recursión tiene la siguiente estructura:
+- Niveles $j = 0, 1, dots, d-1$: Hay a lo sumo $2^j$ vértices, todos son internos (i.e. no son hojas). La suma de sus pesos es $a^j$.
+- Nivel $j = d$: Hay a lo sumo $2^d$ vértices. Algunos son internos, otros hojas. Los internos tienen argumento $n_0$.
+- Nivel $j = d+1$: A lo sumo $2^(d+1)$ vértices, todos son hojas, con valor entre $k_min$ y $k_max$.
+
+
+#lemma[
+En cada nivel $j lt.eq d$, la suma de los pesos de todos los vértices es exactamente $a^j$.
+]
+#demo[
+Por inducción sobre $j$. Para $j = 0$, la raíz es el único vértice y tiene peso $1 = a^0$.
+
+Para $d gt.eq j gt.eq 1$, cada vértice en el nivel $j - 1$ tiene dos hijos cuyos pesos suman
+$w dot a_1 + w dot a_2 = w dot a$, donde $w$ es el peso del padre. Por lo tanto, la suma de
+pesos en el nivel $j$ es $a$ veces la suma de pesos en el nivel $j - 1$, que por hipótesis
+inductiva es $a^(j-1)$. Luego la suma en el nivel $j$ es $a dot a^(j-1) = a^j$.
+
+(Esto vale para $j - 1 lt.eq d - 1$ pues en esos niveles todos los vértices son internos, y por lo tanto
+todos tienen exactamente dos hijos, ambos en el nivel $j$.)
+]
+
+Para cada nivel $j < d$, definimos:
+$
+  l_j^- = min(f(floor(n/b^j)), f(ceil(n/b^j))), quad l_j^+ = max(f(floor(n/b^j)), f(ceil(n/b^j)))
+$
+
+Pensemos en la descomposición por nivel de nuestro árbol de recursión. En los primeros $d$ niveles, todos los vértices son internos, y por lo tanto la suma de sus pesos es $a^j$. En los últimos dos niveles, hay a lo sumo $a^d$ peso total de vértices internos, con valor $f(n_0)$, y a lo sumo $a^(d+1)$ peso total de hojas con valor entre $k_min$ y $k_max$, algunas estando en el nivel $d$ y otras en el nivel $d+1$.
+  
   $
-    S(n) &lt.eq alpha dot K^(c - epsilon) dot n^(c - epsilon) sum_(j=0)^(d_w - 1) a^j dot (1/b^j)^(c - epsilon)\
-    &= alpha dot K^(c - epsilon) dot n^(c - epsilon) sum_(j=0)^(d_w - 1) a^j dot b^(-j(c - epsilon))\
-    &= alpha dot K^(c - epsilon) dot n^(c - epsilon) sum_(j=0)^(d_w - 1) b^(j c) dot b^(-j(c - epsilon))\
-    &= alpha dot K^(c - epsilon) dot n^(c - epsilon) sum_(j=0)^(d_w - 1) b^(j epsilon)
+  sum_(j=0)^(d-1) a^j l_j^- + k_min a^d lt.eq T(n) lt.eq sum_(j=0)^(d-1) a^j dot l_j^+ + a^d dot f(n_0) + k_max dot a^(d+1)
   $
 
-  Como $b gt.eq 2$ y $epsilon > 0$, tenemos que $b^epsilon > 1$. Luego, la suma es geométrica con razón mayor que 1:
+- Caso 1. $f in O(n^(c-epsilon))$ para algún $epsilon > 0$. Queremos probar que $T in Theta(n^c)$.
+  
+  Como $f in O(n^(c-epsilon))$, existen $alpha > 0$ y $n_1 in NN$ tales que $f(m) lt.eq alpha m^(c-epsilon)$ para todo $m gt.eq n_1$. Definimos $beta = max(alpha, max_(n_0 lt.eq m lt.eq n_1) f(m)/m^(c-epsilon))$. De esta forma conseguimos que $f(m) lt.eq beta m^(c-epsilon)$ para todo $m gt.eq n_0$.
+
+  Como en el $j$-ésimo nivel, los argumentos son o bien $floor(n/b^j)$ o bien $ceil(n/b^j)$, llamemos $l_j = max(f(floor(n/b^j)), f(ceil(n/b^j)))$ al máximo valor de $f$ en el $j$-ésimo nivel. Por lo tanto, $f(floor(n/b^j)) lt.eq beta floor(n/b^j)^(c-epsilon)$ y $f(ceil(n/b^j)) lt.eq beta ceil(n/b^j)^(c-epsilon)$ para todo $j < d$.
+
+  Primero probemos que $T in O(n^c)$. Tenemos $T(n) lt.eq sum_(j=0)^(d-1) a^j dot l_j^+ + a^d dot f(n_0) + k_max dot a^(d+1)$. Para la sumatoria, usamos $ceil(n/b^j) lt.eq 2n/b^j$ y $floor(n/b^j) lt.eq n/b^j$:
   $
-    sum_(j=0)^(d_w - 1) b^(j epsilon) = (b^(d_w epsilon) - 1)/(b^epsilon - 1) < b^(d_w epsilon)/(b^epsilon - 1)
+  l_j^+ lt.eq beta dot (2n/b^j)^(c-epsilon) = beta dot 2^(c-epsilon) dot n^(c-epsilon)/b^(j(c-epsilon))
   $
 
-  Como $d_w lt.eq log_b n - log_b (n_0 - 1) + 1$, tenemos:
+  Entonces:
   $
-    b^(d_w epsilon) lt.eq b^(epsilon(log_b n - log_b (n_0 - 1) + 1)) = b^epsilon dot n^epsilon dot (n_0 - 1)^(-epsilon)
+  sum_(j=0)^(d-1) a^j dot l_j^+ lt.eq beta dot 2^(c-epsilon) dot n^(c-epsilon) sum_(j=0)^(d-1) a^j/b^(j(c-epsilon))
+  $
+
+  Como $a = b^c$, $a^j/b^(j(c-epsilon)) = b^(j c)/b^(j(c-epsilon)) = b^(j epsilon)$.
+  Luego:
+  $
+  sum_(j=0)^(d-1) a^j dot l_j^+ lt.eq beta dot 2^(c-epsilon) dot n^(c-epsilon) sum_(j=0)^(d-1) b^(j epsilon)
+  $
+
+  La sumatoria es geométrica con razón $b^epsilon > 1$:
+  $
+  sum_(j=0)^(d-1) b^(j epsilon) = (b^(d epsilon) - 1)/(b^epsilon - 1) < b^(d epsilon)/(b^epsilon - 1)
+  $
+
+  Como $d = floor(log_b (n/n_0)) + 1 lt.eq log_b (n/n_0) + 1$:
+  $
+  b^(d epsilon) lt.eq b^(epsilon(log_b (n/n_0) + 1)) = b^epsilon dot (n/n_0)^epsilon
   $
 
   Por lo tanto:
   $
-    S(n) &lt.eq alpha dot K^(c - epsilon) dot n^(c - epsilon) dot (b^epsilon dot n^epsilon dot (n_0 - 1)^(-epsilon))/(b^epsilon - 1)\
-    &= (alpha dot K^(c - epsilon) dot b^epsilon)/((b^epsilon - 1) dot (n_0 - 1)^epsilon) dot n^c
+  sum_(j=0)^(d-1) a^j dot l_j^+ &lt.eq beta dot 2^(c-epsilon) dot n^(c-epsilon) dot (b^epsilon dot (n/n_0)^epsilon)/(b^epsilon - 1)\
+    &= (beta dot 2^(c-epsilon) dot b^epsilon)/((b^epsilon - 1) dot n_0^epsilon) dot n^c
   $
 
-  Luego, $S in O(n^c)$. Como $a^(d_w) in O(n^c)$, tenemos que $W in O(n^c)$.
+  Esto está en $O(n^c)$.
 
-  Para $V(n)$, como el sumando $a^(d_v)$ está en $Omega(n^c)$, y su otro sumando es no-negativo, tenemos que $V in Omega(n^c)$.
+  Para los términos restantes:
+  - $a^d dot f(n_0)$: Como $d lt.eq log_b (n/n_0) + 1$, tenemos $a^d lt.eq a dot (n/n_0)^c in O(n^c)$.
+  - $k_"max" dot a^(d+1) = a dot k_"max" dot a^d lt.eq a dot k_"max" dot (n/n_0)^c in O(n^c)$.
 
-  Por lo tanto, para todo $n gt.eq max(n_0, n_1)$, tenemos que $V(n) lt.eq T(n) lt.eq W(n)$, con $V in Omega(n^c)$ y $W in O(n^c)$, concluímos que $T in Theta(n^c)$.
-
-- Caso 2. $f in Theta(n^c log^k n)$ para algún $k in NN$. Es decir, existen $alpha, beta > 0$ y $n_1 in NN$ tales que para todo $n gt.eq n_1$, $alpha n^c log^k n lt.eq f(n) lt.eq beta n^c log^k n$. Queremos ver que $T in Theta(n^c log^(k+1) n)$.
-
-  Recordemos que $W(n) = k_max a^(d_w) + sum_(j=0)^(d_w - 1) a^j f(ceil(n/b^j)) = k_max a^(d_w) + S_W(n)$, expandiendo la recursión $d_w$ veces. Vemos que $k_max a^(d_w) in O(n^c)$, por el mismo argumento del punto anterior.
-  
-  Como $k_max a^(d_w) in O(n^c) subset O(n^c log^(k+1) n)$, consideremos $S_W(n)$. Como $n/b^j gt.eq 1$, por el @lemma:techo-doble tenemos $ceil(n/b^j) lt.eq 2n/b^j$. Como $c gt.eq 0$, entonces $ceil(n/b^j)^c lt.eq 2^c (n/b^j)^c$. Para el logaritmo, como $ceil(n/b^j) lt.eq 2n/b^j lt.eq 2n$ (pues $b^j gt.eq 1$), tenemos $log ceil(n/b^j) lt.eq log 2 + log n lt.eq 2 log n$ para $n gt.eq 2$.
-
-  Luego, para $n gt.eq max(n_0, n_1, 2)$:
+  Concluimos que $T in O(n^c)$. Ahora probemos la cota inferior, $T in Omega(n^c)$. Por nuestra descomposición:
   $
-    S_W (n) &lt.eq sum_(j=0)^(d_w - 1) a^j beta 2^c (n/b^j)^c (2 log n)^k = beta 2^(c+k) n^c log^k n sum_(j=0)^(d_w - 1) (a/b^c)^j
+  T(n) gt.eq sum_(j=0)^(d-1) a^j dot l_j^- + k_"min" dot a^d gt.eq k_"min" dot a^d
   $
 
-  Como $a = b^c$, la suma es $sum_(j=0)^(d_w-1) 1 = d_w lt.eq log_b n + 1 lt.eq 2 log_b n$ para $n gt.eq b$. Entonces $S_W (n) lt.eq (2^(c+k+1) beta) / (log b) dot n^c log^(k+1) n$. Como $a^(d_w) in O(n^c) subset O(n^c log^(k+1) n)$, tenemos $W in O(n^c log^(k+1) n)$.
+  ya que $f(x) gt.eq 0$ para todo $x in NN$.
 
-  Para la cota inferior, nuevamente expandimos $V(n) = k_min a^(d_v) + sum_(j=0)^(d_v - 1) a^j f(floor(n/b^j)) = k_min a^(d_v) + S_V(n)$. Como $k_min a^(d_v) gt.eq 0$, entonces si $S_V in Omega(n^c log^(k+1) n)$, entonces $V in Omega(n^c log^(k+1) n)$. Consideremos entonces $S_V(n)$. Sea $m = floor((log_b n)/2) - 1$. Vamos a acotar la suma por debajo, considerando sólo los índices $0 lt.eq j lt.eq m$.
-
-  Primero verificamos que estos índices están dentro del rango: si $n gt.eq max(n_0^2, b^2)$, entonces $log_b n gt.eq 2$ y por lo tanto $m lt.eq (log_b n)/2 < d_v$, pues por el lema anterior $d_v > log_b n - log_b n_0 gt.eq (log_b n)/2$. Así, $0 lt.eq j lt.eq m$ implica $j < d_v$, y entonces $floor(n/b^j) gt.eq n_0 gt.eq 2$.
-
-  Además, para $j lt.eq m = floor((log_b n)/2) - 1$ tenemos $j+1 lt.eq (log_b n)/2$, y por lo tanto $b^(j+1) lt.eq b^((log_b n)/2) = sqrt(n)$, es decir, $n/b^j gt.eq b sqrt(n)$. Como $b gt.eq 2$ y $n gt.eq 1$, entonces $b sqrt(n) gt.eq 1$. Juntando, obtenemos $n/b^j gt.eq 1$. Usando el @lemma:piso-mitad con $x = n/b^j$, obtenemos $floor(n/b^j) gt.eq (n/b^j)/2$. Para acotar $log$, usamos que $log$ es creciente y $b gt.eq 2$, y obtenemos: $floor(n/b^j) gt.eq (b sqrt(n))/2 gt.eq sqrt(n)$, y por ende $log floor(n/b^j) gt.eq log sqrt(n) = (1/2) log n$.
-
-  Ahora aplicamos la hipótesis $f(n) gt.eq alpha n^c log^k n$ para $n gt.eq n_1$.
-  Si $n gt.eq n_1^2$, entonces $floor(n/b^j) gt.eq sqrt(n) gt.eq n_1$ para todo $0 lt.eq j lt.eq m$,
-  y podemos escribir:
-
+  Como $d = floor(log_b (n/n_0)) + 1 > log_b (n/n_0)$:
   $
-  S_V(n)
-  &gt.eq sum_(j=0)^m a^j alpha floor(n/b^j)^c log^k floor(n/b^j) \
-  &gt.eq sum_(j=0)^m a^j alpha ((n/b^j)/2)^c ((log n)/2)^k \
-  &= alpha / 2^(c+k) dot n^c log^k n sum_(j=0)^m a^j / b^(j c).
+  a^d > a^(log_b (n/n_0)) = (n/n_0)^c = n^c/n_0^c
   $
 
-  Como $a = b^c$, tenemos $a^j / b^(j c) = 1$, y entonces
+  Por lo tanto $T(n) > k_"min" dot n^c / n_0^c$ para todo $n gt.eq n_0$, y luego $T in Omega(n^c)$. Concluimos que $T in Theta(n^c)$.
+
+
+- Caso 2. Sabemos que $f in Theta(n^c log^k n)$ para algún $k in NN$. Queremos probar que $T in Theta(n^c log^(k+1) n)$.
+
+  Como $f in Theta(n^c log^k n)$, existen $alpha, beta' > 0$ y $N_0 in NN$ tales que para todo $m gt.eq N_0$:
   $
-  S_V(n) &gt.eq alpha / 2^(c+k) dot n^c log^k n dot (m+1).
+  alpha m^c log^k m lt.eq f(m) lt.eq beta' m^c log^k m
   $
 
-  Finalmente, si $n gt.eq b^2$, entonces $log_b n gt.eq 2$ y por lo tanto $(log_b n)/2 gt.eq 1$. Aplicando el @lemma:piso-mitad con $x = (log_b n)/2$, obtenemos $m+1 = floor((log_b n)/2) gt.eq (log_b n)/4$.
+  Como en el caso anterior, definimos $beta = max(beta', max_(n_0 lt.eq m < max(N_0, n_0 + 1)) f(m) / (m^c log^k m))$, para saber que $f(m) lt.eq beta m^c log^k m$ para todo $m gt.eq n_0$. Definimos $N_1 = max(n_0, N_0, 4)$. Probaremos ambas cotas para $n gt.eq 4 N_1^2$.
 
-  Luego, $S_V(n) &gt.eq (alpha/(2^(c+k) dot 4 log b)) dot n^c log^(k+1) n$, y luego $S_V in Omega(n^c log^(k+1) n)$, y luego $V in Omega(n^c log^(k+1) n)$. Concluimos que $T in Theta(n^c log^(k+1) n)$.
+  *Cota superior.* De la descomposición del árbol:
+  $
+  T(n) lt.eq sum_(j=0)^(d-1) a^j dot l_j^+ + a^d dot (a k_max + f(n_0))
+  $
+
+  Para $j < d$, tenemos $n / b^j gt.eq n_0 gt.eq 2$, así que $ceil(n / b^j) lt.eq n / b^j + 1 lt.eq 2n / b^j$. Como ambos argumentos a $f$ en $l_j^+$ son al menos $n_0$, y porque $beta$ es tal que para todo $m gt.eq n_0$ se tiene $f(m) lt.eq beta m^c log^k m$, tenemos:
+  $
+  l_j^+ lt.eq beta dot (2n / b^j)^c dot log^k (2n / b^j) = beta dot 2^c dot n^c / b^(j c) dot log^k (2n / b^j)
+  $
+
+  Usando $a^j = b^(j c)$:
+  $
+  a^j dot l_j^+ lt.eq beta dot 2^c dot n^c dot log^k (2n / b^j)
+  $
+
+  Para $n gt.eq 4$ y $j < d$, tenemos $2n / b^j lt.eq 2n$, así que $log (2n / b^j) lt.eq log (2n) lt.eq 2 log n$. Por lo tanto:
+  $
+  sum_(j=0)^(d-1) a^j dot l_j^+ lt.eq beta dot 2^c dot n^c dot d dot (2 log n)^k = beta dot 2^(c+k) dot n^c dot d dot log^k n
+  $
+
+  Como $d = floor(log_b (n / n_0)) + 1 lt.eq log_b n + 1 lt.eq (2 log n) / (log b)$ para $n gt.eq b$:
+  $
+  sum_(j=0)^(d-1) a^j dot l_j^+ lt.eq (2^(c+k+1) beta) / (log b) dot n^c log^(k+1) n
+  $
+
+  Para los valores de los últimos dos niveles, como $d lt.eq log_b (n / n_0) + 1$, tenemos $a^d lt.eq a dot (n / n_0)^c$. Sea $delta = a dot n_0^(-c) dot (a k_max + f(n_0))$. Entonces:
+  $
+  a^d dot (a k_max + f(n_0)) lt.eq delta dot n^c
+  $
+  Como $O(n^c) subset.eq O(n^c log^(k+1) n)$, estos términos también están en $O(n^c log^(k+1) n)$. Combinando ambas partes obtenemos $T in O(n^c log^(k+1) n)$.
+
+  *Cota inferior.* De la descomposición:
+  $
+  T(n) gt.eq sum_(j=0)^(d-1) a^j dot l_j^-
+  $
+
+  #lemma[
+  Para $j lt.eq (d-1) / 2$ y $n gt.eq 4 N_1^2$, se tiene
+  $floor(n / b^j) gt.eq n / (2 b^j) gt.eq N_1$.
+  ]
+  #demo[
+  Como $d - 1 lt.eq log_b (n / n_0)$, para $j lt.eq (d-1) / 2$ tenemos
+  $b^j lt.eq b^((d-1)/2) lt.eq sqrt(n / n_0)$. Por lo tanto:
+  $
+    n / b^j gt.eq n / sqrt(n / n_0) = sqrt(n dot n_0).
+  $
+
+  Como $n_0 gt.eq 2$, se tiene $sqrt(n dot n_0) gt.eq sqrt(n)$.
+  Y como $n gt.eq 4 N_1^2$, resulta $sqrt(n) gt.eq 2 N_1 gt.eq 8 gt.eq 2$.
+  Luego $n / b^j gt.eq 2$, y por tanto:
+  $
+    floor(n / b^j) gt.eq n / b^j - 1 gt.eq n / (2 b^j).
+  $
+
+  Además:
+  $
+    n / (2 b^j) gt.eq sqrt(n dot n_0) / 2.
+  $
+  Como $n gt.eq 4 N_1^2$ y $n_0 gt.eq 2$, se cumple
+  $n dot n_0 gt.eq 8 N_1^2 gt.eq 4 N_1^2$, y luego:
+  $
+    sqrt(n dot n_0) / 2 gt.eq sqrt(4 N_1^2) / 2 = N_1.
+  $
+
+  Por lo tanto, $floor(n / b^j) gt.eq n / (2 b^j) gt.eq N_1$.
+  ]
+  Para tales $j$, como $floor(n / b^j) gt.eq N_1 gt.eq N_0$:
+  $
+  l_j^- gt.eq alpha dot floor(n / b^j)^c dot log^k (floor(n / b^j)) gt.eq alpha dot (n / (2 b^j))^c dot log^k (n / (2 b^j))
+  $
+
+  Usando $a^j = b^(j c)$:
+  $
+  a^j dot l_j^- gt.eq alpha / 2^c dot n^c dot log^k (n / (2 b^j))
+  $
+
+  Ahora acotemos $log (n / (2 b^j))$ con el siguiente lemma.
+  #lemma[
+  Para $j lt.eq (d-1) / 2$ y $n gt.eq 4 N_1^2$, se tiene $log (n / (2 b^j)) gt.eq 1/4 log n$.
+  ]
+  #demo[
+  Del lema anterior, $n / (2 b^j) gt.eq sqrt(n dot n_0) / 2 gt.eq sqrt(n) / 2$.
+  $
+  log (n / (2 b^j)) gt.eq log (sqrt(n) / 2) = 1/2 log n - log 2
+  $
+  Para que esto sea al menos $1/4 log n$, necesitamos $1/4 log n gt.eq log 2$, es decir, $n gt.eq 16$.
+
+  Como $n gt.eq 4 N_1^2 gt.eq 4 dot 16 = 64 gt.eq 16$, la desigualdad se cumple.
+  ]
+
+  Por lo tanto, para $j lt.eq (d-1) / 2$:
+  $
+  a^j dot l_j^- gt.eq alpha / 2^c dot n^c dot (log n / 4)^k = alpha / (2^c dot 4^k) dot n^c log^k n
+  $
+
+  El número de tales términos es $floor((d-1) / 2) + 1 gt.eq d / 2$. Como $d > log_b (n / n_0) gt.eq (log n) / (2 log b)$ para $n gt.eq n_0^2$:
+  $
+  sum_(j=0)^(floor((d-1) / 2)) a^j dot l_j^- gt.eq d/2 dot alpha / (2^c dot 4^k) dot n^c log^k n gt.eq alpha / (2^(c + 2k + 2) log b) dot n^c log^(k+1) n
+  $
+
+  Así $T in Omega(n^c log^(k+1) n)$.
+
+  Combinando ambas cotas: $T in Theta(n^c log^(k+1) n)$.
 
 - Caso 3. Supongamos que $f in Omega(n^(c + epsilon))$ para algún $epsilon in RRg0$, y que además existen
   $n_1 in NN$ y $r < 1 in RR0$ tales que para todo $n gt.eq n_1$ se cumple $a_1 f(floor(n/b)) + a_2 f(ceil(n/b)) lt.eq r f(n)$.
@@ -199,7 +401,7 @@ Comparemos, entonces, $f$ con $n^c$:
 
   Vamos a probar que $T in Theta(f)$. Primero, la cota inferior es inmediata: para todo $n gt.eq n_0$, $T(n) = a_1 T(floor(n/b)) + a_2 T(ceil(n/b)) + f(n) gt.eq f(n)$, luego $T in Omega(f)$.
 
-  Para la cota superior, vamos a definir una constante explícita. Consideremos el conjunto finito $S = { n in NN : N lt.eq n lt.eq b N }$. Como $f(n) gt 0$ para todo $n in S$, definimos $C_0 = max_{n in S} (T(n) / f(n))$. Definimos finalmente $C = max(C_0, 1 / (1 - r))$.
+  Para la cota superior, vamos a definir una constante explícita. Consideremos el conjunto finito $S = { n in NN : N lt.eq n lt.eq b N }$. Como $f(n) gt 0$ para todo $n in S$, definimos $C_0 = max_(n in S) (T(n) / f(n))$. Definimos finalmente $C = max(C_0, 1 / (1 - r))$.
   
   Vamos a probar por inducción que para todo $n gt.eq N$ se cumple $T(n) lt.eq C f(n)$.
 
@@ -218,9 +420,7 @@ Comparemos, entonces, $f$ con $n^c$:
 
     Como $C gt.eq 1 / (1 - r)$, tenemos $C r + 1 lt.eq C$, y por lo tanto $T(n) lt.eq C f(n)$.
 
-  Por inducción fuerte, $T(n) lt.eq C f(n)$ para todo $n gt.eq N$, y luego $T in O(f)$.
-
-  Concluimos que $T in Theta(f)$.
+  Por inducción, $T(n) lt.eq C f(n)$ para todo $n gt.eq N$, y luego $T in O(f)$.Concluimos que $T in Theta(f)$.
 ]
 
 #load-bib()
