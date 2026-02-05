@@ -47,7 +47,6 @@ A la Universidad de Buenos Aires.
 #include "chapters/04-como-demostramos.typ"
 #include "chapters/05-errores-comunes.typ"
 #include "chapters/06-temario.typ"
-#include "chapters/07-ejercicios.typ"
-#include "chapters/08-apendice.typ"
+#include "chapters/07-apendice.typ"
 
 #load-bib(main: true)
