@@ -148,7 +148,7 @@ logicincs:
 introtologic:
   type: Book
   title: "A Mathematical Introduction to Logic"
-  author: "Herbert B. Enderton"
+  author: Herbert Bruce Enderton
   edition: 2
   publisher: "Academic Press"
   date: 2001
@@ -157,7 +157,7 @@ introtologic:
 dedekind:
   type: chapter
   title: "Ähnliche (deutliche) Abbildung und ähnliche Systeme"
-  author: Dedekind, Richard
+  author: ["Richard Dedekind"]
   date: 1932
   parent:
     title: Gesammelte mathematische Werke
@@ -174,8 +174,90 @@ dedekind:
 demorgan:
   type: Book
   title: "Formal Logic: or, The Calculus of Inference, Necessary and Probable"
-  author: De Morgan, Augustus
+  author: ["Augustus De Morgan"]
   date: 1847
   publisher: Taylor and Walton
   location: London
 
+ram:
+  type: Article
+  title: "Time-bounded random access machines"
+  author: ["Stephen Arthur Cook", "Robert Allen Reckhow"]
+  date: 1973
+  page-range: 354-375
+  parent:
+    type: Periodical
+    title: "Journal of Computer and System Sciences"
+    volume: 7
+    issue: 4
+    publisher: "Elsevier" 
+
+wram:
+  type: Article
+  title: "Surpassing the information theoretic bound with fusion trees"
+  author: ["Michael Lawrence Fredman", "Dan Edward Willard"]
+  date: 1993
+  page-range: 424-436
+  parent:
+    type: Periodical
+    title: "Journal of Computer and System Sciences"
+    volume: 47
+    issue: 3
+
+turing:
+  type: Article
+  title: "On Computable Numbers, with an Application to the Entscheidungsproblem"
+  author: ["Alan Mathison Turing"]
+  date: 1936
+  page-range: 230-265
+  parent:
+    type: Periodical
+    title: "Proceedings of the London Mathematical Society"
+    volume: 2
+    issue: 42
+
+external-memory:
+  type: Article
+  title: "The input/output complexity of sorting and related problems"
+  author: ["Ashok Aggarwal", "Jeffrey Scott Vitter"]
+  date: 1988
+  page-range: 1116-1127
+  parent:
+    type: Periodical
+    title: "Communications of the ACM"
+    volume: 31
+    issue: 9
+
+rasp:
+  type: Article
+  title: "Random-Access Stored-Program Machines, an Approach to Programming Languages"
+  author: ["Calvin Creston Elgot", "Abraham Robinson"]
+  date: 1964
+  page-range: 365-399
+  parent:
+    type: Periodical
+    title: "Journal of the ACM"
+    volume: 11
+    issue: 4
+
+amortized:
+  type: Article
+  title: "Amortized Computational Complexity"
+  author: Robert Endre Tarjan
+  date: 1985
+  page-range: 306-318
+  parent:
+    type: Periodical
+    title: "SIAM Journal on Algebraic and Discrete Methods"
+    volume: 6
+    issue: 2
+
+concrete:
+  type: Book
+  title: "Concrete Mathematics: A Foundation for Computer Science"
+  author: ["Ronald Lewis Graham", "Donald Ervin Knuth", "Oren Patashnik"]
+  edition: 2
+  date: 1994
+  publisher: Addison-Wesley
+  serial-number:
+    isbn: 0201558025

@@ -382,6 +382,10 @@ La unión y la intersección son operaciones duales, usando el complemento.
 === Ejercicios
 
 #ej[
+Sea $A$ un conjunto. Probar que $(A^c)^c = A$.
+]
+
+#ej[
   Sean $A, B$ conjuntos. Probar que las siguientes proposiciones son equivalentes:
   - $A subset.eq B$
   - $A inter B = A$
@@ -528,7 +532,7 @@ Usualmente vamos a definir funciones usando expresiones de la forma $f(X) = Y$, 
   Notemos que no hace falta que $f$ sea sobreyectiva. Por ejemplo, si $A = {1, 0}, B = {1, 0, -1}, C = {1, 0}$, y definimos $f: A arrow B$ como $f(1) = 1, f(0) = 0$, y $g: B arrow C$ como $g(1) = 1, g(0) = 0, g(-1) = 0$, entonces $g compose f: A arrow C$ es sobreyectiva, pero $f$ no lo es.
 ]
 
-#ej[
+#prop[
   Sea $f: A arrow B$ una función. Si existe una función $g: B arrow A$ tal que $f compose g = id_B$, y $g compose f = id_A$, entonces $f$ es biyectiva, y $f^(-1) = g$.
 ]
 #demo[
@@ -547,14 +551,26 @@ Sean $f, g: NN arrow RR0$, y $k in RR0$. Definimos las funciones $f + g$, $f g$,
 - $(f + g)(n) = f(n) + g(n)$
 - $(f g)(n) = f(n) g(n)$
 - $(k f)(n) = k f(n)$
+
+Asimismo, cuando $A$ y $B$ son dos conjuntos de funciones $NN arrow RR0$, y $k in RR0$, definimos:
+
+- $A + B = {a + b | a in A, b in B}$
+- $A B = {a b | a in A, b in B}$
+- $k A = {k a | a in A}$
 ]
 
-=== Análisis asintótico
+== Análisis asintótico
 
 Muchas veces vamos a querer analizar el crecimiento de una función, cuando su entrada crece. Queremos por ejemplo tener una noción de que la función $g(n) = 100 log_2(n)$ es "más chica" que la función $f(n) = n^2$, a pesar de que $g(3) > f(3)$, por ejemplo. Lo que queremos captar es cómo estas funciones se comportan "en el límite", es decir, cuando $n$ es muy grande.
 
 #note-box[
-  Esta noción también es útil en computación particularmente. Nuestros algoritmos van a consumir ciertos recursos, como ser memoria, ancho de banda, o tiempo. A medida que pasa el tiempo, las computadoras se han vuelto más eficientes, y si corremos el mismo programa en una computadora de hace 20 años y una actual, va a correr más rápido, o consumir menos memoria, que ahora. Al comparar algoritmos, no vamos a querer comparar cuántos recursos toman en una computadora particular, porque nuestro análisis no sería válido para otras, donde ciertas operaciones pueden ser el doble, o triple, de eficientes. Queremos una noción que nos diga que un algoritmo es "más eficiente" que otro, independientemente de la computadora en la que se ejecuten. Si una computadora hace una operación el doble de rápida que otra, o consume la mitad de memoria, queremos que nuestro análisis siga valiendo. Lo mismo si una computadora nueva tiene costos fijos menores o mayores que la anterior (por ejemplo, costos de inicialización de programas, o de memoria). Esto nos pide una noción de comparación que descarte factores multiplicativos y aditivos constantes.
+Nuestros algoritmos consumen recursos: tiempo, memoria, ancho de banda, energía.
+
+Para analizar un algoritmo, modelamos el consumo de un recurso como una función $f : NN -> RR0$ del tamaño de la entrada.
+
+Pero esta función depende de detalles que queremos ignorar. Si medimos tiempo de ejecución, una computadora más rápida multiplicará todos los valores por alguna constante $c < 1$. Si contamos operaciones, la elección de qué operaciones contar cambia la función por un factor constante. Si hay costos fijos de inicialización o terminación, la función se desplaza por una constante aditiva.
+
+Queremos una noción de equivalencia entre funciones que sea invariante bajo estas transformaciones: que $f$ y $c dot f + d$ sean "esencialmente iguales" para cualquier $c > 0$ y $d in RR0$. La notación asintótica nos da exactamente esto.
 ]
 
 Para esto vamos a definir ciertos conjuntos de funciones.
@@ -568,11 +584,12 @@ Para esto vamos a definir ciertos conjuntos de funciones.
     Theta(f) &= O(f) inter Omega(f)
   $
 ]
-#note-box[
-  Podemos leer la expresión $f in O(g)$ como "$f$ está asintóticamente dominada por $g$", y la expresión $f in Omega(g)$ como "$f$ asintóticamente domina a $g$", y la expresión $f in Theta(g)$ como "$f$ y $g$ son asintóticamente equivalentes".
-]
+
+Podemos leer la expresión $f in O(g)$ como "$f$ está asintóticamente dominada por $g$", y la expresión $f in Omega(g)$ como "$f$ asintóticamente domina a $g$", y la expresión $f in Theta(g)$ como "$f$ y $g$ son asintóticamente equivalentes".
 
 #warning-box[
+  Esta notación no significa "aproximadamente" en el sentido coloquial. Es una relación matemática precisa entre funciones, aplicable a cualquier recurso que podamos modelar como función del tamaño de entrada.
+
   Algo *muy* importante es que $O(f)$ y $Omega(f)$ y $Theta(f)$ son *conjuntos de funciones*. No son números, y no son funciones. Es increíblemente común que los alumnos se confundan con esto, especialmente cuando, como veremos más adelante, veamos notación como $5 n^2 + O(n)$.
 ]
 
@@ -584,9 +601,9 @@ $
       log_2(n) & lt.eq n^2
 $
 
-Como sabemos que $log_2(n) lt.eq n$ para todo $n in NN, n gt.eq 1 = n_0$, y a su vez $n lt.eq n^2$ para todo $n in NN$, esto es cierto. Luego, tenemos que $g in O(f)$. $g$ está asintóticamente dominada por $f$.
+Como sabemos que $log_2(n) lt.eq n$ para todo $n in NN, n gt.eq 1 = n_0$, y a su vez $n lt.eq n^2$ para todo $n in NN$, esto es cierto. Luego, tenemos que $g in O(f)$, $g$ está asintóticamente dominada por $f$.
 
-Por otro lado, los mismos $alpha$ y $n_0$ demuestran que $f in Omega(g)$. Esto nos da la primer propiedad:
+Veamos ahora una propiedad que relaciona dos de estos conjuntos.
 
 #prop[
   Sean $f, g: NN arrow RR0$ funciones. Entonces, $g in O(f)$ si y sólo si $f in Omega(g)$.
@@ -596,50 +613,208 @@ Por otro lado, los mismos $alpha$ y $n_0$ demuestran que $f in Omega(g)$. Esto n
     g in O(f) & iff exists alpha > 0 in RR, exists n_0 in NN, forall n in NN, (n gt.eq n_0 implies g(n) lt.eq alpha f(n)) \
               & iff exists alpha > 0 in RR, exists n_0 in NN, forall n in NN, (n gt.eq n_0 implies 1/alpha g(n) lt.eq f(n)) \
               & iff exists alpha > 0 in RR, exists n_0 in NN, forall n in NN, (n gt.eq n_0 implies f(n) gt.eq 1/alpha g(n)) \
-              & "Que exista "alpha > 1" es lo mismo que que exista "1/alpha > 1", luego" \
+              & "Que exista "alpha > 0" es lo mismo que que exista "1/alpha > 0", luego" \
               & iff exists alpha > 0 in RR, exists n_0 in NN, forall n in NN, (n gt.eq n_0 implies f(n) gt.eq alpha g(n)) \
               & f in Omega(g)
   $
 ]
 
-Tenemos propiedades básicas que convierten a estas clases en un orden parcial.
+Vemos entonces que $O$ y $Omega$ son duales. Veamos un par de propiedades básicas sobre estos conjuntos.
+
 #prop[
-  Sea $f: NN arrow RR0$. Entonces $f in O(f)$.
-]
+  Sea $f: NN arrow RR0$, y $k in RRg0$. Entonces $k f in Theta(f)$.
+]<prop:asim_refl>
 #demo[
-  Para ver que $f in O(f)$, tenemos que mostrar que existe $alpha > 0 in RR$, y $n_0 in NN$, tal que para todo $n gt.eq n_0$, tenemos que $f(n) lt.eq alpha f(n)$. Pero esto es trivialmente cierto, usando $n_0 = 0$ y $alpha=1$, pues $f(n) lt.eq f(n)$ siempre.
+  Debemos probar que $k f in O(f)$ y $k f in Omega(f)$.
+
+  Para $k f in O(f)$, debemos encontrar $alpha > 0$ y $n_0 in NN$ tales que para todo $n gt.eq n_0$, $(k f)(n) lt.eq alpha f(n)$. Como $k > 0$, podemos tomar $alpha = k$ y $n_0 = 0$. Entonces, para todo $n gt.eq n_0$, tenemos que $(k f)(n) = k f(n) lt.eq k f(n) = alpha f(n)$.
+
+  Para $k f in Omega(f)$, debemos encontrar $beta > 0$ y $n_1 in NN$ tales que para todo $n gt.eq n_1$, $(k f)(n) gt.eq beta f(n)$. Como $k > 0$, podemos tomar $beta = k$ y $n_1 = 0$. Entonces, para todo $n gt.eq n_1$, tenemos que $(k f)(n) = k f(n) gt.eq k f(n) = beta f(n)$.
+
+  Por lo tanto, $k f in O(f) inter Omega(f) = Theta(f)$.
 ]
+#corollary[
+Sea $f: NN arrow RR0$. Entonces $f in O(f)$.
+]<prop:asim_self>
 
 #prop[
   Sean $f, g, h: NN arrow RR0$, tales que $f in O(g)$ y $g in O(h)$. Entonces $f in O(h)$.
-]
+]<prop:asim_trans>
 #demo[
   Como $f in O(g)$ y $g in O(h)$, existen $alpha_1, alpha_2 > 0 in RR$, y $n_1, n_2 in NN$, tales que para todo $n gt.eq n_1$, tenemos que $f(n) lt.eq alpha_1 g(n)$, y para todo $n gt.eq n_2$, tenemos que $g(n) lt.eq alpha_2 h(n)$. Luego, para todo $n gt.eq max(n_1, n_2)$, tenemos que $f(n) lt.eq alpha_1 g(n) lt.eq alpha_1 alpha_2 h(n)$, lo que demuestra que $f in O(h)$.
 ]
 
-La siguiente propiedad nos va a dejar quedarnos con los términos de mayor orden.
+#note-box[Esas dos propiedades nos dicen que tenemos un preorden entre funciones, definiendo $f lt.eq g iff f in O(g)$.]
+
+Tenemos una herramienta útil para probar pertenencia a estos conjuntos asintóticos, que es usar límites#footnote[La restricción de que $L$ exista no es realmente necesaria. Las equivalencias valen si uno toma $limsup$ para $O$ y $liminf$ para $Omega$, que existen aún cuando el límite tradicional no existe. Como no quiero asumir que vieron límites superiores e inferiores, uso esta formulación más restringida, que es suficiente en la práctica.].
 
 #prop[
-  Sean $f, g: NN arrow RR0$. Sea $h:NN arrow RR0$, definida como $h(n) = max(f(n), g(n))$. Entonces $f + g in O(h)$.
+  Sean $f, g: NN arrow RR0$, tal que $g$ es positiva a partir de algún número $n_0$. Sea $L = lim_(n arrow infinity) f(n)/g(n)$, con $L in RR union {infinity}$ (es decir, el límite existe). En el límite podemos asumir que $n gt.eq n_0$, para que la división tenga sentido. Entonces:
+
+  - $L < infinity iff f in O(g)$
+  - $L > 0 iff f in Omega(g)$
+  - $0 < L < infinity iff f in Theta(g)$
+]<prop:asim_lim>
+#demo[
+  - $L < infinity implies f in O(g)$: Por definición de límite, existe $n_1 in NN$ tal que para todo $n gt.eq n_1$, $abs(f(n)/g(n) - L) < 1$. Luego $f(n)/g(n) < L + 1$, y por lo tanto $f(n) < (L + 1) g(n)$ para todo $n gt.eq max(n_0, n_1)$. Tomando $alpha = L + 1$, tenemos $f in O(g)$.
+
+  - $f in O(g) implies L < infinity$: Por definición de $O(g)$, existen $alpha > 0$ y $n_1 in NN$ tal que $f(n) lt.eq alpha g(n)$ para todo $n gt.eq n_1$. Luego $f(n)/g(n) lt.eq alpha$ para todo $n gt.eq max(n_0, n_1)$. Como el límite $L$ existe por hipótesis, y la sucesión $f(n)/g(n)$ está eventualmente acotada por $alpha$, tenemos $L lt.eq alpha < infinity$.
+
+  - $L > 0 implies f in Omega(g)$: Por definición de límite, tomando $epsilon = L/2 > 0$, existe $n_1 in NN$ tal que para todo $n gt.eq n_1$, $abs(f(n)/g(n) - L) < L/2$. Luego $f(n)/g(n) > L - L/2 = L/2$, y por lo tanto $f(n) > (L/2) g(n)$ para todo $n gt.eq max(n_0, n_1)$. Tomando $alpha = L/2$, tenemos $f in Omega(g)$.
+
+  - $f in Omega(g) implies L > 0$: Por definición de $Omega(g)$, existen $alpha > 0$ y $n_1 in NN$ tal que $f(n) gt.eq alpha g(n)$ para todo $n gt.eq n_1$. Luego $f(n)/g(n) gt.eq alpha$ para todo $n gt.eq max(n_0, n_1)$. Como el límite $L$ existe por hipótesis, y la sucesión $f(n)/g(n)$ está eventualmente acotada inferiormente por $alpha > 0$, tenemos $L gt.eq alpha > 0$.
+
+  - $0 < L < infinity iff f in Theta(g)$: Se sigue de los dos puntos anteriores, pues $Theta(g) = O(g) inter Omega(g)$.
+]
+
+Veamos cómo usar esta propiedad de límites.
+#ej[
+  Sean $f(n) = 7 log_2(n)$, $g = sqrt(n) + 1$. Entonces $f in O(g)$.
 ]
 #demo[
-  Sea $n_0 = 0$, $alpha = 2$, y sea un $n gt.eq n_0$. Entonces tenemos que
+  Como $sqrt(n) + 1> 0$ para todo $n in NN$, entonces podemos tomar =
 
   $
-    f(n) + g(n) &= max(f(n), g(n)) + min(f(n), g(n)) \
-                &lt.eq max(f(n), g(n)) + max(f(n), g(n)) \
-                &= 2 max(f(n), g(n)) \
-                &= 2 h(n)
+    L & = lim_(n arrow infinity) (7 log_2(n))/(sqrt(n) + 1) \
+      & = lim_(n arrow infinity) (7 (log n)/(log 2))/(sqrt(n) + 1) \
+      & = lim_(n arrow infinity) (7/(log 2)) (log n)/(sqrt(n) + 1)
   $
 
-  Luego, $f(n) + g(n) lt.eq 2 h(n) = alpha h(n)$ para todo $n gt.eq n_0$, lo que demuestra que $f + g in O(h)$.
+  Usando la regla de L'Hôpital, obtenemos
+
+  $
+    L & = (7/(log 2)) lim_(n arrow infinity) (1/n) / (1/(2 sqrt(n))) \
+      & = (7/(log 2)) lim_(n arrow infinity) (2 sqrt(n))/n \
+      & = (7/(log 2)) lim_(n arrow infinity) 2/(sqrt(n)) \
+      & = (7/(log 2)) 0 \
+      & = 0
+  $
+
+  Por lo tanto, $f in O(g)$.
 ]
+
+De hecho, tendremos las siguientes inclusiones.
+
+#let draw-asymptotic-hierarchy(class, color, reversed:true) = {
+  let levels = (
+    $(1)$,
+    $(log n)$,
+    $(sqrt(n))$,
+    $(n)$,
+    $(n^2)$,
+    $(2^n)$,
+    $(3^n)$,
+    $(n!)$,
+  )
+  return canvas({
+    let n = levels.len()
+    let x-scale = 0.75
+    let y-scale = 0.55
+    let shift = 0.6
+    let c = color.lighten(10%)
+    for (i, level) in levels.enumerate() {
+      let depth = n - i
+      let rx = depth * x-scale
+      let ry = depth * y-scale
+      let cx = depth * shift
+
+      draw.circle(
+        (cx, 0),
+        radius: (rx, ry),
+        stroke: 0.75pt + black,
+        fill: c.lighten((i/n)*100%),
+      )
+    }
+
+    if reversed {
+      levels = levels.rev()
+    }
+    for (i, level) in levels.enumerate() {
+      let depth = n - i
+      let rx = depth * x-scale
+      let cx = depth * shift
+      let left-edge = cx - rx
+
+      let inner-left-edge = if depth > 1 {
+        let inner-depth = depth - 1
+        inner-depth * shift - inner-depth * x-scale
+      } else {
+        cx
+      }
+
+      let label-x = cx + rx - 0.7
+
+      draw.content(
+        (label-x, 0),
+        text(size: 9pt, class + level)
+      )
+    }
+  })
+}
+
+#align(center, draw-asymptotic-hierarchy($O$, red))
+
+Vemos, entonces, que estar en $O(n^2)$ implica estar en $O(n^6)$, y que estar en $O(3^n log n)$, implica estar en $O(4^n sqrt(n))$. Tendremos las inclusiones opuestas cuando usamos cotas inferiores, usando $Omega$:
+
+#align(center, draw-asymptotic-hierarchy($Omega$, blue, reversed:false))
+
+Todas las funciones están acotadas por debajo por alguna constante (por ejemplo, $0$), pero muy pocas están acotadas por debajo, eventualmente, por un múltiplo de $n!$.
+
+En las sección de ejercicios van a tener que demostrar varias de esas inclusiones. La siguiente propiedad nos va a dejar sumar estos conjuntos.
+
+#prop[
+  Sean $f, g, h: NN arrow RR0$, con $f in O(h)$ y $g in O(h)$. Entonces $f + g in O(h)$.
+]<prop:asim_sum>
+#demo[
+  Por hipótesis, $f in O(h)$ implica que existen $alpha > 0$ y $n_1 in NN$ tal que $f(n) lt.eq alpha h(n)$ para todo $n gt.eq n_1$. Similarmente, $g in O(h)$ implica que existen $beta > 0$ y $n_2 in NN$ tal que $g(n) lt.eq beta h(n)$ para todo $n gt.eq n_2$.
+
+  Sea $n_0 = max(n_1, n_2)$ y sea $gamma = alpha + beta$. Entonces para todo $n gt.eq n_0$ tenemos que
+
+  $
+    f(n) + g(n) &lt.eq alpha h(n) + beta h(n) \
+                &= (alpha + beta) h(n) \
+                &= gamma h(n)
+  $
+
+  Luego, $f(n) + g(n) lt.eq gamma h(n)$ para todo $n gt.eq n_0$, lo que demuestra que $f + g in O(h)$.
+]
+
+La siguiente propiedad nos deja quedarnos con los términos que crecen más rápidamente, en una suma.
+
+#prop[
+Sean $f, g: NN arrow RR0$, con $f in O(g)$. Entonces $f + g in Theta(g)$.
+]<prop:asim_dom>
+#demo[
+  Para probar que $f + g in Theta(g)$, debemos probar que $f + g in O(g)$ y $f + g in Omega(g)$.
+
+  - $f + g in O(g)$: Por hipótesis, $f in O(g)$ implica que existen $alpha > 0$ y $n_0 in NN$ tal que $f(n) lt.eq alpha g(n)$ para todo $n gt.eq n_0$. Luego, para todo $n gt.eq n_0$:
+  $
+    f(n) + g(n) &lt.eq alpha g(n) + g(n) \
+                &= (alpha + 1) g(n)
+  $
+  Por lo tanto, $f + g in O(g)$.
+
+  - $f + g in Omega(g)$: Como $f(n) gt.eq 0$ para todo $n in NN$, tenemos que $f(n) + g(n) gt.eq g(n)$ para todo $n in NN$. Tomando $beta = 1$, tenemos que $f(n) + g(n) gt.eq beta g(n)$ para todo $n in NN$. Por lo tanto, $f + g in Omega(g)$.
+
+  Como $f + g in O(g)$ y $f + g in Omega(g)$, concluimos que $f + g in Theta(g)$.
+]
+
+Luego, en una función como $h(n) = n^2 + 3n$, como $3n in O(n^2)$ pues $lim_(n arrow infinity) (3n)/n^2 = 0$, tenemos que $h in Theta(n^2)$. Las siguientes dos propiedades nos dicen cómo multiplicar dos de estos conjuntos, o multiplicarlos por un escalar.
+#prop[
+Sean $f, F, g, G: NN arrow RR0$. Si $f in O(F)$ y $g in O(G)$, entonces $f g in O(F G)$.
+]
+La demostración es el @ej:asim_prod.
+#prop[
+  Sean $f, g: NN arrow RR0$, y $alpha > 0 in RR$. Entonces $f in O(g)$ si y sólo si $alpha f in O(g)$.
+]<prop:asim_mul>
+La demostración es el @ej:asim_mul.
+
 Veamos un ejemplo en la práctica.
 #ej[
   Sea $f: NN arrow RR0$ la función dada por $f(n) = 3 n^2 + 2 n + 1$. Probar que $f in O(n^2)$.
 ]
 #demo[
-  Tenemos que elegir un $alpha in RR, alpha > 0$, y un $n_0 in NN$, tal que para todo $n in NN, n gt.eq n_0$, se cumpla que $f(n) lt.eq alpha n^2$, y $f(n) gt.eq alpha n^2$. Intuitivamente, $f$ crece parecido a $3n^2$. Luego, si elegimos $alpha = 4$, eventualmente $f(n) lt.eq alpha n^2$. Probemos esto formalmente.
+  Primero hagamos las cuentas "a mano". Tenemos que elegir un $alpha in RR, alpha > 0$, y un $n_0 in NN$, tal que para todo $n in NN, n gt.eq n_0$, se cumpla que $f(n) lt.eq alpha n^2$. Intuitivamente, $f$ crece parecido a $3n^2$. Luego, si elegimos $alpha = 4$, eventualmente $f(n) lt.eq alpha n^2$. Probemos esto formalmente.
 
   Elegimos $alpha = 4$. Queremos encontrar $n_0$ tal que si $n gt.eq n_0$, entonces $3 n^2 + 2 n + 1 lt.eq 4 n^2$.
   $
@@ -658,95 +833,24 @@ Veamos un ejemplo en la práctica.
 
   Luego, como $h$ es una parábola que crece en sus extremos, cuando $n gt.eq 1 + sqrt(2)$, $h(n) gt.eq 0$. Como $sqrt(2) < 2$, podemos elegir $n_0 = 3$, y garantizamos que si $n gt.eq n_0$, entonces $h(n) gt.eq 0$, que vimos es equivalente a que $f(n) lt.eq 4 n^2$. Luego, $f in O(n^2)$.
 ]
+#demo[
+  Ahora usemos las herramientas que aprendimos. $f(n) = g(n) + h(n)$, con $g(n) = 3n^2$, y $h(n) = 2n + 1$. Como $h in O(g)$ pues $lim_(n arrow infinity) (3n^2) / (2n + 1) = infinity > 0$, entonces por la @prop:asim_dom, $f in Theta(g)$. Por la @prop:asim_refl, sabemos que $g in Theta(n^2)$.
+  
+  Finalmente, por la @prop:asim_trans, tenemos que $f in Theta(n^2)$. En particular, $f in O(n^2)$.
+]
+#demo[
+  Finalmente usemos sólo la propiedad de límites. Sea $L = lim_(n arrow infinity) (3n^2 + 2n + 1)/(n^2) = lim_(n arrow infinity) 3 + 2/n + 1/n^2 = 3$. Entonces por la @prop:asim_lim, tenemos que $3n^2 + 2n + 1 in Theta(n^2) subset.eq O(n^2)$.
+]
 
 Podemos generalizar este hecho.
 
 #prop[
-  Sea $n in NN$, y $f in NN[x]$ un polinomio de grado $n$ en la variable $x$, con coeficientess naturales. Entonces $f in Theta(x^n)$.
-]
-#demo[
-  Sea $f(x) = sum_(i=0)^n a_i x^i$, con $a_i in NN$ y $a_n eq.not 0$.
-
-  Como los coeficientes son naturales, son todos no-negativos. Esto simplifica el análisis ya que $f(x) gt.eq 0$ para todo $x gt.eq 0$.
-
-  1. $f in O(x^n)$:
-    Queremos hallar $alpha > 0, n_0 in NN$ tales que para todo $x gt.eq n_0$, $f(x) lt.eq alpha x^n$.
-    Tomemos $n_0 = 1$. Dado que $x gt.eq 1$, para todo $0 lt.eq i lt.eq n$, se cumple $x^i lt.eq x^n$.
-    Entonces:
-    $
-      f(x) & = sum_(i=0)^n a_i x^i \
-           & lt.eq sum_(i=0)^n a_i x^n \
-           & = (sum_(i=0)^n a_i) x^n
-    $
-    Tomando $alpha = sum_(i=0)^n a_i$, tenemos que para todo $x gt.eq 1$, $f(x) lt.eq alpha x^n$.
-
-  2. $f in Omega(x^n)$:
-    Queremos hallar $beta > 0, n_1 in NN$ tales que para todo $x gt.eq n_1$, $f(x) gt.eq beta x^n$.
-    Como todos los $a_i gt.eq 0$ y $x gt.eq 0$, todos los términos de la suma son no-negativos.
-    Por lo tanto:
-    $
-      f(x) & = a_n x^n + sum_(i=0)^(n-1) a_i x^i \
-           & gt.eq a_n x^n
-    $
-    (ya que $sum_(i=0)^(n-1) a_i x^i gt.eq 0$).
-    Tomando $beta = a_n$ y $n_1 = 1$, tenemos que para todo $x gt.eq 1$, $f(x) gt.eq beta x^n$.
-
-  Por lo tanto, $f in Theta(x^n)$.
+  Sea $n in NN$, y $f in NN[x]$ un polinomio de grado $n$ en la variable $x$, con coeficientes naturales. Entonces $f in Theta(x^n)$.
 ]
 
-Tenemos una herramienta útil para probar pertenencia a estos conjuntos asintóticos, que es usar límites.
+La demostración es el @ej:asim_poly.
 
-#prop[
-  Sean $f, g: NN arrow RR0$, tal que $g$ es positiva a partir de algún número $n_0$. Sea $L = lim_(n arrow infinity) f(n)/g(n)$, con $L in RR union {infinity}$. En el límite podemos asumir que $n gt.eq n_0$, para que la división tenga sentido. Entonces:
-
-  - Si $L < infinity$, entonces $f in O(g)$
-  - Si $L > 0$, entonces $f in Omega(g)$
-  - Si $0 < L < infinity$, entonces $f in Theta(g)$
-]
-#demo[
-  - Si $L < infinity$, entonces por definición de límite, $forall epsilon in RR, epsilon > 0.exists n_1 in NN. forall n gt.eq n_1, abs(f(n)/g(n) - L) < epsilon$. Luego, sea $n gt.eq n_1$. Como $abs(f(n)/g(n) - L) < epsilon$, en particular $f(n)/g(n) < L + epsilon$. Entonces $f(n) lt.eq (L + epsilon) g(n)$. Eligiendo $epsilon = L$, tenemos que $f(n) lt.eq 2L g(n)$ para todo $n gt.eq n_1$, y por lo tanto, $f in O(g)$.
-
-  - Si $L > 0$, entonces por definición de límite, $forall epsilon in RR, epsilon > 0.exists n_1 in NN. forall n gt.eq n_1, abs(f(n)/g(n) - L) < epsilon$. Luego, sea $n gt.eq n_1$. Como $abs(f(n)/g(n) - L) < epsilon$, en particular $f(n)/g(n) > L - epsilon$. Podemos elegir $epsilon = L/2$. Entonces $f(n) gt.eq (L - L/2) g(n)$, y tenemos que $f(n) gt.eq (L/2) g(n)$ para todo $n gt.eq n_1$, y por lo tanto, $f in Omega(g)$.
-
-  - Si $0 < L < infinity$, juntamos ambos resultados para obtener $f in Theta(g)$.
-]
-
-De hecho vale algo más fuerte, una equivalencia entre las dos formas de definir conjuntos asintóticos, que no requiere que $g$ sea estríctamente positiva. No asumo que hayan visto límites superiores e inferiores, y las demostraciones son esencialmente equivalentes a las de arriba, así que no las voy a escribir acá.
-
-#prop[
-  Sean $f, g: NN arrow RR0$. Entonces:
-  - $f in O(g) iff limsup_(n arrow infinity) f(n)/g(n) < infinity$
-  - $f in Omega(g) iff liminf_(n arrow infinity) f(n)/g(n) > 0$
-  - $f in Theta(g) iff 0 < liminf_(n arrow infinity) f(n)/g(n) lt.eq limsup_(n arrow infinity) f(n)/g(n) < infinity$
-]
-
-Veamos cómo usar esta propiedad de límites.
-#prop[
-  Sean $f(n) = 7 log_2(n)$, $g = sqrt(n) + 1$. Entonces $f in O(g)$.
-]
-#demo[
-  Como $sqrt(n) + 1> 0$ para todo $n in NN$, entonces podemos tomar =
-
-  $
-    L & = lim_(n arrow infinity) (7 log_2(n))/(sqrt(n) + 1) \
-      & = lim_(n arrow infinity) (7 (log n)/(log 2))/(sqrt(n) + 1) \
-      & = lim_(n arrow infinity) (7/(log 2)) (log n)/(sqrt(n) + 1)
-  $
-
-  Usando la regla de L'Hôpital, obtenemos
-
-  $
-    L & = (7/(log 2)) lim_(n arrow infinity) (1/n) / (1/(2 sqrt n)) \
-      & = (7/(log 2)) lim_(n arrow infinity) (2 sqrt n)/n \
-      & = (7/(log 2)) lim_(n arrow infinity) 2/(sqrt n) \
-      & = (7/(log 2)) 0 \
-      & = 0
-  $
-
-  Por lo tanto, $f in O(g)$.
-]
-
-La definición usando límites también nos permite aprender más sobre cómo se comportan los polinomios.
+/*La definición usando límites también nos permite aprender más sobre cómo se comportan los polinomios. Veamos como todo polinomio está dominado por cualquier exponencial con razón mayor a 1.
 #prop[
 Sea $n in NN$, y $r in RR$, con $r > 1$. Entonces $x^n in O(r^x)$.
 ]
@@ -794,55 +898,157 @@ $
 
 Como $T in.not R$, tenemos que $s^x in.not O(r^x)$.  
 ]
-
-Al contrario que en las exponenciales, donde las bases importan, las bases _no_ importan para los logaritmos. Esto nos permite escribir $O(log n)$, sin especificar la base.
+*/
+Una propiedad que vamos a usar mucho es que $Theta(log_a n) = Theta(log_b n)$ para todos $a, b in NN_(> 1)$. Esto nos va a dejar escribir $Theta(log n)$, sin especificar la base del logaritmo, pero sin perder precisión.
 
 #prop[
-Sean $a, b in NN$, con $a > 1, b > 1$. Entonces $log_a (x) in Theta(log_b (x))$.
+Sean $a, b in NN_(> 1)$. Entonces $log_a x in Theta(log_b x)$.
 ]
 #demo[
-Sea $L = lim_(x arrow infinity) (log_a (x)) / (log_b (x))$. Entonces:
+Sea $L = lim_(x arrow infinity) (log_a x) / (log_b x)$. Entonces:
 
 $
-  L & = lim_(x arrow infinity) (log_a (x)) / (log_b (x)) \
-    & = lim_(x arrow infinity) ((log x) / (log a)) / ((log x) / (log b)) \
-    &= lim_(x arrow infinity) (log x) / (log a) (log b) / (log x) \
-    &= lim_(x arrow infinity) (log b) / (log a) \
-    &= (log b) / (log a) in RR^+
+  L & = lim_(x arrow infinity) (log_a x) / (log_b x) \
+    & = lim_(x arrow infinity) ((ln x) / (ln a)) / ((ln x) / (ln b)) \
+    &= lim_(x arrow infinity) (ln x) / (ln a) (ln b) / (ln x) \
+    &= lim_(x arrow infinity) (ln b) / (ln a) \
+    &= (ln b) / (ln a) in RR_(> 0)
 $
 
-Por lo tanto, $log_a (x) in Theta(log_b (x))$.
+Por lo tanto, $log_a x in Theta(log_b x)$.
 ]
 
-Debemos recordar que no todo par de funciones es comparable de esta forma.
+=== Ejercicios
 
-#example[
-Sean
+#ej[
+  Sean $f, g: NN arrow RR0$, y $alpha > 0 in RR$. Entonces $f in O(g)$ si y sólo si $alpha f in O(g)$.
+]<ej:asim_mul>
 
-$
-f(n) &= cases(
-  n^3 &"si" n "es impar",
-  n &"si" n "es par"
-)\
-g(n) & = cases(
-  n &"si" n "es impar",
-  n^3 &"si" n "es par"
-)
-$
+#ej[
+Sean $f, F, g, G: NN arrow RR0$. Si $f in O(F)$ y $g in O(G)$, entonces $f g in O(F G)$.
+]<ej:asim_prod>
 
-Tenemos que $f in.not O(g)$, y $g in.not O(f)$. Para ver que $f in.not (g)$, podemos ver el límite, cuando $n$ tiende a infinito, de $f(n)/g(n)$. Si el límite existe, entonces podemos tomar la sucesión $1, 3, 5, 7, dots$, es decir, los naturales impares, y ver qué nos da:
+#ej[
+  Sea $n in NN$, y $f in NN[x]$ un polinomio de grado $n$ en la variable $x$, con coeficientes naturales. Entonces $f in Theta(x^n)$.
+]<ej:asim_poly>
 
-$
-  lim_(n arrow infinity, n "impar") f(n)/g(n) &= n^3/n = infinity
-$
+#ej[
+Probar que si $f:NN arrow RR0$ es tal que $f(n) = 4^n$, entonces $f in.not O(2^n)$.
+]
 
-Como tomando esta sucesión de puntos el límite no es $0$, entonces o bien no existe el límite $lim_(n arrow infinity) f(n)/g(n)$, o no es $0$. Esto nos dice que $f in.not O(g)$. Por el mismo motivo, tomando la sucesión $2, 4, 6, 8, dots$, los naturales positivos pares, obtenemos que $g in.not O(f)$.
+#ej[
+Sean $f, g: NN arrow RR0$ funciones. Recordando que $f dot O(g) = {f dot h | h in O(g)}$, probar que $f dot O(g) = O(f dot g)$.
+]<bigoprod>
+#ej[
+  Sean $f, g: NN arrow NN$ funciones. Probar que si $f in Theta(g)$, entonces $g in Theta(f)$.
+]
+#ej[
+Sean $f, g: NN arrow RR0$ funciones, y $n_0 in NN$. Probar que si $f(n) lt.eq g(n)$ para todo $n gt.eq n_0$, entonces $f in O(g)$.
+
+Mostrar que la vuelta no vale, exhibiendo un ejemplo explícito de $f$ y $g$, tal que $f in O(g)$, pero no exista ningún $n_0$ tal que para todo $n gt.eq n_0$ se tenga $f(n) lt.eq g(n)$.
+]
+#ej[
+  Sea $n in NN$, y $f in ZZ[x]$ un polinomio de grado $n$. Probar que $f in O(x^n)$. Mostrar que no es cierto que $f in Omega(x^n)$, dando un ejemplo explícito de $n$ y $f$.
+
+Este ejercicio es distinto a @ej:asim_poly, pues los coeficientes son enteros, no sólo naturales.
+]
+
+#ej[
+Sean $f, g: NN arrow RR0$ tales que $f in Theta(g)$. Probar que $log_2 f in Theta(log g)$.
+
+Probar que *no* es cierto, en general, que si $log_2 f in Theta(log g)$, entonces $f in Theta(g)$.
+]
+
+#ej[
+Sean $f, g: NN arrow RR0$. Es cierto que o bien $f in O(g)$, o bien $g in O(f)$? De ser cierto, demostrarlo. De caso contrario, exhibir un contraejemplo, y demostrar que efectivamente es un contraejemplo.
 ]
 
 
 === Álgebra asintótica
 
-Vimos como notaciones como $O(dots)$ y $Omega(dots)$ se pueden usar para aproximar el crecimiento de funciones. Vamos a querer hacer operaciones algebraicas con estos conjuntos de funciones, como sumarlos y multiplicarlos. Esto nos va a permitir combinarlos y decir cosas más poderosas.
+Vimos como notaciones como $O(dots)$ y $Omega(dots)$ se pueden usar para aproximar el crecimiento de funciones. Vamos a querer expresar que no sólo una función se comporta de esa manera, sino que "una parte" de una función se comporta de esa manera. Por ejemplo, al decir que $f: NN arrow RR0$, $f(n) = n^2 + O(n)$, queremos decir que existe una función $g in O(n)$ tal que $f(n) = n^2 + g(n)$ para todo $n in NN$. Esto nos dice algo más que sólo saber que $f in O(n^2)$, nos dice algo sobre la estructura de $f$. Al mismo tiempo, no nos dice exactamente _quién_ es $f$, lo cual es útil pues a veces vamos a querer obviar exactamente qué elemento de $O(n)$ es $g$.
+
+#def[
+Sean $f, g: NN arrow RR0$, y $k in RR0$. Definimos:
+- $f + O(g) = {f + h | h in O(g)}$
+- $f O(g) = {f h | h in O(g)}$
+- $k O(f) = {k h | h in O(f)}$
+
+Definiciones equivalentes valen para $Omega$ y $Theta$.
+]
+
+#warning-box[
+Tengan cuidado, ¡decir que $f(n) = n^2 + O(n)$ *no* define $f$! Sólo nos dice que $f$ está en el conjunto ${n^2 + g | g in O(n)}$. Más propiamente escrito, esto sería $f in n^2 + O(n)$. Les presento esta notación porque es usual verla, pero deben tener cuidado, pues cosas "obvias" como dar vuelta esta "igualdad" dejan de funcionar. No tiene sentido decir que $n^2 + O(n) = f$, como tampoco va a tener sentido razonamientos del estilo "Como $f = n^2 + O(n)$ y $g = n^2 + O(n)$, entonces $f = g$."
+.
+
+Esta notación es tan poderosa como peligrosa. ¡Están advertidos!
+]
+#block({
+  image("../dumbledore.png", width: 100%)
+  place(center + horizon, dx: 4mm, dy: -33mm, block({text(size: 9pt)[¡Cuidado Harry, la magia negra asintótica ha traicionado a muchos estudiantes!]}, width: 30mm))
+})
+
+Veamos algunos ejemplos.
+
+#ej[
+Sea $f(n) = 2 n^2 + O(n)$, y $g(n) = 4 n + Theta(log n)$. Demostrar que $f g in O(n^3)$.
+]
+#demo[
+Por definiciónd, existen funciones $h_1 in O(n)$ y $h_2 in Theta(log n)$ tales que $f(n) = 2n^2 + h_1(n)$ y $g(n) = 4n + h_2(n)$.
+
+Luego:
+$
+  f(n) g(n) &= (2n^2 + h_1(n))(4n + h_2(n)) \
+            &= 8n^3 + 2n^2 h_2(n) + 4n h_1(n) + h_1(n) h_2(n)
+$
+
+Ahora debemos probar que cada término está en $O(n^3)$:
+- $8n^3 in O(n^3)$ por la @prop:asim_mul.
+- Como $h_1 in O(n)$, entonces $4n h_1 in O(n dot n) = O(n^2) subset.eq O(n^3)$ por el @ej:asim_prod.
+- Como $h_2 in Theta(log n) subset.eq O(log n)$, entonces $2n^2 h_2 in O(n^2 log n) subset.eq O(n^3)$ por el @ej:asim_prod, pues $log n in O(n)$.
+- Como $h_1 in O(n)$ y $h_2 in O(log n)$, entonces $h_1 h_2 in O(n log n) subset.eq O(n^2) subset.eq O(n^3)$ por el @ej:asim_prod.
+
+Por lo tanto, $f g in O(n^3)$.
+]
+
+
+#ej[
+Sea $T:NN arrow RR0$, definida como:
+
+$
+  T(n) = cases(
+    5 & "si" n = 1,
+    T(n - 1) + O(n^2) & "si" n gt 1
+  )
+$
+
+Demostrar que $T in O(n^3)$.
+]
+#demo[
+Por definición de la notación algebraica asintótica, existe una función $h in O(n^2)$ tal que para todo $n gt 1$, $T(n) = T(n-1) + h(n)$.
+
+Expandiendo la recurrencia:
+$
+  T(n) &= T(n-1) + h(n) \
+       &= T(n-2) + h(n-1) + h(n) \
+       &= T(n-3) + h(n-2) + h(n-1) + h(n) \
+       &dots.v \
+       &= T(1) + sum_(i=2)^n h(i) \
+       &= 5 + sum_(i=2)^n h(i)
+$
+
+Como $h in O(n^2)$, existe $alpha > 0$ y $n_0 in NN$ tales que para todo $i gt.eq n_0$, $h(i) lt.eq alpha i^2$. Luego, para $n gt.eq n_0$:
+$
+  sum_(i=2)^n h(i) lt.eq sum_(i=2)^n alpha i^2 = alpha sum_(i=2)^n i^2 = alpha ((n(n+1)(2n+1))/6 - 1) in O(n^3)
+$
+
+Por lo tanto, $T(n) = 5 + O(n^3) in O(n^3)$.
+]
+
+
+
+
+/*Vamos a querer hacer operaciones algebraicas con estos conjuntos de funciones, como sumarlos y multiplicarlos. Esto nos va a permitir combinarlos y decir cosas más poderosas.
 
 #def[
 Sean $A, B$ conjuntos de funciones $NN arrow RR0$, y $k in RR0$. Definimos:
@@ -1037,14 +1243,129 @@ Tenemos entonces las siguientes propiedades:
   ),
   caption: [Resumen de propiedades algebraicas asintóticas.]
 ) <tabla-algebra-asintotica>
+*/
+=== Errores frecuentes
+
+Es muy común que se confundan con esta notación. A continuación les voy a dar algunas demostraciones incorrectas. Presten mucha atención, intenten ver dónde exactamente les estoy mintiendo.
+
+#propf[
+Sea $g: NN arrow RR0$, con $g(n) = 2^n$. Entonces $g in O(1).$
+]
+#demof[
+Es fácil ver que $O(1) dot O(1) = O(1)$. Luego, por inducción, tendremos $product_(i=1)^n O(1) = O(1)$.
+
+Sea $f: NN arrow NN, f(m) = 2$ para todo $m in NN$. Claramente $f in O(1)$. Luego, $(product_(i=1)^n f) in product_(i=1)^n O(1) = O(1)$. Asimismo, si llamamos $g(n) = product_(i=1)^n f(n)$, tendremos que $g(n) = product_(i=1)^n 2 = 2^n$. Por lo tanto, $2^n in O(1)$.
+]
+Esto es obviamente incorrecto. Es cierto que $O(1) dot O(1) = O(1)$. Y también es cierto que para todo $k in NN$ _fijo_, tenemos que $product_(i=1)^k O(1) = O(1)$. Recordemos qué significa que $h in O(1)$: Existen constantes $alpha in RRg0, n_0 in NN$, tal que $h(n) lt.eq alpha$ para todo $n gt.eq n_0$. Para cada $k in NN$, vamos a tener dos tales constantes. Lo que _no_ vamos a tener, son dos constantes que valgan para _todo_ $k$ al mismo tiempo.
+
+Lo que la inducción nos da es, para cada $k in NN$, una constante $alpha_k$ tal que el producto de $k$ funciones acotadas por $2$, está acotado por $alpha_k 2^k$. Si $k$ es una constante, esto es realmente una inclusión en el conjunto $O(1)$. Pero si tomamos a $n$ como variable, el que exista una constante $alpha$ tal que podemos acotar al producto de las $n$ funciones por $alpha 2^n$ _no_ implica que este producto está en $O(1)$, pues la cota resultante _es una función de $n$_, no una constante. Veamos otra demostración que tiene el mismo error, y esta parecería ser "obvia".
+
+#prop[
+Sea $T(n) = sum_(i=1)^n (i + O(1))$. Entonces $T in O(n^2)$.
+]
+#demof[
+Por definición, para cada $i$ en $[1, dots, n]$, existe una función $h_i in O(1)$ tal que el $i$-ésimo término de la suma es $i + h_i (n)$.
+
+Luego:
+$
+  T(n) &= sum_(i=1)^n i + h_i (n) \
+       &= sum_(i=1)^n i + sum_(i=1)^n h_i (n)
+$
+
+Para el primer término, sabemos que $sum_(i=1)^n i = (n(n+1))/2 = (n^2 + n)/2 in Theta(n^2) subset.eq O(n^2)$.
+
+Para el segundo término, como cada $h_i in O(1)$, existen $alpha_i > 0$ y $n_i in NN$ tales que para todo $i$, para todo $n gt.eq n_i$, $h_i (n) lt.eq alpha_i$. Sea $alpha = max{alpha_1, alpha_2, ..., alpha_n}$ y $m_0 = max{n_1, n_2, ..., n_n}$. Entonces, para todo $n gt.eq m_0$:
+$
+  sum_(i=1)^n h_i (n) lt.eq sum_(i=1)^n alpha = n alpha in O(n) subset.eq O(n^2)
+$
+
+Por lo tanto, $T(n) in O(n^2)$.
+]
+
+Este razonamiento es incorrecto. Para verlo, basta tomar $h_i (n) = i^3$ para cada $i in [1, dots, n]$, una función constante (no depende de su argumento), y por lo tanto $h_i in O(1)$. Entonces $T(n) = sum_(i=1)^n i + sum_(i=1)^n h_i (n) = n(n+1)/2 + sum_(i=1)^n i^3 = n(n+1)/2 + (n(n+1)/2)^2 in Omega(n^4)$, que tiene interseción nula con $O(n^2)$. El error en la demostración es que $m_0$ y $alpha$ _dependen de n_ (son un máximo de $n$ cosas). La definición de $O(dots)$ requiere que sean _constantes_.
+
+Esto nos muestra una sutileza sobre la notación asintótica. Al usar la expresión "$O(dots)$" en un contexto como el de esa sumatoria, donde hay dos variables libres ($i$ y $n$) en vez de sólo una, no está claro con respecto a cuál variable estamos diciendo que varía nuestra función. A priori, en un término así podemos usar ambas, teniendo una función de varias variables. Más adelante veremos notación asintótica con múltiples variables. Por ahora, para probar lo que queremos que valga, vamos a pedir que para todo $n$, y vamos a querer que $O(1)$ en esa sumatoria signifique una función $g: NN times NN arrow RR0$, donde la sumatoria es de la forma $T(n) = sum_(i=1)^n i + g(i, n)$, y existe una constante $alpha in RR$ tal que para todo $n in NN$, y para todo $1 lt.eq i lt.eq n$, $g(i, n) lt.eq alpha$. Esto nos va a permitir la siguiente demostración.
+
+#demo[
+Sea $g: NN times NN arrow RR0$, tal que existe $alpha in RR$ tales que para todo $n in NN$ y para todo $1 lt.eq i lt.eq n$, $g(i, n) lt.eq alpha$. Luego:
+
+$
+  T(n) &= sum_(i=1)^n i + g(i, n) \
+       &= sum_(i=1)^n i + sum_(i=1)^n g(i, n) \
+       &lt.eq sum_(i=1)^n i + sum_(i=1)^n alpha \
+       &= (n(n+1))/2 + alpha n
+$
+
+Por lo tanto, $T in O(n^2)$.
+]
 
 
-#warning-box[
-#text(red)[
-  TODO
-  Explicar que $product_(i=1)^n O(1) eq.not O(1)$, y que si no tenemos cuidado, podemos probar por inducción que $T(n) = T(n-1)+ 1$ es $O(1)$, con la hipótesis inductiva $P(n): T in O(1)$ (notar que no hay $n$ en la hipótesis inductiv! test 123 456 789).
+
+#propf[
+Sea $T: NN arrow RR0$, definida por:
+$
+  T(n) = cases(
+    0 &"si" n = 0,
+    T(n - 1) + 1 &"si" n > 0
+  )
+$
+
+Entonces $T in O(1)$.
 ]
+#demof[
+Probemos esto por inducción en $n$.
+- Caso base. $T(0)$ es una constante, luego está $O(1)$.
+- Paso inductivo, $n > 0$. Asumimos que $T(k) in O(1)$ para todo $k < n$, queremos ver que $T(n) in O(1)$. Como $n > 0$, $T(n) = T(n - 1) + 1$. Como $n - 1 < n$, por hipótesis inductiva $T(n - 1) in O(1)$. Luego, como $O(1) + 1 = O(1)$, tenemos que $T(n) in O(1).$
+
+Asimismo, vemos que $T(n) = n$, y por lo tanto, $n in O(1)$.
 ]
+
+
+#let t = [Esto es un sinsentido. Empezamos diciendo sinsentidos al decir "$T(0)$ es una constante, luego está en O(1)". Recordemos, *$O(1)$ es un conjunto de funciones*. Mientras tanto, $T(0)$ es un número, es cero. De ninguna manera vamos a tener que $T(0)$ está en $O(1)$, es como decir que un elefante está en un conjunto de jirafas: no tipa.]
+#let img = image("../jirafas.png", width: 100%)
+#wrap-content(img, t, align: bottom + right)
+
+Luego seguimos con la confusión al decir $T(k) in O(1)$. Nada de esto tiene sentido, y no tiene sentido hablar de "$T(n) in O(1)$". He visto alumnos que se confunden entre $f$, una función, y $f(x)$, el resultado de evaluar una función en un punto, $x$. Hasta algunos libros fomentan esa confusión. En este caso, esa confusión nos dejó decir sinsentidos.
+
+Veamos cómo podríamos demostrar algo sobre esta función.
+
+#prop[
+Sea $T: NN arrow RR0$, definida por:
+$
+  T(n) = cases(
+    0 &"si" n = 0,
+    T(n - 1) + 1 &"si" n > 0
+  )
+$
+
+Entonces $T in O(n)$.
+]
+#demo[
+Vamos a mostrar que existen constantes $alpha in RRg0, n_0 in NN$, tal que para todo $n in NN$, $(n gt.eq n_0) implies T(n) lt.eq alpha n$. En particular, vamos a probar por inducción que $n_0 = 0, alpha = 1$ funcionan.
+
+Formalmente, sea $P(k): (k gt.eq n_0) implies T(k) lt.eq k$.
+
+- Caso base, $P(0)$. Tenemos que probar que $(0 gt.eq n_0) implies T(0) lt.eq 0$. Esto es cierto porque la conclusión es cierta, $0 = T(0) lt.eq 0 = 0$.
+- Paso inductivo. Tenemos $k in NN$. Asumimos $P(k)$, queremos probar $P(k + 1)$. Luego, queremos probar que $(k+1 gt.eq n_0) implies T(k+1) lt.eq (k + 1)$. Para probar una implicación, podemos asumir la premisa, y luego $k + 1 gt.eq n_0$. Como $k + 1 gt.eq n_0$, con más razón $k gt.eq n_0$. Ahora expandimos $T(k+1) = T(k) + 1$. Por hipótesis inductiva, como $k gt.eq n_0$, tenemos que $T(k) lt.eq k$. Juntando, tenemos que $T(k+1) lt.eq k + 1$, que es lo que queríamos demostrar.
+
+Luego, $T(k) lt.eq k$ para todo $k in NN$. Esto es precisamente la definición de que $T in O(n)$, usando $n_0 = 0, alpha = 1$.
+]
+
+#propf[
+Sea $f: NN arrow RR0$ una función. Entonces $f in O(1)$.
+]
+#demof[
+Sea $g: NN arrow RR0$, $g(n) = f(n) + n$. Como $f(n) gt.eq 0$ para todo $n in NN$, tenemos que $g(n) gt.eq n$ para todo $n in NN$. Por lo tanto, $g in Omega(n)$, con lo cual $n in O(g)$. Ahora bien, $f(n) = g(n) - n$, y luego $f in O(g) - O(g) = O(g - g) = O(0) subset.eq O(1)$. Por lo tanto, $f in O(1)$.
+]
+
+La resta de conjuntos asintóticos no funciona así. El que algo esté en $O(g)$ no significa que _sea_ $g$. El que $n in O(g)$ no significa que al restar $f - n$ estamos restando $f - g$, y poner $O(dots)$ al rededor no lo hace cierto. Notemos acá cómo usamos $n in O(g)$ para querer decir que si $h(n) = n$, entonces $h in O(g)$. Recordemos que $O(dots)$ es un conjunto de funciones, no de números, ni variables.
+
+Por útlimo, veamos una propiedad que a veces quieren que valga.
+
+#propf[
+Sean $f, g, h: NN arrow RR0$. Si $f in Theta(g)$, entonces $h compose f in Theta(h compose g)$.
+]
+Esto no es cierto, y basta tomar $f(n) = 2n$, $g(n) = n$, y $h(n) = 2^n$. $f$ y $g$ son asintóticamente equivalentes. Sin embargo $(h compose f)(n) = 2^(2n) = (2^n)^2$ no es asintóticamente equivalente a $(h compose g)(n) = 2^n$.
 
 
 === Árboles de recursión
@@ -1089,9 +1410,7 @@ vamos a querer considerar cómo computar valores de $f$. Una herramienta usual p
   )
 ]
 
-Esta herramienta nos va a ser útil para encontrar formas cerradas de funciones, o al menos darnos una idea de quién puede ser.
-
-Por ejemplo, consideremos la siguiente función, $f: NN_(>0) arrow NN$:
+Esta herramienta nos va a ser útil para encontrar formas cerradas de funciones, o al menos darnos una idea de quién puede ser. Por ejemplo, consideremos la siguiente función, $f: NN_(>0) arrow NN$:
 $
   f(n) = cases(
     0 & "si" n = 1,
@@ -1099,11 +1418,7 @@ $
   )
 $
 
-Vamos a ver cómo usar árboles de recursión para entender esta función.
-
-==== Conteo exacto
-
-Primero, encontremos una forma cerrada para $f$. Veamos el árbol de recursión para $n = 7$:
+Veamos cómo usar árboles de recursión para entender esta función. Intentemos encontrar una forma cerrada para $f$, viendo el árbol de recursión para $n = 7$:
 
 #align(center)[
   #draw_recursion_tree(
@@ -1120,14 +1435,82 @@ Esto es un árbol de 4 niveles. Podemos ver es que en cada nivel donde no hay ho
 
 En el tercer y cuarto nivel hay hojas, y todas cuestan 0. Para saber el costo total, podemos calcular el costo de cada nivel. Para los niveles que no tienen hojas, el costo es exactamente $n$. Para los niveles que tienen sólo hojas, el costo es $0$. Luego, queda saber cuántos niveles hay con hojas, y en esos niveles, cuántas hojas hay.
 
-Llegamos a $0$ dividiendo por $2$ cada vez. Luego, si $k = floor(log_2(n))$, ninguna rama puede haber llegado a $0$ antes del nivel $k$. Asimismo, todos los vértices de nivel $k+1$ deben ser hojas.#footnote[Prueben esto!] Luego, hay sólo un nivel con hojas, y es el nivel $k$. Sean $L$ el número de hojas en el nivel $k$, y $m$ el número de vértices internos en el nivel $k$. Tenemos que $m + L = 2^k$. Cada nivel suma $n$, cada hoja aporta 1, y cada vértice que no es hoja aporta $2$. Tenemos entonces que $1 times L + 2 times m = n$. Esto nos da dos ecuaciones:
+
+
+
+Queremos entender la estructura del árbol de recursión. Sea $k = floor(log_2(n))$. Vamos a probar formalmente que:
+1. Los niveles $0, 1, dots, k - 1$ están completos (todos sus vértices son internos).
+2. El nivel $k$ es el primer nivel que contiene hojas.
+3. Si $n$ es potencia de $2$, el nivel $k$ contiene sólo hojas y el árbol tiene altura exactamente $k$.
+4. Si $n$ no es potencia de $2$, el nivel $k$ contiene tanto hojas como vértices internos, y el nivel $k + 1$ contiene sólo hojas.
+
+Para esto, primero caracterizamos los valores en cada nivel del árbol. Definimos el _valor_ de un vértice como el argumento de $f$ en ese vértice. Por ejemplo, en el árbol de $f(7)$, la raíz tiene valor $7$, sus hijos tienen valores $3$ y $4$, etc. Un vértice es una _hoja_ si su valor es $1$ (caso base de $f$), y es un _vértice interno_ si su valor es mayor a $1$ (caso recursivo).
+
+#prop[
+Sea $v$ el valor de un vértice en el nivel $i$ del árbol de recursión. Entonces:
+$
+  floor(n / 2^i) lt.eq v lt.eq ceil(n / 2^i)
+$
+]
+#demo[
+Por inducción en $i$.
+- Caso base, $i = 0$. El único vértice en el nivel $0$ es la raíz, con valor $n$. Como $floor(n / 2^0) = n = ceil(n / 2^0)$, el predicado vale.
+- Paso inductivo, $i > 0$. Sea $v$ un vértice en el nivel $i$. Su padre, en el nivel $i - 1$, tiene valor $p$ tal que por hipótesis inductiva, $floor(n / 2^(i-1)) lt.eq p lt.eq ceil(n / 2^(i-1))$. El valor de $v$ es $floor(p / 2)$ o $ceil(p / 2)$. Usando que $floor(floor(x) / m) = floor(x / m)$ y $ceil(ceil(x) / m) = ceil(x / m)$ para $m in NN_(>0)$:
+$
+  floor(v) gt.eq floor(floor(n / 2^(i-1)) / 2) = floor(n / 2^i)
+$
+$
+  ceil(v) lt.eq ceil(ceil(n / 2^(i-1)) / 2) = ceil(n / 2^i)
+$
+Luego, $floor(n / 2^i) lt.eq v lt.eq ceil(n / 2^i)$.
+]
+
+Ahora podemos determinar qué niveles contienen hojas (vértices con valor $1$) y cuáles contienen sólo vértices internos (valor $gt.eq 2$).
+
+Como $k = floor(log_2(n))$, tenemos que $2^k lt.eq n < 2^(k+1)$.
+
++ Niveles $i < k$ están completos: Para $i < k$, tenemos $2^i lt.eq 2^(k-1) < 2^k / 2 lt.eq n / 2$. Luego:
+$
+  floor(n / 2^i) gt.eq floor(n / 2^(k-1)) gt.eq floor(2^k / 2^(k-1)) = 2
+$
+Por la proposición anterior, todo vértice $v$ en el nivel $i$ tiene $v gt.eq 2$, así que es un vértice interno.
+
++ El nivel $k$ contiene hojas: Tenemos $2^k lt.eq n < 2^(k+1)$, lo que implica $1 lt.eq n / 2^k < 2$. Luego $floor(n / 2^k) = 1$. El vértice en la rama más a la izquierda (que siempre toma $floor(dot / 2)$) tiene valor exactamente $floor(n / 2^k) = 1$, que es una hoja.
+
++ Si $n$ es potencia de $2$, entonces $n = 2^k$. Luego, $n / 2^k = 1$, y $ceil(n / 2^k) = 1$. Por la proposición, todo vértice en el nivel $k$ tiene valor $v$ con $1 lt.eq v lt.eq 1$, así que $v = 1$. Todos son hojas, y el árbol tiene altura exactamente $k$.
+
++ Si $n$ no es potencia de $2$, entonces $n eq.not 2^k$. Como además $n gt.eq 2^k$, tenemos $n > 2^k$. Combinando con $n < 2^(k+1)$ y dividiendo por $2^k$, obtenemos $1 < n / 2^k < 2$. Luego, $ceil(n / 2^k) = 2$. El vértice más a la derecha tiene valor $ceil(n / 2^k) = 2$, que es un vértice interno. Luego el nivel $k$ tiene tanto hojas (valor $1$) como vértices internos (valor $2$). Para el nivel $k + 1$, como $n < 2^(k+1)$:
+$
+  ceil(n / 2^(k+1)) lt.eq ceil((2^(k+1) - 1) / 2^(k+1)) = 1
+$
+  Así, todo vértice en el nivel $k + 1$ tiene valor $1$, es decir, es hoja. El árbol tiene altura $k + 1$.
+
+Resumiendo: el árbol tiene $k$ niveles completos ($0$ a $k - 1$), un nivel $k$ que es el primero con hojas, y posiblemente un nivel $k + 1$ con sólo hojas (si $n$ no es potencia de $2$).
+
+Sabiendo esto, calculemos $f(n)$. Sean $L$ el número de hojas en el nivel $k$, y $m$ el número de vértices internos en el nivel $k$. Como los niveles $0, dots, k-1$ están completos, el nivel $k$ tiene exactamente $2^k$ vértices:
+$
+  m + L = 2^k
+$
+Cada vértice interno en el nivel $k$ tiene valor $2$ (sus dos hijos serán hojas con valor $1$). Cada hoja en el nivel $k$ tiene valor $1$. Como la suma de valores en cualquier nivel completo es $n$, y el nivel $k$ tiene hojas de valor $1$ y vértices internos de valor $2$:
+$
+  1 dot L + 2 dot m = n
+$
+Combinando ambas ecuaciones, obtenemos:
 $
    m + L & = 2^k \
   2m + L & = n
 $
-Despejando, obtenemos que $m = n - 2^k$. Luego, como todos los niveles hasta $k$ están completos, y el último tiene $m$ vértices que suman $2$, el valor de $f(n)$ es $n k + 2m = n floor(log_2(n)) + 2n - 2^(floor(log_2(n)))$.
+Restando, $m = n - 2^k$, y luego $L = 2^(k+1) - n$.
 
-Podemos ahora o bien hacer este argumento formal (mostrando detalladamente por qué el árbol tiene esa estructura, con $k$ niveles completos, y un único nivel mixto, el nivel $k+1$, de existir), o bien hacer una demostración por inducción sobre $n$ para probar que la forma cerrada que encontramos es correcta. La demostración por inducción se hace más sencila, porque no estaremos _encontrando_ la forma cerrada, sino _probando_ que una forma cerrada que tenemos, es correcta.
+Los niveles $0, dots, k - 1$ son completos y cada uno suma exactamente $n$, aportando $k dot n$ al total. El nivel $k$ tiene $m$ vértices internos de valor $2$, aportando $2m$. Las hojas aportan $0$. Entonces:
+$
+  f(n) = k dot n + 2m = k dot n + 2(n - 2^k) = n floor(log_2(n)) + 2n - 2^(floor(log_2(n))+1)
+$
+
+Notemos que, en particular, cuando $n$ es potencia de $2$, $f(n) = n log_2 n$.
+
+/*
+En una próxima sección vamos a ver cómo generalizar este argumento, usando el llamado "teorema maestro para recurrencias".
 
 ==== Conteo acotado
 
@@ -1193,7 +1576,7 @@ Por lo tanto, $f$ es monótona no-decreciente. Este argumento parece bastante ge
   Si se cumplen las siguientes condiciones:
   
   1. La secuencia base no decrece ($b_0 lt.eq b_1 lt.eq ... lt.eq b_(n_0-1)$).
-  2. El salto a la recursión respeta el orden ($b_(n_0-1) < T(n_0)$).
+  2. El salto a la recursión respeta el orden ($b_(n_0-1) lt.eq T(n_0)$).
   3. Las funciones $h_i (n)$ son no-decrecientes ($n_1 lt.eq n_2 implies h_i (n_1) lt.eq h_i (n_2)$).
   4. $h_i (n) < n$ para todo $i$ y todo $n$.
   5. $f(n)$ es no-decreciente ($f(n) lt.eq f(n+1)$).
@@ -1204,10 +1587,10 @@ Por lo tanto, $f$ es monótona no-decreciente. Este argumento parece bastante ge
   Usamos inducción fuerte sobre $n$.
   
   - Caso base ($n < n_0 - 1$): Por la condición 1, $T(n) lt.eq T(n+1)$.
-  - Transición ($n = n_0 - 1$): Por la condición 2, $T(n_0 - 1) < T(n_0)$.
+  - Transición ($n = n_0 - 1$): Por la condición 2, $T(n_0 - 1) lt.eq T(n_0)$.
   
   - Caso recursivo ($n gt.eq n_0$):
-    Queremos probar que $T(n) < T(n+1)$.
+    Queremos probar que $T(n) lt.eq T(n+1)$.
     Expandimos $T(n+1)$:
     $ T(n+1) = sum_(i=1)^m T(h_i (n+1)) + f(n+1) $
     
@@ -1313,9 +1696,9 @@ $
   )
 $
 
-donde $alpha$ es tal que para todo $n gt.eq n_0$, tenemos que $g(n) lt.eq alpha n$. Por el @teo:domrec, tenemos que $T(n) lt.eq W(n)$ para todo $n in NN_0$.
+donde $alpha$ es tal que para todo $n gt.eq n_0$, tenemos que $g(n) lt.eq alpha n$. Por el @teo:domrec, tenemos que $T(n) lt.eq W(n)$ para todo $n in NN_0$. Ahora podemos acotar $W$ como vimos antes.
 
-Tenemos un teorema análogo para dominación por debajo.
+/*Tenemos un teorema análogo para dominación por debajo.
 
 #teo(title:[Dominación recursiva (minorante)])[
 Sea $T: NN_0 arrow RR$ una función definida por partes:
@@ -1341,7 +1724,7 @@ Sea $T: NN_0 arrow RR$ una función definida por partes:
 ]<teo:domrecmin>
 #demo[
 Sea $n in NN$. Si $n < n_0$, entonces $K = V(n) lt.eq min { b_0, dots, b_(n_0-1) } lt.eq b_n = T(n)$. De otra forma, $V(k) lt.eq T(k)$ para todo $k < n$. Como esto vale para todos los argumentos de $Phi({V(n_0), dots, V(n-1)})$, y $Phi$ es no-decreciente, tenemos que $Phi({V(n_0), dots, V(n-1)}) lt.eq Phi({T(n_0), dots, T(n-1)})$. Finalmente, como $g(n) lt.eq f(n)$, tenemos que $V(n) = Phi({V(n_0), dots, V(n-1)}) + g(n) lt.eq Phi({T(n_0), dots, T(n-1)}) + f(n) = T(n)$.
-]
+]*/
 
 === Acotado asintótico
 Finalmente, intentemos encontrar una cota para una función $T$ que cumple con una forma recursiva definida asintóticamente, juntando todo lo que vimos.
@@ -1408,125 +1791,592 @@ Con esto vamos a concluir que $W in O(n log n)$ en general, y como $T(n) lt.eq W
   Eligiendo entonces $beta = 12.5 + alpha/4$, tenemos que $W(n) lt.eq gamma n log_2 n + beta$ para todo $n$ potencia de $2$.
 
 + Queremos ver que $W$ es monotónica creciente. Para esto podemos usar el @teo:mono.
-+ Podemos ahora extender $W$ a todos los $n in NN$ usando el @teo:extpot, y podemos acotar $W(n) lt.eq 2 gamma log_2 (2n) + beta$.
++ Podemos ahora extender $W$ a todos los $n in NN$ usando el @teo:extpot, y podemos acotar $W(n) lt.eq 2 n gamma log_2 (2n) + beta = 2 n gamma (1 + log_2 n) + beta = 2n gamma log_2 n + 2 n gamma + beta$.
 
 Por lo tanto, al estar $T$ acotada por arriba por $W$, y $W$ estando en $O(n log n)$, tenemos que $T in O(n log n)$.
 ]
 
 Esto fue bastante esfuerzo, y requirió adivinar una cota superior para $W$ en potencias de $2$ en el paso 3. Podemos intentar generalizar el trabajo que hicimos, para una clase más amplia de funciones.
 
-
+*/
 === Teorema maestro
 
-Vimos cómo acotar este tipo de funciones definidas asintóticamente. Como vimos, puede llevar mucho esfuerzo, especialmente el encontrar una función acotante. Afortunadamente hay un teorema que nos ayuda bastante, pues lo podemos aplicar mecánicamente, y generaliza lo que vimos.
+Acotar esa función nos costó bastante trabajo. Afortunadamente hay un teorema que nos ayuda bastante, pues lo podemos aplicar mecánicamente, y generaliza lo que hicimos.
 
-#teo(title:[Teorema maestro (versión piso)])[
+La idea del teorema es mirar el árbol de recurrencia de nuestra función $T$. Cada vértice va a contribuir algo a la suma total. Hay aproximadamente $a^(log_b n) = n^(log_b a)$ hojas.
+
+Pueden pasar tres cosas con el valor de $T$:
+  - El valor de las hojas domina a $f$. Si $f$ crece menos rápido que $n^(log_b a)$, entonces la mayor contribución al valor de $T$ viene, asintóticamente, dada por las hojas. Luego $T in Theta(n^(log_b a))$.
+  - El valor de las hojas está balanceado con el valor de $f$. Luego el costo de cada nivel es $f(n)$ o $n^(log_b a)$, cualquiera de las dos, y habiendo $log_b n$ niveles, tenemos que $T in Theta(n^(log_b a) log_b^(k+1) n)$.
+  - El valor de $f$ domina a los valores de las hojas. Obtenemos $T in Theta(f)$.
+
+#show_master_theorem_infographic()
+
+#teo(title:[Teorema maestro])[
 Sea $T: NN arrow RR0$ una función tal que:
 
 $
   T(n) = cases(
-    b_i &"si" 0 lt.eq i < n_0,
+    b_n &"si" 0 lt.eq n < n_0,
     a_1 T(floor(n/b)) + a_2 T(ceil(n/b)) + f(n) &"si" n gt.eq n_0
   )
 $
 
-para algunas constantes $b_0, dots, b_(n-1) in RR0$, $a_1, a_2 in NN$, $b in NN gt.eq 2$, $n_0 in NN$. Llamemos $a = a_1 + a_2$, y $c = log_b a$. Entonces:
+para alguna función $f: NN arrow RR0$, algunas constantes $b_0, dots, b_(n_0-1) in RR0$, $a_1, a_2 in NN$, $b in NN gt.eq 2$, $n_0 in NN$, y asumiendo $n_0 gt.eq 2$ si $a_2 > 0$ para estar bien definida. Llamemos $a = a_1 + a_2 gt.eq 1$, y $c = log_b a$. Entonces:
 
 - Si $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$, entonces $T in Theta(n^(c))$.
 - Si $f in Theta(n^(c) log^k n)$ para algún $k in NN$, entonces $T in Theta(n^(c) log^(k+1) n)$.
-- Si $f in Omega(n^(c + epsilon))$ para algún $epsilon in RRg0$, y además existen $n_1 in NN$ y $r < 1 in RR0$ tal que $a f(n/b) lt.eq r f(n)$ para todo $n gt.eq n_1$, entonces $T in Theta(f)$.
+- Si $f in Omega(n^(c + epsilon))$ para algún $epsilon in RRg0$, y además existen $n_1 in NN$ y $r < 1 in RR0$ tal que $a_1 f(floor(n/b)) + a_2 f(ceil(n/b)) lt.eq r f(n)$ para todo $n gt.eq n_1$, entonces $T in Theta(f)$.
 ]
 
-#note-box[
-La intuición acá es que al considerar el árbol de recursión de $T$, vemos que tenemos aproximadamente $n^(log_b a)$ hojas. Lo siguiente no es una demostración, claramente - es sólo intuición para que tengan a mano.
 
-Pueden pasar tres cosas con el valor de $T$:
-  - El costo de las hojas domina. Si $f$ crece menos rápido que $n^(log_b a)$, entonces la mayor contribución al valor de $T$ viene, asintóticamente, dada por las hojas. Luego $T in O(n^(log_b a))$.
-  - El costo de las hojas está balanceado con el costo de $f$. Luego el costo de cada nivel es $f(n)$ o $n^(log_b a)$, cualquiera de las dos, y habiendo $log_b n$ niveles, tenemos que $T in Theta(n^(log_b a) log_b n)$.
-  - El costo de $f$ domina. El tamaño de los las entradas crece rápidamente comparado con el valor de la raíz, y el primer se vuelve irrelevante. Obtenemos $T in Theta(f)$.
+
+La demostración está en la #xref(<demo:master>) del apéndice. Veamos cómo usar este teorema.
+
+#prop[
+Sea $T: NN arrow RR0$, definida como:
+$
+  T(n) = cases(
+    1 &"si" n = 0,
+    T(floor(n/2)) + 35 &"si" n gt.eq 1
+  )
+$
+
+Demostrar que $T in Theta(log n)$.
+]
+#demo[
+Veamos en qué caso del teorema caemos. Esta recurrencia es de la forma $a_1 = 1$, $a_2 = 0$, $b = 2$. Luego, $c = log_b a = log_2 1 = 0$. Tenemos $f(n) = 35$. Es cierto que $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$? No, pues $n^c = n^0 = 1$, con lo cual $O(n^(c - epsilon)) = O(1/n^epsilon)$. Una constante (35 en este caso) no puede siempre ser menor que $1/n^epsilon$ para algún ningún $epsilon > 0$, pues eventualmente $1/n^epsilon$ decrece hasta ser arbitrariamente cercana a cero. Luego no caemos en el primer caso.
+
+Es cierto que $f in Theta(n^c log^k n)$? Sí, con $k = 0$. Este conjunto es $Theta(n^c log^0 n) = Theta(n^0 (log n)^0) = Theta(1)$, y efectivamente $f in Theta(1)$. Luego, el teorema maestro nos dice que $T in Theta(n^0 log^1 n) = Theta(log n)$.
 ]
 
-La demostración está en la #xref(<demo:master>) del apéndice.
+#prop[
+Sea $T: NN arrow RR0$, definida como:
+$
+  T(n) = cases(
+    1 &"si" n = 0,
+    T(floor(n/2)) + 7 n^2 &"si" n gt.eq 1
+  )
+$
 
-
-
-
-
-=== Ejercicios
-#ej[
-Sean $f, g: NN arrow RR0$ funciones. Recordando que $f dot O(g) = {f + h | h in O(g)}$, probar que $f dot O(g) = O(f dot g)$.
-]<bigoprod>
-#ej[
-  Sean $f, g: NN arrow NN$ funciones. Probar que si $f in Theta(g)$, entonces $g in Theta(f)$.
-]
-#ej[
-  Sea $n in NN$, y $f in ZZ[x]$ un polinomio de grado $n$. Probar que $f in O(x^n)$. Mostrar que no es cierto que $f in Omega(x^n)$, dando un ejemplo explícito de $n$ y $f$.
+Demostrar que $T in Theta(n^2)$.
 ]
 
-#ej[
+#demo[
+Veamos en qué caso del teorema caemos. Esta recurrencia es de la forma $a_1 = 1$, $a_2 = 0$, $b = 2$. Luego, $c = log_b a = log_2 1 = 0$. Tenemos $f(n) = 7 n^2$. Es cierto que $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$? No, pues $f in Omega(n^2)$, cuya intersección con $O(1/n^epsilon)$ es vacía.
+
+Es cierto que $f in Theta(n^c log^k n)$ para algún $k in NN$? No, pues $n^c = n^0 = 1$, con lo cual $Theta(n^c log^k n) = Theta(log^k n)$. Luego no caemos en este caso, pues no hay ningún $k$ tal que $f in Theta(log^k n)$, al ser $f$ un polinomio de grado mayor a 0.
+
+Es cierto que $f in Omega(n^(c + epsilon))$ para algún $epsilon in RRg0$? Sí, con $epsilon = 2$. Este conjunto es $Omega(n^(c + epsilon)) = Omega(n^2)$, y efectivamente $f in Omega(n^2)$ (y de hecho, $f in Theta(n^2)$). Ahora verifiquemos la condición de regularidad. Queremos encontrar $0 lt.eq r < 1$ tal que
+$
+  a_1 f(floor(n/b)) + a_2 f(ceil(n/b)) &= f(floor(n/2)) \
+   &lt.eq r f(n)
+$
+
+Como $f$ es monotónicamente creciente, tenemos:
+
+$
+  f(floor(n/b)) lt.eq f(n/2) = (7/4) n^2 lt.eq (1/4) 7n^2 = 1/4 f(n)
+$
+
+Luego, tomando $r = 1/4$, tenemos que $f(floor(n/b)) lt.eq r f(n)$, para todo $n in NN$. Luego $T in Theta(n^2)$.
+]
+
+#prop[
+Sea $T: NN arrow RR0$, definida como:
+$
+  T(n) = cases(
+    3 &"si" n = 0,
+    2 &"si" n = 1,
+    34 &"si" n = 2,
+    9 &"si" n = 3,
+    3T(floor(n/4)) + T(ceil(n/4)) + 7n + 9 &"si" n gt.eq 4
+  )
+$
+
+Demostrar que $T in Theta(n log n)$.
+]
+#demo[
+Tenemos $a = a_1 + a_2 = 3 + 1 = 4$, y $b = 4$, con lo cual $c = log_b a = log_4 4 = 1$. Tenemos $f(n) = 7n + 9$. Es cierto que $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$? No, pues $n^c = n^1 = n$, con lo cual $O(n^(c - epsilon)) = O(n^1/n^epsilon)$. Un término lineal (7n + 9 en este caso) no puede siempre ser menor que $n/n^epsilon$ para algún ningún $epsilon > 0$, pues eventualmente $n/n^epsilon$ crece hasta ser arbitrariamente grande. Luego no caemos en el primer caso.
+
+Es cierto que $f in Theta(n^c log^k n)$? No, pues $n^c = n^1 = n$, con lo cual $Theta(n^c log^k n) = Theta(n log^k n)$. Con $k = 0$, tenemos precisamente que $f in Theta(n log^0 n) = Theta(n)$. Luego, el teorema maestro nos dice que $T in Theta(n log^1 n) = Theta(n log n)$.
+]
+
+
+#prop[
+Sea $T: NN arrow RR0$, definida como:
+$
+  T(n) = cases(
+    1 &"si" n = 0,
+    1 &"si" n = 1,
+    4T(floor(n/2)) + n &"si" n gt.eq 2
+  )
+$
+
+Demostrar que $T in Theta(n^2)$.
+]
+#demo[
+Tenemos $a = 4$, $b = 2$, con lo cual $c = log_b a = log_2 4 = 2$. Tenemos $f(n) = n$.
+
+Es cierto que $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$? Tomando $epsilon = 1$, tenemos $n^(c - epsilon) = n^(2-1) = n$. Efectivamente $f(n) = n in O(n)$. Luego caemos en el primer caso.
+
+El teorema maestro nos dice que $T in Theta(n^c) = Theta(n^2)$.
+]
+
+#prop[
+Sea $T: NN arrow RR0$, definida como:
+$
+  T(n) = cases(
+    1 &"si" n lt.eq 2,
+    8T(floor(n/3)) + n^2 &"si" n gt.eq 3
+  )
+$
+
+Demostrar que $T in Theta(n^2)$.
+]
+#demo[
+Tenemos $a = 8$, $b = 3$, con lo cual $c = log_b a = log_3 8 approx 1.89$. Tenemos $f(n) = n^2$.
+
+Es cierto que $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$? Tendríamos que $n^2 in O(n^(c - epsilon))$, lo cual requiere $2 lt.eq c - epsilon$, es decir $epsilon lt.eq c - 2 approx -0.11 < 0$. Como necesitamos $epsilon > 0$, no caemos en el primer caso.
+
+Es cierto que $f in Theta(n^c log^k n)$ para algún $k in NN$? Tendríamos $n^2 in Theta(n^c log^k n)$ con $c approx 1.89 < 2$. Pero $n^2$ crece estrictamente más rápido que $n^c log^k n$ para cualquier $k$ fijo, pues $lim_(n arrow infinity) n^2 / (n^c log^k n) = lim_(n arrow infinity) n^(2-c) / log^k n = infinity$. Luego no caemos en el segundo caso.
+
+Es cierto que $f in Omega(n^(c + epsilon))$ para algún $epsilon in RRg0$? Tomando $epsilon = 0.1$, tenemos $c + epsilon approx 1.99 < 2$, así que $n^2 in Omega(n^1.99)$. Esto es cierto.
+
+Debemos verificar la condición de regularidad: que exista $k < 1$ tal que $a dot f(n/b) lt.eq k dot f(n)$. Tenemos:
+$
+  8 dot f(n/3) = 8 dot (n/3)^2 = 8n^2 / 9
+$
+Queremos $8n^2 / 9 lt.eq k dot n^2$, es decir $k gt.eq 8/9$. Tomando $k = 8/9 < 1$, la condición se cumple.
+
+Luego caemos en el tercer caso, y el teorema maestro nos dice que $T in Theta(f(n)) = Theta(n^2)$.
+]
+#prop[
+El número de multiplicaciones que realiza el algoritmo de Strassen para multiplicación de matrices, dadas dos matrices de $n times n$ donde $n$ es una potencia de $2$, tiene la recurrencia:
+$
+  T(n) = cases(
+    1 &"si" n = 1,
+    7T(n/2) + Theta(n^2) &"si" n gt 1
+  )
+$
+
+Demostrar que $T in Theta(n^(log_2 7))$.
+]
+#demo[
+Tenemos $a = 7$, $b = 2$, con lo cual $c = log_b a = log_2 7 approx 2.81$. Tenemos $f(n) in Theta(n^2)$.
+
+Es cierto que $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$? Tomando $epsilon = 0.8$, tenemos $c - epsilon approx 2.01$. Debemos verificar que $n^2 in O(n^2.01)$, lo cual es cierto pues $2 < 2.01$. Luego caemos en el primer caso.
+
+El teorema maestro nos dice que $T in Theta(n^c) = Theta(n^(log_2 7))$.  
+]
+
+
+#prop[
+Sea $T: NN arrow RR0$, definida como:
+$
+  T(n) = cases(
+    1 &"si" n = 0,
+    2T(floor(n/2)) + n / (log n) &"si" n gt.eq 1
+  )
+$
+
+Mostrar que el teorema maestro no aplica directamente a esta recurrencia.
+]
+#demo[
+Tenemos $a = 2$, $b = 2$, con lo cual $c = log_b a = log_2 2 = 1$. Tenemos $f(n) = n / (log n)$.
+
+Veamos que no caemos en ninguno de los tres casos.
+
+- Caso 1. Requiere $f in O(n^(c - epsilon)) = O(n^(1-epsilon))$ para algún $epsilon > 0$. Pero $lim_(n arrow infinity) (n / (log n)) / n^(1-epsilon) = lim_(n arrow infinity) n^epsilon / (log n) = infinity$ para todo $epsilon > 0$. Luego $n / (log n) in.not O(n^(1-epsilon))$ para ningún $epsilon > 0$.
+
+- Caso 2. Requiere $f in Theta(n^c log^k n) = Theta(n log^k n)$ para algún $k gt.eq 0$. Tenemos $f(n) = n / (log n) = n log^(-1) n$. Esto correspondería a $k = -1$, pero el teorema maestro requiere $k gt.eq 0$. Luego no caemos en el segundo caso.
+
+- Caso 3. Requiere $f in Omega(n^(c + epsilon)) = Omega(n^(1+epsilon))$ para algún $epsilon > 0$. Pero $lim_(n arrow infinity) (n / (log n)) / n^(1+epsilon) = lim_(n arrow infinity) 1 / (n^epsilon log n) = 0$ para todo $epsilon > 0$. Luego $n / (log n) in.not Omega(n^(1+epsilon))$ para ningún $epsilon > 0$.
+
+Como no caemos en ninguno de los tres casos, el teorema maestro no aplica a esta recurrencia. Habría que usar otros métodos (como el árbol de recursión o el método de sustitución) para determinar su comportamiento asintótico.
+]
+
+#prop[
   Sea la $T: NN arrow NN$ una función dada por $T(0) = 1$, y para todo $n in NN$ tal que $n > 0$, definimos $T(n) = 2 T(n/2) + Theta(n log n)$. Es decir, existe una función $h: NN arrow NN$ tal que $h in Theta(n log n)$, y $T(n) = 2 T(n/2) + h(n)$ para todo $n in NN, n > 0$.
 
   Probar que $T in Theta(n log^2 n)$.]
 #demo[
   Podemos usar el teorema maestro, que nos dice que si tenemos una función $T$ de la forma $T(n) = a T(n/b) + f(n)$ para todo $n in NN, n > 0$, y $f in Theta(n^(log_b (a)) log^k n)$ para algún $k in NN$, entonces $T in Theta(n^(log_b (a)) log^(k+1)(n))$. Basta elegir $k = 1, a = 2, b = 2$, para ver que estamos dentro de las condiciones de este caso del teorema, y como $log_2(2) = 1$, tenemos que $T in Theta(n log^2 n)$.]
 
-#ej[
-  Sea $T: NN arrow NN$ una función dada por $T(0) = 47$, y para todo $n in NN, n > 0$, definimos $T(n) = 2 T(n / 2 - 1) + Theta(n)$.
 
-  Probar que $T in Theta(n log n)$.]
-#demo[
-  No caemos en ninguna de las hipótesis del teorema maestro, porque nuestra $T$ _no_ es de la forma $T(n) = a T(n/b) + f(n)$.
+== Análisis de algoritmos
 
-  Recordemos entonces cómo está definida la expresión "$+ Theta(n)$". Significa que existe alguna función $h: NN arrow NN$, tal que $h in Theta(n)$, y $T(n) = T(n/2 - 1) + h(n)$ para todo $n in NN, n > 0$.
+Vamos a poner en práctica lo que aprendimos sobre análisis asintótico de funciones, para entender el comportamiento de algoritmos. Para eso, necesitamos establecer un puente entre el mundo abstracto de las funciones $f: NN arrow RR0$ y el mundo concreto de los algoritmos que corren en computadoras.
 
-  Hay varias formas de resolver esto, pero una es intentando volver a caer en las hipótesis del teorema maestro. $T$ no cumple lo que queremos por tener la forma incorrecta, pero $n/2 - 1 = (n-2)/2$. Esto nos dice que la recurrencia que define $T$ está meramente movida de $n$ a $n-2$, y nos sugiere ver qué pasa si definimos $U(n) = T(n-2)$.
+=== Modelo de cómputo
 
-  $
-    U(n) & = T(n-2) \
-         & = 2 T((n-2)/2 - 1) + h(n-2) \
-         & = 2 T(n/2 - 1 - 1) + h(n-2) \
-         & = 2 T(n/2 - 2) + h(n-2) \
-         & = 2 U(n/2) + h(n-2) \
-         & = 2 U(n/2) + g(n)" definiendo "g(n) = h(n-2)
-  $
+Cuando analizamos un algoritmo, estamos haciendo una abstracción. No analizamos código en un lenguaje particular corriendo en una computadora específica, con su procesador, su memoria, y su sistema operativo. En cambio, asumimos un _modelo de cómputo_: una descripción simplificada de cómo funciona una computadora, que define qué operaciones básicas podemos realizar.
 
-  Esto se parece a lo que pide el teorema maestro, y quizás nos ayude para acotar $T(n)$.
-
-  Notemos que no podemos simplemente decir que $g in Theta(n)$, porque no es cierto que $Theta(g) = Theta(h)$ por el mero hecho de tener $g(n) = h(n-2)$ (pensar, por ejemplo, qué pasaría si $h(n) = n!$, son el mismo conjunto $Theta(n!)$ y $Theta((n-2)!)$?).
-
-  Para analizar en qué caso del teorema maestro caemos, vamos a tener que analizar cuidadosamente a $g$. Como $h in Theta(n)$, entonces existen $n_0 in NN$, $alpha, beta > 0 in RR$, tal que para todo $n in NN$, ($n gt.eq n_0 implies alpha n lt.eq h(n) lt.eq beta n$). Queremos ver que existen $n_1 in NN, gamma, delta > 0 in RR$, tal que para todo $n in NN$, ($n gt.eq n_1 implies gamma n lt.eq g(n) lt.eq delta n$), que es la definición de $g in Theta(n)$.
-
-  Como sabemos que para todo $n in NN, n gt.eq n_0$, $alpha n lt.eq h(n) lt.eq beta n$, definiendo $n_1 = n_0 + 2$, tenemos que para todo $n in NN, n gt.eq n_1$, se cumple que $alpha (n-2) lt.eq h(n - 2) lt.eq beta n$. Luego:
-
-  $
-          alpha (n-2) & lt.eq h(n-2) &      lt.eq beta (n-2) \
-          alpha (n-2) & lt.eq g(n)   &      lt.eq beta (n-2) \
-    alpha n - 2 alpha & lt.eq g(n)   & lt.eq beta n - 2 beta
-  $
-
-  Recordemos, queremos encontrar $gamma, delta > 0 in RR$, y $n_2 in NN$ tal que para todo $n gt.eq n_2$, $gamma n lt.eq g(n) lt.eq delta n$.
-
-  Intentemos tomando $n_2 = n_1 = n_0 + 2$. Entonces, por las ecuaciones de arriba vemos que $g(n) lt.eq beta n - 2 beta$, pero $beta n - 2 beta < beta n$, porque $beta > 0$. Luego, si tomamos $delta = beta$, nos aseguramos de que $g(n) < beta n - 2 beta < beta n = delta n$, que es la primer parte de lo que tenemos que probar. Para encontrar $gamma$, tenemos que encontrarlo tal que si $alpha n - 2 alpha lt.eq g(n)$, entonces $gamma n lt.eq g(n)$. Esto nos dice que $gamma n lt.eq alpha n - 2 alpha$. Por ende, $gamma lt.eq alpha - 2 alpha / n$. Pero esta cota tiene que valer para _todo_ $n in NN, n gt.eq n_2$. Si $n gt.eq n_2$, entonces como $alpha > 0$, tenemos $alpha / n lt.eq alpha / n_2$, y luego $alpha - 2 alpha / n gt.eq alpha - 2 alpha / n_2$. Luego, basta tomar $gamma = alpha - 2 alpha/n_2$. Verifiquemos si esto cumple lo que necesitamos.
-
-  Queremos ver que para todo $n in NN, n gt.eq n_2$, tenemos que $gamma n lt.eq g(n) lt.eq delta n$. Como $n gt.eq n_2$, y $n_2 = n_0 + 2$, entonces $n - 2 gt.eq n_0$. Luego, tenemos que $alpha (n - 2) lt.eq h(n-2) lt.eq beta (n - 2)$. Esto no es nada menos que $alpha (n - 2) lt.eq g(n) lt.eq beta (n - 2)$. Como $g(n) lt.eq beta (n - 2)$, y $beta (n - 2) < beta n = delta n$, tenemos que $g(n) < delta n$. Como $g(n) gt.eq alpha (n - 2)$, si tuvieramos $alpha (n - 2) gt.eq gamma n$, podríamos concluir que $g(n) gt.eq gamma n$. Calculemos, usando una cadena de si-y-sólo-si:
-
-  $
-        alpha (n - 2) & gt.eq gamma n \
-    alpha n - 2 alpha & gt.eq (alpha - 2 alpha / n_2) n \
-    alpha n - 2 alpha & gt.eq alpha n - 2 alpha n/n_2 \
-             -2 alpha & gt.eq -2 alpha n/n_2 \
-                alpha & lt.eq alpha n/n_2 \
-                    1 & lt.eq n/n_2 \
-                  n_2 & lt.eq n
-  $
-
-  Y esto es cierto, porque estamos diciendo que vale nuestra proposición para todo $n gt.eq n_2$. Luego, como para todo $n gt.eq n_0$, existen $gamma = alpha - 2 alpha / n_2$, y $beta = delta$, tal que para todo $n gt.eq n_2$, $gamma n lt.eq g(n) lt.eq delta n$, tenemos que $g in Theta(n)$.
-
-  Ahora podemos usar el teorema maestro para concluir que $U in O(n log n)$, usando $a = 2, b = 2, k = 0, f = g$. Esto todavía no nos dice que $T in O(n log n)$.
-
-  Como $U in O(n log n)$, sabemos que existe $n_3 in NN, phi > 0 in RR$ tal que para todo $n gt.eq n_3$, tenemos $U(n) lt.eq phi n log n$. Como $T(n) = U(n+2)$, y $n + 2 > n gt.eq n_3$, entonces para esos mismos $n$ tenemos $U(n+2) lt.eq phi (n+2) log (n+2)$, y por lo tanto $T(n) lt.eq phi (n+2) log (n+2)$. Si tomamos $n_4 = max(n_3, 2)$, sabemos que para todo $n gt.eq n_4$, $n gt.eq 2$, y $T(n) lt.eq phi (n + 2) log (n + 2)$, y como $n gt.eq 2$, tenemos $n + 2 lt.eq 2n$. Por lo tanto, $T(n) lt.eq 2 phi n log (2n)$. Como $n gt.eq 2$, $n^2 gt.eq 2n$. Por lo tanto, usando que $log$ es monotónicamente creciente, $T(n) lt.eq 2 phi n log (2n) lt.eq 2 phi n log (n^2) = 4 phi n log n$. Finalmente, si definimos $epsilon = 4 phi$, tenemos que para todo $n gt.eq n_4$, $T(n) lt.eq epsilon n log n$, lo que nos deja concluir que $T in O(n log n)$.
+#def[
+  El *Random Access Machine*@ram (RAM) es un modelo de cómputo con las siguientes características:
+  - La memoria es una secuencia infinita de celdas, cada una capaz de almacenar un número entero de tamaño arbitrario.
+  - Leer o escribir cualquier celda de memoria toma tiempo constante (de ahí "random access").
+  - Las operaciones aritméticas básicas (suma, resta, multiplicación, división, comparación) toman tiempo constante.
+  - Las operaciones de control de flujo (saltos condicionales, llamadas a funciones) toman tiempo constante.
 ]
 
+Este es el modelo que usamos implícitamente cuando analizamos algoritmos en esta materia. Es una simplificación útil: nos permite ignorar detalles como el tamaño del caché, la velocidad del disco, o las optimizaciones del compilador, y enfocarnos en la estructura del algoritmo: operaciones aritméticas/lógicas, control de flujo, y acceso a memoria.
+
+#note-box[
+  Existen otros modelos de cómputo. Las _máquinas de Turing_@turing son el modelo teórico más fundamental, usado para definir qué es computable. El modelo _word RAM_@wram asume que los enteros tienen un tamaño máximo de $w$ bits. El modelo de _memoria externa_@external-memory cuenta accesos a disco en vez de operaciones. El modelo de _random-access stored-program machine_@rasp (RASP) es igual a RAM, excepto que la lista de instrucciones está en sí almacenada en la memoria, en vez de en un lugar separado. Cada modelo es útil para distintos propósitos, pero el modelo RAM es el estándar para análisis de algoritmos.
+
+  Notemos que el modelo RAM asume que sumar o multiplicar cualquier par de enteros es una única operación. Si queremos que este modelo modele nuestras computadoras, esto es demasiado para asumir: Nuestras computadoras representan enteros grandes usando muchos bits, y el tiempo real que toma sumarlos depende del número de bits que tengan. Si nuestro problema trata de números grandes, como ser criptografía o teoría de números, el modelo word RAM va a representar mejor qué sucede en realidad.
+]
+
+El modelo determina qué operaciones contamos y cómo las pesamos. Cuando decimos que una ejecución de un algoritmo con cierta entrada hace "$n^2$ operaciones", estamos diciendo que hace $n^2$ operaciones básicas bajo el modelo RAM. Si usáramos otro modelo, el conteo podría ser diferente.
+
+=== Tamaño de entrada
+
+Para analizar un algoritmo, necesitamos definir qué significa el "tamaño" de una entrada. Esta elección no es única, y es parte del modelado del problema.
+
+#def[
+  Dado un algoritmo $A$ que recibe entradas de un conjunto $cal(I)$, una *función de tamaño* es una función $|dot|: cal(I) arrow NN$ que asigna a cada entrada un número natural que llamamos su _tamaño_.
+]
+
+Algunas elecciones comunes de tamaño:
+
+#table(
+  columns: (0.35fr, 0.65fr),
+  inset: 8pt,
+  stroke: 0.5pt + black,
+  align: left,
+  [*Tipo de entrada*], [*Tamaño típico*],
+  [Lista o arreglo], [$n =$ número de elementos],
+  [Cadena de caracteres], [$n =$ longitud de la cadena],
+  [Número entero $k$], [$n = k$ (valor), o $n = log_2 k$ (bits)],
+  [Matriz $M$ de $m times n$ enteros], [$m times n$],
+)
+
+#warning-box[
+  La elección del tamaño afecta el análisis. Consideremos un algoritmo que determina si un número $k$ es primo, iterando desde $2$ hasta $sqrt(k)$. 
+  ```py
+  def es_primo(k: int) -> bool:
+    for i in range(2, int(sqrt(k)) + 1):
+      if k % i == 0:
+        return False
+    return True
+  ```
+  
+  - Si definimos tamaño como $n = k$, el algoritmo hace $O(sqrt(n))$ operaciones.
+  - Si definimos tamaño como $n = log_2 k$ (el número de bits para representar $k$), el algoritmo hace $O(sqrt(2^n)) = O(2^(n/2))$ operaciones.
+  
+  Ambos análisis son correctos, pero dicen cosas distintas. El segundo es más honesto, pues tenemos que usar $log_2 k$ bits para representar $k$. También es fácil ver por qué el algoritmo trivial es demasiado lento en la práctica: toma tiempo _exponencial_ en el tamaño de la entrada en el peor caso.
+]
+
+Sugiero que sean precisos a la hora de definir el tamaño de entrada de su problema. Cuando veamos algoritmos sobre grafos, no va a ser lo mismo que nuestra entrada sea una lista de $m$ pares de enteros, que una matriz binaria de $n times n$ celdas. El tamaño de entrada, así como el algoritmo entero, va a tener que corresponderse con cómo representamos la entrada.
+
+=== Funciones de costo
+
+Una vez fijados el modelo de cómputo y la función de tamaño, podemos definir funciones que miden el costo de ejecutar un algoritmo. Algunas funciones comunes son las que miden el número de operaciones necesarias y el espacio necesario.
+
+#def[
+  Sea $A$ un algoritmo que recibe entradas del conjunto $cal(I)$. Definimos:
+  - $T_A: cal(I) arrow RR0$, donde $T_A (x)$ es el número de operaciones que realiza $A$ al recibir la entrada $x$. Esto también se conoce como el *tiempo* que toma ejecutar $A(x)$.
+  - $S_A: cal(I) arrow RR0$, donde $S_A (x)$ es la cantidad de memoria que usa $A$ al recibir la entrada $x$, por encima de la memoria usada por la entrada.
+]
+
+Estas funciones dependen del algoritmo y de la entrada específica, no sólo de su tamaño. Por ejemplo, un algoritmo de ordenamiento puede hacer distinto número de comparaciones para dos listas de la misma longitud.
+
+#note-box[
+  Podemos usar funciones de costo para medir otros recursos además de tiempo y espacio:
+  - Número de comparaciones (para algoritmos de ordenamiento o búsqueda).
+  - Número de accesos a disco (para algoritmos de memoria externa).
+  - Número de mensajes enviados (para algoritmos distribuidos).
+  - Número de multiplicaciones (para algoritmos numéricos donde son costosas).
+  
+  La elección depende de qué recurso es el cuello de botella en nuestra aplicación.
+]
+
+Veamos algunos ejemplos de funciones de costo que miden distintos recursos.
+
+#ejemplo(title: "Tiempo")[
+  Consideremos el siguiente algoritmo que calcula la suma de los elementos de una lista:
+  ```py
+  def sumar(lista: list[int], n: int) -> int:
+    total = 0
+    i = 0
+    while i < n:
+      total += lista[i]
+      i += 1
+    return total
+  ```
+
+  Sea $n$ la longitud de la lista `lista`. Definimos el tamaño de entrada como $n$. En cada iteración del ciclo se realizan una comparación, dos sumas, y un acceso a memoria (constantes bajo el modelo RAM), y hay $n$ iteraciones. Antes de entrar al ciclo hay una asignación, y luego de la última iteración del ciclo realizamos una comparación que da falso, que nos dice que podemos salir del ciclo. Luego, si estamos midiendo el número de operaciones, $T_A (x) = 4n + 2$ para toda lista $x$ de longitud $n$. En este caso, la función de costo no depende de los valores concretos de la lista, sino sólo de su longitud.
+]
+
+Notemos cómo analizando los pasos que realiza el algoritmo, y contando lo que nos interesa, conseguimos la función de costo.
+
+#ejemplo(title: "Comparaciones")[
+  Consideremos un algoritmo que encuentra el máximo de una lista:
+
+  ```py
+  def maximo(lista: list[int], n: int) -> int:
+    m = lista[0]
+    for i in range(1, n):
+      if lista[i] > m:
+        m = lista[i]
+    return m
+  ```
+
+  Si definimos nuestro costo $C_A$ como el número de comparaciones que realiza nuestro algoritmo $A$, para cualquier lista de longitud $n$ se realizan exactamente $n - 1$ comparaciones: una por cada iteración del ciclo. La función de costo es, luego, $C_A (x) = n - 1$, independiente de los valores de la entrada.
+
+  En cambio, si midiéramos el número de _asignaciones_ a `m`, ese valor sí depende de la entrada. Si la lista está ordenada de menor a mayor, se hacen $n$ asignaciones (la inicial más una por cada iteración). Si está ordenada de mayor a menor, se hace una sola asignación (la inicial). Esto muestra que la elección del recurso a medir puede hacer que la función de costo dependa o no de la entrada concreta.
+]
+
+#ejemplo(title: "Mensajes enviados")[
+  En sistemas distribuidos, a menudo medimos el número de mensajes que se envían entre los nodos de una red. Consideremos una red de $n$ nodos conectados en anillo (cada nodo puede comunicarse con sus dos vecinos), y un algoritmo simple de _broadcast_: el nodo $0$ quiere enviar un dato a todos los demás.
+
+  ```py
+  def broadcast(x, id: int, n: int):
+    if id == 0:
+      send(x, id + 1)
+    else:
+      y = receive(id - 1)
+      if id != n - 1:
+        send(y, id + 1)
+  ```
+
+  Este algoritmo envía exactamente $n - 1$ mensajes: el nodo $0$ inicia, y luego cada nodo intermedio reenvía, hasta que el dato llega al nodo $n - 1$. La función de costo es $M_A (x) = n - 1$, donde $M$ mide mensajes enviados. 
+
+  En cambio el siguiente algoritmo, que envía mensajes en paralelo, usa el mismo número de mensajes, pero tiempo logarítmico:
+
+  ```py
+  def broadcast_paralelo(x, id: int, n: int):
+    if id != 0:
+      x = receive(id//2)
+    if id < n / 2:
+      parallel(
+        send(x, 2 * id + 1),
+        send(x, 2 * id + 2),
+      )
+  ```
+]
+
+#ejemplo(title: "Espacio")[
+  Consideremos dos algoritmos que invierten una lista.
+
+  El primero usa un arreglo auxiliar:
+  ```py
+  def invertir_con_copia(lista: list[int]) -> list[int]:
+    n = len(lista)
+    resultado = [0] * n
+    for i in range(n):
+      resultado[n - 1 - i] = lista[i]
+    return resultado
+  ```
+
+  El segundo lo hace _in-place_, intercambiando elementos:
+  ```py
+  def invertir_sin_copia(lista: list[int]) -> None:
+    n = len(lista)
+    for i in range(n // 2):
+      lista[i], lista[n - 1 - i] = (
+        lista[n - 1 - i], lista[i]
+      )
+  ```
+
+  Si medimos el espacio _auxiliar_ (la memoria adicional que usa el algoritmo más allá de la entrada), el primero tiene $S_A (x) = n$ (necesita un arreglo de $n$ celdas), mientras que el segundo tiene $S_A (x) = 1$ (sólo usa una variable temporal para el intercambio). Ambos realizan $Theta(n)$ operaciones en tiempo, pero difieren significativamente en el uso de espacio.
+]
+
+#ejemplo(title: "Tiempo amortizado", breakable: true)[
+Consideremos un ejemplo más interesante sobre uso de tiempo, donde debemos amortizar el costo de una operación. El siguiente código es esencialmente el mismo que usa C++ para insertar en `std::vector`, o en general, cualquier vector redimensionable en cualquier lenguaje.
+
+```c
+void* malloc(int size); // Tiempo constante.
+void free(void* ptr); // Tiempo constante.
+
+struct vector {
+  int* datos;
+  int capacidad;
+  int tamaño;
+};
+
+void vector_agregar(struct vector* v, int x) {
+  if (v->tamaño == v->capacidad) {
+    // Duplicamos la capacidad.
+    int nueva_capacidad = max(1, v->capacidad * 2);
+    int* nuevos_datos = malloc(nueva_capacidad * sizeof(int));
+    
+    // Copiamos los elementos existentes.
+    for (int i = 0; i < v->tamaño; i++) {
+      nuevos_datos[i] = v->datos[i];
+    }
+    
+    // Liberamos la memoria anterior.
+    free(v->datos);
+    
+    // Actualizamos el vector.
+    v->datos = nuevos_datos;
+    v->capacidad = nueva_capacidad;
+  }
+  
+  // Agregamos el nuevo elemento.
+  v->datos[v->tamaño] = x;
+  v->tamaño++;
+}
+
+void f(int n) {
+  struct vector v = {
+    datos: NULL,
+    capacidad: 0,
+    tamaño: 0
+  };
+
+  for (int i = 0; i < n; i++) {
+    vector_agregar(&v, i);
+  }
+}
+```
+
+Para entender cuánto tiempo toma `f(n)`, tenemos que entender cuánto tiempo va a tomar cada llamada a `vector_agregar`. Cada llamada a `vector_agregar` toma tiempo $Theta(1)$ si `v->tamaño < v->capacidad`, y tiempo $Theta(t)$ (donde $t$ es `v->tamaño`) si hay que redimensionar, porque se copian todos los elementos. En el peor caso una sola llamada toma $Theta(n)$, pero las redimensiones son infrecuentes: ocurren cuando el tamaño es $0, 1, 2, 4, 8, dots$, es decir en potencias de $2$.
+
+Contemos el costo total de las $n$ llamadas a `vector_agregar`. La $j$-ésima redimensión (para $j gt.eq 1$) copia $2^(j-1)$ elementos. La última redimensión antes de la inserción $n$-ésima ocurre cuando el tamaño es $2^(floor(log_2(n-1)))$. Luego, el costo total de todas las copias es:
+
+$
+  sum_(j = 0)^(floor(log_2(n - 1))) 2^j = 2^(floor(log_2(n-1)) + 1) - 1 lt.eq 2(n - 1) - 1 < 2n in O(n)
+$
+
+Sumando esto con las $n$ asignaciones de costo $Theta(1)$ cada una, el costo total de las $n$ llamadas es $Theta(n)$. El costo _amortizado_ por llamada es entonces $Theta(n) / n = Theta(1)$: si bien una llamada individual a `vector_agregar` puede tomar $Theta(n)$ en el peor caso, el costo promediado sobre la secuencia de $n$ llamadas es constante.
+
+La función `f`, entonces, toma tiempo $Theta(n)$.
+]
+
+Este último ejemplo fue un caso de análisis amortizado. Hay varias otras formas de hacer este tipo de análisis, como el método de banquero y el método de potencial. Para los interesados en estos métodos, recomiendo el libro @clrs, la sección de análisis amortizado. La fuente original del análisis amortizado es @amortized.
+
+Cuando un algoritmo es recursivo, su función de costo se expresa naturalmente como una _recurrencia_: una ecuación que define $T(n)$ en términos de $T$ evaluada en entradas más pequeñas. Para derivar la recurrencia, leemos el código e identificamos:
+
++ El caso base: qué hace el algoritmo cuando no hace recursión. Esto nos dice cuánto vale $T$ para los tamaños más chicos.
++ Las llamadas recursivas: cuántas hay, y con qué tamaño de entrada. Cada llamada contribuye un término $T(dots)$.
++ El trabajo no recursivo: qué hace el algoritmo además de las llamadas recursivas. Esto nos da los términos aditivos a $T$.
+
+Veamos un ejemplo.
+
+#ejemplo(title: "Algoritmos recursivos")[
+  En el problema de las Torres de Hanoi@concrete, tenemos $n$ discos de tamaños distintos apilados en una varilla (el más grande abajo), y queremos moverlos a otra varilla, usando una varilla auxiliar, moviendo un disco a la vez y sin nunca colocar un disco más grande sobre uno más pequeño.
+
+  #align(center)[
+    #image("../hanoi.png", height: 25%)
+  ]
+
+  ```py
+  def hanoi(n: int, src: int, dst: int, aux: int):
+    if n == 0:
+      return
+    hanoi(n - 1, src, aux, dst)
+    mover(src, dst) # Mover el disco de arriba de la pila src a la pila dst.
+    hanoi(n - 1, aux, dst, src)
+  
+  hanoi(n, 0, 2, 1)
+  ```
+
+  Midamos el número de movimientos que realiza `hanoi`. Siguiendo los pasos de arriba:
+
+  + Caso base. Cuando $n = 0$, no hacemos ningún movimiento. Luego $T(0) = 0$.
+  + Llamadas recursivas. Hay dos llamadas a `hanoi` con argumento $n - 1$. Cada una contribuye $T(n - 1)$ movimientos.
+  + Trabajo no recursivo. Una llamada a `mover`, que cuesta $1$ movimiento.
+
+  Ensamblando, obtenemos la recurrencia $T(0) = 0$ y $T(n) = 2T(n-1) + 1$ para $n gt.eq 1$. Expandiendo los primeros valores, $T(1) = 1, T(2) = 3, T(3) = 7, T(4) = 15$, sospechamos que $T(n) = 2^n - 1$. Probémoslo por inducción.
+
+  - $T(0) = 0 = 2^0 - 1$. #sym.checkmark
+  - Si $T(n-1) = 2^(n-1) - 1$, entonces $T(n) = 2T(n-1) + 1 = 2(2^(n-1) - 1) + 1 = 2^n - 1$. #sym.checkmark
+
+  Luego, $T(n) = 2^n - 1$ para todo $n in NN$, y luego $T in Theta(2^n)$.
+]
+
+=== Peor caso, mejor caso, y caso promedio
+
+Como la función de costo depende de la entrada específica, y puede haber muchas entradas del mismo tamaño, definimos funciones que agregan el costo sobre todas las entradas de un tamaño dado. Esto nos deja razonar sobre el comportamiento de nuestro algoritmo a medida que el tamaño de la entrada crece, en vez de preocuparnos por la entrada específica.
+
+#def[
+  Sea $A$ un algoritmo, $|dot|$ una función de tamaño, y $T_A$ una función de costo. Definimos:
+  
+  - *Peor caso*: $T_"max" (n) = max {T_A (x) : |x| = n}$
+  - *Mejor caso*: $T_"min" (n) = min {T_A (x) : |x| = n}$
+  - *Caso promedio*: $T_"avg" (n) = EE_(x tilde D_n) [T_A (x)]$
+  
+  donde $D_n$ es una distribución de probabilidad sobre las entradas de tamaño $n$.
+]
+
+El peor caso es el más usado, porque nos da una *garantía*: sin importar qué entrada $x$ recibamos, el algoritmo no tardará más que $T_"max" (|x|)$. Esto es útil para sistemas donde necesitamos predecir tiempos de respuesta.
+
+El mejor caso rara vez se usa solo, porque es demasiado optimista. Sin embargo, es útil para establecer _cotas inferiores_ para problemas. Por ejemplo, uno puede demostrar que todo algoritmo que sume $n$ enteros es tal que $T_"min" in Omega(n)$.
+
+El caso promedio es útil cuando las entradas vienen de una distribución conocida, o cuando queremos entender el comportamiento "típico". Sin embargo, tiene una sutileza importante:
+
+#warning-box[
+  El caso promedio requiere especificar una distribución $D_n$ sobre las entradas. Distintas distribuciones dan distintos promedios. Cuando no se especifica, se suele asumir la distribución uniforme sobre todas las entradas de tamaño $n$, pero esto no siempre refleja la realidad.
+  
+  Por ejemplo, para Quicksort con pivote fijo, el caso promedio bajo distribución uniforme es $Theta(n log n)$, pero si las entradas reales tienden a estar casi ordenadas, el tiempo va a estar cerca de $n^2$.
+]
+
+Veamos un ejemplo concreto para ilustrar estos conceptos.
+
+#ej[
+  Consideremos el siguiente algoritmo de búsqueda lineal:
+  
+  ```py
+  def buscar(lista: list[int], x: int) -> int:
+    for i in range(len(lista)):
+      if lista[i] == x:
+        return i
+    return -1
+  ```
+  
+  Definimos el costo del algoritmo como el número de comparaciones que hace el algoritmo al buscar $x$ en la lista $L$. Definimos el tamaño de la entrada como la longitud de la lista.
+
+  Analizar el peor caso, mejor caso, y caso promedio del número de comparaciones.
+]
+#sol[
+  - Mejor caso. Si $x$ está en la primera posición, hacemos una sola comparación. Luego $T_"min" (n) = 1 in Theta(1)$.
+  
+  - Peor caso. Si $x$ no está en la lista, o está en la última posición, hacemos $n$ comparaciones. Luego $T_"max" (n) = n$, y luego $T_"max" in Theta(n)$.
+  
+  - Caso promedio. Asumamos que $x$ está en la lista, y que está en cada posición con igual probabilidad $1/n$. Si $x$ está en la posición $i$ (indexando desde $1$), hacemos $i$ comparaciones. Entonces:
+  
+    $
+    T_"avg" (n) = sum_(i=1)^n i dot 1/n = 1/n dot (n(n+1))/2 = (n+1)/2 in Theta(n)
+    $
+  
+    Si en cambio asumimos que $x$ puede no estar en la lista con probabilidad $p$, el análisis cambia:
+  
+    $
+    T_"avg" (n) = p dot n + (1-p) dot (n+1)/2 = n (p + (1-p)/2) + (1-p)/2 = n ((1+p)/2) + (1-p)/2 in Theta(n)
+    $
+  
+    En ambos casos, el promedio es $Theta(n)$, pero las constantes son distintas.
+]
+
+=== Del algoritmo a la función asintótica
+
+Juntando lo que aprendimos sobre análisis asintótico con lo que aprendimos sobre algoritmos, el proceso completo de análisis de un algoritmo tiene los siguientes pasos:
+
++ *Fijar el modelo de cómputo*. Usualmente el modelo RAM, implícitamente.
+
++ *Definir el tamaño de entrada*. ¿Qué significa $n$ para este problema? ¿Es el número de elementos de una lista, el máximo elemento de un conjunto, el número de dígitos de un entero dado, el número de aristas en un árbol, etc? Si hay dos variables, ¿el tamaño de entrada es $n + m$? ¿Es $n times m$? ¿Es $n^(3+m)$?
+
++ *Elegir el recurso a medir*. ¿Tiempo (operaciones)? ¿Espacio? ¿Comparaciones?
+
++ *Definir la función de costo* $T_A (x)$ para cada entrada $x$. Esto depende de qué queramos medir. La función de costo va a ser inducida por el código del algoritmo.
+
++ *Agregar por tamaño*. Elegir peor caso, mejor caso, o promedio para obtener una función $T: NN arrow RR0$. Notemos como estas son precisamente las funciones para las cuales aprendimos a hacer análisis asintótico.
+
++ *Analizar asintóticamente*. Usar las herramientas de la sección anterior ($O$, $Omega$, $Theta$, límites, árboles de recursión, teorema maestro) para caracterizar $T$.
+
++ *Reportar el resultado*. "El algoritmo $A$ corre en tiempo $O(n log n)$ en el peor caso."
+
+#note-box[
+  Es importante ser preciso al reportar. No es lo mismo decir:
+  - "$A$ es $O(n^2)$" (ambiguo: ¿qué estamos midiendo? ¿peor caso?)
+  - "$A$ corre en tiempo $Omega(n^2)$ en el peor caso" (claro)
+  - "El número de comparaciones de $A$ es $Theta(n log n)$ en el peor caso" (muy claro)
+]
+
+=== Ejercicios
 #ej[
   Se tiene el siguiente algoritmo recursivo:
 
@@ -1552,7 +2402,7 @@ Sean $f, g: NN arrow RR0$ funciones. Recordando que $f dot O(g) = {f + h | h in 
          & = O(1) + 2 sum_(i=1)^(n-1) T(i)
   $
 
-  Esto nos puede recordar a la fórmula para las potencias de un número. Por ejemlpo, $2^n = 1 + sum_(i=0)^(n-1) 2^i$, o $3^n = 1 + 2 sum_(i=0)^(n-1) 3^i$. Como esto se parece bastante a la serie de potencias de tres, vamos a intentar adivinar que $T(n) lt.eq alpha 3^n$ para todo $n in NN$, y algún $alpha > 0 in RR$. Esto nos diría que $T in O(3^n)$.
+  Esto nos puede recordar a la fórmula para las potencias de un número. Por ejemplo, $2^n = 1 + sum_(i=0)^(n-1) 2^i$, o $3^n = 1 + 2 sum_(i=0)^(n-1) 3^i$. Como esto se parece bastante a la serie de potencias de tres, vamos a intentar adivinar que $T(n) lt.eq alpha 3^n$ para todo $n in NN$, y algún $alpha > 0 in RR$. Esto nos diría que $T in O(3^n)$.
 
   Probemos esto por inducción. Por definición de "$O(1)$", sabemos que existe una función $h:NN arrow NN$, tal que $T(n) = h(n) + 2 sum_(i=1)^(n-1) T(i)$, y existen $n_0 in NN, beta > 0$ tales que para todo $n gt.eq n_0$, $h(n) lt.eq beta$. Sea $r = max(beta, max_(i = 0)^n_0 h(i))$. Entonces tenemos que para todo $n$, $h(n) lt.eq r$. La cota vale para los primeros $n_0$ valores de $n$ por la segunda rama del $max$, y vale para todos los valores después de $n_0$ por la primer rama, que a su vez vale por la definición de $h in O(1)$.
 
@@ -1611,7 +2461,7 @@ Sean $f, g: NN arrow RR0$ funciones. Recordando que $f dot O(g) = {f + h | h in 
   Probar que $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$.
 ]
 #demo[
-  Llamemos $M(l, r)$ al número de comparaciones que hace `merge` al ser llamados con dos listas de longitud $l$ y $r$ respectivaente. Probemos algo sobre el comportamiento de `merge`.
+  Llamemos $M(l, r)$ al número de comparaciones que hace `merge` al ser llamados con dos listas de longitud $l$ y $r$ respectivamente. Probemos algo sobre el comportamiento de `merge`.
   #lemma[
     $M(l, r) lt.eq l + r - 1$.
   ]
@@ -1623,7 +2473,7 @@ Sean $f, g: NN arrow RR0$ funciones. Recordando que $f dot O(g) = {f + h | h in 
     Como hacemos una comparación por cada iteración del ciclo, tenemos que el número de comparaciones que se hacen es $M(l, r) = t lt.eq l + r - 1$.
   ]
 
-  En `mergesort`, recibimos una lista $x$ de longitud $n$. La dividimos en dos partes, de tamaño $l$ y $r$ respectivamente, y por lo tanto tenemos que $n = l + r$. Podemos ver por inducción que la longitud de `mergesort(x)` es igual a `len(x)`. Por ende, cuando llamamos a `mergesort` en ambas mitades, obtendremos listas de longitud $l$ y $r$ respectivamente. Como luego llamamos a `merge`, estamos llamando a `merge` con dos listas de lognitud $l$ y $r$, con $l + r = n$, y luego el número de comparaciones que haremos al llamar a `merge` será a lo sumo $n - 1$.
+  En `mergesort`, recibimos una lista $x$ de longitud $n$. La dividimos en dos partes, de tamaño $l$ y $r$ respectivamente, y por lo tanto tenemos que $n = l + r$. Podemos ver por inducción que la longitud de `mergesort(x)` es igual a `len(x)`. Por ende, cuando llamamos a `mergesort` en ambas mitades, obtendremos listas de longitud $l$ y $r$ respectivamente. Como luego llamamos a `merge`, estamos llamando a `merge` con dos listas de longitud $l$ y $r$, con $l + r = n$, y luego el número de comparaciones que haremos al llamar a `merge` será a lo sumo $n - 1$.
 
   Las mitades en las que dividimos la lista cumplen que $l = floor(n/2)$, y $r = ceil(n/2)$. Luego, el número máximo de comparaciones que hará `mergesort` al recibir una lista de longitud $n$ es $T(n) = T(floor(n/2)) + T(ceil(n/2)) + n - 1$, y $T(1) = 0$.
 
@@ -1634,7 +2484,7 @@ Sean $f, g: NN arrow RR0$ funciones. Recordando que $f dot O(g) = {f + h | h in 
 
     Como $n lt.eq 2^k$, entonces $r lt.eq 2^(k-1)$. Como $n > 2^(k-1)$, entonces $r > 2^(k-2)$. Luego, $r$ está en el intervalo $(2^(k-2), 2^(k-1)]$, y por lo tanto, $ceil(log_2 r) = k - 1$. Usando la hipótesis inductiva, obtenemos $T(r) = r (k - 1) - 2^(k - 1) + 1$.
 
-    Para encontrar $T(a)$, partimos en casos sobre $n$. Recordemos que $2^(k-1) + 1 lt.eq n lt.eq 2^k$.
+    Para encontrar $T(l)$, partimos en casos sobre $n$. Recordemos que $2^(k-1) + 1 lt.eq n lt.eq 2^k$.
     - Si $n = 2^(k-1) + 1$ exactamente, entonces $l = 2^(k-2)$, y $r = 2^(k-2) + 1$. Luego, $ceil(log_2 l) = k - 2$. Aplicando la hipótesis inductiva a $l$, tenemos $T(l) = l (k - 2) - 2^(k - 2) + 1$. Sumando lo que teníamos, sabemos que:
 
     $
@@ -1662,6 +2512,15 @@ Sean $f, g: NN arrow RR0$ funciones. Recordando que $f dot O(g) = {f + h | h in 
 
   Luego, hemos probado por inducción que para todo $n gt.eq 1$, $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$.
 ]
+
+#note-box[
+  Notemos que podríamos haber usado el teorema maestro para concuir que $T in Theta(n log n)$. Nuestro análisis fue más preciso, y conseguimos una forma cerrada exacta para $T$, no sólo su comportamiento asintótico.
+]
+
+/*
+
+FIXME: Este algoritmo es estocástico, y todavía no expliqué eso.
+
 #ej[
   Determinar cuánto tiempo va a tomar el siguiente algoritmo, en el caso promedio:
 
@@ -1730,6 +2589,40 @@ Sean $f, g: NN arrow RR0$ funciones. Recordando que $f dot O(g) = {f + h | h in 
              & = n + 1/(n+1) + n/(n+1) = n + 1 \
     $
   Luego vale $P(n)$ para todo $n in NN$, y luego $T(n) = n$ para todo $n in NN$.]
+*/
+
+#ej[
+  Consideremos el siguiente algoritmo que determina si una lista está ordenada:
+
+  ```py
+  def is_sorted(lista: list[int], n: int) -> bool:
+    for i in range(n - 1):
+      if lista[i] > lista[i + 1]:
+        return False
+    return True
+  ```
+
+  Sea $C(x)$ el número de comparaciones que realiza `is_sorted` sobre la entrada $x$, y $n$ la longitud de la lista. Analizar el peor caso, mejor caso, y caso promedio del número de comparaciones, asumiendo para el caso promedio que la entrada es una permutación uniformemente al azar de ${1, dots, n}$.
+]
+#sol[
+  - Mejor caso. Si $"lista"[0] > "lista"[1]$, el algoritmo retorna en la primera iteración, habiendo hecho una sola comparación. Luego $T_"min" (n) = 1$, y luego $T_"min" in Theta(1)$.
+
+  - Peor caso. Si la lista está ordenada, el algoritmo recorre todo el ciclo sin retornar temprano, realizando $n - 1$ comparaciones. Luego $T_"max" (n) = n - 1$, y luego $T_"max" in Theta(n)$.
+
+  - Caso promedio. Para cada $i in {0, dots, n - 2}$, definimos la variable indicadora $X_i$, que vale $1$ si el algoritmo realiza la comparación en la iteración $i$, y $0$ si ya retornó antes. El número total de comparaciones es $C = sum_(i=0)^(n-2) X_i$.
+
+    El algoritmo llega a la iteración $i$ si y sólo si no encontró ningún descenso en las iteraciones anteriores, es decir, si $"lista"[0] < "lista"[1] < dots < "lista"[i]$. Como la entrada es una permutación uniformemente al azar, los primeros $i + 1$ elementos están en alguno de los $(i+1)!$ órdenes posibles, todos equiprobables. Exactamente uno de esos órdenes es el creciente, luego $EE[X_i] = 1/(i+1)!$.
+
+    Por linealidad de la esperanza:
+
+    $
+      T_"avg" (n) = EE[C] = sum_(i=0)^(n-2) EE[X_i] = sum_(i=0)^(n-2) 1/((i+1)!) = sum_(k=1)^(n-1) 1/(k!)
+    $
+
+    Como $sum_(k=0)^infinity 1/(k!) = e$, tenemos que $sum_(k=1)^(n-1) 1/(k!) lt.eq e - 1 < 2$. A su vez, $T_"avg" (n) gt.eq 1$ para todo $n gt.eq 2$, porque siempre hacemos al menos una comparación. Luego $T_"avg" in Theta(1)$.
+
+    El caso promedio está en $Theta(1)$, dramáticamente distinto del peor caso, que está en $Theta(n)$. Intuitivamente, una permutación al azar tiene un descenso muy temprano con alta probabilidad: sólo una fracción $1/(k!)$ de las permutaciones tiene sus primeros $k$ elementos en orden creciente, y esa fracción decrece extremadamente rápido.
+]
 
 #ej[
   Se tienen tres algoritmos que resuelven el mismo problema. Todos realizan algún número positivo de operaciones cuando su entrada tiene tamaño cero.
@@ -1820,9 +2713,9 @@ Para esta demostración les voy a escribir el razonamiento que hago mientras esc
     y concluímos que $alpha 2^(n + 1) lt.eq T(n+1) lt.eq gamma 2^(n + 1) - delta$, que es lo que queríamos demostrar, $P(n+1)$.
 
     Luego, como $alpha > 0$ porque nos lo dice el enunciado, y sabemos que $T(n) lt.eq gamma 2^n$ (descartando el término $- beta$ por transitividad), tenemos que $T in O(2^n)$ y $T in Omega(2^n)$, con lo cual $T in Theta(2^n)$.
-  + Para el tercer caso, usamos el segundo caso del teorema maestro, con $a = 3, b = 3, k = 0$, y concluímos que $T in Theta(n^2 log n)$.
+  + Para el tercer caso, usamos el segundo caso del teorema maestro, con $a = 9, b = 3, k = 0$, y concluímos que $T in Theta(n^2 log n)$.
 
-  Sabemos entonces que el númmero de operaciones que estos tres algoritmos hacen, ante una entrada de tamaño $n$, está respectivamente en $Theta(n^(log_2(5)))$, $Theta(2^n)$, y $Theta(n^2 log n)$.
+  Sabemos entonces que el número de operaciones que estos tres algoritmos hacen, ante una entrada de tamaño $n$, está respectivamente en $Theta(n^(log_2(5)))$, $Theta(2^n)$, y $Theta(n^2 log n)$.
 
   Veamos cuál nos conviene usar. Llamemos a estas tres funciones $T_1$, $T_2$, y $T_3$. Recordando que $g in O(f) iff lim_(n arrow infinity) f(n)/g(n) = infinity$, y usando las reglas usuales de orden de conjuntos asintóticos:
 
