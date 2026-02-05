@@ -252,6 +252,17 @@ amortized:
     volume: 6
     issue: 2
 
+mertens:
+  type: Article
+  title: "Ein Beitrag zur analytischen Zahlentheorie"
+  author: Franz Mertens
+  date: 1874
+  page-range: 46-62
+  parent:
+    type: Periodical
+    title: "Journal für die reine und angewandte Mathematik"
+    volume: 78
+
 concrete:
   type: Book
   title: "Concrete Mathematics: A Foundation for Computer Science"

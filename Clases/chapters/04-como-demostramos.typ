@@ -464,7 +464,7 @@ Por ejemplo, veamos cómo usar inducción estructural para probar una propiedad 
   Demostrar que para todo ```haskell t :: Tree```, vale que ```haskell espejar (espejar t) = t```.
 ]
 #demo[
-  Sea $T$ el conjunto de todos los ```haskell Tree```. Definimos un orden parcial $prec.eq$ sobre $T$ como: para todo $t_1, t_2 in T$, tenemos $t_1 prec.eq t_2$ cuando $t_1$ es un sub-árbol de $t_2$. Es decir, si $t_1 = t_2$, o bien $t_2 =$ ```hs Node x l r```, y $t_1 prec.eq l$ o $t_1 prec.eq r$.
+  Sea $T$ el conjunto de todos los ```haskell Tree```. Definimos un orden parcial $prec.eq$ sobre $T$ como: para todo $t_1, t_2 in T$, tenemos $t_1 prec.eq t_2$ cuando $t_1$ es un sub-árbol de $t_2$. Es decir, si $t_1 prec.eq t_2$, entonces o bien $t_1 = t_2$, o bien $t_2 =$ ```hs Node x l r```, y $t_1 prec.eq l$ o $t_1 prec.eq r$.
 
   El único elemento minimal es ```hs Nil```, pues para todo $t =$ `Node x l r`, tenemos que $l prec.eq t$, y $r prec.eq t$, con $l eq.not t$ y $r eq.not t$, y luego $l prec t$ y $r prec t$, con lo cual $t$ no es minimal.
 
@@ -1141,113 +1141,6 @@ Otro ejemplo de unicidad, pero en grafos y árboles.
 */
 
 A veces vamos a usar el contrarecíproco para probar unicidad, postulando que existen dos objetos distintos que cumplen una propiedad, y llegando a un absurdo. Les reitero que no usan el contrarecíproco mecánicamente, pero sí que lo conozcan como herramienta.
-
-=== Análisis asintótico
-
-Al igual que la correctitud en ciclos tiene el teorema del invariante, para analizar el comportamiento de una función entre naturales, a medida que la evaluamos en números cada vez más grandes, podemos usar el Teorema Maestro.
-
-Frecuentemente las funciones para las que vamos a usar este teorema miden algo sobre un algoritmo. Por ejemplo, dado un algoritmo $cal(A)$, uno puede definir una función $T(n)$ como el máximo número de bytes de memoria que usa $cal(A)(x)$ al ejecutar, para todas las entradas $x$ con tamaño exactamente $n$ bytes. Otro ejemplo sería el promedio de segundos que toma correr $cal(A)(x)$, para todas las entradas con tamaño a lo sumo $n$ bytes.
-
-#defi[
-  Sea $f:NN arrow NN$ una función. El conjunto $O(f)$ se define como
-
-  $O(f) = {g:NN arrow NN | exists c > 0 in RR, n_0 in NN$, tal que para todo $n > n_0, g(n) lt.eq c f(n)}$
-
-  Es decir, $O(f)$ es el conjunto de funciones $g:NN arrow NN$, tales que a partir de un punto ($n > n_0$) $g$ está acotada por un múltiplo positivo de $f$ ($g(n) lt.eq c f(n)$).
-
-  Análogamente, definimos el conjunto $Omega(f)$ como
-
-  $Omega(f) = {g:NN arrow NN | exists c > 0 in RR, n_0 in NN$, tal que para todo $n > n_0, g(n) gt.eq c f(n)}$
-
-  Finalmente, para cualquier función $f:NN arrow NN$, definimos $Theta(f) = Omega(f) inter O(f)$.
-]
-
-Estos conjuntos tienen muchas propiedades útiles, como que $O(f) = O(alpha f + beta)$ para cualquier $alpha, beta > 0 in RR$, que $f in O(g) iff g in Omega(f)$, y que si existe un $n_0 in NN$ tal que $f(n) lt.eq g(n)$ para todo $n gt.eq n_0$, entonces $f in O(g)$.
-
-
-#teo(title: [Teorema Maestro])[
-  Sea $T:NN arrow NN$ una función, y $n_0 in NN$, tal que para todo $n in NN$, con $n gt.eq n_0$, tenemos
-
-  $
-    T(n) = a T(floor(n/b)) + f(n)
-  $
-
-  con $a gt.eq 1 in RR$, $b > 1 in RR$, y $f:NN arrow NN$ una función. Entonces:
-
-  - Si $f in O(n^(log_b a - epsilon))$ para algún $epsilon > 0 in RR$, entonces $T in Theta(n^(log_b a))$.
-  - Si $f in Theta(n^(log_b a))$, entonces $T in Theta(n^(log_b a) log n)$.
-  - Si $f in Omega(n^(log_b a + epsilon))$ para algún $epsilon > 0 in RR$, y también existen $c < 1 in RR$ y $m_0 in NN$ tal que para todo $m > m_0$, tenemos $a f(m / b) lt.eq c f(m)$, entonces tenemos $T in Theta(f)$.
-]
-
-Veamos un ejemplo del uso de este teorema.
-
-#ej[
-  Consideremos el siguiente algoritmo en C++:
-
-  ```cpp
-  #include <iostream>
-  int main() {
-    int n;
-    std::cin >> n;
-    int i = 1;
-    while (i < n) {
-      i *= 2;
-    }
-    std::cout << i;
-  }
-  ```
-
-  Este programa computa la primer potencia de dos mayor o igual a $n$, dado $n$. Podemos preguntarnos la pregunta vagamente definida "Cuánto tarda en correr el programa?". Una forma más precisa de hacer esta pregunta es definir una función $T:NN arrow NN$ que nos dice cuántos segundos tarda en correr este programa, dada una entrada. Por ejemplo, $T(9)$ sería el número de segundos que tarda en correr este programa, dada la entrada $9$. Esto va a depender de muchas cosas, como ser la computadora donde lo corramos. Sin embargo, esas cosas van a tener un efecto predecible en $T$: Van a multiplicar su valor, y sumar alguna constante. Ambos factores van a ser insignificantes a medida que $n$ crezca. Estos factores insignificantes, al menos para el análisis asintótico, son los que descartan los conjuntos $O$, $Omega$, y $Theta$. Los conjuntos $O(T)$ y $O(alpha T + beta)$, para $alpha, beta in NN$, son idénticos.
-
-  Notemos también como definimos la noción de "tamaño". Para este problema, es útil definirla como el valor de la entrada. Para otros problemas va a ser el número de bits de la entrada, por ejemplo.
-
-  Vemos que $T$ va a cumplir que $T(n) = T(n/2) + f(n)$, con $f in Theta(1)$. Esto nos dice que si duplicamos el tamaño de nuestra entrada (es decir, el valor de la misma), vamos a hacer una iteración más del ciclo, y luego el tiempo que tarda en correr el algoritmo va a crecer en un número constante de segundos, como mucho y como mínimo. Eso es porque el número de segundos en que crece $T$ ($f$), está acotado superiormente por una constante ($f in O(1)$), y por debajo por otra ($f in Omega(1)$).
-
-  En esta recurrencia tenemos $a = 1, b = 2$, y $f in Theta(1)$. Vemos que $Theta(n^(log_2 1)) = Theta(n^0) = Theta(1)$. Luego, como $f in Theta(1)$, caemos en el segundo caso del teorema, y podemos concluir que $T in Theta(log n)$.
-]
-
-Notemos que no vamos a poder aplicar el teorema a todas las funciones entre naturales, ni siquiera a todas las que cumplan la forma de recurrencia que pide. Por ejemplo, la función $T(n) = 2T(n/2) + n/(log n)$, o $T(n) = T(n/2) + n(2 - cos n)$.
-
-Otro concepto a tener en cuenta es el de mejor, peor, o caso promedio. En algunos problemas, para un determinado tamaño de entrada, vamos a tener muchas entradas posibles. Por ejemplo, para el problema de ordenar una lista de enteros, si la noción de tamaño es la longitud de una lista, vamos a tener muchas entradas posibles de cada tamaño $n in NN$. Lo que estamos midiendo sobre nuestro algoritmo, sea uso de memoria, número de operaciones, número de comparaciones, o lo que sea, puede variar dependiendo de cada lista, aún fijando el tamaño $n$. Luego vamos a poder definir nociones como "El mínimo número de comparaciones que hace nuestro algoritmo, entre todas las entradas de tamaño $n$, o "El promedio de número de bytes de memoria usado por nuestro algoritmo, entre todas las entradas de tamaño $n$", o "El máximo número de operaciones que hace nuestro algoritmo, entre todas las entradas de tamaño $n$." Estos van a ser el "mejor caso", "caso promedio", y "peor caso", respectivamente.
-
-Consideremos el siguiente algoritmo:
-
-```cpp
-#include <iostream>
-#include <vector>
-void quicksort(std::vector<int>& v, int i, int j) {
-  if (j - i <= 1) return;
-  int pivot = v[i];
-  int k = i + 1;
-  for (int l = i + 1; l < j; l++) {
-    if (v[l] < pivot) {
-      std::swap(v[l], v[k]);
-      k++;
-    }
-  }
-  std::swap(v[i], v[k - 1]);
-  quicksort(v, i, k - 1);
-  quicksort(v, k, j);
-}
-int main() {
-  std::vector<int> v;
-  int k;
-  while (std::cin >> k) v.push_back(k);
-  quicksort(v, 0, v.size());
-  for (int x : v) std::cout << x << " ";
-}
-```
-
-Podemos definir varias funciones distintas:
-
-- $T(n)$: El máximo número de comparaciones que hace nuestro algoritmo, al darle una lista de $n$ enteros. Podemos encontrar una familia de entradas de longitud $n$, donde el algoritmo siempre tiene en su rama izquierda un sólo elemento - esta familia son las listas que ya están ordenadas no-decrecientemente. El número de comparaciones que hace el algoritmo en estos casos es exactamente $sum_(i=1)^(n-1) i = n(n-1)/2$, y por lo tanto $T(n) gt.eq n(n-1)/2$, y luego $T in Omega(n(n-1)/2) = Omega(n^2)$. Para ver que $T in O(n^2)$, podemos considerar cualquier comparación entre dos elementos, $x < y$. Luego de esta comparación, uno de los dos elementos va a ser puesto en uno de las dos listas sobre las cuales hacemos recursión, y el otro va a ser el pivote, en el cual no hacemos recursión. Luego nunca vamos a volver a comparar $x < y$ o $y < x$. Entonces a lo sumo vamos a comparar todos los elementos contra todos los otros elementos una vez por par de elementos distintos. Esto nos da una cota superior de $T(n) lt.eq n(n-1)/2$. Luego $T in O(n^2)$. Combinando ambos resultados, obtenemos que $T in Theta(n^2)$. De hecho, probamos que $T(n) = n(n - 1) / 2$.
-- $T(n)$: El mínimo número de comparaciones que hace nuestro algoritmo, al darle una lista de $n$ enteros. Vemos que $T(n) = (n - 1) + min_(0 lt.eq i < n) (T(i) + T(n - 1 - i))$. Podemos usar inducción para probar que el mínimo se alcanza cuando $i = floor((n-1)/2)$, y allí obtenemos $T(n) gt.eq n log_8 n$, y por lo tanto $T in Omega(n log n)$. Explícitamente, tenemos $P(n): T(n) gt.eq n log_8 n$. El caso base es simple, $T(0) = 0 gt.eq 0 log 0 = 0$. En el paso inductivo, tenemos que minimizar $T(q) + T(n - 1 - q) gt.eq q log_8 q + (n - 1 - q) log_8 (n - 1 - q)$ sobre $0 lt.eq q < n$. Consideramos la función $f: [0, n - 1) arrow RR, f(q) = q log_8 q + (n - 1 - q) log_8 (n - 1 - q)$, que es símplemente expandir el dominio a todos los $q$ reales entre $0$ y $n - 1$. Tenemos que $f'(q) = log_8(q) - log_8(n-q-1)$, y por lo tanto los extremos de $f$ se encuentran cuando $log_8(q) = log_8(n-q-1)$, es decir, $q = n-q-1$, y por ende $2q = n-1$. Como necesitamos un valor entero de $q$ porque es un índice para el pivote, el valor donde partir la lista va a ser $q = floor((n-1)/2)$ o $q = ceil((n-1)/2)$ (no importa cual elijamos, pues la _otra_ lista queda del otro tamaño). Podemos ver que $f''(x) = (n-1)/(q log (8) (n-q-1))$, y por lo tanto $f''((n-1)/2) = (n-1)/((n-1)/2 log (8) (n-(n-1)/2-1)) = 4/((n-1)log (8)) > 0$ cuando $n > 1$. Luego esos $q$ no son sólo los extremos, sino los mínimos. Al ser los únicos, no son sólo locales sino mínimos globales. Luego tenemos $T(n) = (n-1) + min_(0 lt.eq i < n) (T(i) + T(n-1-i)) gt.eq n-1 + 2T((n-1)/2) gt.eq n-1 + 2((n-1)/2) log_8 ((n-1)/2) = (n-1)(1 + log_8 ((n-1)/2)).$ Finalmente, vemos que para todo $n gt.eq 2$, vale que $(n-1)(1 + log_8 ((n-1)/2)) gt.eq n log_8 n$, que prueba la inducción. Luego $T in Omega(n log n)$.
-
-  Asimismo, podemos encontrar una familia de entradas de longitud $n$, donde el algoritmo siempre divide la lista en dos partes iguales. Tomamos cualquier lista, la insertamos en un árbol binario de búsqueda balanceado, y repetidamente imprimimos primero la raíz, luego hacemos recursión en la rama izquierda, y luego hacemos recursión en la rama derecha. Esto producirá una lista donde cada vez que Quicksort intenta ordenar una sub-lista, el pivote es precísamente la mediana de los elementos a ordenar. El número de comparaciones que hace Quicksort en estos casos va a cumplir la recursión $M(n) = 2M(n/2) + Theta(n)$, y luego por el teorema maestro concluímos que $M in Theta(n log n) subset.eq O(n log n)$. Como $T(n) lt.eq M(n)$, concluímos que $T in O(n log n)$.
-
-  Combinando ambos resultados, obtenemos que $T in Theta(n log n)$.
-- $T(n)$: El promedio de comparaciones que hace nuestro algoritmo, al darle una lista de $n$ enteros. El análisis de casos promedio no es fácil, pero también resulta ser $T in Theta(n log n)$.
-- $T(n)$: El mínimo número de bytes de memoria que usa nuestro algoritmo, al darle una lista de $n$ enteros. Resulta que $T in Theta(log n)$.
 
 == Pasar en limpio
 

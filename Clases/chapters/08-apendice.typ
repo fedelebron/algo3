@@ -298,4 +298,106 @@ Pensemos en la descomposición por nivel de nuestro árbol de recursión. En los
   Por inducción, $T(n) lt.eq C f(n)$ para todo $n gt.eq N$, y luego $T in O(f)$.Concluimos que $T in Theta(f)$.
 ]
 
+== Demostración del número de comparaciones de Mergesort
+
+Esta demostración no es particularamente larga. La pongo en el apéndice porque quiero que vean el poder del teorema maestro en el capítulo donde se ve este algoritmo por primera vez.
+
+Notemos cómo acá derivamos la función del peor caso explícitamente, no sólo asintóticamente.
+
+#ej[
+  Mergesort es un algoritmo de ordenamiento a base de comparaciones.
+
+  ```py
+  def merge(left: list[int], right: list[int]) -> list[int]:
+    result = []
+    i = 0
+    j = 0
+    while i < len(left) and j < len(right):
+      if left[i] <= right[j]:
+        result.append(left[i])
+        i += 1
+      else:
+        result.append(right[j])
+        j += 1
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+  def mergesort(arr: list[int]) -> list[int]:
+    if len(arr) <= 1:
+      return arr
+    mid = len(arr) // 2
+    left = mergesort(arr[:mid])
+    right = mergesort(arr[mid:])
+    return merge(left, right)
+  ```
+
+  Dada una lista de enteros $x$, sea $C(x)$ el número de comparaciones que hace `mergesort(x)`. Se define $T:NN arrow NN$ como $T(n) = max_x {C(x) | "len"(x) = n}$. Es decir, el máximo número de comparaciones que realiza ```py mergesort(x)```, entre todas las listas `x` tales que ```py len(x) = n```.
+
+  Probar que $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$.
+]
+#demo[
+  Llamemos $M(l, r)$ al número de comparaciones que hace `merge` al ser llamados con dos listas de longitud $l$ y $r$ respectivamente. Probemos algo sobre el comportamiento de `merge`.
+  #lemma[
+    $M(l, r) lt.eq l + r - 1$.
+  ]
+  #demo[
+    En cada iteración del `while`, se hace una comparación entre `left[i]` y `right[j]`, y se incrementa exactamente uno de $i$ o $j$. Luego, después de $t$ iteraciones, $i + j = t$. El ciclo termina cuando $i = l$ o $j = r$. Si termina con $i = l$, entonces $j < r$ (pues la condición del `while` requiere ambas desigualdades estrictas para entrar al ciclo). Luego $t = l + j lt.eq l + r - 1$. El caso $j = r$ es análogo.
+  ]
+
+  En `mergesort`, recibimos una lista $x$ de longitud $n$. La dividimos en dos partes, de tamaño $l = floor(n/2)$ y $r = ceil(n/2)$ respectivamente. Podemos ver por inducción que la longitud de `mergesort(x)` es igual a `len(x)`. Por ende, `merge` recibe dos listas ordenadas de longitudes $l$ y $r$. Por el lema, `merge` hace a lo sumo $l + r - 1 = n - 1$ comparaciones, y por lo tanto $T(n) lt.eq T(l) + T(r) + n - 1$.
+
+  Para ver que esta cota se alcanza, construimos inductivamente una entrada peor caso. Definimos la siguiente función, que recibe una lista ordenada y devuelve una permutación de ella:
+
+  ```py
+  def peor_caso(ordenada: list[int]) -> list[int]:
+    if len(ordenada) <= 1:
+      return ordenada
+    izq = ordenada[1::2]  # posiciones impares: l elementos
+    der = ordenada[0::2]  # posiciones pares: r elementos
+    return peor_caso(izq) + peor_caso(der)
+  ```
+
+  Por ejemplo, `peor_caso([1,2,3,4,5,6,7,8])` devuelve `[4,8,2,6,3,7,1,5]`. Al ejecutar `mergesort` sobre esta lista, cada llamada a `merge` en cada nivel de la recursión recibe dos listas ordenadas cuyos elementos se intercalan, y por lo tanto hace exactamente $n - 1$ comparaciones. La idea es que en cada nivel, `peor_caso` distribuye los valores pares a la mitad izquierda y los impares a la derecha (con respecto a la lista ordenada de ese nivel), de modo que al ordenar cada mitad, los resultados se intercalan.
+
+  Probemos por inducción que `mergesort(peor_caso([1,...,n]))` hace exactamente $T(l) + T(r) + n - 1$ comparaciones. Para $n = 1$, no hay comparaciones. Para $n > 1$: la mitad izquierda es `peor_caso(izq)` donde `izq` tiene $l$ elementos, y por hipótesis inductiva, ordenarla cuesta $T(l)$ comparaciones. Análogamente, la mitad derecha cuesta $T(r)$. Tras ordenar, las mitades producen `izq` $= [2, 4, dots]$ y `der` $= [1, 3, dots]$ (los elementos pares e impares de la lista original), que se intercalan. Luego, `merge` hace exactamente $n - 1$ comparaciones.
+
+  Esto nos da $T(n) = T(floor(n/2)) + T(ceil(n/2)) + n - 1$, con $T(1) = 0$.
+
+  Vamos a probar por inducción que $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$. Formalmente, sea $P(n): T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$. Vamos a probar $P(n)$ para todo natural $n gt.eq 1$.
+
+  - Para $n = 1$, $T(1) = 0$, y asimismo $1 ceil(log_2 1) - 2^(ceil(log_2 1)) + 1 = 1 ceil(0) - 2^0 + 1 = 0$, con lo cual vale $P(1)$.
+  - Sea $n > 1$ un natural. Asumimos que $P(k)$ vale para todo $k < n$, queremos probar $P(n)$. Sea $k = ceil(log_2 n)$, con lo cual $2^(k-1) < n lt.eq 2^k$. Sea $l = floor(n/2)$, y $r = ceil(n/2)$, con $l + r = n$. Sabemos que $T(n) = T(l) + T(r) + n - 1$.
+
+    Como $n lt.eq 2^k$, entonces $r lt.eq 2^(k-1)$. Como $n > 2^(k-1)$, entonces $r > 2^(k-2)$. Luego, $r$ está en el intervalo $(2^(k-2), 2^(k-1)]$, y por lo tanto, $ceil(log_2 r) = k - 1$. Usando la hipótesis inductiva, obtenemos $T(r) = r (k - 1) - 2^(k - 1) + 1$.
+
+    Para encontrar $T(l)$, partimos en casos sobre $n$, ya que el valor de $ceil(log_2 l)$ depende de si $l$ es exactamente una potencia de $2$. Recordemos que $2^(k-1) + 1 lt.eq n lt.eq 2^k$.
+    - Si $n = 2^(k-1) + 1$ exactamente, entonces $l = 2^(k-2)$, y $r = 2^(k-2) + 1$. Luego, $ceil(log_2 l) = k - 2$. Aplicando la hipótesis inductiva a $l$, tenemos $T(l) = l (k - 2) - 2^(k - 2) + 1$. Sumando lo que teníamos, sabemos que:
+
+    $
+      T(n) & = T(l) + T(r) + n - 1 \
+           & = l (k - 2) - 2^(k - 2) + 1 + r (k - 1) - 2^(k - 1) + 1 + n - 1 \
+           & "Usando que" 2^(k-2)=l ", y luego "2^(k-1) = 2l", obtenemos:" \
+           & = l (k - 2) - l + 1 + r (k - 1) - 2l + 1 + (l + r) - 1 \
+           & = k (l + r) - 2l - l + 1 - r - 2l + 1 + (l + r) - 1 \
+           & = k (l + r) - 4l + 1 \
+           & = k n - 4 times 2^(k-2) + 1 \
+           & = k n - 2^k + 1
+    $
+
+    que es lo que queríamos demostrar.
+    - Si $2^(k-1) + 1 < n lt.eq 2^k$, entonces $l > 2^(k-2)$. Luego, $ceil(log_2 l) = k - 1$. Aplicando la hipótesis inductiva a $l$, tenemos $T(l) = l (k - 1) - 2^(k - 1) + 1$. Sumando lo que teníamos, sabemos que:
+
+    $
+      T(n) & = T(l) + T(r) + n - 1 \
+           & = l (k - 1) - 2^(k - 1) + 1 + r (k - 1) - 2^(k - 1) + 1 + n - 1 \
+           & = (l + r) (k - 1) - 2^k + 2 + (l + r) - 1 \
+           & = n k - 2^k + 1
+    $
+
+    que es lo que queríamos demostrar.
+
+  Luego, hemos probado por inducción que para todo $n gt.eq 1$, $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$.
+]
+
 #load-bib()

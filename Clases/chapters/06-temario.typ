@@ -559,6 +559,412 @@ Asimismo, cuando $A$ y $B$ son dos conjuntos de funciones $NN arrow RR0$, y $k i
 - $k A = {k a | a in A}$
 ]
 
+== Sucesiones y series
+
+Esta sección contiene varios ejercicios resueltos sobre sumatorias. Asumo que han visto sumatorias antes, y por ende no voy a explicar qué son o qué significa la notación $sum$. Para alumnos interesados en aprender más, recomiendo @concrete.
+#ej[
+  Sea $n in NN$. Demostrar que $sum_(i = 0)^n (2i + 1) = (n + 1)^2$.
+]
+#demo[
+  Vamos a probar esto por inducción, $P(n): sum_(i = 0)^n (2i + 1) = (n + 1)^2$.
+  - $P(0)$. El lado izquierdo de la ecuación es $sum_(i=0)^0 (2i + 1) = 2 times 0 + 1 = 1$. El lado derecho es $(0 + 1)^2 = 1$. Luego, vale $P(0)$.
+  - Sea $n in NN$. Queremos ver que $P(n) implies P(n+1)$. Luego, vamos a asumir $P(n)$, y vamos a ver $P(n+1)$. Ver $P(n+1)$ es que $sum_(i = 0)^(n+1) (2i + 1) = (n + 2)^2$. Razonemos entonces:
+    $
+      sum_(i = 0)^(n+1) (2i + 1) & = 2(n+1)+1 + sum_(i = 0)^n (2i + 1) \
+                                 & = 2(n+1)+1 + (n+1)^2", usando "P(n) \
+                                 & = 2n + 2 + 1 + (n+1)^2 \
+                                 & = 1^2 + 2 times (n+1) times 1 + (n+1)^2 \
+                                 & = ((n+1) + 1)^2 \
+                                 & = (n+2)^2
+    $
+
+    que es lo que queríamos demostrar.
+  Luego, vale $P(n)$ para todo $n in NN$.
+]
+
+#ej[
+  Demostrar que para todo $n in NN, n gt.eq 5$, tenemos $2^n > n^2$.
+]
+#demo[
+  Vamos a demostrar la propiedad $P(n): n gt.eq 5 implies 2^n > n^2$, por inducción. Para $n < 5$, la demostración es trivial, puesto que no hay nada que probar ("falso implica todo"). Luego vamos a empezar nuestra inducción con $n = 5$ como caso base.
+  - $P(5)$: Vemos que $2^5 = 32$, mientras que $5^2 = 25$, con lo cual efectivamente $2^5 > 5^2$, que es $P(5)$.
+  - Sea $n in NN$. $P(n) implies P(n+1)$: Si $n lt.eq 4$, vimos que $P(n+1)$, sea porque la premisa de $P(n+1)$ es falsa cuando $n < 3$, o porque $P(5)$ es cierto porque lo probamos arriba, cuando $n = 4$. Luego asumimos $n gt.eq 5$. Por un lado, tenemos $2^(n+1) = 2 (2^n) > 2 n^2$, donde usamos $P(n)$ y $n gt.eq 5$ para obtener la desigualdad, mediante la conclusión de $P(n)$. Por el otro, $(n+1)^2 = n^2 + 2n + 1$. Si probamos que $2n^2 > n^2 + 2n + 1$, tendremos que $2^(n+1) > (n+1)^2$.
+
+    $
+              2n^2 & > n^2 + 2n + 1 \
+      n^2 - 2n - 1 & > 0
+    $
+
+    Consideremos ahora el polinomio $f(x) = x^2 - 2x - 1$. Lo podemos factorizar como $f(x) = (x - (1 + sqrt(2)) (x - (1 - sqrt(2))$, es decir que sus raíces son $a = 1 - sqrt(2)$, y $b = 1 + sqrt(2)$. Como el coeficiente principal de $f(x)$ es 1, $f$ es positiva en $(-infinity, a)$, es negative en $(a, b)$, y es positiva en $(b, infinity)$.
+
+    #align(center)[
+      #canvas({
+        plot.plot(
+          axis-style: "school-book",
+          y-label: "",
+          x-label: $x$,
+          y-tick-step: none,
+          size: (8, 4),
+          legend-anchor: "east",
+          axis-layer: 2,
+          {
+            plot.add(x => x * x - 2 * x - 1, domain: (-5, 5), label: $f(x) = x^2 - 2x - 1$)
+            plot.annotate({
+              //draw.rect((-5, 0), (1-calc.sqrt(2), 35), fill: rgb(50,50,200,50), stroke: none)
+              //draw.rect((1+calc.sqrt(2), 0), (5, 35), fill: rgb(50,50,200,50), stroke: none)
+            })
+          },
+        )
+      })]
+
+    Como $n gt.eq 5 > b = 1 + sqrt(5)$, tendremos que $f(n) > 0$, y luego $n^2 - 2n - 1 > 0$, es decir, $2n^2 > n^2 + 2n + 1$. Como dijimos, esto implica que $2^(n+1) > (n+1)^2$, lo cual prueba $P(n+1)$.
+]
+
+#ej[
+  Sea $(a_n)_(n in NN)$ la sucesión dada por $a_0 = 1$, y para todo $n in NN$, $n > 0$, $a_n = 2 (n-1) a_(n-1) + 2^n (n-1)!$.
+
+  Demostrar que para todo $n in NN$, $n > 0$, $a_n = 2^n n!$.
+]
+#demo[
+  Como toda sucesión definida recursivamente, tenemos una estructura inductiva. Luego, intentemos probar esto por inducción. La proposición que vamos a probar es $P(n): a_n = 2^n n!$.
+
+  + $P(0)$: Si $n = 0$, entonces queremos ver $P(0)$, es decir que $a_0 = 2^0 1! = 1$. Esto es cierto, porque por definición $a_0 = 1$.
+
+  + $P(n) implies P(n+1)$. Queremos probar que $a_(n+1) = 2^(n+1) (n+1)!$. Sabemos que $a_(n+1) = 2 n a_n + 2^(n+1) n!$. Como vale $P(n)$, podemos reemplazar $a_n$ por $2^n n!$. Luego, sabemos que $a_(n+1) = 2 n (2^n n!) + 2^(n+1) n! = 2^(n+1)(n n! + n!) = 2^(n+1)n!(n+1) = 2^(n+1) (n+1)!$, que es lo que queríamos demostrar.
+]
+
+#ej(title: "Series geométricas")[
+  Sean $n in NN$, y $a in CC, a eq.not 1$. Probar que
+
+  $
+    sum_(i = 0)^n a^i = (a^(n+1) - 1)/(a-1)
+  $
+]
+#demo[
+  Vamos a probar esto mediante una serie de manipulaciones a esa ecuación, teniendo cuidado de que cada una sea un si-y-sólo-si.
+
+  $
+                                              sum_(i=0)^n a^i & = (a^(n+1) - 1)/(a-1) \
+                                      (a - 1) sum_(i=0)^n a^i & = a^(n+1) - 1 \
+                        a (sum_(i=0)^n a^i) - sum_(i=0)^n a^i & = a^(n+1) - 1 \
+                    1 + sum_(i=1)^(n+1) a^i - sum_(i=0)^n a^i & = a^(n+1) \
+      sum_(i=0)^0 a^i + sum_(i=1)^(n+1) a^i - sum_(i=0)^n a^i & = a^(n+1) \
+                        sum_(i=0)^(n+1) a^i - sum_(i=0)^n a^i & = a^(n+1) \
+    sum_(i=n+1)^(n+1) a^i + sum_(i=0)^n a^i - sum_(i=0)^n a^i & = a^(n+1) \
+                                                      a^(n+1) & = a^(n+1)
+  $
+
+  Como llegamos a algo cierto a través de manipulaciones reversibles, cada paso puede ser revertido para empezar con $a^(n+1) = a^(n+1)$ y concluir con $sum_(i=0)^n a^i &= (a^(n+1) - 1)/(a-1)$.
+
+  Notar que para revertir la multiplicación por $a - 1$ que hacemos para ir de la primer ecuación a la segunda, estamos usando que $a eq.not 1$.
+]
+
+
+#ej[
+  Sea la sucesión $(a_n)_(n in NN)$ definida como $a_0 = 1$, y para todo $n in NN, n > 0$, $a_n = 4 a_(n-1) - 2 ((2n-2)!)/(n! (n-1)!)$. Probar que para todo $n in NN$, $a_n = binom(2n, n)$.
+]
+#demo[
+  Nuevamente, vamos a usar inducción, porque $(a_n)$ tiene una estructura inductiva (es decir, está definida recursivamente).
+
+  Vamos a probar la proposición $P(n): a_n = binom(2n, n)$, para todo $n in NN$. Recordemos que $binom(a, b) = a!/(b! (a - b)!)$, para todo $a, b in NN$.
+
+  Sea $n in NN$.
+  + Si $n = 0$, entonces queremos ver $P(0)$, que es $a_0 = binom(0, 0) = 0! / (0! 0!) = 1 / 1 = 1$, y esto es cierto pues definimos $a_0 = 1$.
+  + Si $n > 0$, entonces podemos usar la hipótesis inductiva en $n - 1$, y sabemos $P(n-1)$. Esto nos dice que $a_(n-1) = binom(2(n-1), n - 1)$. Queremos ver $P(n+1)$, es decir, que $a_n = binom(2n, n)$. Como sabemos por definición que $a_n = 4 a_(n-1) - 2 ((2n-2)!)/(n! (n-1)!)$, podemos reemplazar lo que sabemos es $a_(n-1)$ acá, y sabemos luego que $a_n = 4 binom(2(n-1), n-1) - 2 ((2n-2)!)/(n! (n-1)!)$.
+
+  $
+    a_n & = 4 binom(2n - 2, n - 1) - 2 (2n - 2)!/(n! (n-1)!) \
+        & = 4 (2n - 2)! / ((n-1)! (n - 1)!) - (2n - 2)! / (n! (n -1)!) \
+        & = (2n - 2)!/(n-1)! (4/(n-1)! - 2 /n!) \
+        & = (2n - 2)!/(n-1)! ((4n!)/(n!(n-1)!) - (2(n-1)!)/(n!(n-1)!)) \
+        & = (2n - 2)!/(n-1)! (4n (n-1)! - 2(n-1)!)/(n!(n-1)!) \
+        & = (2n - 2)!/(n-1)! (4n - 2)/(n!) \
+        & = 2 (2n - 2)!/(n-1)! (2n - 1)/(n!) \
+        & = 2 (2n - 1)!/(n!(n-1)!) \
+        & = 2 binom(2n - 1, n) \
+        & = binom(2n - 1, n) + binom(2n - 1, n) \
+        & = binom(2n - 1, n) + binom(2n - 1, 2n - 1 - n) ", pues "binom(a, b) = binom(a, a-b) \
+        & = binom(2n - 1, n) + binom(2n - 1, n - 1) \
+        & = binom(2n, n) ", pues" binom(a, b) + binom(a, b - 1) = binom(a + 1, b)
+  $
+  que es lo que queríamos demostrar.
+]
+
+/*
+FIXME: Esto va a ir a una sección de análisis estocástico, junto con algoritmos estocásticos. Por ahora lo saco para que no tengan miedo.
+
+#ej[
+  Estamos pensando en una estrategia de inversión. Tenemos un fondo que crece, en valor esperado, $alpha - 1$ cada mes. Por ejemplo, si $alpha = 1.1$, nuestro fondo crece en valor esperado un 10% por mes. Asumiendo que empezamos con $c$ pesos en nuestra cuenta, y cada mes compramos $b$ pesos más de este fondo, ¿cuál es el valor de los fondos que esperamos tener luego de $k$ meses? ¿Qué necesitan asumir para encontrar este valor?
+]
+El objetivo de este ejercicio no es que hagan cuentas, sino que entiendan cómo descubrir qué están asumiendo cuando hacen cuentas.
+#demo[Sea $a_i$ el retorno del $i$-ésimo mes. Sabemos que $EE[a_i] = alpha$.
+  Podemos definir la siguiente sucesión:
+  $
+    T(0) & = c \
+    T(n) & = b + a_n T(n - 1)
+  $
+
+  Queremos encontrar $EE[T(n)]$. Veamos cómo se comporta esta función. $EE[T(1)] = EE[b + a_1 c] = b + alpha c$, usando linearidad de esperanza, y que $b$ y $c$ son constantes. Para su segundo valor, $EE[T(2)] = EE[b + a_2 T(1)] = b + EE[a_2 T(1)]$. Nos gustaría decir que esto es $b + EE[a_2] EE[T(1)]$, pero acá debemos asumir que $a_2$ y $T(1)$ son independientes. *Para esto tenemos que asumir que los retornos ${a_i}$ son independientes de a pares*. Es decir, $EE[a_i a_j] = EE[a_i] EE[a_j] = alpha^2$ para todo $i, j$. Luego, tenemos
+  $
+    EE[T(2)] & = b + EE[a_2 (b + a_1 c)] \
+             & = b + EE[a_2 b + a_2 a_1 c] \
+             & = b + b EE[a_2] + c EE[a_2 a_1] \
+             & = b + b alpha + c alpha^2
+  $
+  Veamos qué pasa para $n = 3$.
+  $
+    EE[T(3)] & = EE[b + a_3 T(2)] \
+             & = b + EE[a_3 T(2)]
+  $
+  Acá no podemos decir que $EE[a_3 T(2)] = EE[a_3] E[T(2)]$ porque no sabemos si $a_3$ y $T(2)$ están correlacionados. Veamos qué pasa si expandimos $T(2)$ por definición:
+
+  $
+    EE[T(3)] & = b + EE[a_3 T(2)] \
+             & = b + EE[a_3 (b + a_2 T(1))] \
+             & = b + EE[a_3 b + a_3 a_2 T(1)] \
+             & = b + b alpha + EE[a_3 a_2 T(1)] \
+             & = b + b alpha + EE[a_3 a_2 (b + a_1 c)] \
+             & = b + b alpha + EE[a_3 a_3 b + a_3 a_2 a_1 c] \
+             & = b + b alpha + b alpha^2 + c EE[a_3 a_2 a_1] \
+  $
+
+  El saber que los $a_i$ no están correlacionados de a pares no nos deja decir que no estén correlacionados de a triplas. Luego, para seguir acá vamos a necesitar asumir *que los ${a_i}$ son independientes de a triplas*, así como también lo que habíamos asumido antes, que son independientes de a pares.
+
+  Si asumimos eso, concluímos $EE[T(3)] = b + b alpha + b alpha^2 + c alpha^3$.
+
+  Conjeturamos, entonces, que $EE[T(n)] = alpha^n c + sum_(i=0)^(n-1) alpha^i b$, si asumimos que *los ${a_i}$ son independientes tomados de a conjuntos de tamaño menor o igual a $n$*.
+
+  Tenemos que tener cuidado al hacer inducción, entonces. Si quisieramos probar la proposición $Q(n): EE[T(n)] = alpha^n c + sum_(i=0)^(n-1) alpha^i b$, en algún momento vamos a tener $EE[a_n T(n)]$, y no vamos a poder llegar a mucho si sólo tenemos eso, porque no sabemos que $a_n$ y $T(n)$ son independientes. Entonces, vamos a tener que ser precisos, y reescribir $T$ de manera que podamos usar la independencia de los ${a_i}$.
+
+  Expresemos, entonces, $T(n)$, de una manera que nos deje usar esta independencia. Vimos que $T(3) = b + b a_3 + b a_3 a_2 + c a_3 a_2 a_1$. Luego, definamos $S_(i, n) = product_(i lt j lt.eq n) a_j$. Vemos que $T(3) = b S_(3, 3) + b S_(2, 3) + b S_(1, 3) + c S_(0, 3)$.
+
+  Probemos, entonces, $P(n): T(n) = c S_(0, n) + sum_(i = 1)^n b S_(i, n)$.
+
+  + $P(0)$. $T(0) = c$ por definición. $S_(0, 0) = product_(0 lt j lt.eq 0) a_j = 1$, por definición de una productoria vacía. Asimismo, $sum_(i = 1)^0 S_i b = 0$, por definición de sumatoria vacía. Luego, $T(0) = 1 c + 0 = c$, que prueba $P(0)$.
+  + $P(n) implies P(n+1)$.
+  $
+    T(n+1) & = b + a_n T(n) \
+           & = b + a_n (c S_(0, n) + sum_(i = 1)^n b S_(i, n)), "por hipótesis inductiva" \
+           & = b S_(n+1, n+1) + c a_n S_(0, n) + a_n sum_(i = 1)^n b S_(i, n) \
+           & = b S_(n+1, n+1) + c S_(0, n+1) + sum_(i = 1)^n b S_(i, n+1) \
+           & = c S_(0, n+1) + sum_(i = 1)^(n+1) b S_(i, n+1)
+  $
+
+  Luego vale $P(n)$ para todo $n in NN$. Veamos ahora qué nos dice esto sobre $EE[T(n)]$. Como los ${a_i}$ son independientes en cualquier subconjunto de tamaño a lo sumo $n$, tenemos que $EE[S_(i, n)] = EE[product_(i < j lt.eq n) a_j] = product_(i < j lt.eq n) EE[a_j] = product_(i < j lt.eq n) alpha = alpha^(n - i)$.
+
+  Luego:
+
+  $
+    EE[T(n)] & = EE[c S_(0, n) + sum_(i = 1)^n b S_(i, n)], "porque vale" P(n) \
+             & = c EE[S_(0, n)] + sum_(i = 1)^n b EE[S_(i, n)] \
+             & = c alpha^n + sum_(i = 1)^n b alpha^(n-i) \
+             & = b (alpha^n - 1)/(alpha - 1) + c alpha^n
+  $
+
+  Para esto tuvimos que asumir que los ${a_i}$ son independientes tomados de cualquier subconjunto de tamaño a lo sumo $n$.
+
+  Vemos con cuánto cuidado hay que deducir cosas, si no queremos cometer errores.
+]
+*/
+
+== Combinatoria
+#ej[
+  ¿Cuantos números naturales hay menores o iguales que $1000$ que no son ni múltiplos de $3$ ni múltiplos de $5$?
+]
+#demo[
+  Para esto vamos a usar el principio de inclusión-exclusión. Simbólicamente, este nos dice que para todo par de conjuntos $A, B$:
+
+  $
+    |A union B| = |A| + |B| - |A inter B|
+  $
+
+  Para resolver este ejercicio, usamos $A = {n in NN | n lt.eq 1000 and n equiv.not 0 (mod 3)}$, y $B = {n in NN | n lt.eq 1000 and n equiv.not 0 (mod 5)}$. Lo que nos pide el enunciado es $|A inter B|$. Luego, esto es $|A| + |B| - |A union B|$.
+
+  Por definición, $|A union B| = {n in NN | n lt.eq 1000 and (n equiv.not 0 (mod 3) or n equiv.not 0 (mod 5))}$. Pero si prestamos atención, el que algo sea o no múltiplo de tres o no múltiplo de cinco, es lo mismo que no ser múltiplo de quince. Podemos razonarlo o podemos hacer una tabla:
+
+  #align(center)[
+    #table(
+      columns: (auto, auto, auto, auto),
+      $n$, $n (mod 3)$, $n (mod 5)$, $n (mod 15)$,
+      ..for i in range(15) {
+        ($#i$, $#calc.rem(i, 3)$, $#calc.rem(i, 5)$, $#calc.rem(i, 15)$)
+      },
+    )
+  ]
+
+  Luego, $A union B = {n in NN | n lt.eq 1000 and n equiv.not 0 (mod 15)}$. Esto, a su vez, es $A union B = {n in NN | n lt.eq 1000} without {n in NN | n lt.eq 1000 and n equiv 0 (mod 15)}$. Es decir, sacarle los múltiplos de 15, al conjunto de todos los números menores o iguales a 1000. ¿Cuántos tales múltiplos hay? Uno de cada 15 números va a ser múltiplo de 15, luego hay $floor(1000/15)$ tales números, y $|A union B| = 1000 - floor(1000/15) = 1000 - 66 = 934$.
+
+  Encontrar $|A|$ y $|B|$ es similar. $|A| = 1000 - floor(1000/3) = 667$, y $|B| = 1000 - floor(1000/5) = 800$.
+
+  Luego, lo que nos piden es $|A inter B| = 667 + 800 - 934 = 533$.
+]
+
+#ej[
+  ¿Cuántos palíndromes distintos de longitud $n$ se pueden armar usando un conjunto de $k$ símbolos?
+]
+#demo[
+  Si algo es un palíndrome, entonces se lee igual hacia adelante que hacia atrás. Sea $S = {x_1, x_2, dots, x_(n-1), x_n}$ un tal palíndrome. Entonces $x_n = x_1$, y $x_(n - 1) = x_2$, etcétera. Tenemos que tener cuidado, entonces, con qué pasa en el medio, cuando no hay una igualdad extra. Por ejemplo, si $n = 3$, entonces hay sólo una igualdad, $x_1 = x_3$. La igualdad $x_2 = x_2$ no dice nada, entonces no restringe nuestras posibilidades.
+
+
+  Entonces, partamos en dos casos, dependiendo de si $n$ es par o impar.
+  - Si $n equiv 0 (mod 2)$, entonces $n = 2t$ para algún $t in NN$. Los primeros $t$ símbolos son totalmente arbitrarios, entonces tenemos $k^t$ posibles cadenas. Como los siguientes $t$ símbolos están totalmente determinados por los primeros, no hay posibilidades restantes, y el número de palíndromos de longitud $n = 2t$ usando un conjunto de $k$ símbolos es $k^(n/2)$.
+    #table(
+      columns: (1fr, 1fr, 1fr, 1fr, 5fr, 5fr, 1fr, 2fr),
+      $x_1$,
+      $x_2$,
+      $dots$,
+      $x_t$,
+      $x_(t+1) = x_(n - (t + 1)) = x_(t - 1)$,
+      $x_(t + 2) = x_(n - (t+2)) = x_(t - 2)$,
+      $dots$,
+      $x_n = x_1$,
+    )
+  - Si $n equiv 1 (mod 2)$, entonces $n = 2t + 1$, para algún $t in NN$. Los primeros $t + 1$ símbolos son arbitrarios, y tenemos $k^(t+1)$ cadenas. Los últimos $t$ símbolos están totalmente determinados por los primeros $t$, entonces no hay más posibilidades, y tenemos $k^(t+1)$ palíndromos posibles.
+    #table(
+      columns: (1fr, 1fr, 1fr, 1fr, 2fr, 6fr, 1fr, 3fr),
+      $x_1$, $x_2$, $dots$, $x_t$, $x_(t+1)$, $x_(t + 2) = x_(n - (t + 1)) = x_t$, $dots$, $x_n = x_1$,
+    )
+
+  Vemos entonces que la fórmula general para el número de palíndromos de longitud $n$ usando un conjunto de $k$ símbolos es $k^(ceil(n/2))$.
+]
+
+#ej[
+  Sin calcular los valores explícitamente ni expandir a factoriales, probar que
+  $
+    binom(10, 4) = binom(9, 3) + binom(9, 4)
+  $
+]
+#demo[
+  Esto es un caso particular de la fórmula $binom(n, k) = binom(n - 1, k) + binom(n - 1, k - 1)$, con $n = 10, k = 4$.
+
+  Queremos dar una demostración de este hecho, sin expandir los coeficientes binomiales a sus factoriales. ¿Qué otra cosa sabemos sobre estos coeficientes? Que $binom(n, k)$ es el número de subconjuntos de tamaño $k$, de un conjunto de tamaño $n$.
+
+  Vamos a usar la técnica de "contar lo mismo de dos formas distintas". Supongamos que tenemos un conjunto $X$ de tamaño $n$. Sea $Y$ el conjunto de subconjuntos de $X$ de tamaño $k$.
+
+  - Por un lado, $|Y| = binom(n, k)$, porque esa es precísamente la semántica de $binom(n, k)$.
+  - Por otro lado, sea $x in X$. Los elementos de $Y$ se dividen en los que contienen a $x$, y los que no contienen a $x$. ¿Cuántos hay que no tienen a $x$? Eso es lo mismo que elegir subconjuntos de tamaño $k$ de $X without {0}$, que tiene tamaño $n - 1$. Luego, hay $binom(n - 1, k)$ de esos. ¿Cuántos hay que _sí_ tienen a $x$? Si esos ya tienen a $x$, el número de cosas que pueden elegir es $k - 1$ cosas más, pero no pueden volver a elegir a $x$, entonces tienen $n - 1$ elementos de $X$ para elegir. Luego, hay $binom(n - 1, k - 1)$ de esos. Entonces, en total, $|Y| = binom(n - 1, k) + binom(n - 1, k - 1)$.
+
+  Luego, $binom(n, k) = binom(n - 1, k) + binom(n - 1, k - 1)$ para todo $n, k in NN$, con $k lt.eq n$, en particular vale para $n = 10, k = 4$.
+]
+
+#ej(title: [Teorema binomial])[
+  Probar que para todo $x, y in RR$, y para todo $n in NN$, tenemos que
+  $
+    (x + y)^n = sum_(k = 0)^n binom(n, k) x^k y^(n - k)
+  $
+]
+Para esta demostración les voy a mostrar el proceso de deducción e ideas que hago antes de formalizarla.
+#quote-box[
+  Tengo una suma hasta $n$, quizás puedo descomponer la suma hasta $n$ en una suma hasta $n - 1$? A ver....
+
+  Es más, tengo algo "a la" $n$, entonces puedo descomponer eso como $(x + y) (x + y)^(n - 1)$. Si ahí uso la hipótesis inductiva, veamos qué queda...
+
+  $
+    (x + y)^(n+1) & = (x + y) (x + y)^n \
+                  & = (x + y) sum_(k = 0)^n binom(n, k) x^k y^(n - k) \
+                  & = sum_(k = 0)^n binom(n, k) x^(k+1) y^(n - k) + sum_(k = 0)^n binom(n, k) x^k y^(n - k + 1)
+  $
+
+  Quiero ver si puedo combinar estas dos ecuaciones, quizás emparejando coeficientes, porque así se sumarían los coeficientes binomiales. Pensando en cosas que valgan para sumas de coeficientes binomiales, recuerdo que $binom(n, k) = binom(n - 1, k) + binom(n - 1, k - 1)$, puede ser que emparejando los coeficientes que tengan el mismo $x^i y^j$, me queden así los coeficientes? A ver...
+
+  Tengo $i, j in NN$, quiero ver qué coeficiente binomial multiplica a $x^i y^j$ en la primer sumatoria, y luego en la segunda. En la primera, $i = k + 1, j = n - k$. Entonces el coeficiente es $binom(n = j + (i - 1), k = i - 1)$. En la segunda, tenemos $i = k, j = n - k + 1$, entonces el coeficiente es $binom(j + i - 1, i)$.
+
+  Juntando estos dos, tenemos que la sumatoria es $sum_(i, j) x^i y^j (binom(j + i - 1, i - 1) + binom(j + i - 1, i))$, donde estoy sumando $i, j$ sobre algún conjunto que no quiero pensar por ahora. Pero esto es bueno, los términos son precísamente de la forma que pensaba que eran, si los sumo me queda $binom(j + i, i)$.
+
+  Ahora tengo que pensar sobre dónde sumo los $i, j$. Todos los términos en las sumatorias tienen el mismo grado, son todos de grado $n + 1$. Los términos que estoy sumando ahora tienen grado $i + j$, entonces $i + j = n + 1$. Como quiero que me quede una sumatoria de sólo un índice, elijo $i$, y me queda $j = n + 1 - i$. ¿Cuáles son los bordes del índice $i$? Hay un término de la sumatoria de la derecha donde tengo $x^0$, y acá estoy diciendo $x^i$, así que seguro tengo que tener un término con $i = 0$. Por otro lado, de la sumatoria izquierda tengo un término $x^(n + 1)$, y nuevamente acá digo $x^i$, así que $i$ tiene que llegar hasta $n + 1$.
+
+  Entonces, usando que $j = n + 1 - i$ y el coeficiente del término $x^i y^j$ es $binom(j + i, i)$, la suma de las sumatorias me queda $sum_(i = 0)^(n + 1) binom(n + 1 - i + i, i) x^i y^(n + 1 - i)$, y esto es igual a $sum_(i = 0)^(n + 1) binom(n + 1, i) x^i y^(n + 1 - i)$, que es precísamente lo que quiero probar.
+
+  OK, perfecto. ¡A formalizarlo! Voy a tener que pensar un rato para hacer menos grotesco el reindexado de las sumas.
+]
+#demo[
+  Vamos a usar inducción. Sea $P(n): forall x, y in RR. (x + y)^n = sum_(k = 0)^n binom(n, k) x^k y^(n - k)$.
+
+  - Caso base, $P(0)$. $P(0): forall x, y in RR. (x + y)^0 = sum_(i = 0)^0 binom(0, k) x^k y^(0 - k) = binom(0, 0) x^0 y^0 = 1$. Como $(x + y)^0 = 1$ para todo $x, y$ (sí, $0^0 = 1$)), esto es cierto.
+  - Paso inductivo. Sea $n in NN$. Asumo $P(n)$, quiero ver $P(n + 1)$. Sean $x, y in RR$.
+
+    $
+      (x + y)^(n + 1) =& (x + y) (x + y)^n \
+      =& (x + y) (sum_(k = 0)^n binom(n, k) x^k y^(n - k))," por hipótesis inductiva" \
+      =& x (sum_(k = 0)^n binom(n, k) x^k y^(n - k)) + y (sum_(k = 0)^n binom(n, k) x^k y^(n - k)) \
+      =& sum_(k = 0)^n binom(n, k) x^(k+1) y^(n - k) + sum_(k = 0)^n binom(n, k) x^k y^(n - k + 1) \
+      =& sum_(i = 1)^(n + 1) binom(n, i - 1) x^i y^(n - (i - 1)) + sum_(k = 0)^n binom(n, k) x^k y^(n - k + 1), "llamando "i = k + 1, \
+      =& sum_(j = 1)^(n + 1) binom(n, j - 1) x^j y^(n + 1 - j) + sum_(j = 0)^n binom(n, j) x^j y^(n + 1 - j), "llamando a ambos índices "j
+    $
+    Acá hay que tener cuidado. Lo que queremos hacer es que los índices sean iguales, que es sacarle el último término ($j = n + 1$) a la primer sumatoria, y el primer término $(j = 0)$ a la segunda. Lo único que sé es que $n in NN$, entonces tengo al menos un término en cada sumatoria, porque $n + 1 gt.eq 1$ (para la primera) y $n gt.eq 0$ (para la segunda). No podría, si quisiera, sacar dos términos de cada una, porque no sé si _hay_ dos términos en cada una.
+
+
+    $
+      = & binom(n, n) x^(n + 1) y^(n + 1 - (n + 1)) + sum_(j = 1)^n binom(n, j - 1) x^j y^(n + 1 - j) \
+        & + sum_(j = 1)^n binom(n, j) x^j y^(n + 1 - j) + binom(n, 0) x^0 y^(n+1-0) \
+      = & binom(n, n) x^(n + 1) y^0 + binom(n, 0) x^0 y^(n+1) + sum_(j=1)^n (binom(n, j - 1) + binom(n, j)) x^j y^(n + 1 - j) \
+      = & binom(n + 1, n + 1) x^(n + 1) y^0 + binom(n + 1, 0) x^0 y^(n+1) + sum_(j=1)^n binom(n+1, j) x^j y^(n+1-j) \
+      = & sum_(j=0)^(n+1) binom(n+1, j) x^j y^(n+1-j)
+    $
+
+    que es lo que queríamos demostrar.
+]
+
+
+#ej[
+  Sean $f, g: NN arrow NN$. Se define la convolución de $f$ y $g$ como la función $(f * g)(n) = sum_(i = 0)^n f(i) g(n - i)$.
+
+  Probar que la convolución es asociativa. Es decir, que para cuales quiera $f, g, h: NN arrow NN$, tenemos $f * (g * h) = (f * g) * h$.
+]
+
+Para este ejercicio también voy a escribirles en qué pienso a medida que lo hago.
+#quote-box[
+  Primero voy a expandir uno de los lados, a ver qué queda. La igualdad de funciones es igualdad en cada valor de entrada, así que sea $n in NN$.
+  $
+    (f * (g * h))(n) = & sum_(i = 0)^n f(i) (g * h)(n - i) \
+                     = & sum_(i = 0)^n f(i) (sum_(j = 0)^(n - i) g(j) h(n - i - j)) \
+  $
+
+  Puedo que los índices tengan una relación simple, puedo en vez de ir desde $j = 0$ hasta $n - i$, ir desde $i$ hasta $n$, y lo único que estoy haciendo es sumándole $i$ a $j$. Luego cuando en el término digo $g(j)$, se convierte en $g(j - i)$, y cuando digo $h(n - i - j)$, se convierte en $h(n - i - (j - i)) = h(n - j)$.
+  $
+    = & sum_(i = 0)^n f(i) (sum_(j = i)^n g(j - i) h(n - j)) \
+    = & sum_(0 lt.eq i lt.eq j lt.eq n) f(i) g(j - i) h(n-j) \
+  $
+
+  Lo de $f(i) g(j - i)$ se parece bastante a una convolución, específicamente $(f * g)(j)$. Tengo entonces que hacer que la suma de $i$ esté afuera de la suma de $j$. Pero eso me quedaría $sum_(j = i)^m f(i) g(j - i)$ adentro, que no es lo que quiero tener, porque no es una convolución. Más aún, no podría sacar el $h(n - j)$ afuera de esa convolución, porque es distinto para cada ($j$) término. OK, entonces la sumatoria interna tiene que ser sobre $i$.
+  $
+    = & sum_(j = 0)^n sum_(i = 0)^j f(i) g(j - i) h(n - j) \
+    = & sum_(j = 0)^n (f * g)(j) h(n - j) \
+    = & ((f * g) * h)(n)
+  $
+
+  OK, pasémoslo en limpio.
+]
+#demo[
+  Sea $n in NN$, y $f, g, h: NN arrow NN$.
+
+  Entonces:
+  $
+    (f * (g * h))(n) = & sum_(i = 0)^n f(i) (g * h)(n - i) \
+                     = & sum_(i = 0)^n f(i) (sum_(j = 0)^(n - i) g(j) h(n - i - j)) \
+                     = & sum_(i = 0)^n f(i) (sum_(j = i)^n g(j - i) h(n - j)) \
+                     = & sum_(0 lt.eq i lt.eq j lt.eq n) f(i) g(j - i) h(n-j) \
+                     = & sum_(j = 0)^n sum_(i = 0)^j f(i) g(j - i) h(n - j) \
+                     = & sum_(j = 0)^n (f * g)(j) h(n - j) \
+                     = & ((f * g) * h)(n)
+  $
+]
+/* FIXME: Esto va a ir en la sección sobre teoría de grafos, cuando exista.
+
+#ej[
+  Sea $G$ un grafo con $n > 1$ vértices. Probar que existen en $G$ dos vértices del mismo grado.
+]
+#demo[
+  Sea $G = (V, E)$ un grafo. El grado de un vértice es el número de aristas que inciden en él. Notemos por $d(v)$ al grado de cada vértice $v in V$. Como un vértice puede estar conectado como mínimo con cero otros vértices, y como máximo con todos los otros $n - 1$ vértices, tenemos que $0 lt.eq d(v) lt.eq n - 1$ para todo $v in V$.
+
+  Si existe un vértice $v$ tal que $d(v) = n - 1$, entonces no puede existir un vértice distinto $w$ con grado $d(w) = 0$ (no conectado con nadie), pues sabemos que ${v, w} in E$. Como $n eq.not 1$, tampoco podemos tener $v = w$, pues $d(v) = n - 1 eq.not 0 = d(w)$. Luego, si existe un vértice con grado $n - 1$, no puede existir ningún vértice con grado $0$, y luego los grados posibles son $1, 2, dots, n - 1$, es decir, $n - 1$ posibles grados.
+
+  De otra manera, si no existe ningún vértice con grado $n - 1$, entonces los grados posibles son $0, 1, 2, dots, n - 2$, que también son $n - 1$ posibles grados.
+
+  Entonces tenemos $n$ vértices, y sólo $n - 1$ posibles grados. Por el principio del palomar, existen al menos dos vértices con el mismo grado.
+]
+*/
+
 == Análisis asintótico
 
 Muchas veces vamos a querer analizar el crecimiento de una función, cuando su entrada crece. Queremos por ejemplo tener una noción de que la función $g(n) = 100 log_2(n)$ es "más chica" que la función $f(n) = n^2$, a pesar de que $g(3) > f(3)$, por ejemplo. Lo que queremos captar es cómo estas funciones se comportan "en el límite", es decir, cuando $n$ es muy grande.
@@ -1042,7 +1448,7 @@ $
   sum_(i=2)^n h(i) lt.eq sum_(i=2)^n alpha i^2 = alpha sum_(i=2)^n i^2 = alpha ((n(n+1)(2n+1))/6 - 1) in O(n^3)
 $
 
-Por lo tanto, $T(n) = 5 + O(n^3) in O(n^3)$.
+Por lo tanto, $T(n) = 5 + O(n^3)$, y luego $T in O(n^3)$.
 ]
 
 
@@ -1279,7 +1685,7 @@ $
   sum_(i=1)^n h_i (n) lt.eq sum_(i=1)^n alpha = n alpha in O(n) subset.eq O(n^2)
 $
 
-Por lo tanto, $T(n) in O(n^2)$.
+Por lo tanto, $T in O(n^2)$.
 ]
 
 Este razonamiento es incorrecto. Para verlo, basta tomar $h_i (n) = i^3$ para cada $i in [1, dots, n]$, una función constante (no depende de su argumento), y por lo tanto $h_i in O(1)$. Entonces $T(n) = sum_(i=1)^n i + sum_(i=1)^n h_i (n) = n(n+1)/2 + sum_(i=1)^n i^3 = n(n+1)/2 + (n(n+1)/2)^2 in Omega(n^4)$, que tiene interseción nula con $O(n^2)$. El error en la demostración es que $m_0$ y $alpha$ _dependen de n_ (son un máximo de $n$ cosas). La definición de $O(dots)$ requiere que sean _constantes_.
@@ -1314,7 +1720,7 @@ Entonces $T in O(1)$.
 ]
 #demof[
 Probemos esto por inducción en $n$.
-- Caso base. $T(0)$ es una constante, luego está $O(1)$.
+- Caso base. $T(0)$ es una constante, luego está en $O(1)$.
 - Paso inductivo, $n > 0$. Asumimos que $T(k) in O(1)$ para todo $k < n$, queremos ver que $T(n) in O(1)$. Como $n > 0$, $T(n) = T(n - 1) + 1$. Como $n - 1 < n$, por hipótesis inductiva $T(n - 1) in O(1)$. Luego, como $O(1) + 1 = O(1)$, tenemos que $T(n) in O(1).$
 
 Asimismo, vemos que $T(n) = n$, y por lo tanto, $n in O(1)$.
@@ -2025,7 +2431,7 @@ Este es el modelo que usamos implícitamente cuando analizamos algoritmos en est
 #note-box[
   Existen otros modelos de cómputo. Las _máquinas de Turing_@turing son el modelo teórico más fundamental, usado para definir qué es computable. El modelo _word RAM_@wram asume que los enteros tienen un tamaño máximo de $w$ bits. El modelo de _memoria externa_@external-memory cuenta accesos a disco en vez de operaciones. El modelo de _random-access stored-program machine_@rasp (RASP) es igual a RAM, excepto que la lista de instrucciones está en sí almacenada en la memoria, en vez de en un lugar separado. Cada modelo es útil para distintos propósitos, pero el modelo RAM es el estándar para análisis de algoritmos.
 
-  Notemos que el modelo RAM asume que sumar o multiplicar cualquier par de enteros es una única operación. Si queremos que este modelo modele nuestras computadoras, esto es demasiado para asumir: Nuestras computadoras representan enteros grandes usando muchos bits, y el tiempo real que toma sumarlos depende del número de bits que tengan. Si nuestro problema trata de números grandes, como ser criptografía o teoría de números, el modelo word RAM va a representar mejor qué sucede en realidad.
+  Notemos que el modelo RAM asume que sumar o multiplicar cualquier par de enteros es una única operación. Si queremos que este modelo modele nuestras computadoras, esto es demasiado para asumir: Nuestras computadoras representan enteros grandes usando muchos bits, y el tiempo real que toma sumarlos depende del número de bits que tengan. El modelo word RAM es más realista cuando trabajamos con enteros que caben en una palabra de $w$ bits, y además nos permite analizar operaciones bit a bit. Sin embargo, si nuestro problema trata de enteros de precisión arbitraria (mucho más grandes que $w$ bits), como en criptografía o teoría de números, ni RAM ni word RAM son adecuados: deberíamos contar operaciones sobre bits o dígitos.
 ]
 
 El modelo determina qué operaciones contamos y cómo las pesamos. Cuando decimos que una ejecución de un algoritmo con cierta entrada hace "$n^2$ operaciones", estamos diciendo que hace $n^2$ operaciones básicas bajo el modelo RAM. Si usáramos otro modelo, el conteo podría ser diferente.
@@ -2332,42 +2738,38 @@ Veamos un ejemplo concreto para ilustrar estos conceptos.
   Analizar el peor caso, mejor caso, y caso promedio del número de comparaciones.
 ]
 #sol[
-  - Mejor caso. Si $x$ está en la primera posición, hacemos una sola comparación. Luego $T_"min" (n) = 1 in Theta(1)$.
+  - Mejor caso. Si $x$ está en la primera posición, hacemos una sola comparación. Luego $T_"min" (n) = 1$ y luego $T_"min" in Theta(1)$.
   
   - Peor caso. Si $x$ no está en la lista, o está en la última posición, hacemos $n$ comparaciones. Luego $T_"max" (n) = n$, y luego $T_"max" in Theta(n)$.
   
   - Caso promedio. Asumamos que $x$ está en la lista, y que está en cada posición con igual probabilidad $1/n$. Si $x$ está en la posición $i$ (indexando desde $1$), hacemos $i$ comparaciones. Entonces:
   
     $
-    T_"avg" (n) = sum_(i=1)^n i dot 1/n = 1/n dot (n(n+1))/2 = (n+1)/2 in Theta(n)
+    T_"avg" (n) = sum_(i=1)^n i dot 1/n = 1/n dot (n(n+1))/2 = (n+1)/2
     $
   
-    Si en cambio asumimos que $x$ puede no estar en la lista con probabilidad $p$, el análisis cambia:
+    Luego $T_"avg" in Theta(n)$. Si en cambio asumimos que $x$ puede no estar en la lista con probabilidad fija $p in [0, 1]$, el análisis cambia:
   
     $
-    T_"avg" (n) = p dot n + (1-p) dot (n+1)/2 = n (p + (1-p)/2) + (1-p)/2 = n ((1+p)/2) + (1-p)/2 in Theta(n)
+    T_"avg" (n) = p dot n + (1-p) dot (n+1)/2 = n (p + (1-p)/2) + (1-p)/2 = n ((1+p)/2) + (1-p)/2
     $
   
-    En ambos casos, el promedio es $Theta(n)$, pero las constantes son distintas.
+    Luego $T_"avg" in Theta(n)$. En ambos casos, el promedio es $Theta(n)$, pero las constantes son distintas.
 ]
 
 === Del algoritmo a la función asintótica
 
-Juntando lo que aprendimos sobre análisis asintótico con lo que aprendimos sobre algoritmos, el proceso completo de análisis de un algoritmo tiene los siguientes pasos:
+Juntando lo que aprendimos sobre análisis asintótico con lo que aprendimos sobre algoritmos, el proceso completo de análisis de un algoritmo $A$ tiene los siguientes pasos:
 
 + *Fijar el modelo de cómputo*. Usualmente el modelo RAM, implícitamente.
 
 + *Definir el tamaño de entrada*. ¿Qué significa $n$ para este problema? ¿Es el número de elementos de una lista, el máximo elemento de un conjunto, el número de dígitos de un entero dado, el número de aristas en un árbol, etc? Si hay dos variables, ¿el tamaño de entrada es $n + m$? ¿Es $n times m$? ¿Es $n^(3+m)$?
 
-+ *Elegir el recurso a medir*. ¿Tiempo (operaciones)? ¿Espacio? ¿Comparaciones?
++ *Definir la función de costo* $T_A (x)$ para cada entrada $x$. Elegir qué recurso medir (tiempo, espacio, comparaciones, etc.) y definir $T_A (x)$ como la cantidad de ese recurso que consume $A$ al recibir la entrada $x$. La función de costo va a ser inducida por el código del algoritmo.
 
-+ *Definir la función de costo* $T_A (x)$ para cada entrada $x$. Esto depende de qué queramos medir. La función de costo va a ser inducida por el código del algoritmo.
-
-+ *Agregar por tamaño*. Elegir peor caso, mejor caso, o promedio para obtener una función $T: NN arrow RR0$. Notemos como estas son precisamente las funciones para las cuales aprendimos a hacer análisis asintótico.
++ *Agregar por tamaño*. Elegir peor caso, mejor caso, o promedio de $T_A$ para obtener una función $T: NN arrow RR0$. Notemos como estas son precisamente las funciones para las cuales aprendimos a hacer análisis asintótico.
 
 + *Analizar asintóticamente*. Usar las herramientas de la sección anterior ($O$, $Omega$, $Theta$, límites, árboles de recursión, teorema maestro) para caracterizar $T$.
-
-+ *Reportar el resultado*. "El algoritmo $A$ corre en tiempo $O(n log n)$ en el peor caso."
 
 #note-box[
   Es importante ser preciso al reportar. No es lo mismo decir:
@@ -2378,55 +2780,43 @@ Juntando lo que aprendimos sobre análisis asintótico con lo que aprendimos sob
 
 === Ejercicios
 #ej[
-  Se tiene el siguiente algoritmo recursivo:
+  Consideremos el siguiente algoritmo de búsqueda binaria, que busca un elemento $x$ en una lista ordenada:
 
   ```py
-  def f(cuts: list[int], i: int, j: int) -> int:
-    if j == i + 1:
-      return 0
-    r = inf
-    for k in range(i, j):
-      r = min(r, f(cuts, i, k) + f(cuts, k, j))
-    return r + cuts[j] - cuts[i]
+  def busqueda_binaria(lista: list[int], x: int) -> int:
+    lo = 0
+    hi = len(lista)
+    while lo < hi:
+      mid = (lo + hi) // 2
+      if lista[mid] == x:
+        return mid
+      elif lista[mid] < x:
+        lo = mid + 1
+      else:
+        hi = mid
+    return -1
   ```
 
-  Dar una cota asintótica superior ajustada para el número de operaciones que realize este algoritmo, en función del tamaño de entrada `j - i`.
+  El invariante del ciclo es que si $x$ está en la lista, entonces está en `lista[lo:hi]`. Definimos el tamaño de la entrada como $n$, la longitud de la lista. Sea $C(x)$ el número de comparaciones entre elementos que realiza `busqueda_binaria` sobre la entrada $x$. Analizar el peor caso y el mejor caso de $C$.
 ]
-#demo[
-  Definimos el tamaño de una entrada $("cuts", i, j)$ como $j - i$. La función que describe el tiempo que toma $f$ en correr, en términos del tamaño de entrada, es $T(n) = O(1) + sum_(k = 1)^(n-1) T(k) + T(n - k)$.
+#sol[
+  Siguiendo los pasos del proceso de análisis:
 
-  Obviamente no podemos usar el teorema maestro para esto, porque $T$ no tiene la forma correcta, así que vamos a tener que analizar cuidadosamente qué está pasando. Jugando un poco, vemos que:
+  + *Modelo de cómputo*: RAM.
+  + *Tamaño de entrada*: $n$, la longitud de la lista.
+  + *Función de costo*: $C(x)$ es el número de comparaciones entre elementos que realiza `busqueda_binaria` sobre la entrada $x$.
+  + *Agregación por tamaño*: peor caso, $T_"max" (n)$, y mejor caso, $T_"min" (n)$.
+  + *Análisis asintótico*:
 
-  $
-    T(n) & = O(1) + T(1) + T(n - 1) + T(2) + T(n - 2) + dots + T(n - 1) + T(1) \
-         & = O(1) + 2 sum_(i=1)^(n-1) T(i)
-  $
+    - Mejor caso. Si `lista[mid] == x` en la primera iteración, hacemos una sola comparación. Luego $T_"min" (n) = 1$, y luego $T_"min" in Theta(1)$.
 
-  Esto nos puede recordar a la fórmula para las potencias de un número. Por ejemplo, $2^n = 1 + sum_(i=0)^(n-1) 2^i$, o $3^n = 1 + 2 sum_(i=0)^(n-1) 3^i$. Como esto se parece bastante a la serie de potencias de tres, vamos a intentar adivinar que $T(n) lt.eq alpha 3^n$ para todo $n in NN$, y algún $alpha > 0 in RR$. Esto nos diría que $T in O(3^n)$.
+    - Peor caso. El intervalo `[lo, hi)` comienza con $n$ elementos. En cada iteración donde no encontramos $x$, se reemplaza `lo` por `mid + 1` o `hi` por `mid`, reduciendo el intervalo de $"hi" - "lo"$ elementos a lo sumo $floor(("hi" - "lo") / 2)$ elementos. El ciclo termina cuando el intervalo se vacía ($"lo" gt.eq "hi"$) o cuando encontramos $x$. En el peor caso ($x$ no está en la lista), el ciclo ejecuta $floor(log_2 n) + 1$ iteraciones, cada una con a lo sumo $2$ comparaciones.
+      
+      Tras $k$ iteraciones, el intervalo tiene a lo sumo $floor(n / 2^k)$ elementos. El ciclo termina cuando el intervalo se vacía, lo cual requiere $floor(n / 2^k) = 0$, es decir $2^k > n$, por lo que el número de iteraciones es $floor(log_2 n) + 1$. Como cada iteración realiza a lo sumo $2$ comparaciones, $T_"max" (n) lt.eq 2(floor(log_2 n) + 1)$.
+      Recíprocamente, cuando $x$ no está en la lista, el ciclo ejecuta las $floor(log_2 n) + 1$ iteraciones, cada una con al menos $1$ comparación, con lo cual $T_"max" (n) gt.eq floor(log_2 n) + 1$. Luego, $T_"max" in Theta(log n)$.
 
-  Probemos esto por inducción. Por definición de "$O(1)$", sabemos que existe una función $h:NN arrow NN$, tal que $T(n) = h(n) + 2 sum_(i=1)^(n-1) T(i)$, y existen $n_0 in NN, beta > 0$ tales que para todo $n gt.eq n_0$, $h(n) lt.eq beta$. Sea $r = max(beta, max_(i = 0)^n_0 h(i))$. Entonces tenemos que para todo $n$, $h(n) lt.eq r$. La cota vale para los primeros $n_0$ valores de $n$ por la segunda rama del $max$, y vale para todos los valores después de $n_0$ por la primer rama, que a su vez vale por la definición de $h in O(1)$.
-
-  Luego, para todo $n$, $T(n) lt.eq r + 2 sum_(i=1)^(n-1) T(i)$. Si esto tiene que ser menor o igual a $alpha 3^n$, veamos quién tiene que ser $alpha$.
-
-  $
-    T(n) & lt.eq r + 2 sum_(i=1)^(n-1) T(i) \
-         & lt.eq r + 2 sum_(i=1)^(n-1) alpha 3^i \
-         & lt.eq r + 2 alpha (1/2) (3^n - 3) \
-         & lt.eq r + alpha 3^n - 3 alpha
-  $
-
-  Vamos a querer concluir que $T(n) lt.eq alpha 3^n$. Luego, queremos que $r - 3 alpha = 0$, y luego $alpha = r / 3$. Verifiquemos que con ese $alpha$ se cumple lo que queremos:
-
-  $
-    T(n) lt.eq r + alpha 3^n - 3 (r / 3) = alpha 3^n
-  $
-
-  Esto parece funcionar. Probémoslo por inducción, entonces. Sea $P(n): n gt.eq 1 implies T(n) lt.eq alpha 3^n$
-
-  - $P(1) = h(1) lt.eq r = 3 alpha = 3^1 alpha$.
-  - Asumimos que $P(j)$ vale para todo $j < n$, queremos probar $P(n)$. $T(n) lt.eq r + 2 sum_(i=1)^(n-1) T(i) lt.eq alpha 3^n$ por el argumento de arriba, donde usamos la hipótesis inductiva para acotar cada $T(i)$ por $alpha 3^i$.
-
-  Luego vemos que tomando $n_0 = 1$, $alpha = max(beta, (max_(i=0)^n_0 h(i))/3)$, tenemos que para todo $n gt.eq n_0$, $T(n) lt.eq alpha 3^n$, y por lo tanto $T in O(3^n)$.]
+      También podemos pensar en `busqueda_binaria` como un algoritmo recursivo implícito: cada iteración resuelve el problema en un subintervalo de tamaño $floor(n/2)$, sumando $O(1)$ costo adicional (una comparación). Esto nos da la recurrencia $T_"max" (n) = T_"max" (floor(n/2)) + O(1)$. Aplicando el teorema maestro con $a_1 = 1$, $a_2 = 0$, $b = 2$, y $f in O(1)$, tenemos $c = log_2 1 = 0$, y $f in Theta(n^0 log^0 n) = Theta(1)$. Caemos en el segundo caso con $k = 0$, y concluimos que $T_"max" in Theta(log n)$.
+]
 
 #ej[
   Mergesort es un algoritmo de ordenamiento a base de comparaciones.
@@ -2458,63 +2848,26 @@ Juntando lo que aprendimos sobre análisis asintótico con lo que aprendimos sob
 
   Dada una lista de enteros $x$, sea $C(x)$ el número de comparaciones que hace `mergesort(x)`. Se define $T:NN arrow NN$ como $T(n) = max_x {C(x) | "len"(x) = n}$. Es decir, el máximo número de comparaciones que realiza ```py mergesort(x)```, entre todas las listas `x` tales que ```py len(x) = n```.
 
-  Probar que $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$.
+  Probar que $T in O(n log n)$.
 ]
 #demo[
-  Llamemos $M(l, r)$ al número de comparaciones que hace `merge` al ser llamados con dos listas de longitud $l$ y $r$ respectivamente. Probemos algo sobre el comportamiento de `merge`.
-  #lemma[
-    $M(l, r) lt.eq l + r - 1$.
-  ]
-  #demo[
-    Sea `left` y `right` las dos listas que se le pasan a `merge`, de longitudes $l$ y $r$ respectivamente. En cada iteración del `while`, se hace una comparación entre `left[i]` y `right[j]`. Si `left[i] <= right[j]`, entonces se avanza en la lista `left`, es decir, se incrementa `i` en uno. Si no, se avanza en la lista `right`, es decir, se incrementa `j` en uno.
+  Sigamos los pasos del proceso de análisis para analizar el comportamiento de `mergesort` en el peor caso.
 
-    Al comenzar la $t$-ésima iteración, tenemos $i + j = t$. Para salir del ciclo, debemos haber tenido una iteración que hace o bien $i = l$, o bien $j = r$. En el primer caso, tenemos $j < r$ (pues si no no hubieramos entrado al ciclo y aumentado $i$ tal que ahora $i = t$). Luego $t = i + j = l + j < l + r$, es decir $t lt.eq l + r - 1$. El otro caso es análogo, y en ambas ramas obtenemos $t lt.eq l + r - 1$ al salir del ciclo.
+  + *Modelo de cómputo*: RAM.
 
-    Como hacemos una comparación por cada iteración del ciclo, tenemos que el número de comparaciones que se hacen es $M(l, r) = t lt.eq l + r - 1$.
-  ]
+  + *Tamaño de entrada*: $n$, la longitud de la lista.
 
-  En `mergesort`, recibimos una lista $x$ de longitud $n$. La dividimos en dos partes, de tamaño $l$ y $r$ respectivamente, y por lo tanto tenemos que $n = l + r$. Podemos ver por inducción que la longitud de `mergesort(x)` es igual a `len(x)`. Por ende, cuando llamamos a `mergesort` en ambas mitades, obtendremos listas de longitud $l$ y $r$ respectivamente. Como luego llamamos a `merge`, estamos llamando a `merge` con dos listas de longitud $l$ y $r$, con $l + r = n$, y luego el número de comparaciones que haremos al llamar a `merge` será a lo sumo $n - 1$.
+  + *Función de costo*: sea $C(x)$ el número de comparaciones que realiza `mergesort(x)`.
 
-  Las mitades en las que dividimos la lista cumplen que $l = floor(n/2)$, y $r = ceil(n/2)$. Luego, el número máximo de comparaciones que hará `mergesort` al recibir una lista de longitud $n$ es $T(n) = T(floor(n/2)) + T(ceil(n/2)) + n - 1$, y $T(1) = 0$.
+  + *Agregación por tamaño*: peor caso. Definimos $T(n) = max {C(x) : "len"(x) = n}$.
 
-  Vamos a probar por inducción que $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$. Formalmente, sea $P(n): T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$. Vamos a probar $P(n)$ para todo natural $n gt.eq 1$.
-
-  - Para $n = 1$, $T(1) = 0$, y asimismo $1 ceil(log_2 1) - 2^(ceil(log_2 1)) + 1 = 1 ceil(0) - 2^0 + 1 = 0$, con lo cual vale $P(1)$.
-  - Sea $n > 1$ un natural. Asumimos que $P(k)$ vale para todo $k < n$, queremos probar $P(n)$. Sea $k = ceil(log_2 n)$, con lo cual $2^(k-1) < n lt.eq 2^k$. Sea $l = floor(n/2)$, y $r = ceil(n/2)$, con $l + r = n$. Sabemos que $T(n) = T(l) + T(r) + n - 1$.
-
-    Como $n lt.eq 2^k$, entonces $r lt.eq 2^(k-1)$. Como $n > 2^(k-1)$, entonces $r > 2^(k-2)$. Luego, $r$ está en el intervalo $(2^(k-2), 2^(k-1)]$, y por lo tanto, $ceil(log_2 r) = k - 1$. Usando la hipótesis inductiva, obtenemos $T(r) = r (k - 1) - 2^(k - 1) + 1$.
-
-    Para encontrar $T(l)$, partimos en casos sobre $n$. Recordemos que $2^(k-1) + 1 lt.eq n lt.eq 2^k$.
-    - Si $n = 2^(k-1) + 1$ exactamente, entonces $l = 2^(k-2)$, y $r = 2^(k-2) + 1$. Luego, $ceil(log_2 l) = k - 2$. Aplicando la hipótesis inductiva a $l$, tenemos $T(l) = l (k - 2) - 2^(k - 2) + 1$. Sumando lo que teníamos, sabemos que:
+  + *Análisis asintótico*: `mergesort` divide la lista en dos mitades de tamaños $floor(n/2)$ y $ceil(n/2)$, las ordena recursivamente, y luego las combina con `merge`. La función `merge` recorre ambas listas de izquierda a derecha, haciendo una comparación por paso, y en cada paso avanza en una de las dos listas. Como las listas tienen $n$ elementos en total, `merge` hace a lo sumo $n - 1 in O(n)$ comparaciones (el último elemento no necesita ser comparado). Esto nos da la recurrencia:
 
     $
-      T(n) & = T(l) + T(r) + n - 1 \
-           & = l (k - 2) - 2^(k - 2) + 1 + r (k - 1) - 2^(k - 1) + 1 + n - 1 \
-           & "Usando que" 2^(k-2)=l ", y luego "2^(k-1) = 2l", obtenemos:" \
-           & = l (k - 2) - l + 1 + r (k - 1) - 2l + 1 + (l + r) - 1 \
-           & = k (l + r) - 2l - l + 1 - r - 2l + 1 + (l + r) - 1 \
-           & = k (l + r) - 4l + 1 \
-           & = k n - 4 times 2^(k-2) + 1 \
-           & = k n - 2^k + 1
+      T(n) = T(floor(n/2)) + T(ceil(n/2)) + O(n)
     $
 
-    que es lo que queríamos demostrar.
-    - Si $2^(k-1) + 1 < n lt.eq 2^k$, entonces $l > 2^(k-2)$. Luego, $ceil(log_2 l) = k - 1$. Aplicando la hipótesis inductiva a $l$, tenemos $T(l) = l (k - 1) - 2^(k - 1) + 1$. Sumando lo que teníamos, sabemos que:
-
-    $
-      T(n) & = T(l) + T(r) + n - 1 \
-           & = l (k - 1) - 2^(k - 1) + 1 + r (k - 1) - 2^(k - 1) + 1 + n - 1 \
-           & = (l + r) (k - 1) - 2^k + 2 + (l + r) - 1 \
-           & = n k - 2^k + 1
-    $
-
-    que es lo que queríamos demostrar.
-
-  Luego, hemos probado por inducción que para todo $n gt.eq 1$, $T(n) = n ceil(log_2 n) - 2^(ceil(log_2 n)) + 1$.
-]
-
-#note-box[
-  Notemos que podríamos haber usado el teorema maestro para concuir que $T in Theta(n log n)$. Nuestro análisis fue más preciso, y conseguimos una forma cerrada exacta para $T$, no sólo su comportamiento asintótico.
+    Aplicamos el teorema maestro con $a_1 = 1$, $a_2 = 1$ (luego $a = 2$), $b = 2$, y $f in O(n)$. Tenemos $c = log_2 2 = 1$, y $f in Theta(n^1 log^0 n) = Theta(n)$. Caemos en el segundo caso del teorema maestro con $k = 0$, y concluimos que $T in Theta(n log n)$.
 ]
 
 /*
@@ -2679,23 +3032,23 @@ Para esta demostración les voy a escribir el razonamiento que hago mientras esc
 
   Eso igual sólo me da una cota superior. Tendría que también argumentar una cota inferior para saber bien quién es ese $T$ y poder compararlo.
 
-  Para el tercero, tengo $T(n) = 9T(n/3) + Theta(n^2)$. Como $log_3(9) = 2$, no tenemos que $2 < 2$, entonces tenemos que usar el segundo caso del teorema maestro, que con $a = 3, b = 3, k = 0$, nos dice que $T in Theta(n^2 log n)$.
+  Para el tercero, tengo $T(n) = 9T(n/3) + Theta(n^2)$. Como $log_3(9) = 2$, no tenemos que $2 < 2$, entonces tenemos que usar el segundo caso del teorema maestro, que con $a = 9, b = 3, k = 0$, nos dice que $T in Theta(n^2 log n)$.
 ]
 #demo[
-  Calculemos el comportamiento asintótico de cada uno. Vamos a llamar $T: NN arrow NN$ a la función que, dado un $n in NN$, nos dice cuántas operaciones toma cada algoritmo para resolver un problema de tamaño $n$. Como cada algoritmo está descrito usando $O(dots)$, no vamos a poder encontrar quiénes son $T$ exactamente, sino que vamos a conocer su comportamiento asintótico. Como nos dicen que $n$ es enorme, esto es realmente lo único que importa, porque los factores constantes no van a importar si $n$ es enorme.
+  Calculemos el comportamiento asintótico de cada uno. Vamos a llamar $T_1, T_2, T_3: NN arrow NN$ a las funciones que, dado un $n in NN$, nos dicen cuántas operaciones toma cada algoritmo para resolver un problema de tamaño $n$. Como cada algoritmo está descrito usando $O(dots)$, no vamos a poder encontrar quiénes son exactamente, sino que vamos a conocer su comportamiento asintótico. Como nos dicen que $n$ es enorme, esto es realmente lo único que importa, porque los factores constantes no van a importar si $n$ es enorme.
 
-  + El primer algoritmo cumple que $T(n) = 5T(n/2) + O(n)$. Usando el teorema maestro con $a = 5, b = 2, f in O(n)$, tenemos que $c = log_2(5) > log_2(4) = 2 > 1$, donde $1$ es el exponente polinomial de $f$, por estar en $O(n^1)$. Como $c > 1$, entonces caemos en el primer caso del teorema maestro, el cual nos dice que $T in Theta(n^(log_2(5)))$.
+  + El primer algoritmo cumple que $T_1(n) = 5T_1(n/2) + O(n)$. Usando el teorema maestro con $a = 5, b = 2, f in O(n)$, tenemos que $c = log_2(5) > log_2(4) = 2 > 1$, donde $1$ es el exponente polinomial de $f$, por estar en $O(n^1)$. Como $c > 1$, entonces caemos en el primer caso del teorema maestro, el cual nos dice que $T_1 in Theta(n^(log_2(5)))$.
 
-  + Como $T(n)$ está definido en términos de $T(n - 1)$, vamos a usar inducción para ver quién es $T$. La recurrencia que cumple $T$ es $T(n) = 2T(n - 1) + O(1)$. Sea $alpha = T(0)$. Como $T(n) = 2T(n - 1) + O(1)$, ese $O(1)$ nos dice que existe una función $h: NN arrow NN$, $h in O(1)$, tal que $T(n) = 2T(n - 1) + h(n)$ para todo $n gt.eq 0$. Como $h in O(1)$, sean $n_0 in NN, beta > 0 in RR$, tales que para todo $n gt.eq n_0, h(n) lt.eq beta$. Sea $delta = display(max(beta, max_(0 lt.eq i lt.eq n_0) h(i)))$, y por lo tanto $h(k) lt.eq delta$ para todo $k in NN$. Sea $gamma = alpha + delta$.
+  + Como $T_2(n)$ está definido en términos de $T_2(n - 1)$, vamos a usar inducción para ver quién es $T_2$. La recurrencia que cumple $T_2$ es $T_2(n) = 2T_2(n - 1) + O(1)$. Sea $alpha = T_2(0)$. Como $T_2(n) = 2T_2(n - 1) + O(1)$, ese $O(1)$ nos dice que existe una función $h: NN arrow NN$, $h in O(1)$, tal que $T_2(n) = 2T_2(n - 1) + h(n)$ para todo $n gt.eq 0$. Como $h in O(1)$, sean $n_0 in NN, beta > 0 in RR$, tales que para todo $n gt.eq n_0, h(n) lt.eq beta$. Sea $delta = display(max(beta, max_(0 lt.eq i lt.eq n_0) h(i)))$, y por lo tanto $h(k) lt.eq delta$ para todo $k in NN$. Sea $gamma = alpha + delta$.
 
-    $P(n): alpha 2^n lt.eq T(n) lt.eq gamma 2^n - delta$.
+    Vamos a probar $P(n): alpha 2^n lt.eq T_2(n) lt.eq gamma 2^n - delta$.
 
-    + Caso base, $P(0)$. Por definición de $alpha$, $T(0) = alpha = alpha + delta - delta = gamma - delta = gamma 2^0 - delta$, que junto con $alpha 2^0 = alpha$, prueba $P(0)$.
-    + Paso inductivo. Asumo $P(n)$, queremos probar $P(n + 1)$. Sabemos que $T(n + 1) = 2T(n) + h(n)$.
+    + Caso base, $P(0)$. Por definición de $alpha$, $T_2(0) = alpha = alpha + delta - delta = gamma - delta = gamma 2^0 - delta$, que junto con $alpha 2^0 = alpha$, prueba $P(0)$.
+    + Paso inductivo. Asumimos $P(n)$, queremos probar $P(n + 1)$. Sabemos que $T_2(n + 1) = 2T_2(n) + h(n)$.
 
     $
-      T(n + 1) & = 2T(n) + h(n) \
-               & lt.eq 2T(n) + delta \
+      T_2(n + 1) & = 2T_2(n) + h(n) \
+               & lt.eq 2T_2(n) + delta \
                & lt.eq 2(gamma 2^n - delta) + delta \
                & =gamma 2^(n + 1) - 2delta + delta \
                & =gamma 2^(n + 1) - delta
@@ -2704,230 +3057,210 @@ Para esta demostración les voy a escribir el razonamiento que hago mientras esc
     Asimismo,
 
     $
-      T(n+1) & = 2T(n) + h(n) \
-             & gt.eq 2T(n) \
+      T_2(n+1) & = 2T_2(n) + h(n) \
+             & gt.eq 2T_2(n) \
              & gt.eq 2(alpha 2^n) \
              & gt.eq alpha 2^(n + 1)
     $
 
-    y concluímos que $alpha 2^(n + 1) lt.eq T(n+1) lt.eq gamma 2^(n + 1) - delta$, que es lo que queríamos demostrar, $P(n+1)$.
+    y concluímos que $alpha 2^(n + 1) lt.eq T_2(n+1) lt.eq gamma 2^(n + 1) - delta$, que es lo que queríamos demostrar, $P(n+1)$.
 
-    Luego, como $alpha > 0$ porque nos lo dice el enunciado, y sabemos que $T(n) lt.eq gamma 2^n$ (descartando el término $- beta$ por transitividad), tenemos que $T in O(2^n)$ y $T in Omega(2^n)$, con lo cual $T in Theta(2^n)$.
-  + Para el tercer caso, usamos el segundo caso del teorema maestro, con $a = 9, b = 3, k = 0$, y concluímos que $T in Theta(n^2 log n)$.
+    Luego, como $alpha > 0$ porque nos lo dice el enunciado, y sabemos que $T_2(n) lt.eq gamma 2^n$ (descartando el término $- delta$ por transitividad), tenemos que $T_2 in O(2^n)$ y $T_2 in Omega(2^n)$, con lo cual $T_2 in Theta(2^n)$.
+  + Para el tercer caso, usamos el segundo caso del teorema maestro, con $a = 9, b = 3, k = 0$, y concluimos que $T_3 in Theta(n^2 log n)$.
 
   Sabemos entonces que el número de operaciones que estos tres algoritmos hacen, ante una entrada de tamaño $n$, está respectivamente en $Theta(n^(log_2(5)))$, $Theta(2^n)$, y $Theta(n^2 log n)$.
 
-  Veamos cuál nos conviene usar. Llamemos a estas tres funciones $T_1$, $T_2$, y $T_3$. Recordando que $g in O(f) iff lim_(n arrow infinity) f(n)/g(n) = infinity$, y usando las reglas usuales de orden de conjuntos asintóticos:
+  Veamos cuál nos conviene usar. Recordando que $g in O(f) iff lim_(n arrow infinity) f(n)/g(n) = infinity$, y usando las reglas usuales de orden de conjuntos asintóticos:
 
-  - Como $T_2 in Omega(2^n)$, entonces llamando $f(n) = 2^n$, tenemos que $f in O(T_2)$. Luego, como $T_1 in O(n^(log_2(5)))$, y $O(n^(log_2(5))) subset o(f)$, tenemos que $T_1 in o(f)$. Como $T_1 in o(f)$ y $f in O(T_2)$, tenemos que $T_1 in o(T_2)$.
-  - Como $lim_(n arrow infinity) n^(log_2(5))/(n log n) = lim_(n arrow infinity) n^(log_2(5) - 1) / (log n) = lim_(n arrow infinity) n^epsilon / (log n) = lim_(n arrow infinity) n epsilon n^(epsilon - 1) = epsilon n^epsilon = infinity$, porque $log_2(5) - 1 = epsilon > 0$, y usamos la regla de L'Hopital, tenemos que $T_3 in o(T_1)$.
-  - Como $T_3 in o(T_1)$ y $T_1 in o(T_2)$, tenemos que $T_3 in o(T_2)$.
+  - Como $T_2 in Omega(2^n)$, entonces llamando $f(n) = 2^n$, tenemos que $f in O(T_2)$. Luego, como $T_1 in O(n^(log_2(5)))$, y $O(n^(log_2(5))) subset O(f)$, tenemos que $T_1 in O(f)$. Como $T_1 in O(f)$ y $f in O(T_2)$, tenemos que $T_1 in O(T_2)$.
+  - Usando la regla de L'Hopital, tenemos que
+    $
+    lim_(n arrow infinity) n^(log_2(5))/(n log n) &= lim_(n arrow infinity) n^(log_2(5) - 1) / (log n) \
+    &= lim_(n arrow infinity) n^epsilon / (log n) \
+    &= lim_(n arrow infinity) n epsilon n^(epsilon - 1) \
+    &= lim_(n arrow infinity) epsilon n^epsilon \
+    &= infinity
+    $
+    Pues $log_2(5) - 1 = epsilon > 0$. Luego tenemos que $T_3 in O(T_1)$.
+  - Como $T_3 in O(T_1)$ y $T_1 in O(T_2)$, tenemos que $T_3 in O(T_2)$.
 
   Luego, como $T_3$ está asintóticamente dominada por las otras dos, y $n$ es enorme, nos conviene usar el tercer algoritmo.
 ]
 
-== Sucesiones y series
 #ej[
-  Sea $n in NN$. Demostrar que $sum_(i = 0)^n (2i + 1) = (n + 1)^2$.
+  Un entero de precisión arbitraria se puede representar como una lista de $n$ palabras de $w$ bits cada una, donde $w$ es el tamaño de palabra de la máquina. Por ejemplo, el entero $2^{65} + 3$ se puede representar, en una máquina con $w = 64$, como la lista `[3, 2]`, donde `words[0] = 3` contiene los $64$ bits menos significativos y `words[1] = 2` contiene los siguientes $64$ bits.
+
+  El _popcount_ (population count) de un entero es la cantidad de bits en $1$ en su representación binaria. Consideremos el siguiente algoritmo en el modelo word RAM con palabras de $w$ bits, donde las operaciones bit a bit (`&`, `>>`) sobre una palabra toman $O(1)$ cada una:
+
+  ```py
+  def popcount(words: list[int]) -> int:
+      count = 0
+      for word in words:
+          while word > 0:
+              count += word & 1
+              word >>= 1
+      return count
+  ```
+
+  Definimos el tamaño de la entrada como $n$, el número de palabras. Sea $C("words")$ el número de operaciones que realiza `popcount(words)`. Analizar el peor caso y el mejor caso de $C$.
 ]
-#demo[
-  Vamos a probar esto por inducción, $P(n): sum_(i = 0)^n (2i + 1) = (n + 1)^2$.
-  - $P(0)$. El lado izquierdo de la ecuación es $sum_(i=0)^0 (2i + 1) = 2 times 0 + 1 = 1$. El lado derecho es $(0 + 1)^2 = 1$. Luego, vale $P(0)$.
-  - Sea $n in NN$. Queremos ver que $P(n) implies P(n+1)$. Luego, vamos a asumir $P(n)$, y vamos a ver $P(n+1)$. Ver $P(n+1)$ es que $sum_(i = 0)^(n+1) (2i + 1) = (n + 2)^2$. Razonemos entonces:
+#sol[
+  Siguiendo los pasos del proceso de análisis:
+
+  + *Modelo de cómputo*: word RAM con palabras de $w$ bits. Las operaciones aritméticas y bit a bit sobre palabras de $w$ bits toman $O(1)$.
+  + *Tamaño de entrada*: $n$, el número de palabras.
+  + *Función de costo*: $C("words")$, el número de operaciones que realiza `popcount(words)`.
+  + *Agregación por tamaño*: peor caso, $T_"max" (n)$, y mejor caso, $T_"min" (n)$.
+  + *Análisis asintótico*:
+
+    - Mejor caso. Si todas las palabras son $0$, el ciclo interno no se ejecuta nunca, y el ciclo externo hace una comparación por palabra. Luego $T_"min" in Theta(n)$.
+
+    - Peor caso. En cada iteración del ciclo interno, se realizan una comparación (`word > 0`), una operación bit a bit (`word & 1`), una suma, y un shift (`word >>= 1`). En el modelo word RAM, cada una toma $O(1)$, por lo que cada iteración del ciclo interno toma $O(1)$. Como cada palabra tiene a lo sumo $w$ bits, el ciclo interno ejecuta a lo sumo $w$ iteraciones por palabra. En el peor caso (todas las palabras tienen todos sus bits en $1$), el ciclo interno ejecuta exactamente $w$ iteraciones por cada una de las $n$ palabras. Luego, $T_"max" in Theta(n w)$.
+]
+
+#ej[
+  Consideremos la siguiente implementación recursiva de la sucesión de Fibonacci:
+
+  ```py
+  def fib(n: int) -> int:
+      if n <= 1:
+          return n
+      return fib(n - 1) + fib(n - 2)
+  ```
+
+  Definimos el tamaño de la entrada como $n$. Sea $T(n)$ el número de operaciones que realiza `fib(n)`, y sea $S(n)$ la máxima profundidad de la pila de llamadas durante la ejecución de `fib(n)` (es decir, la máxima cantidad de llamadas a `fib` simultáneamente activas). Analizar el comportamiento asintótico de $T$ y de $S$.
+]
+#sol[
+  + *Modelo de cómputo*: RAM.
+  + *Tamaño de entrada*: $n$.
+  + *Funciones de costo*: $T(n)$, el número de operaciones, y $S(n)$, la máxima profundidad de pila.
+  + *Análisis asintótico*:
+
+    - *Número de operaciones.* Cada llamada a `fib` realiza, sin contar sus llamadas recursivas, un número de operaciones acotado: al menos $1$ (la comparación `n <= 1`) y a lo sumo alguna constante $c > 0$ (la comparación, la resta, y la suma). Tenemos la recurrencia $T(n) = T(n - 1) + T(n - 2) + h(n)$ para $n gt.eq 2$, con $T(0)$ y $T(1)$ constantes positivas, donde $1 lt.eq h(n) lt.eq c$ para todo $n$.
+
+      Sea $phi = (1 + sqrt(5))/2$. Recordemos que $phi$ satisface $phi^2 = phi + 1$.
+
+      *Cota inferior.* Probemos por inducción que $T(n) gt.eq phi^(n - 1)$ para todo $n gt.eq 0$.
+      + $T(0) gt.eq 1 > 1/phi = phi^(-1)$. #sym.checkmark
+      + $T(1) gt.eq 1 = phi^0$. #sym.checkmark
+      + Para $n gt.eq 2$, $T(n) = T(n - 1) + T(n - 2) + h(n) gt.eq T(n - 1) + T(n - 2) gt.eq phi^(n - 2) + phi^(n - 3) = phi^(n - 3)(phi + 1) = phi^(n - 3) phi^2 = phi^(n - 1)$. #sym.checkmark
+
+      Luego $T in Omega(phi^n)$.
+
+      *Cota superior.* Sea $beta = max(T(0) + c, (T(1) + c) / phi)$. Probemos por inducción que $T(n) lt.eq beta phi^n - c$ para todo $n gt.eq 0$.
+      + $T(0) lt.eq beta - c$, ya que $beta gt.eq T(0) + c$. #sym.checkmark
+      + $T(1) lt.eq beta phi - c$, ya que $beta gt.eq (T(1) + c) / phi$. #sym.checkmark
+      + Para $n gt.eq 2$:
+        $
+          T(n) &= T(n - 1) + T(n - 2) + h(n) \
+               &lt.eq (beta phi^(n - 1) - c) + (beta phi^(n - 2) - c) + c \
+               &= beta(phi^(n - 1) + phi^(n - 2)) - c \
+               &= beta phi^(n - 2)(phi + 1) - c \
+               &= beta phi^n - c
+        $
+
+      Luego $T(n) lt.eq beta phi^n$ y $T in O(phi^n)$. Combinando, $T in Theta(phi^n)$.
+
+    - *Profundidad de pila.* En la expresión `fib(n - 1) + fib(n - 2)`, la llamada `fib(n - 1)` se ejecuta completamente (y su frame se elimina de la pila) antes de que comience `fib(n - 2)`. Luego, la pila en cualquier momento contiene los frames a lo largo de un único camino desde la raíz hasta el nodo actual en el árbol de recursión.
+
+      Formalmente, $S(0) = S(1) = 1$ y $S(n) = 1 + max(S(n - 1), S(n - 2))$ para $n gt.eq 2$. Notemos que $S$ es creciente: como $max(S(n-1), S(n-2)) gt.eq S(n - 1)$, tenemos $S(n) gt.eq 1 + S(n - 1) > S(n - 1)$ para todo $n gt.eq 2$, y $S(1) gt.eq S(0)$. Luego, $max(S(n-1), S(n-2)) = S(n - 1)$ y $S(n) = 1 + S(n - 1)$ para todo $n gt.eq 2$, de donde $S(n) = n$ para $n gt.eq 1$. Luego, $S in Theta(n)$.
+
+      Notar el contraste: el número de operaciones es exponencial ($Theta(phi^n)$), pero la profundidad de pila es lineal ($Theta(n)$).
+]
+
+#ej[
+  Consideremos la criba de Eratóstenes, que calcula todos los primos hasta $n$:
+
+  ```py
+  def sieve(n: int) -> list[bool]:
+      is_prime = [True] * (n + 1)
+      is_prime[0] = False
+      is_prime[1] = False
+      for i in range(2, n + 1):
+          if is_prime[i]:
+              for j in range(i * i, n + 1, i):
+                  is_prime[j] = False
+      return is_prime
+  ```
+
+  Definimos el tamaño de la entrada como $n$. Sea $T(n)$ el número de operaciones que realiza `sieve(n)`. Analizar el comportamiento asintótico de $T$.
+
+  _Ayuda: se sabe por @mertens que si definimos $g(x) = display(sum_(p lt.eq x,\ p "primo") 1/p)$, entonces $g in Theta(log log x)$._
+]
+#sol[
+  + *Modelo de cómputo*: RAM.
+  + *Tamaño de entrada*: $n$.
+  + *Función de costo*: $T(n)$, el número de operaciones que realiza `sieve(n)`.
+  + *Análisis asintótico*:
+
+    La inicialización del arreglo toma $O(n)$. El ciclo externo itera $n - 1$ veces, haciendo $O(1)$ trabajo por iteración (verificar `is_prime[i]`). El ciclo interno solo se ejecuta cuando $i$ es primo, y como comienza en $i^2$, solo tiene iteraciones cuando $i lt.eq sqrt(n)$. Para cada primo $p lt.eq sqrt(n)$, el ciclo interno recorre los múltiplos de $p$ desde $p^2$ hasta $n$ en pasos de $p$, haciendo $floor((n - p^2) / p) + 1 lt.eq n/p$ iteraciones.
+
+    El número total de operaciones del ciclo interno es:
+
     $
-      sum_(i = 0)^(n+1) (2i + 1) & = 2(n+1)+1 + sum_(i = 0)^n (2i + 1) \
-                                 & = 2(n+1)+1 + (n+1)^2", usando "P(n) \
-                                 & = 2n + 2 + 1 + (n+1)^2 \
-                                 & = 1^2 + 2 times (n+1) times 1 + (n+1)^2 \
-                                 & = ((n+1) + 1)^2 \
-                                 & = (n+2)^2
+      sum_(p lt.eq sqrt(n),\ p "primo") n / p = n sum_(p lt.eq sqrt(n),\ p "primo") 1 / p in Theta(n log log n)
     $
 
-    que es lo que queríamos demostrar.
-  Luego, vale $P(n)$ para todo $n in NN$.
+    pues $display(sum_(p lt.eq sqrt(n)) 1/p) in Theta(log log sqrt(n)) = Theta(log log n)$, ya que $log log sqrt(n) = log (1/2 log n) = log log n - log 2 in Theta(log log n)$.
+
+    Sumando el $O(n)$ de la inicialización y el ciclo externo, que está dominado por $Theta(n log log n)$ para $n$ suficientemente grande, concluimos que $T in Theta(n log log n)$.
 ]
 
 #ej[
-  Demostrar que para todo $n in NN, n gt.eq 5$, tenemos $2^n > n^2$.
+  Se tiene el siguiente algoritmo recursivo:
+
+  ```py
+  def f(cuts: list[int], i: int, j: int) -> int:
+    if j == i + 1:
+      return 0
+    r = inf
+    for k in range(i + 1, j):
+      r = min(r, f(cuts, i, k) + f(cuts, k, j))
+    return r + cuts[j] - cuts[i]
+  ```
+
+  Dar una cota asintótica superior ajustada para el número de operaciones que realice este algoritmo, en función del tamaño de entrada `j - i`.
 ]
 #demo[
-  Vamos a demostrar la propiedad $P(n): n gt.eq 5 implies 2^n > n^2$, por inducción. Para $n < 5$, la demostración es trivial, puesto que no hay nada que probar ("falso implica todo"). Luego vamos a empezar nuestra inducción con $n = 5$ como caso base.
-  - $P(5)$: Vemos que $2^5 = 32$, mientras que $5^2 = 25$, con lo cual efectivamente $2^5 > 5^2$, que es $P(5)$.
-  - Sea $n in NN$. $P(n) implies P(n+1)$: Si $n lt.eq 4$, vimos que $P(n+1)$, sea porque la premisa de $P(n+1)$ es falsa cuando $n < 3$, o porque $P(5)$ es cierto porque lo probamos arriba, cuando $n = 4$. Luego asumimos $n gt.eq 5$. Por un lado, tenemos $2^(n+1) = 2 (2^n) > 2 n^2$, donde usamos $P(n)$ y $n gt.eq 5$ para obtener la desigualdad, mediante la conclusión de $P(n)$. Por el otro, $(n+1)^2 = n^2 + 2n + 1$. Si probamos que $2n^2 > n^2 + 2n + 1$, tendremos que $2^(n+1) > (n+1)^2$.
+  Definimos el tamaño de una entrada $("cuts", i, j)$ como $j - i$. La función que describe el tiempo que toma $f$ en correr, en términos del tamaño de entrada, es $T(n) = O(1) + sum_(k = 1)^(n-1) T(k) + T(n - k)$.
 
-    $
-              2n^2 & > n^2 + 2n + 1 \
-      n^2 - 2n - 1 & > 0
-    $
-
-    Consideremos ahora el polinomio $f(x) = x^2 - 2x - 1$. Lo podemos factorizar como $f(x) = (x - (1 + sqrt(2)) (x - (1 - sqrt(2))$, es decir que sus raíces son $a = 1 - sqrt(2)$, y $b = 1 + sqrt(2)$. Como el coeficiente principal de $f(x)$ es 1, $f$ es positiva en $(-infinity, a)$, es negative en $(a, b)$, y es positiva en $(b, infinity)$.
-
-    #align(center)[
-      #canvas({
-        plot.plot(
-          axis-style: "school-book",
-          y-label: "",
-          x-label: $x$,
-          y-tick-step: none,
-          size: (8, 4),
-          legend-anchor: "east",
-          axis-layer: 2,
-          {
-            plot.add(x => x * x - 2 * x - 1, domain: (-5, 5), label: $f(x) = x^2 - 2x - 1$)
-            plot.annotate({
-              //draw.rect((-5, 0), (1-calc.sqrt(2), 35), fill: rgb(50,50,200,50), stroke: none)
-              //draw.rect((1+calc.sqrt(2), 0), (5, 35), fill: rgb(50,50,200,50), stroke: none)
-            })
-          },
-        )
-      })]
-
-    Como $n gt.eq 5 > b = 1 + sqrt(5)$, tendremos que $f(n) > 0$, y luego $n^2 - 2n - 1 > 0$, es decir, $2n^2 > n^2 + 2n + 1$. Como dijimos, esto implica que $2^(n+1) > (n+1)^2$, lo cual prueba $P(n+1)$.
-]
-
-#ej[
-  Sea $(a_n)_(n in NN)$ la sucesión dada por $a_0 = 1$, y para todo $n in NN$, $n > 0$, $a_n = 2 (n-1) a_(n-1) + 2^n (n-1)!$.
-
-  Demostrar que para todo $n in NN$, $n > 0$, $a_n = 2^n n!$.
-]
-#demo[
-  Como toda sucesión definida recursivamente, tenemos una estructura inductiva. Luego, intentemos probar esto por inducción. La proposición que vamos a probar es $P(n): a_n = 2^n n!$.
-
-  + $P(0)$: Si $n = 0$, entonces queremos ver $P(0)$, es decir que $a_0 = 2^0 1! = 1$. Esto es cierto, porque por definición $a_0 = 1$.
-
-  + $P(n) implies P(n+1)$. Queremos probar que $a_(n+1) = 2^(n+1) (n+1)!$. Sabemos que $a_(n+1) = 2 n a_n + 2^(n+1) n!$. Como vale $P(n)$, podemos reemplazar $a_n$ por $2^n n!$. Luego, sabemos que $a_(n+1) = 2 n (2^n n!) + 2^(n+1) n! = 2^(n+1)(n n! + n!) = 2^(n+1)n!(n+1) = 2^(n+1) (n+1)!$, que es lo que queríamos demostrar.
-]
-
-#ej(title: "Series geométricas")[
-  Sean $n in NN$, y $a in CC, a eq.not 1$. Probar que
+  Obviamente no podemos usar el teorema maestro para esto, porque $T$ no tiene la forma correcta, así que vamos a tener que analizar cuidadosamente qué está pasando. Jugando un poco, vemos que:
 
   $
-    sum_(i = 0)^n a^i = (a^(n+1) - 1)/(a-1)
-  $
-]
-#demo[
-  Vamos a probar esto mediante una serie de manipulaciones a esa ecuación, teniendo cuidado de que cada una sea un si-y-sólo-si.
-
-  $
-                                              sum_(i=0)^n a^i & = (a^(n+1) - 1)/(a-1) \
-                                      (a - 1) sum_(i=0)^n a^i & = a^(n+1) - 1 \
-                        a (sum_(i=0)^n a^i) - sum_(i=0)^n a^i & = a^(n+1) - 1 \
-                    1 + sum_(i=1)^(n+1) a^i - sum_(i=0)^n a^i & = a^(n+1) \
-      sum_(i=0)^0 a^i + sum_(i=1)^(n+1) a^i - sum_(i=0)^n a^i & = a^(n+1) \
-                        sum_(i=0)^(n+1) a^i - sum_(i=0)^n a^i & = a^(n+1) \
-    sum_(i=n+1)^(n+1) a^i + sum_(i=0)^n a^i - sum_(i=0)^n a^i & = a^(n+1) \
-                                                      a^(n+1) & = a^(n+1)
+    T(n) & = O(1) + T(1) + T(n - 1) + T(2) + T(n - 2) + dots + T(n - 1) + T(1) \
+         & = O(1) + 2 sum_(i=1)^(n-1) T(i)
   $
 
-  Como llegamos a algo cierto a través de manipulaciones reversibles, cada paso puede ser revertido para empezar con $a^(n+1) = a^(n+1)$ y concluir con $sum_(i=0)^n a^i &= (a^(n+1) - 1)/(a-1)$.
+  Esto nos puede recordar a la fórmula para las potencias de un número. Por ejemplo, $2^n = 1 + sum_(i=0)^(n-1) 2^i$, o $3^n = 1 + 2 sum_(i=0)^(n-1) 3^i$. Como esto se parece bastante a la serie de potencias de tres, vamos a intentar adivinar que $T(n) lt.eq alpha 3^n$ para todo $n in NN$, y algún $alpha > 0 in RR$. Esto nos diría que $T in O(3^n)$.
 
-  Notar que para revertir la multiplicación por $a - 1$ que hacemos para ir de la primer ecuación a la segunda, estamos usando que $a eq.not 1$.
-]
+  Probemos esto por inducción. Por definición de "$O(1)$", sabemos que existe una función $h:NN arrow NN$, tal que $T(n) = h(n) + 2 sum_(i=1)^(n-1) T(i)$, y existen $n_0 in NN, beta > 0$ tales que para todo $n gt.eq n_0$, $h(n) lt.eq beta$. Sea $r = max(beta, max_(i = 0)^n_0 h(i))$. Entonces tenemos que para todo $n$, $h(n) lt.eq r$. La cota vale para los primeros $n_0$ valores de $n$ por la segunda rama del $max$, y vale para todos los valores después de $n_0$ por la primer rama, que a su vez vale por la definición de $h in O(1)$.
 
-
-#ej[
-  Sea la sucesión $(a_n)_(n in NN)$ definida como $a_0 = 1$, y para todo $n in NN, n > 0$, $a_n = 4 a_(n-1) - 2 ((2n-2)!)/(n! (n-1)!)$. Probar que para todo $n in NN$, $a_n = binom(2n, n)$.
-]
-#demo[
-  Nuevamente, vamos a usar inducción, porque $(a_n)$ tiene una estructura inductiva (es decir, está definida recursivamente).
-
-  Vamos a probar la proposición $P(n): a_n = binom(2n, n)$, para todo $n in NN$. Recordemos que $binom(a, b) = a!/(b! (a - b)!)$, para todo $a, b in NN$.
-
-  Sea $n in NN$.
-  + Si $n = 0$, entonces queremos ver $P(0)$, que es $a_0 = binom(0, 0) = 0! / (0! 0!) = 1 / 1 = 1$, y esto es cierto pues definimos $a_0 = 1$.
-  + Si $n > 0$, entonces podemos usar la hipótesis inductiva en $n - 1$, y sabemos $P(n-1)$. Esto nos dice que $a_(n-1) = binom(2(n-1), n - 1)$. Queremos ver $P(n+1)$, es decir, que $a_n = binom(2n, n)$. Como sabemos por definición que $a_n = 4 a_(n-1) - 2 ((2n-2)!)/(n! (n-1)!)$, podemos reemplazar lo que sabemos es $a_(n-1)$ acá, y sabemos luego que $a_n = 4 binom(2(n-1), n-1) - 2 ((2n-2)!)/(n! (n-1)!)$.
+  Luego, para todo $n$, $T(n) lt.eq r + 2 sum_(i=1)^(n-1) T(i)$. Si esto tiene que ser menor o igual a $alpha 3^n$, veamos quién tiene que ser $alpha$.
 
   $
-    a_n & = 4 binom(2n - 2, n - 1) - 2 (2n - 2)!/(n! (n-1)!) \
-        & = 4 (2n - 2)! / ((n-1)! (n - 1)!) - (2n - 2)! / (n! (n -1)!) \
-        & = (2n - 2)!/(n-1)! (4/(n-1)! - 2 /n!) \
-        & = (2n - 2)!/(n-1)! ((4n!)/(n!(n-1)!) - (2(n-1)!)/(n!(n-1)!)) \
-        & = (2n - 2)!/(n-1)! (4n (n-1)! - 2(n-1)!)/(n!(n-1)!) \
-        & = (2n - 2)!/(n-1)! (4n - 2)/(n!) \
-        & = 2 (2n - 2)!/(n-1)! (2n - 1)/(n!) \
-        & = 2 (2n - 1)!/(n!(n-1)!) \
-        & = 2 binom(2n - 1, n) \
-        & = binom(2n - 1, n) + binom(2n - 1, n) \
-        & = binom(2n - 1, n) + binom(2n - 1, 2n - 1 - n) ", pues "binom(a, b) = binom(a, a-b) \
-        & = binom(2n - 1, n) + binom(2n - 1, n - 1) \
-        & = binom(2n, n) ", pues" binom(a, b) + binom(a, b - 1) = binom(a + 1, b)
-  $
-  que es lo que queríamos demostrar.
-]
-
-#ej[
-  Estamos pensando en una estrategia de inversión. Tenemos un fondo que crece, en valor esperado, $1 - alpha$ cada mes. Por ejemplo, si $alpha = 1.1$, nuestro fondo crece en valor esperado un 10% por mes. Asumiendo que empezamos con $c$ pesos en nuestra cuenta, y cada mes compramos $b$ pesos más de este fondo, ¿cuál es el valor de los fondos que esperamos tener luego de $k$ meses? ¿Qué necesitan asumir para encontrar este valor?
-]
-El objetivo de este ejercicio no es que hagan cuentas, sino que entiendan cómo descubrir qué están asumiendo cuando hacen cuentas.
-#demo[Sea $a_i$ el retorno del $i$-ésimo mes. Sabemos que $EE[a_i] = alpha$.
-  Podemos definir la siguiente sucesión:
-  $
-    T(0) & = c \
-    T(n) & = b + a_n T(n - 1)
+    T(n) & lt.eq r + 2 sum_(i=1)^(n-1) T(i) \
+         & lt.eq r + 2 sum_(i=1)^(n-1) alpha 3^i \
+         & lt.eq r + 2 alpha (1/2) (3^n - 3) \
+         & lt.eq r + alpha 3^n - 3 alpha
   $
 
-  Queremos encontrar $EE[T(n)]$. Veamos cómo se comporta esta función. $EE[T(1)] = EE[b + a_1 c] = b + alpha c$, usando linearidad de esperanza, y que $b$ y $c$ son constantes. Para su segundo valor, $EE[T(2)] = EE[b + a_2 T(1)] = b + EE[a_2 T(1)]$. Nos gustaría decir que esto es $b + EE[a_2] EE[T(1)]$, pero acá debemos asumir que $a_2$ y $T(1)$ son independientes. *Para esto tenemos que asumir que los retornos ${a_i}$ son independientes de a pares*. Es decir, $EE[a_i a_j] = EE[a_i] EE[a_j] = alpha^2$ para todo $i, j$. Luego, tenemos
-  $
-    EE[T(2)] & = b + EE[a_2 (b + a_1 c)] \
-             & = b + EE[a_2 b + a_2 a_1 c] \
-             & = b + b EE[a_2] + c EE[a_2 a_1] \
-             & = b + b alpha + c alpha^2
-  $
-  Veamos qué pasa para $n = 3$.
-  $
-    EE[T(3)] & = EE[b + a_3 T(2)] \
-             & = b + EE[a_3 T(2)]
-  $
-  Acá no podemos decir que $EE[a_3 T(2)] = EE[a_3] E[T(2)]$ porque no sabemos si $a_3$ y $T(2)$ están correlacionados. Veamos qué pasa si expandimos $T(2)$ por definición:
+  Vamos a querer concluir que $T(n) lt.eq alpha 3^n$. Luego, queremos que $r - 3 alpha = 0$, y luego $alpha = r / 3$. Verifiquemos que con ese $alpha$ se cumple lo que queremos:
 
   $
-    EE[T(3)] & = b + EE[a_3 T(2)] \
-             & = b + EE[a_3 (b + a_2 T(1))] \
-             & = b + EE[a_3 b + a_3 a_2 T(1)] \
-             & = b + b alpha + EE[a_3 a_2 T(1)] \
-             & = b + b alpha + EE[a_3 a_2 (b + a_1 c)] \
-             & = b + b alpha + EE[a_3 a_3 b + a_3 a_2 a_1 c] \
-             & = b + b alpha + b alpha^2 + c EE[a_3 a_2 a_1] \
+    T(n) lt.eq r + alpha 3^n - 3 (r / 3) = alpha 3^n
   $
 
-  El saber que los $a_i$ no están correlacionados de a pares no nos deja decir que no estén correlacionados de a triplas. Luego, para seguir acá vamos a necesitar asumir *que los ${a_i}$ son independientes de a triplas*, así como también lo que habíamos asumido antes, que son independientes de a pares.
+  Esto parece funcionar. Probémoslo por inducción, entonces. Sea $P(n): n gt.eq 1 implies T(n) lt.eq alpha 3^n$
 
-  Si asumimos eso, concluímos $EE[T(3)] = b + b alpha + b alpha^2 + c alpha^3$.
+  - $P(1) = h(1) lt.eq r = 3 alpha = 3^1 alpha$.
+  - Asumimos que $P(j)$ vale para todo $j < n$, queremos probar $P(n)$. $T(n) lt.eq r + 2 sum_(i=1)^(n-1) T(i) lt.eq alpha 3^n$ por el argumento de arriba, donde usamos la hipótesis inductiva para acotar cada $T(i)$ por $alpha 3^i$.
 
-  Conjeturamos, entonces, que $EE[T(n)] = alpha^n c + sum_(i=0)^(n-1) alpha^i b$, si asumimos que *los ${a_i}$ son independientes tomados de a conjuntos de tamaño menor o igual a $n$*.
+  Luego vemos que tomando $n_0 = 1$, $alpha = max(beta, (max_(i=0)^n_0 h(i))/3)$, tenemos que para todo $n gt.eq n_0$, $T(n) lt.eq alpha 3^n$, y por lo tanto $T in O(3^n)$.]
 
-  Tenemos que tener cuidado al hacer inducción, entonces. Si quisieramos probar la proposición $Q(n): EE[T(n)] = alpha^n c + sum_(i=0)^(n-1) alpha^i b$, en algún momento vamos a tener $EE[a_n T(n)]$, y no vamos a poder llegar a mucho si sólo tenemos eso, porque no sabemos que $a_n$ y $T(n)$ son independientes. Entonces, vamos a tener que ser precisos, y reescribir $T$ de manera que podamos usar la independencia de los ${a_i}$.
 
-  Expresemos, entonces, $T(n)$, de una manera que nos deje usar esta independencia. Vimos que $T(3) = b + b a_3 + b a_3 a_2 + c a_3 a_2 a_1$. Luego, definamos $S_(i, n) = product_(i lt j lt.eq n) a_j$. Vemos que $T(3) = b S_(3, 3) + b S_(2, 3) + b S_(1, 3) + c S_(0, 3)$.
 
-  Probemos, entonces, $P(n): T(n) = c S_(0, n) + sum_(i = 1)^n b S_(i, n)$.
-
-  + $P(0)$. $T(0) = c$ por definición. $S_(0, 0) = product_(0 lt j lt.eq 0) a_j = 1$, por definición de una productoria vacía. Asimismo, $sum_(i = 1)^0 S_i b = 0$, por definición de sumatoria vacía. Luego, $T(0) = 1 c + 0 = c$, que prueba $P(0)$.
-  + $P(n) implies P(n+1)$.
-  $
-    T(n+1) & = b + a_n T(n) \
-           & = b + a_n (c S_(0, n) + sum_(i = 1)^n b S_(i, n)), "por hipótesis inductiva" \
-           & = b S_(n+1, n+1) + c a_n S_(0, n) + a_n sum_(i = 1)^n b S_(i, n) \
-           & = b S_(n+1, n+1) + c S_(0, n+1) + sum_(i = 1)^n b S_(i, n+1) \
-           & = c S_(0, n+1) + sum_(i = 1)^(n+1) b S_(i, n+1)
-  $
-
-  Luego vale $P(n)$ para todo $n in NN$. Veamos ahora qué nos dice esto sobre $EE[T(n)]$. Como los ${a_i}$ son independientes en cualquier subconjunto de tamaño a lo sumo $n$, tenemos que $EE[S_(i, n)] = EE[product_(i < j lt.eq n) a_j] = product_(i < j lt.eq n) EE[a_j] = product_(i < j lt.eq n) alpha = alpha^(n - i)$.
-
-  Luego:
-
-  $
-    EE[T(n)] & = EE[c S_(0, n) + sum_(i = 1)^n b S_(i, n)], "porque vale" P(n) \
-             & = c EE[S_(0, n)] + sum_(i = 1)^n b EE[S_(i, n)] \
-             & = c alpha^n + sum_(i = 1)^n b alpha^(n-i) \
-             & = b (alpha^n - 1)/(alpha - 1) + c alpha^n
-  $
-
-  Para esto tuvimos que asumir que los ${a_i}$ son independientes tomados de cualquier subconjunto de tamaño a lo sumo $n$.
-
-  Vemos con cuánto cuidado hay que deducir cosas, si no queremos cometer errores.
-]
-
+/*
+FIXME: En algún momento voy a traer de vuelta este ejercicio, pero por ahora falta explicar demasiado, y se van a asustar con la palabra autómata.
 
 #ej[
   Sea $A$ el siguiente autómata finito:
@@ -2980,202 +3313,7 @@ El propósito de este ejercicio es que pasen un tiempo jugando con las ecuacione
   Entonces encontramos una fórmula general para _nuestra_ $G(n)$: $G(n) = (2/3 2^n + 1/3 (-1)^n)$. Verificamos que $G(0)$, así definida, cumple que $G(0) = 1$, y $G(1) = 1$, y ya vimos arriba que esta definición cumple la recurrencia pedida. Notemos que hasta ahora, sólo habíamos supuesto la existencia de soluciones de la forma $G(n) = c^n$ que nos sirvieran, pero la existencia de $alpha$ y $beta$ nos dice que efectivamente encontramos la solución que tiene valor exactamente iguales a nuestra función $T(q_0, n)$.
 
   Luego, como queremos $T(q_1, n)$, y $T(q_1, n) = 2 G(n - 1)$, vemos que la respuesta al enunciado es $T(q_1, n) = 4/3 2^(n-1) + 2/3 (-1)^(n-1)$.]
-
-== Combinatoria
-#ej[
-  ¿Cuantos números naturales hay menores o iguales que $1000$ que no son ni múltiplos de $3$ ni múltiplos de $5$?
-]
-#demo[
-  Para esto vamos a usar el principio de inclusión-exclusión. Simbólicamente, este nos dice que para todo par de conjuntos $A, B$:
-
-  $
-    |A union B| = |A| + |B| - |A inter B|
-  $
-
-  Para resolver este ejercicio, usamos $A = {n in NN | n lt.eq 1000 and n equiv.not 0 (mod 3)}$, y $B = {n in NN | n lt.eq 1000 and n equiv.not 0 (mod 5)}$. Lo que nos pide el enunciado es $|A inter B|$. Luego, esto es $|A| + |B| - |A union B|$.
-
-  Por definición, $|A union B| = {n in NN | n lt.eq 1000 and (n equiv.not 0 (mod 3) or n equiv.not 0 (mod 5))}$. Pero si prestamos atención, el que algo sea o no múltiplo de tres o no múltiplo de cinco, es lo mismo que no ser múltiplo de quince. Podemos razonarlo o podemos hacer una tabla:
-
-  #align(center)[
-    #table(
-      columns: (auto, auto, auto, auto),
-      $n$, $n (mod 3)$, $n (mod 5)$, $n (mod 15)$,
-      ..for i in range(15) {
-        ($#i$, $#calc.rem(i, 3)$, $#calc.rem(i, 5)$, $#calc.rem(i, 15)$)
-      },
-    )
-  ]
-
-  Luego, $A union B = {n in NN | n lt.eq 1000 and n equiv.not 0 (mod 15)}$. Esto, a su vez, es $A union B = {n in NN | n lt.eq 1000} without {n in NN | n lt.eq 1000 and n equiv 0 (mod 15)}$. Es decir, sacarle los múltiplos de 15, al conjunto de todos los números menores o iguales a 1000. ¿Cuántos tales múltiplos hay? Uno de cada 15 números va a ser múltiplo de 15, luego hay $floor(1000/15)$ tales números, y $|A union B| = 1000 - floor(1000/15) = 1000 - 66 = 934$.
-
-  Encontrar $|A|$ y $|B|$ es similar. $|A| = 1000 - floor(1000/3) = 667$, y $|B| = 1000 - floor(1000/5) = 800$.
-
-  Luego, lo que nos piden es $|A inter B| = 667 + 800 - 934 = 533$.
-]
-
-#ej[
-  ¿Cuántos palíndromes distintos de longitud $n$ se pueden armar usando un conjunto de $k$ símbolos?
-]
-#demo[
-  Si algo es un palíndrome, entonces se lee igual hacia adelante que hacia atrás. Sea $S = {x_1, x_2, dots, x_(n-1), x_n}$ un tal palíndrome. Entonces $x_n = x_1$, y $x_(n - 1) = x_2$, etcétera. Tenemos que tener cuidado, entonces, con qué pasa en el medio, cuando no hay una igualdad extra. Por ejemplo, si $n = 3$, entonces hay sólo una igualdad, $x_1 = x_3$. La igualdad $x_2 = x_2$ no dice nada, entonces no restringe nuestras posibilidades.
-
-
-  Entonces, partamos en dos casos, dependiendo de si $n$ es par o impar.
-  - Si $n equiv 0 (mod 2)$, entonces $n = 2t$ para algún $t in NN$. Los primeros $t$ símbolos son totalmente arbitrarios, entonces tenemos $k^t$ posibles cadenas. Como los siguientes $t$ símbolos están totalmente determinados por los primeros, no hay posibilidades restantes, y el número de palíndromos de longitud $n = 2t$ usando un conjunto de $k$ símbolos es $k^(n/2)$.
-    #table(
-      columns: (1fr, 1fr, 1fr, 1fr, 5fr, 5fr, 1fr, 2fr),
-      $x_1$,
-      $x_2$,
-      $dots$,
-      $x_t$,
-      $x_(t+1) = x_(n - (t + 1)) = x_(t - 1)$,
-      $x_(t + 2) = x_(n - (t+2)) = x_(t - 2)$,
-      $dots$,
-      $x_n = x_1$,
-    )
-  - Si $n equiv 1 (mod 2)$, entonces $n = 2t + 1$, para algún $t in NN$. Los primeros $t + 1$ símbolos son arbitrarios, y tenemos $k^(t+1)$ cadenas. Los últimos $t$ símbolos están totalmente determinados por los primeros $t$, entonces no hay más posibilidades, y tenemos $k^(t+1)$ palíndromos posibles.
-    #table(
-      columns: (1fr, 1fr, 1fr, 1fr, 2fr, 6fr, 1fr, 3fr),
-      $x_1$, $x_2$, $dots$, $x_t$, $x_(t+1)$, $x_(t + 2) = x_(n - (t + 1)) = x_t$, $dots$, $x_n = x_1$,
-    )
-
-  Vemos entonces que la fórmula general para el número de palíndromos de longitud $n$ usando un conjunto de $k$ símbolos es $k^(ceil(n/2))$.
-]
-
-#ej[
-  Sin calcular los valores explícitamente ni expandir a factoriales, probar que
-  $
-    binom(10, 4) = binom(9, 3) + binom(9, 4)
-  $
-]
-#demo[
-  Esto es un caso particular de la fórmula $binom(n, k) = binom(n - 1, k) + binom(n - 1, k - 1)$, con $n = 10, k = 4$.
-
-  Queremos dar una demostración de este hecho, sin expandir los coeficientes binomiales a sus factoriales. ¿Qué otra cosa sabemos sobre estos coeficientes? Que $binom(n, k)$ es el número de subconjuntos de tamaño $k$, de un conjunto de tamaño $n$.
-
-  Vamos a usar la técnica de "contar lo mismo de dos formas distintas". Supongamos que tenemos un conjunto $X$ de tamaño $n$. Sea $Y$ el conjunto de subconjuntos de $X$ de tamaño $k$.
-
-  - Por un lado, $|Y| = binom(n, k)$, porque esa es precísamente la semántica de $binom(n, k)$.
-  - Por otro lado, sea $x in X$. Los elementos de $Y$ se dividen en los que contienen a $x$, y los que no contienen a $x$. ¿Cuántos hay que no tienen a $x$? Eso es lo mismo que elegir subconjuntos de tamaño $k$ de $X without {0}$, que tiene tamaño $n - 1$. Luego, hay $binom(n - 1, k)$ de esos. ¿Cuántos hay que _sí_ tienen a $x$? Si esos ya tienen a $x$, el número de cosas que pueden elegir es $k - 1$ cosas más, pero no pueden volver a elegir a $x$, entonces tienen $n - 1$ elementos de $X$ para elegir. Luego, hay $binom(n - 1, k - 1)$ de esos. Entonces, en total, $|Y| = binom(n - 1, k) + binom(n - 1, k - 1)$.
-
-  Luego, $binom(n, k) = binom(n - 1, k) + binom(n - 1, k - 1)$ para todo $n, k in NN$, con $k lt.eq n$, en particular vale para $n = 10, k = 4$.
-]
-
-#ej(title: [Teorema binomial])[
-  Probar que para todo $x, y in RR$, y para todo $n in NN$, tenemos que
-  $
-    (x + y)^n = sum_(k = 0)^n binom(n, k) x^k y^(n - k)
-  $
-]
-Para esta demostración les voy a mostrar el proceso de deducción e ideas que hago antes de formalizarla.
-#quote-box[
-  Tengo una suma hasta $n$, quizás puedo descomponer la suma hasta $n$ en una suma hasta $n - 1$? A ver....
-
-  Es más, tengo algo "a la" $n$, entonces puedo descomponer eso como $(x + y) (x + y)^(n - 1)$. Si ahí uso la hipótesis inductiva, veamos qué queda...
-
-  $
-    (x + y)^(n+1) & = (x + y) (x + y)^n \
-                  & = (x + y) sum_(k = 0)^n binom(n, k) x^k y^(n - k) \
-                  & = sum_(k = 0)^n binom(n, k) x^(k+1) y^(n - k) + sum_(k = 0)^n binom(n, k) x^k y^(n - k + 1)
-  $
-
-  Quiero ver si puedo combinar estas dos ecuaciones, quizás emparejando coeficientes, porque así se sumarían los coeficientes binomiales. Pensando en cosas que valgan para sumas de coeficientes binomiales, recuerdo que $binom(n, k) = binom(n - 1, k) + binom(n - 1, k - 1)$, puede ser que emparejando los coeficientes que tengan el mismo $x^i y^j$, me queden así los coeficientes? A ver...
-
-  Tengo $i, j in NN$, quiero ver qué coeficiente binomial multiplica a $x^i y^j$ en la primer sumatoria, y luego en la segunda. En la primera, $i = k + 1, j = n - k$. Entonces el coeficiente es $binom(n = j + (i - 1), k = i - 1)$. En la segunda, tenemos $i = k, j = n - k + 1$, entonces el coeficiente es $binom(j + i - 1, i)$.
-
-  Juntando estos dos, tenemos que la sumatoria es $sum_(i, j) x^i y^j (binom(j + i - 1, i - 1) + binom(j + i - 1, i))$, donde estoy sumando $i, j$ sobre algún conjunto que no quiero pensar por ahora. Pero esto es bueno, los términos son precísamente de la forma que pensaba que eran, si los sumo me queda $binom(j + i, i)$.
-
-  Ahora tengo que pensar sobre dónde sumo los $i, j$. Todos los términos en las sumatorias tienen el mismo grado, son todos de grado $n + 1$. Los términos que estoy sumando ahora tienen grado $i + j$, entonces $i + j = n + 1$. Como quiero que me quede una sumatoria de sólo un índice, elijo $i$, y me queda $j = n + 1 - i$. ¿Cuáles son los bordes del índice $i$? Hay un término de la sumatoria de la derecha donde tengo $x^0$, y acá estoy diciendo $x^i$, así que seguro tengo que tener un término con $i = 0$. Por otro lado, de la sumatoria izquierda tengo un término $x^(n + 1)$, y nuevamente acá digo $x^i$, así que $i$ tiene que llegar hasta $n + 1$.
-
-  Entonces, usando que $j = n + 1 - i$ y el coeficiente del término $x^i y^j$ es $binom(j + i, i)$, la suma de las sumatorias me queda $sum_(i = 0)^(n + 1) binom(n + 1 - i + i, i) x^i y^(n + 1 - i)$, y esto es igual a $sum_(i = 0)^(n + 1) binom(n + 1, i) x^i y^(n + 1 - i)$, que es precísamente lo que quiero probar.
-
-  OK, perfecto. ¡A formalizarlo! Voy a tener que pensar un rato para hacer menos grotesco el reindexado de las sumas.
-]
-#demo[
-  Vamos a usar inducción. Sea $P(n): forall x, y in RR. (x + y)^n = sum_(k = 0)^n binom(n, k) x^k y^(n - k)$.
-
-  - Caso base, $P(0)$. $P(0): forall x, y in RR. (x + y)^0 = sum_(i = 0)^0 binom(0, k) x^k y^(0 - k) = binom(0, 0) x^0 y^0 = 1$. Como $(x + y)^0 = 1$ para todo $x, y$ (sí, $0^0 = 1$)), esto es cierto.
-  - Paso inductivo. Sea $n in NN$. Asumo $P(n)$, quiero ver $P(n + 1)$. Sean $x, y in RR$.
-
-    $
-      (x + y)^(n + 1) =& (x + y) (x + y)^n \
-      =& (x + y) (sum_(k = 0)^n binom(n, k) x^k y^(n - k))," por hipótesis inductiva" \
-      =& x (sum_(k = 0)^n binom(n, k) x^k y^(n - k)) + y (sum_(k = 0)^n binom(n, k) x^k y^(n - k)) \
-      =& sum_(k = 0)^n binom(n, k) x^(k+1) y^(n - k) + sum_(k = 0)^n binom(n, k) x^k y^(n - k + 1) \
-      =& sum_(i = 1)^(n + 1) binom(n, i - 1) x^i y^(n - (i - 1)) + sum_(k = 0)^n binom(n, k) x^k y^(n - k + 1), "llamando "i = k + 1, \
-      =& sum_(j = 1)^(n + 1) binom(n, j - 1) x^j y^(n + 1 - j) + sum_(j = 0)^n binom(n, j) x^j y^(n + 1 - j), "llamando a ambos índices "j
-    $
-    Acá hay que tener cuidado. Lo que queremos hacer es que los índices sean iguales, que es sacarle el último término ($j = n + 1$) a la primer sumatoria, y el primer término $(j = 0)$ a la segunda. Lo único que sé es que $n in NN$, entonces tengo al menos un término en cada sumatoria, porque $n + 1 gt.eq 1$ (para la primera) y $n gt.eq 0$ (para la segunda). No podría, si quisiera, sacar dos términos de cada una, porque no sé si _hay_ dos términos en cada una.
-
-
-    $
-      = & binom(n, n) x^(n + 1) y^(n + 1 - (n + 1)) + sum_(j = 1)^n binom(n, j - 1) x^j y^(n + 1 - j) \
-        & + sum_(j = 1)^n binom(n, j) x^j y^(n + 1 - j) + binom(n, 0) x^0 y^(n+1-0) \
-      = & binom(n, n) x^(n + 1) y^0 + binom(n, 0) x^0 y^(n+1) + sum_(j=1)^n (binom(n, j - 1) + binom(n, j)) x^j y^(n + 1 - j) \
-      = & binom(n + 1, n + 1) x^(n + 1) y^0 + binom(n + 1, 0) x^0 y^(n+1) + sum_(j=1)^n binom(n+1, j) x^j y^(n+1-j) \
-      = & sum_(j=0)^(n+1) binom(n+1, j) x^j y^(n+1-j)
-    $
-
-    que es lo que queríamos demostrar.
-]
-
-
-#ej[
-  Sean $f, g: NN arrow NN$. Se define la convolución de $f$ y $g$ como la función $(f * g)(n) = sum_(i = 0)^n f(i) g(n - i)$.
-
-  Probar que la convolución es asociativa. Es decir, que para cuales quiera $f, g, h: NN arrow NN$, tenemos $f * (g * h) = (f * g) * h$.
-]
-
-Para este ejercicio también voy a escribirles en qué pienso a medida que lo hago.
-#quote-box[
-  Primero voy a expandir uno de los lados, a ver qué queda. La igualdad de funciones es igualdad en cada valor de entrada, así que sea $n in NN$.
-  $
-    (f * (g * h))(n) = & sum_(i = 0)^n f(i) (g * h)(n - i) \
-                     = & sum_(i = 0)^n f(i) (sum_(j = 0)^(n - i) g(j) h(n - i - j)) \
-  $
-
-  Puedo que los índices tengan una relación simple, puedo en vez de ir desde $j = 0$ hasta $n - i$, ir desde $i$ hasta $n$, y lo único que estoy haciendo es sumándole $i$ a $j$. Luego cuando en el término digo $g(j)$, se convierte en $g(j - i)$, y cuando digo $h(n - i - j)$, se convierte en $h(n - i - (j - i)) = h(n - j)$.
-  $
-    = & sum_(i = 0)^n f(i) (sum_(j = i)^n g(j - i) h(n - j)) \
-    = & sum_(0 lt.eq i lt.eq j lt.eq n) f(i) g(j - i) h(n-j) \
-  $
-
-  Lo de $f(i) g(j - i)$ se parece bastante a una convolución, específicamente $(f * g)(j)$. Tengo entonces que hacer que la suma de $i$ esté afuera de la suma de $j$. Pero eso me quedaría $sum_(j = i)^m f(i) g(j - i)$ adentro, que no es lo que quiero tener, porque no es una convolución. Más aún, no podría sacar el $h(n - j)$ afuera de esa convolución, porque es distinto para cada ($j$) término. OK, entonces la sumatoria interna tiene que ser sobre $i$.
-  $
-    = & sum_(j = 0)^n sum_(i = 0)^j f(i) g(j - i) h(n - j) \
-    = & sum_(j = 0)^n (f * g)(j) h(n - j) \
-    = & ((f * g) * h)(n)
-  $
-
-  OK, pasémoslo en limpio.
-]
-#demo[
-  Sea $n in NN$, y $f, g, h: NN arrow NN$.
-
-  Entonces:
-  $
-    (f * (g * h))(n) = & sum_(i = 0)^n f(i) (g * h)(n - i) \
-                     = & sum_(i = 0)^n f(i) (sum_(j = 0)^(n - i) g(j) h(n - i - j)) \
-                     = & sum_(i = 0)^n f(i) (sum_(j = i)^n g(j - i) h(n - j)) \
-                     = & sum_(0 lt.eq i lt.eq j lt.eq n) f(i) g(j - i) h(n-j) \
-                     = & sum_(j = 0)^n sum_(i = 0)^j f(i) g(j - i) h(n - j) \
-                     = & sum_(j = 0)^n (f * g)(j) h(n - j) \
-                     = & ((f * g) * h)(n)
-  $
-]
-
-#ej[
-  Sea $G$ un grafo con $n > 1$ vértices. Probar que existen en $G$ dos vértices del mismo grado.
-]
-#demo[
-  Sea $G = (V, E)$ un grafo. El grado de un vértice es el número de aristas que inciden en él. Notemos por $d(v)$ al grado de cada vértice $v in V$. Como un vértice puede estar conectado como mínimo con cero otros vértices, y como máximo con todos los otros $n - 1$ vértices, tenemos que $0 lt.eq d(v) lt.eq n - 1$ para todo $v in V$.
-
-  Si existe un vértice $v$ tal que $d(v) = n - 1$, entonces no puede existir un vértice distinto $w$ con grado $d(w) = 0$ (no conectado con nadie), pues sabemos que ${v, w} in E$. Como $n eq.not 1$, tampoco podemos tener $v = w$, pues $d(v) = n - 1 eq.not 0 = d(w)$. Luego, si existe un vértice con grado $n - 1$, no puede existir ningún vértice con grado $0$, y luego los grados posibles son $1, 2, dots, n - 1$, es decir, $n - 1$ posibles grados.
-
-  De otra manera, si no existe ningún vértice con grado $n - 1$, entonces los grados posibles son $0, 1, 2, dots, n - 2$, que también son $n - 1$ posibles grados.
-
-  Entonces tenemos $n$ vértices, y sólo $n - 1$ posibles grados. Por el principio del palomar, existen al menos dos vértices con el mismo grado.
-]
+*/
 
 == Divide and conquer y programación dinámica
 
@@ -4633,6 +4771,8 @@ Diseñar un algoritmo greedy para resolver este problema. Probar que es correcto
 
   Nuestro algoritmo devuelve el tamaño de una solución óptima, y luego es correcto.
 ]
+
+// FIXME: La sección de teoría de grafos debería venir antes que esta, pues definimos áboles como casos particulares de grafos.
 
 == Árboles
 #ej[
