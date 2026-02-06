@@ -5,8 +5,8 @@
 #show: apply-preamble
 
 
-= Errores comunes
-== Ser informal
+== Errores comunes
+=== Ser informal
 
 Este es *de lejos* el error que más cometen los alumnos. En este momento de su educación, todavía no les recomiendo dejar de lado la formalidad, y hacer argumentos informales. Un argumento informal puede ser riguroso, pero requiere experiencia hacer esto sin cometer errores. Todavía no tienen esa experiencia. Por ende, a la hora de argumentar, sean formales. Algunas recomendaciones sobre formalidad:
 
@@ -78,7 +78,7 @@ Este es *de lejos* el error que más cometen los alumnos. En este momento de su 
 
 + Sean claros en qué es lo que afirman, qué es lo que asumen, y qué es lo que quieren probar. Ver un montón de oraciones donde todas son afirmaciones dificulta la comprensión. Usen conectores lógicos, como "porque", "luego", "si", y "entonces". Pueden usar frases como "Vamos a probar que", "Acá usamos la hipótesis tal", "Asumimos por contradicción que tal cosa", "Vamos a usar tal estrategia (inducción, partir en casos, etcétera)".
 
-== No decir nada
+=== No decir nada
 
 Si la demostración les salió en una oración, está mal. Generalmente veo esto cuando sólo están reiterando el enunciado, o reiterando la conclusión, y no hay ningún argumento en el medio que los conecte. Saben que tienen que ir de $P$ a $Q$, entonces saben que al menos van a tener que mencionar a $P$ y a $Q$, se confunden, y sólo dicen "$P$. Luego $Q$.", o sólo "$Q$.". Si la demostración fuera una sola oración, no sería un ejercicio de una materia universitaria. Si un ejercicio les resultó totalmente trivial, probablemente lo hicieron mal. Vuelvan a leer la #xref(<conversacionn>), sobre comprender qué nos están pidiendo.
 
@@ -106,7 +106,7 @@ jamás ha sido probada, aún después de cientos de años de intentos. Sin embar
 
 En general, pueden usar sin probar (pero mencionando qué es lo que están usando!) lo que hayan visto en materias correlativas, y en el material demostrado en clase. Si quieren usar algo más, pregunten si lo pueden usar. La respuesta muchas veces va a ser "Lo podés usar sólo si lo podés probar", que es lo mismo que "No".
 
-== Empezar con la conclusión
+=== Empezar con la conclusión
 No empiecen con la conclusión e intenten probar la premisa. Si logran hacer esto, de milagro, usando sólo implicaciones bilaterales ($iff$), en el mejor caso es una pobre y confusa exposición de la implicación pedida. En el peor caso, casi siempre van a cometer el error de usar una implicación que no tiene vuelta válida, y su demostración no va a decir nada.
 
 #warning-box[
@@ -124,7 +124,7 @@ No empiecen con la conclusión e intenten probar la premisa. Si logran hacer est
 
 Si llegaron a algo razonando así, este es el momento para emprolijar su idea, y empezar desde el principio. No se preocupen porque "parezca un galerazo" que su objeto justo cumpla lo pedido al final. Esa es una preocupación pedagógica del docente, no de ustedes.
 
-== No entender qué estamos asumiendo
+=== No entender qué estamos asumiendo
 
 Frecuentemente vemos que usan algo sin saber que lo están usando. Por ejemplo, "sean $u, v in V$ tales que hay un camino entre $u$ y $v$". Nada en esto nos deja concluir que $u eq.not v$. Si luego asumimos que el camino tiene longitud mayor a cero, por ejemplo diciendo "sea $P = [u, x, dots, v]$ el camino entre $u$ y $v$, y tomemos la arista $(u, x)$" (que no tiene por qué existir), estamos asumiendo algo sin siquiera entender que lo estamos haciendo.
 

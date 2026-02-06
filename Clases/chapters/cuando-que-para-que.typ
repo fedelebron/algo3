@@ -5,7 +5,7 @@
 #show: apply-preamble
 
 
-= ¿Cuándo, qué, y para qué demostramos?
+== ¿Cuándo, qué, y para qué demostramos?
 Un computador científico escribe demostraciones cuando quiere establecer sin dudas la veracidad de una proposición lógica. Por ejemplo, si queremos probar que nuestro sistema no va a quedarse sin memoria independientemente de las consultas que arriben, si queremos probar que nuestro programa no se va a ralentizar desmedidamente a medida que se aumente el tamaño de su entrada, o si queremos probar que en nuestro programa con ejecución en paralelo no va a haber "deadlock"#footnote[Un deadlock ocurre cuando hay al menos dos componentes en un programa, cada una esperando a que la otra haga algo, y ninguna pudiendo avanzar.] o livelock#footnote[Un livelock ocurre cuando hay al menos dos componentes en un programa, y cada una cambia su estado en respuesta a la otra, pero ninguna progresa.] en ninguna circunstancia. El siguiente es un ejemplo clásico de un algoritmo concurrente que resuelve el problema de los filósofos comensales@dining. Probar que este programa nunca va a sufrir deadlock debe hacerse formalmente, no basta con probarlo varias veces y ver cómo se comporta.
 
 #algorithm({

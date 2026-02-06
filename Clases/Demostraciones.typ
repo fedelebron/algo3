@@ -32,7 +32,6 @@
 #pagebreak()
 #set page(numbering: "1")
 
-
 A la Universidad de Buenos Aires.
 
 #pagebreak()
@@ -41,12 +40,11 @@ A la Universidad de Buenos Aires.
 
 #pagebreak()
 
-#include "chapters/que-es-demostracion.typ"
-#include "chapters/cuando-que-para-que.typ"
-#include "chapters/como-aprendemos.typ"
-#include "chapters/como-demostramos.typ"
-#include "chapters/errores-comunes.typ"
-#include "chapters/temario.typ"
+#include "chapters/demostraciones.typ"
+#include "chapters/fundamentos-matematicos.typ"
+#include "chapters/algoritmos.typ"
+#include "chapters/teoria-de-grafos.typ"
 #include "chapters/apendice.typ"
+
 
 #load-bib(main: true)

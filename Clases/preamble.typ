@@ -356,7 +356,16 @@ canvas({
 #let apply-preamble(body) = {
   // Text settings
   set text(lang: "es")
-  set heading(numbering: "1.1")
+
+  let show-heading = (..nums) => {
+    let (part, ..chapter-and-sections) = nums.pos()
+    if chapter-and-sections.len() == 0 {
+      return "Parte " + numbering("I", part) + ":" 
+    } else {
+      return numbering("1.1.1.1.1.1", ..chapter-and-sections)
+    }
+  }
+  set heading(numbering: show-heading)
   
   // Equation numbering for labeled equations only
   show math.equation: it => {

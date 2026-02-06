@@ -5,11 +5,11 @@
 #show: apply-preamble
 
 
-= ¿Cómo demostramos?
+== ¿Cómo demostramos?
 
 Ahora miremos cómo se construye una demostración, proceduralmente.
 
-== Formalizar la consigna
+=== Formalizar la consigna
 En su vida profesional muy rara vez les van a dar un problema pre-formalizado, en términos de secuencias de enteros, permutaciones, o teoría de grafos. En cambio, van a tener que transformar el problema que tienen, a uno donde puedan usar las herramientas que conocen. Esto se llama formalizar. Esta parte es *crucial*: Si formalizan incorrectamente, todo lo que hagan después es totalmente irrelevante. Parte de esto es lectura y comprensión de lo que les piden, y la otra parte es poder usar lenguaje formal.
 
 #ej[
@@ -64,7 +64,7 @@ No sólo es difícil de leer, sino que distintas personas lo van a interpretar d
 
 Vemos cuán importante es leer detenidamente, y tener cuidado a la hora de formalizar el enunciado. Cuando modelamos algo del mundo real (como monedas) con un concepto matemático (como números naturales), tenemos que pensar si el modelo tiene sentido, y si estamos modelando exactamente los objetos que queremos modelar. Si nuestro modelo es demasiado amplio, como ocurrió con nuestro primer intento de formalización del problema de las monedas, las soluciones que encontramos no van a tener contraparte en el mundo real. Si, por otra parte, nuestro modelo es demasiado restrictivo, puede que no podamos encontrar soluciones que sí existen en el mundo real.
 
-== Comprender qué se nos pide <conversacionn>
+=== Comprender qué se nos pide <conversacionn>
 
 Una herramienta útil para entender qué hay que probar es pensarlo como una conversación entre dos personas. A nosotros nos van a pedir que demostremos algo, y nosotros tenemos que convencer al interlocutor. Luego, una proposición como la siguiente:
 
@@ -107,7 +107,7 @@ Noten cómo al igual que ocurre en la conversación, tuvimos que decir quién es
 })
 #wrap-content(img, t, align: bottom + right)
 
-== Considerar ejemplos
+=== Considerar ejemplos
 
 En general, las cosas que probamos van a ser de la forma $A implies B$, con $A$ algo que podemos asumir, y $B$ algo que queremos demostrar. Para demostrar esto, es frecuentemente útil considerar ejemplos de cosas que cumplen $A$, y ver "por qué" se tiene que cumplir $B$ para ellas. Podemos empezar con ejemplos pequeños, si nuestra estructura tiene alguna noción de "tamaño" (la longitud de una lista, el valor absoluto de un número real, el número de vértices mas aristas de un grafo, el numero de líneas de un programa, el número de reglas de una gramática, etc).
 
@@ -388,11 +388,11 @@ Habiendo jugado con ejemplos pequeños, ahora sabemos "por qué" la proposición
 
 Nuestro cerebro es muy eficiente para ser perezoso, y frecuentemente al hacer cuentas repetitivas, vamos a encontrar patrones que nos ahorren esfuerzo, y al mismo tiempo revelen propiedades sobre los objetos que estamos mencionando. Jamás se me hubiera ocurrido distribuir un $n + 1$ a cada uno de los $n + 1$ términos de la sumatoria, si no fuera porque fue exactamente lo que hice para $n = 3$ y $n = 4$, notando ese patrón en un caso chico.
 
-== Estrategias de demostración
+=== Estrategias de demostración
 Una vez que entendemos qué es lo que se no pide probar y tenemos una idea intuitiva de por qué funciona, podemos planear estructuras que va a tener nuestra demostración.
 En general vamos a usar varias de ellas en la misma demostración.
 
-=== Inducción
+==== Inducción
 Si los objetos con los que estamos trabajando tienen una estructura recursiva, como los números naturales, los árboles, los grafos, o las cadenas de texto, entonces podemos considerar inducción como técnica de demostración.
 
 Vamos a plantear un predicado sobre los naturales, $P$. Vamos a probar que $P$ vale para los primeros $k$ números naturales (es posible que $k = 0$, o $k = 1$, o $k > 1$). Luego vamos a probar que dado un $n gt.eq k$, si vale $P(j)$ para todo $j < n$, entonces vale $P(n)$. Esto nos permite concluir que vale $P(n)$ para todo $n in NN$.
@@ -691,7 +691,7 @@ El error vino de usar $P(n - 1)$. Esto no tiene sentido cuando estamos probando 
 
 El error está en asumir que existen naturales $i < n, j < n,$ con $i + j = n$. Esto sólo es cierto si $n gt.eq 2$, y entonces nuestra demostración falla para $n = 1$, y se cae la inducción. No fuimos cuidadosos, y nos faltó el caso base $n = 1$.
 
-=== Correctitud de ciclos en algoritmos <fastexp>
+==== Correctitud de ciclos en algoritmos <fastexp>
 
 Frecuentemente vamos a probar propiedades sobre algoritmos que usan ciclos. La herramienta principal que tenemos para esto es el teorema del invariante. Esto no es nada más que inducción en el número de iteraciones, con un formalismo al rededor para evitar que cometan errores (como, por ejemplo, olvidarse de probar que el ciclo efectivamente termina).
 
@@ -768,7 +768,7 @@ En Algoritmos 1, aprenden a especificar estas proposiciones, y a demostrar estas
 #note-box[
   Noten cómo los algoritmos con estado son más engorrosos de demostrar correctos, pues necesitamos más formalidad sobre las transiciones de estado para evitar cometer errores. Un argumento poco riguroso sería decir "En cada iteración, $x^k y = x_0^n$.", pero esto abre la puerta a errores (¿en qué momento de la iteración? ¿por qué es cierto eso?). El teorema del invariante es una herramienta formal para obtener rigor.]
 
-=== Correctitud de algoritmos recursivos
+==== Correctitud de algoritmos recursivos
 
 Si nuestro algoritmo es recursivo, en general vamos a usar inducción para probar su correctitud. Veamos una versión recursiva del algoritmo `Exp`.
 
@@ -886,7 +886,7 @@ Si tenemos que probar condiciones equivalentes, frecuentemente nos va a ser úti
   - 3 $implies$ 1: Como $[a] = [b]$ y $a in [a]$, entonces $a in [b]$, y luego $a ~ b$.
 ]
 
-=== Contrarecíproco y contradicción
+==== Contrarecíproco y contradicción
 
 Si tenemos que probar una implicación, es decir una proposición de la forma $P implies Q$, podemos probar algo equivalente, que es el contrarecíproco de esa implicación. El contrarecíproco de $P implies Q$ es $(not Q) implies (not P)$. Hacemos esto cuando nos es más cómodo tener de antecedente $not Q$, por ejemplo porque ya probamos $not Q$ y queremos usar esto en un _modus ponens_ para probar $not P$.
 
@@ -1005,7 +1005,7 @@ Vemos frecuentemente el error #text(red)[$not (P implies Q) iff not P implies no
 )
 
 
-=== Si y sólo si
+==== Si y sólo si
 Si tenemos que probar un si-y-sólo-si ($iff$), podemos probar por separado $implies$ y $arrow.double.l$. Es muy común que uno de los dos sea muy fácil, y el otro sea más difícil. Por ejemplo:
 
 #teo(title: [Cantor-Schröder-Bernstein])[
@@ -1099,7 +1099,7 @@ La vuelta de este teorema es extremadamente molesta de probar, mientras que la i
     ]]
 ]
 
-=== Partir en casos
+==== Partir en casos
 Si tenemos que probar $forall x in X. P(x)$ y podemos dividir el dominio $X$ de forma productiva, donde cada subconjunto de $X$ tiene una demostración de $P$ simple pero mayormente independiente, podemos partir en casos. Por ejemplo:
 
 #ej[
@@ -1113,7 +1113,7 @@ Si tenemos que probar $forall x in X. P(x)$ y podemos dividir el dominio $X$ de 
 
 Cuando hacemos esto, es importante tener en cuenta cuán difícil es la demostración en cada caso. Si partimos en, por ejemplo, $n = 0$ y $n eq.not 0$, pero uno de los casos es mucho más difícil que el otro, entonces el caso que es más difícil requiere mucho más esfuerzo y detalle. A veces vemos alumnos que hacen el caso simple con detalle, y el caso complejo lo dejan vago, lo cual es bastante inútil.
 
-=== Unicidad
+==== Unicidad
 Si tenemos que probar que "existe un único $x$ en $X$ tal que $P(x)$", una estrategia común es tomar dos objetos que cumplan $P(x)$, y concluir que son el mismo.
 
 #ej[
@@ -1144,7 +1144,7 @@ Otro ejemplo de unicidad, pero en grafos y árboles.
 
 A veces vamos a usar el contrarecíproco para probar unicidad, postulando que existen dos objetos distintos que cumplen una propiedad, y llegando a un absurdo. Les reitero que no usan el contrarecíproco mecánicamente, pero sí que lo conozcan como herramienta.
 
-== Pasar en limpio
+=== Pasar en limpio
 
 Gran parte de una demostración es jugar con los objetos, e intentar ver qué sucede. Eventualmente, uno llega a un argumento formal sólido. Sin embargo, al comunicarle este argumento a alguien, no hace falta comunicar todas las cosas que pensamos, las ecuaciones que no llevaron a nada, los errores que cometimos, los ejemplos que intentamos, los dibujos que nos confundieron, etcétera.
 

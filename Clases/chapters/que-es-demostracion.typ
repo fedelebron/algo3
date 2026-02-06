@@ -4,8 +4,7 @@
 
 #show: apply-preamble
 
-
-= ¿Qué es una demostración matemática?
+== ¿Qué es una demostración matemática?
 
 Una demostración matemática es un argumento convincente de la veracidad de una proposición matemática. Inmediatamente tenemos la pregunta, ¿convence a _quién_? Distintos argumentos van a convencer a distinta gente. Por ejemplo, el siguiente es un argumento de la veracidad del teorema de Pitágoras.
 
@@ -19,7 +18,8 @@ Una demostración matemática es un argumento convincente de la veracidad de una
 
 ¿Esto es siquiera una demostración? ¿Los convence? ¿Convencería a sus amigos o a alguien que parasen en la calle? ¿Cómo saben, o definen, si "está bien"?
 
-== Demostraciones en la historia
+
+=== Demostraciones en la historia
 Históricamente, empezamos haciendo matemática sin generalidad, y sin demostraciones. Un matemático en el 2000 a.c.#footnote[No había un concepto de "matemático" en ese momento. Los babilonios entendían conceptos sobre aritmética y álgebra desde el punto de vista de la geometría. Describían relaciones entre ángulos, lados, y perímetros de figuras dibujadas, y usaban esto para construir, arar, estimar distancias, etc.] hubiera afirmado una proposición, y listo. Con suerte hubiera dado ejemplos que mostraran la veracidad de esa proposición en casos particulares. No había un lenguaje formal para hablar en generalidades sobre, por ejemplo, "los enteros". Había tablas de recíprocos de enteros y soluciones a ecuaciones cuadráticas, pero no un algoritmo de división o una expresión como $(-b plus.minus sqrt(b^2 - 4 a c))/(2a)$.
 
 Los griegos son los primeros que intentan dar argumentos de algún tipo para proposiciones generales. Thales de Mileto demostró el siguiente teorema, aunque la primer demostración que sobrevive es la de Euclides.
@@ -47,7 +47,7 @@ Los griegos son los primeros que intentan dar argumentos de algún tipo para pro
     draw.line("F", "A", stroke: (dash: "dashed"))
     draw.line("A", "E", stroke: (dash: "dashed"))
   })
-  #let body = [Dada por Euclides@elementa.
+  #let body = [Dada por Euclides en @elementa.
 
     Sea $A B C$ un círculo, $overline(B C)$ su diámetro, $E$ su centro. Unir $overline(B A)$, y $overline(A C)$.
 
@@ -122,7 +122,7 @@ Por último, veamos un teorema moderno, traducido del libro Algebra de Serge Lan
 
 Con estos ejemplos concluímos que lo que se considera una demostración matemática ha evolucionado, como ha evolucionado la noción de matemática que usamos. También, lo que se considera una demostración correcta va a depender del contexto en que uno se encuentre, qué puede uno asumir del lector, y para qué propósito uno está demostrando.
 
-== Contexto en el que están demostrando
+=== Contexto en el que están demostrando
 
 Ustedes se encuentran cursando una carrera universitaria en las ciencias formales. El objetivo de la carrera es formarlos como computadores científicos. Como tales, deberían salir de la carrera ambos con conocimientos sobre objetos y herramientas específicas como grafos, números racionales, programación dinámica, sistemas operativos, inducción, cálculo diferencial, teoría de lenguajes, y algoritmos numéricos; pero más importantemente *deberían adquirir la habilidad de razonar formalmente*, de demostrar a cualquiera que se los pida que sus conclusiones son correctas, de entender y criticar razonamientos de otros, de saber cuándo y cómo usar las herramientas que conocen, y cuándo y cómo desarrollar ideas y algoritmos nuevos.
 
@@ -162,7 +162,7 @@ Esto nos dice que tenemos que ser un poco paranoicos, si nuestro objetivo es con
 
 Por otro lado, uno puede valerse de que el lector es un par. Sus conocimientos son similares a los que tienen ustedes, y al momento de estar cursando una materia, pueden asumir que el lector cursó y aprobó las materias correlativas. Por ende, si sabemos que $m lt.eq n(n-1)/2$, podemos concluir que $m < n^2$, porque asumimos que el lector aprobó álgebra del secundario. Debemos _decir_ que estamos usando que $m lt.eq n(n-1)/2$ para concluír que $m lt.eq n^2$, pero no hace falta demostrar esa conclusión. Sí debemos decir quién es $n$ y quién es $m$, y si estamos usando, por ejemplo, que $n gt.eq 0$, debemos afirmarlo explícitamente. De nuevo: Estamos siendo un poco paranoicos, porque no queremos que quede ninguna duda en la mente de ningún par que nos lea (en particular, en la mente del docente que nos va a evaluar).
 
-== Formalidad y rigor
+=== Formalidad y rigor
 
 Cuando uno habla de "formalidad" en matemática, se está refiriendo a la _forma_ en la que algo está escrito. Las demostraciones, entonces, existen en un continuo de formalismo. Ese formalismo va desde argumentos heurísticos, como "$n! + 1$ no es divisible por nadie debajo de $n$, luego es primo", hasta demostraciones verificables por un asistente de demostración, como la que vimos en el @proof:formal. El formalismo, en el contexto en el que están, se usa para intentar ser riguroso en nuestros argumentos. Un argumento informal como el primero puede ser cierto, como puede ser falso (en particular, $n! + 1$ no siempre es primo, por ejemplo $4! + 1 = 25 = 5^2$).
 
