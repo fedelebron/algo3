@@ -438,7 +438,7 @@ Veamos algunos ejemplos.
 Sea $f(n) = 2 n^2 + O(n)$, y $g(n) = 4 n + Theta(log n)$. Demostrar que $f g in O(n^3)$.
 ]
 #demo[
-Por definiciónd, existen funciones $h_1 in O(n)$ y $h_2 in Theta(log n)$ tales que $f(n) = 2n^2 + h_1(n)$ y $g(n) = 4n + h_2(n)$.
+Por definición, existen funciones $h_1 in O(n)$ y $h_2 in Theta(log n)$ tales que $f(n) = 2n^2 + h_1(n)$ y $g(n) = 4n + h_2(n)$.
 
 Luego:
 $
@@ -454,42 +454,6 @@ Ahora debemos probar que cada término está en $O(n^3)$:
 
 Por lo tanto, $f g in O(n^3)$.
 ]
-
-#ej[
-Sea $T:NN arrow RR0$, definida como:
-
-$
-  T(n) = cases(
-    5 & "si" n = 1,
-    T(n - 1) + O(n^2) & "si" n gt 1
-  )
-$
-
-Demostrar que $T in O(n^3)$.
-]
-#demo[
-Por definición de la notación algebraica asintótica, existe una función $h in O(n^2)$ tal que para todo $n gt 1$, $T(n) = T(n-1) + h(n)$.
-
-Expandiendo la recurrencia:
-$
-  T(n) &= T(n-1) + h(n) \
-       &= T(n-2) + h(n-1) + h(n) \
-       &= T(n-3) + h(n-2) + h(n-1) + h(n) \
-       &dots.v \
-       &= T(1) + sum_(i=2)^n h(i) \
-       &= 5 + sum_(i=2)^n h(i)
-$
-
-Como $h in O(n^2)$, existe $alpha > 0$ y $n_0 in NN$ tales que para todo $i gt.eq n_0$, $h(i) lt.eq alpha i^2$. Luego, para $n gt.eq n_0$:
-$
-  sum_(i=2)^n h(i) lt.eq sum_(i=2)^n alpha i^2 = alpha sum_(i=2)^n i^2 = alpha ((n(n+1)(2n+1))/6 - 1) in O(n^3)
-$
-
-Por lo tanto, $T(n) = 5 + O(n^3)$, y luego $T in O(n^3)$.
-]
-
-
-
 
 /*Vamos a querer hacer operaciones algebraicas con estos conjuntos de funciones, como sumarlos y multiplicarlos. Esto nos va a permitir combinarlos y decir cosas más poderosas.
 
@@ -725,7 +689,7 @@ $
 Por lo tanto, $T in O(n^2)$.
 ]
 
-Este razonamiento es incorrecto. Para verlo, basta tomar $h_i (n) = i^3$ para cada $i in [1, dots, n]$, una función constante (no depende de su argumento), y por lo tanto $h_i in O(1)$. Entonces $T(n) = sum_(i=1)^n i + sum_(i=1)^n h_i (n) = n(n+1)/2 + sum_(i=1)^n i^3 = n(n+1)/2 + (n(n+1)/2)^2 in Omega(n^4)$, que tiene interseción nula con $O(n^2)$. El error en la demostración es que $m_0$ y $alpha$ _dependen de n_ (son un máximo de $n$ cosas). La definición de $O(dots)$ requiere que sean _constantes_.
+Este razonamiento es incorrecto. Para verlo, basta tomar $h_i (n) = i^3$ para cada $i in [1, dots, n]$, una función constante (no depende de su argumento), y por lo tanto $h_i in O(1)$. Entonces $T(n) = sum_(i=1)^n i + sum_(i=1)^n h_i (n) = n(n+1)/2 + sum_(i=1)^n i^3 = n(n+1)/2 + (n(n+1)/2)^2 in Omega(n^4)$, que tiene intersección nula con $O(n^2)$. El error en la demostración es que $m_0$ y $alpha$ _dependen de n_ (son un máximo de $n$ cosas). La definición de $O(dots)$ requiere que sean _constantes_.
 
 Esto nos muestra una sutileza sobre la notación asintótica. Al usar la expresión "$O(dots)$" en un contexto como el de esa sumatoria, donde hay dos variables libres ($i$ y $n$) en vez de sólo una, no está claro con respecto a cuál variable estamos diciendo que varía nuestra función. A priori, en un término así podemos usar ambas, teniendo una función de varias variables. Más adelante veremos notación asintótica con múltiples variables. Por ahora, para probar lo que queremos que valga, vamos a pedir que para todo $n$, y vamos a querer que $O(1)$ en esa sumatoria signifique una función $g: NN times NN arrow RR0$, donde la sumatoria es de la forma $T(n) = sum_(i=1)^n i + g(i, n)$, y existe una constante $alpha in RR$ tal que para todo $n in NN$, y para todo $1 lt.eq i lt.eq n$, $g(i, n) lt.eq alpha$. Esto nos va a permitir la siguiente demostración.
 

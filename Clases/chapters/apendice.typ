@@ -300,7 +300,7 @@ Pensemos en la descomposición por nivel de nuestro árbol de recursión. En los
 
 == Demostración del número de comparaciones de Mergesort
 
-Esta demostración no es particularamente larga. La pongo en el apéndice porque quiero que vean el poder del teorema maestro en el capítulo donde se ve este algoritmo por primera vez.
+Esta demostración no es particularmente larga. La pongo en el apéndice porque quiero que vean el poder del teorema maestro en el capítulo donde se ve este algoritmo por primera vez.
 
 Notemos cómo acá derivamos la función del peor caso explícitamente, no sólo asintóticamente.
 

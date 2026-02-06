@@ -5,7 +5,150 @@
 
 == Recurrencias
 
-TODO: Hablar generalidades sobre recurrencias.
+Muchas veces vamos a tener funciones que están definidas de forma recursiva, también llamadas recurrencias. Es decir, son funciones de la forma $f(n) = dots f(k) dots$, con $k < n$. Por ejemplo, los números de Fibonacci están definidos como:
+
+$
+f(n) = cases(1 & "si" n = 1, 1 & "si" n = 2, f(n - 1) + f(n - 2) & "si" n gt 2)
+$
+
+También vamos a encontrarnos con recurrencias definidas sólo hasta conjuntos asintóticos, como por ejemplo:
+$
+T(n) = cases(5 & "si" n = 1, T(n - 1) + O(n^2) & "si" n gt 1)
+$
+
+Vamos a querer hacer análisis asintótico de estas funciones, y frecuentemente esto comienza encontrando una forma cerrada para la recurrencia. En este capítulo veremos tres técnicas para hacer esto: expansión directa, árboles de recursión, y finalmente el teorema maestro.
+
+=== Expansión
+
+La técnica de *expansión* consiste en aplicar repetidamente la definición recursiva de una función $T$, sustituyendo $T(n-1)$, $T(n-2)$, etc., hasta llegar a un caso base. Esto nos permite ver el patrón resultante y conjeturar una forma cerrada.
+
+El procedimiento es:
++ Expandir $T(n)$ usando la definición recursiva, hasta reconocer un patrón o llegar al caso base.
++ Expresar la suma o producto resultante en forma cerrada.
++ Verificar la solución por inducción.
+
+Esta técnica funciona particularmente bien para *recurrencias lineales*, donde $T(n)$ depende de $T(n-1)$, $T(n-2)$, etc. Para recurrencias que dividen el argumento (como $T(n/2)$), la expansión se vuelve más complicada, y usaremos otras técnicas.
+
+Comencemos con un ejemplo sencillo, una suma aritmética.
+
+#ej[
+Sea $T: NN arrow NN$ definida como:
+$
+  T(n) = cases(
+    1 & "si" n = 1,
+    T(n-1) + n & "si" n gt 1
+  )
+$
+Encontrar su forma cerrada.
+]
+#sol[
+*Paso 1: Expansión.* Expandimos $T(n)$ usando la definición recursiva:
+$
+  T(n) &= T(n-1) + n \
+       &= T(n-2) + (n-1) + n \
+       &= T(n-3) + (n-2) + (n-1) + n \
+       &dots.v \
+       &= T(1) + 2 + 3 + dots + n \
+       &= 1 + sum_(i=2)^n i
+$
+
+*Paso 2: Forma cerrada.* Reconocemos el patrón como una suma aritmética. Conjeturamos que $T(n) = (n(n+1))/2$.
+
+*Paso 3: Verificación por inducción.* Probamos que $T(n) = (n(n+1))/2$ para todo $n gt.eq 1$.
+- _Caso base_: $T(1) = 1 = (1 dot 2)/2$. Cumple.
+- _Paso inductivo_: Sea $n gt 1$. Asumimos $T(n-1) = ((n-1)n)/2$. Entonces:
+$
+  T(n) = T(n-1) + n = ((n-1)n)/2 + n = (n(n-1) + 2n)/2 = (n(n+1))/2
+$
+
+Luego $T(n) = (n(n+1))/2$, y por lo tanto $T in Theta(n^2)$.
+]
+
+Y un poco más complejo, una suma geométrica.
+
+#ej[
+Sea $T: NN arrow NN$ definida como:
+$
+  T(n) = cases(
+    1 & "si" n = 0,
+    2 T(n-1) + 1 & "si" n gt 0
+  )
+$
+Encontrar su forma cerrada.
+]
+#sol[
+*Paso 1: Expansión.* Expandimos $T(n)$ usando la definición recursiva:
+$
+  T(n) &= 2 T(n-1) + 1 \
+       &= 2(2 T(n-2) + 1) + 1 = 4 T(n-2) + 2 + 1 \
+       &= 4(2 T(n-3) + 1) + 2 + 1 = 8 T(n-3) + 4 + 2 + 1 \
+       &dots.v \
+       &= 2^n T(0) + 2^(n-1) + dots + 2 + 1 \
+       &= 2^n + sum_(i=0)^(n-1) 2^i
+$
+
+*Paso 2: Forma cerrada.* Reconocemos el patrón como una suma geométrica. Conjeturamos que $T(n) = 2^(n+1) - 1$.
+
+*Paso 3: Verificación por inducción.* Probamos que $T(n) = 2^(n+1) - 1$ para todo $n gt.eq 0$.
+- _Caso base_: $T(0) = 1 = 2^1 - 1$. Cumple.
+- _Paso inductivo_: Sea $n gt 0$. Asumimos $T(n-1) = 2^n - 1$. Entonces:
+$
+  T(n) = 2 T(n-1) + 1 = 2(2^n - 1) + 1 = 2^(n+1) - 2 + 1 = 2^(n+1) - 1
+$
+
+Luego $T(n) = 2^(n+1) - 1$, y por lo tanto $T in Theta(2^n)$.
+]
+
+Algunas recurrencias lineales tienen formas cerradas conocidas:
+
+#align(center)[
+#table(
+  columns: 3,
+  align: (left, left, left),
+  table.header([*Recurrencia*], [*Forma cerrada*], [*Orden*]),
+  [$T(n) = T(n-1) + c$], [suma aritmética], [$Theta(n)$],
+  [$T(n) = T(n-1) + n$], [suma triangular], [$Theta(n^2)$],
+  [$T(n) = T(n-1) + n^k$], [suma de potencias], [$Theta(n^(k+1))$],
+  [$T(n) = a dot T(n-1) + c$], [suma geométrica], [$Theta(a^n)$],
+)
+]
+
+Cuando la recurrencia usa notación asintótica, la expansión nos da una cota asintótica.
+
+#ej[
+Sea $T:NN arrow RR0$, definida como:
+
+$
+  T(n) = cases(
+    5 & "si" n = 1,
+    T(n - 1) + O(n^2) & "si" n gt 1
+  )
+$
+
+Demostrar que $T in O(n^3)$.
+]
+#demo[
+Por definición de la notación algebraica asintótica, existe una función $h in O(n^2)$ tal que para todo $n gt 1$, $T(n) = T(n-1) + h(n)$.
+
+Expandiendo la recurrencia:
+$
+  T(n) &= T(n-1) + h(n) \
+       &= T(n-2) + h(n-1) + h(n) \
+       &= T(n-3) + h(n-2) + h(n-1) + h(n) \
+       &dots.v \
+       &= T(1) + sum_(i=2)^n h(i) \
+       &= 5 + sum_(i=2)^n h(i)
+$
+
+Como $h in O(n^2)$, existe $alpha > 0$ y $n_0 in NN$ tales que para todo $i gt.eq n_0$, $h(i) lt.eq alpha i^2$. Definamos, entonces, $beta = max(alpha, max_(i=2)^(n_0) h(i)/i^2)$. Tenemos, entonces, que $h(i) lt.eq beta i^2$ para todo $i in NN, i gt.eq 2$. Luego:
+$
+  sum_(i=2)^n h(i) lt.eq sum_(i=2)^n beta i^2 = beta sum_(i=2)^n i^2 = beta ((n(n+1)(2n+1))/6 - 1) in O(n^3)
+$
+
+Por lo tanto, $T(n) = 5 + O(n^3)$, y luego $T in O(n^3)$.
+]
+
+No siempre va a ser fácil encontrar un patrón mediante expansiones. En particular, cuando la recurrencia divide el argumento (por ejemplo, $T(n) = 2T(n/2) + n$), la expansión directa se complica. Para esos casos, usaremos árboles de recursión. 
 
 === Árboles de recursión
 
