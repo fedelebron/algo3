@@ -404,7 +404,7 @@ Veamos un caso simple, con $k = 1$.
 ]
 #demo[
   Sea el predicado $P(n): sum_(i=1)^n i = (n(n+1))/2$. Vamos a probar que vale $P(n)$ para todo $n in NN$.
-  - Caso base, $P(0)$. Tenemos que $sum_(i=1)^1 i = 1$, y $(1(1+1))/2 = 1$, luego vale $P(1)$.
+  - Caso base, $P(0)$. Tenemos que $sum_(i=1)^0 i = 0$, y $(0(0+1))/2 = 0$, luego vale $P(0)$.
   - Paso inductivo, $P(n)$ con $n gt.eq 1$. Asumimos $P(j)$ para todo $j < n$, queremos probar $P(n)$.
     Tenemos:
     $
@@ -684,7 +684,7 @@ El error vino de usar $P(n - 1)$. Esto no tiene sentido cuando estamos probando 
 ]
 #text(red)[
   #demo[
-    Sea la proposición $P(n): 5n = 0$. Vamos a probar $P(n) forall n in NN$ por inducción.
+    Sea el predicado $P(n): 5n = 0$. Vamos a probar $P(n) forall n in NN$ por inducción.
     - $P(0)$. Queremos probar $P(0)$, que significa $5 times 0 = 0$, y esto es cierto. Luego vale $P(0)$.
     - $n > 0 implies P(n)$. Sean $i, j in NN$, con $i < n, j < n$, tales que $i + j = n$. Entonces por hipótesis inductiva vale $P(i)$ y $P(j)$, entonces $5i = 0$ y $5j = 0$. Entonces, $5n = 5(i + j) = 5i + 5j = 0 + 0 = 0$, lo cual prueba $P(n)$.
   ]]
@@ -920,7 +920,7 @@ Si van a usar esta estrategia, recuerden las reglas de negación.
   $
     not (forall x in X. P(x)) & iff exists x in X. not(P(x)) \
     not (exists x in X. P(x)) & iff forall x in X. not(P(x)) \
-            not (P implies Q) & iff (not Q) implies (not P) \
+            not (P implies Q) & iff P and (not Q) \
                  not (P or Q) & iff (not P) and (not Q) \
                 not (P and Q) & iff (not P) or (not Q) \
                       not bot & iff top \
@@ -1013,6 +1013,8 @@ Si tenemos que probar un si-y-sólo-si ($iff$), podemos probar por separado $imp
   - Existe una función biyectiva $h: A arrow B$.
   - Existe una función inyectiva $f: A arrow B$, y una función inyectiva $g: B arrow A$.
 ]
+
+La vuelta de este teorema es extremadamente molesta de probar, mientras que la ida es trivial.
 #demo[
   - $implies$) Asumamos que existe una función biyectiva $h: A arrow B$. Entonces, $h$ es inyectiva, y su inversa $h^(-1): B arrow A$ también es inyectiva. Luego, existen funciones inyectivas $f=h: A arrow B$ y $g=h^(-1): B arrow A$.
   - $implied$) Esta demostración es de Dedekind@dedekind. Sea $C_0 = A without g(B)$, y para $n gt.eq 0$, definimos recursivamente $C_(n+1) = g(f(C_n))$. Definimos $C = union_(n in NN) C_n$. Definimos la función $h: A arrow B$ como:
