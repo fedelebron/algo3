@@ -63,7 +63,7 @@ Este es *de lejos* el error que más cometen los alumnos. En este momento de su 
 
     Formalmente, el error es que esto prueba $forall x in RR. exists M in RR. x < M$, mientras que lo pedido es $exists M in RR. forall x in RR. x < M$ (y esto último es obviamente falso).
   + #let im = block(width: 60mm, figure(
-      image("../neo.png", width: 60mm),
+      image("/images/neo.png", width: 60mm),
       caption: [Neo intentando probar algo sin darle nombre a todas las cosas.],
     ))
     #let t = [Si terminan definiendo un sustantivo y no lo usan para su conclusión, o no es necesario, pueden removerlo al terminar. Pero si no empezamos dándole nombre, seguro no lo podemos usar.
@@ -131,9 +131,9 @@ Frecuentemente vemos que usan algo sin saber que lo están usando. Por ejemplo, 
 
 #let body_assumption = [Mismo cuando decimos "sea $x$ el vértice tal que $P(x)$". El decir _el_ vértice implica que existe un único tal vértice que cumple $P$. Esto ambos requiere probar que existe, y que no hay otro que cumpla $P$. Si sólo queremos decir que existe (y lo demostramos anteriormente), podemos decir "sea $x$ un vértice tal que $P(x)$".
 
-  Finalmente, a veces lo que asumen no es explícito. Por ejemplo, si se les pide probar que $a$ y $b$ conmutan (es decir, que $a b = b a$), y usan $(a b)^2 = a^2 b^2$, están precísamente asumiendo conmutatividad para probar conmutatividad.]
+  Finalmente, a veces lo que asumen no es explícito. Por ejemplo, si se les pide probar que $a$ y $b$ conmutan (es decir, que $a b = b a$), y usan $(a b)^2 = a^2 b^2$, están precisamente asumiendo conmutatividad para probar conmutatividad.]
 #let image_assumption = {
-  image("../proof_abc.png", height: 50mm)
+  image("/images/proof_abc.png", height: 50mm)
 }
 #wrap-content(image_assumption, body_assumption)
 

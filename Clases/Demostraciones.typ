@@ -41,12 +41,12 @@ A la Universidad de Buenos Aires.
 
 #pagebreak()
 
-#include "chapters/01-que-es-demostracion.typ"
-#include "chapters/02-cuando-que-para-que.typ"
-#include "chapters/03-como-aprendemos.typ"
-#include "chapters/04-como-demostramos.typ"
-#include "chapters/05-errores-comunes.typ"
-#include "chapters/06-temario.typ"
-#include "chapters/07-apendice.typ"
+#include "chapters/que-es-demostracion.typ"
+#include "chapters/cuando-que-para-que.typ"
+#include "chapters/como-aprendemos.typ"
+#include "chapters/como-demostramos.typ"
+#include "chapters/errores-comunes.typ"
+#include "chapters/temario.typ"
+#include "chapters/apendice.typ"
 
 #load-bib(main: true)

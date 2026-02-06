@@ -34,7 +34,7 @@ En este momento, muchos de ustedes no tienen todavía una intuición sobre cuán
 
 #let body_paths = [La matemática que van a ver en la universidad no es como la que vieron en secundario. No hace falta seguir una receta particular, hacer cálculos larguísimos de memoria como derivar 50 polinomios de grado 9, o memorizar patrones de demostración y usar los que el docente quiera. Si se les pide demostrar que $P$ implica $Q$, el objetivo es que ustedes produzcan una demostración clara y convincente de ese hecho. Si el docente pensó que la demostración tenía que ser por inducción, y ustedes la hicieron partiendo en casos, por contrarecíproco, o por absurdo; no importa. Tienen una enorme flexibilidad a la hora de argumentar, lo que da lugar a la *creatividad* en matemática.]
 #let image_paths = block({
-  image("../proof_paths.png")
+  image("/images/proof_paths.png")
 })
 #wrap-content(image_paths, body_paths, align: right)
 

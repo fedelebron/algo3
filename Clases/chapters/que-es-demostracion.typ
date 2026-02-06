@@ -57,7 +57,7 @@ Los griegos son los primeros que intentan dar argumentos de algún tipo para pro
   #wrap-content(drawing, body)
 ]
 
-¿Los convence esa demostración? ¿Dónde precísamente está $F$? ¿Por qué $angle F A C$ es igual a la suma de $angle A B C$ y $angle A C B$? En su momento, esta demostración no sólo era convincente, sino que fue parte del libro de demostraciones de geometría más famoso y celebrado de la historia. ¿Por qué puede ser que hoy en día nos resulta confusa?
+¿Los convence esa demostración? ¿Dónde precisamente está $F$? ¿Por qué $angle F A C$ es igual a la suma de $angle A B C$ y $angle A C B$? En su momento, esta demostración no sólo era convincente, sino que fue parte del libro de demostraciones de geometría más famoso y celebrado de la historia. ¿Por qué puede ser que hoy en día nos resulta confusa?
 
 Viajamos luego al 1758, donde en "De numeris qui sunt aggregata duorum quadratorum" ("Sobre números que son la suma de dos cuadrados") Leonhard Euler prueba el siguiente teorema.
 
@@ -101,7 +101,7 @@ Ahora veamos una demostración formal, escrita en el lenguaje de programación L
 ]
 
 #let tt = [La correctitud de esta demostración es verificable automáticamente por una computadora. Esta demostración, ¿los convence? ¿Siquiera la pueden leer? Indudablemente es correcta, formal, y rigurosa (porque las computadoras no nos "creen" nada), ¿eso significa que "está bien"? ¿Ustedes escribirían algo así para comunicarle algo a un par? Si estas demostraciones se pueden verificar formalmente, ¿por qué no escribimos todas las demostraciones así? Esto nos dice que la formalidad no implica legibilidad para nuestra audiencia.]
-#let img = image("../proof_robot.png", width: 80%)
+#let img = image("/images/proof_robot.png", width: 80%)
 #wrap-content(img, tt)
 
 Por último, veamos un teorema moderno, traducido del libro Algebra de Serge Lang. Este es un libro de estudio clásico para álgebra abstracta, y el teorema se ve en la carrera de Matemática en la facultad.
@@ -115,7 +115,7 @@ Por último, veamos un teorema moderno, traducido del libro Algebra de Serge Lan
   sea una torre normal tal que cada grupo $G_i \/ G_(i+1)$ es simple, y $G_i eq.not G_(i+1)$ para $i = 1, dots, r - 1$. Entonces cualquier otra torre normal de $G$ teniendo las mismas propiedades es equivalente a esta.
 ]
 #demo[
-  Dado cualquier refinamiento ${G_(i, j)}$ para nuestra torre, observamos que para cada $i$ existe precísamente un único índice $j$ tal que $G_i \/ G_(i+1) = G_(i, j) \/ G_(i, j+1)$. Luego esta secuencia de factores no-triviales para la torre original, o la torre refinada, es la misma. Esto prueba nuestro teorema.
+  Dado cualquier refinamiento ${G_(i, j)}$ para nuestra torre, observamos que para cada $i$ existe precisamente un único índice $j$ tal que $G_i \/ G_(i+1) = G_(i, j) \/ G_(i, j+1)$. Luego esta secuencia de factores no-triviales para la torre original, o la torre refinada, es la misma. Esto prueba nuestro teorema.
 ]
 
 ¿Qué tal esta última? ¿Los convence? ¿Les parece clara la demostración? Imagino que a la mayoría les va a resultar incomprensible. Si le está faltando algo para convencerlos, ¿significa que esta demostración "está mal"?
@@ -142,11 +142,11 @@ Como vimos, _cualquiera_ está definido dentro de un contexto. Sus argumentos no
     columns: (1fr, 1fr),
     rows: 50mm,
     block({
-      image("../speech_baby.jpeg", width: 100%)
+      image("/images/speech_baby.jpeg", width: 100%)
       place(center + horizon, dx: 6mm, dy: -15mm, text(size: 13pt)[$m lt.eq n(n-1)/2$])
     }),
     block({
-      image("../speech_russian.jpeg", width: 100%)
+      image("/images/speech_russian.jpeg", width: 100%)
       place(center + horizon, dx: 0mm, dy: -17mm, text(size: 20pt)[что?])
     }),
   )]

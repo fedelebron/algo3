@@ -86,7 +86,7 @@ Probar un "para todo" es equivalente a la siguiente conversación, entre el que 
 ]
 
 #let image_forall = block({
-  image("../speech_forall.png", width: 90%)
+  image("/images/speech_forall.png", width: 90%)
   place(center + horizon, dx: -18mm, dy: -17mm, text(size: 20pt)[$forall$])
   place(center + horizon, dx: 17mm, dy: -17mm, text(size: 20pt)[$exists$])
 })
@@ -102,7 +102,7 @@ Noten cómo al igual que ocurre en la conversación, tuvimos que decir quién es
 
 #let t = [Noten también cómo usé cuantificadores en Español, no usando símbolos. No sugiero enfocarse en escribir usando el mayor número de símbolos posibles. Comparen "$forall x in X. exists y in Y. x > y implies (exists z in Z. z = x + y or z = x - y)$", con "Sea $x in X$. Entonces existe un $y in Y$, tal que si $x > y$, entonces $x + y in Z$, o $x - y in Z$." Al saber leer lenguaje natural, nos es más fácil entender qué significa la segunda oración. ¡Esto es a pesar de ser más larga! Cuando escribimos cuidadosamente, usando lenguaje estándar, podemos tener ambas precisión, y comprensión del lector.]
 #let img = block({
-  image("../soviet.png", width: 100%)
+  image("/images/soviet.png", width: 100%)
   place(center + horizon, dx: 9.5mm, dy: -16mm, text(size: 8pt)[$forall x. forall y. x = y$])
 })
 #wrap-content(img, t, align: bottom + right)
@@ -647,7 +647,7 @@ Ahora veamos qué pasa si no somos cuidadosos al usar la hipótesis inductiva.
   ]
 ]
 
-#let im = image("../horses.png", width: auto)
+#let im = image("/images/horses.png", width: auto)
 #wrap-content(im, txt, align: left)
 
 
@@ -713,7 +713,7 @@ Y tenemos que demostrar las siguientes seis proposiciones:
   + El invariante y la negación de la guarda implican la postcondición.
   + La guarda y el invariante al comenzar la iteración implican el invariante al terminar la iteración.
 ]
-#let im = image("../proof_bricks.png", width: 70mm)
+#let im = image("/images/proof_bricks.png", width: 70mm)
 #wrap-content(im, t, align: bottom + right)
 
 En Algoritmos 1, aprenden a especificar estas proposiciones, y a demostrar estas proposiciones. En la sección de ejemplos muestro varios, pero para mostrarles uno acá, vamos a probar la correctitud del algoritmo de exponenciación en tiempo logarítmico.
@@ -1054,11 +1054,11 @@ La vuelta de este teorema es extremadamente molesta de probar, mientras que la i
   columns: (1fr, 1fr),
   column-gutter: 0pt,
   figure(
-    image("../sisyphus.jpg", height: 40mm),
+    image("/images/sisyphus.jpg", height: 40mm),
     caption: [Sísifo probando la vuelta de Cantor-Schröder-Bernstein.],
   ),
   figure(
-    rotate(270deg, reflow: true, image("../sisyphus.jpg", width: 40mm)),
+    rotate(270deg, reflow: true, image("/images/sisyphus.jpg", width: 40mm)),
     caption: [Sísifo probando la ida de Cantor-Schröder-Bernstein.],
   ),
 )
@@ -1465,7 +1465,7 @@ OK, creo que eso cierra. A ver cómo se puede escribir bien...
 */
 
 #quote-box[
-  #let im = image("../proof_erased.png", height: 50mm)
+  #let im = image("/images/proof_erased.png", height: 50mm)
   #let t = [Hrm, quedó medio desordenado eso. Mejor lo emprolijo un poco. Puedo ponerle nombre a los tableros, y enunciar bien mi hipótesis inductiva...]
   #wrap-content(im, t)
 ]

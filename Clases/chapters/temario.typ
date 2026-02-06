@@ -541,7 +541,7 @@ Usualmente vamos a definir funciones usando expresiones de la forma $f(X) = Y$, 
   - Sean $x$, $x'$ tal que $f(x) = f(x')$. Podemos aplicarle $g$ a ambos lados de la ecuación, obteniendo $g(f(x)) = g(f(x'))$, luego $(g compose f)(x) = (g compose f)(x')$. El enunciado nos dice que $g compose f = id_A$, luego esto es $id_A (x) = id_A (x')$, pero $id_A (y) = y$ para todo $y in A$, luego esto nos dice que $x = x'$, probando que $f$ es inyectiva.
   - Sea cualquier $y in B$, y definamos $x = g(y)$. Entonces podemos aplicar $f$ a ambos lados, obteniendo $f(x) = f(g(y))$, o equivalentemente, $f(x) = (f compose g)(y)$. El enunciado nos dice que $f compose g = id_B$, entonces sabemos que $f(x) = id_B (y)$. Pero $id_B (y) = y$, y luego $f(x) = y$. Luego, para todo $y in B$, encontramos un $x in A$ tal que $f(x) = y$, probando que $y$ es sobreyectiva.
 
-  Luego $f$ es biyectiva. Para ver que $f^(-1) = g$, tenemos que probar que $f^(-1)(y) = g(y)$ para todo $y in B$. Sea $y in B$. Como $f$ es sobreyectiva, existe un $x in A$ tal que $f(x) = y$. Luego, $f^(-1)(y) = f^(-1)(f(x)) = x$ por definición de función inversa. Asimismo, $g(y) = g(f(x)) = (g compose f)(x) = id_A (x) = x$. Luego ambos $f^(-1)(y)$ y $g(y)$ son iguales a $x$, y luego $f^(-1)(y) = g(y)$ para todo $y in B$, que es precísamente la definición de $f^(-1) = g$.
+  Luego $f$ es biyectiva. Para ver que $f^(-1) = g$, tenemos que probar que $f^(-1)(y) = g(y)$ para todo $y in B$. Sea $y in B$. Como $f$ es sobreyectiva, existe un $x in A$ tal que $f(x) = y$. Luego, $f^(-1)(y) = f^(-1)(f(x)) = x$ por definición de función inversa. Asimismo, $g(y) = g(f(x)) = (g compose f)(x) = id_A (x) = x$. Luego ambos $f^(-1)(y)$ y $g(y)$ son iguales a $x$, y luego $f^(-1)(y) = g(y)$ para todo $y in B$, que es precisamente la definición de $f^(-1) = g$.
 ]
 
 Finalmente, esta notación nos va a ser útil:
@@ -855,7 +855,7 @@ El objetivo de este ejercicio no es que hagan cuentas, sino que entiendan cómo 
 
   Vamos a usar la técnica de "contar lo mismo de dos formas distintas". Supongamos que tenemos un conjunto $X$ de tamaño $n$. Sea $Y$ el conjunto de subconjuntos de $X$ de tamaño $k$.
 
-  - Por un lado, $|Y| = binom(n, k)$, porque esa es precísamente la semántica de $binom(n, k)$.
+  - Por un lado, $|Y| = binom(n, k)$, porque esa es precisamente la semántica de $binom(n, k)$.
   - Por otro lado, sea $x in X$. Los elementos de $Y$ se dividen en los que contienen a $x$, y los que no contienen a $x$. ¿Cuántos hay que no tienen a $x$? Eso es lo mismo que elegir subconjuntos de tamaño $k$ de $X without {0}$, que tiene tamaño $n - 1$. Luego, hay $binom(n - 1, k)$ de esos. ¿Cuántos hay que _sí_ tienen a $x$? Si esos ya tienen a $x$, el número de cosas que pueden elegir es $k - 1$ cosas más, pero no pueden volver a elegir a $x$, entonces tienen $n - 1$ elementos de $X$ para elegir. Luego, hay $binom(n - 1, k - 1)$ de esos. Entonces, en total, $|Y| = binom(n - 1, k) + binom(n - 1, k - 1)$.
 
   Luego, $binom(n, k) = binom(n - 1, k) + binom(n - 1, k - 1)$ para todo $n, k in NN$, con $k lt.eq n$, en particular vale para $n = 10, k = 4$.
@@ -883,11 +883,11 @@ Para esta demostración les voy a mostrar el proceso de deducción e ideas que h
 
   Tengo $i, j in NN$, quiero ver qué coeficiente binomial multiplica a $x^i y^j$ en la primer sumatoria, y luego en la segunda. En la primera, $i = k + 1, j = n - k$. Entonces el coeficiente es $binom(n = j + (i - 1), k = i - 1)$. En la segunda, tenemos $i = k, j = n - k + 1$, entonces el coeficiente es $binom(j + i - 1, i)$.
 
-  Juntando estos dos, tenemos que la sumatoria es $sum_(i, j) x^i y^j (binom(j + i - 1, i - 1) + binom(j + i - 1, i))$, donde estoy sumando $i, j$ sobre algún conjunto que no quiero pensar por ahora. Pero esto es bueno, los términos son precísamente de la forma que pensaba que eran, si los sumo me queda $binom(j + i, i)$.
+  Juntando estos dos, tenemos que la sumatoria es $sum_(i, j) x^i y^j (binom(j + i - 1, i - 1) + binom(j + i - 1, i))$, donde estoy sumando $i, j$ sobre algún conjunto que no quiero pensar por ahora. Pero esto es bueno, los términos son precisamente de la forma que pensaba que eran, si los sumo me queda $binom(j + i, i)$.
 
   Ahora tengo que pensar sobre dónde sumo los $i, j$. Todos los términos en las sumatorias tienen el mismo grado, son todos de grado $n + 1$. Los términos que estoy sumando ahora tienen grado $i + j$, entonces $i + j = n + 1$. Como quiero que me quede una sumatoria de sólo un índice, elijo $i$, y me queda $j = n + 1 - i$. ¿Cuáles son los bordes del índice $i$? Hay un término de la sumatoria de la derecha donde tengo $x^0$, y acá estoy diciendo $x^i$, así que seguro tengo que tener un término con $i = 0$. Por otro lado, de la sumatoria izquierda tengo un término $x^(n + 1)$, y nuevamente acá digo $x^i$, así que $i$ tiene que llegar hasta $n + 1$.
 
-  Entonces, usando que $j = n + 1 - i$ y el coeficiente del término $x^i y^j$ es $binom(j + i, i)$, la suma de las sumatorias me queda $sum_(i = 0)^(n + 1) binom(n + 1 - i + i, i) x^i y^(n + 1 - i)$, y esto es igual a $sum_(i = 0)^(n + 1) binom(n + 1, i) x^i y^(n + 1 - i)$, que es precísamente lo que quiero probar.
+  Entonces, usando que $j = n + 1 - i$ y el coeficiente del término $x^i y^j$ es $binom(j + i, i)$, la suma de las sumatorias me queda $sum_(i = 0)^(n + 1) binom(n + 1 - i + i, i) x^i y^(n + 1 - i)$, y esto es igual a $sum_(i = 0)^(n + 1) binom(n + 1, i) x^i y^(n + 1 - i)$, que es precisamente lo que quiero probar.
 
   OK, perfecto. ¡A formalizarlo! Voy a tener que pensar un rato para hacer menos grotesco el reindexado de las sumas.
 ]
@@ -1404,7 +1404,7 @@ Tengan cuidado, ¡decir que $f(n) = n^2 + O(n)$ *no* define $f$! Sólo nos dice 
 Esta notación es tan poderosa como peligrosa. ¡Están advertidos!
 ]
 #block({
-  image("../dumbledore.png", width: 100%)
+  image("/images/dumbledore.png", width: 100%)
   place(center + horizon, dx: 4mm, dy: -33mm, block({text(size: 9pt)[¡Cuidado Harry, la magia negra asintótica ha traicionado a muchos estudiantes!]}, width: 30mm))
 })
 
@@ -1541,7 +1541,7 @@ Sean $f, g: NN arrow RR0$. Entonces $O(f) O(g) = O(f g)$.
              & = gamma (f g)(n)
   $
 
-  y por lo tanto $a b in O(f g)$. Como $O(f)O(g)$ es precísamente el conjunto de funciones de la forma $a b$ con $a in O(f)$ y $b in O(g)$, tenemos que $O(f) O(g) subset.eq O(f g)$.
+  y por lo tanto $a b in O(f g)$. Como $O(f)O(g)$ es precisamente el conjunto de funciones de la forma $a b$ con $a in O(f)$ y $b in O(g)$, tenemos que $O(f) O(g) subset.eq O(f g)$.
 - $supset.eq)$ Sea $h in O(f g)$. Luego, existen $alpha in RR, alpha >0$, y $n_0 in NN$, tal que para todo $n in NN$, $(n gt.eq n_0 implies h(n) lt.eq alpha (f g)(n) = alpha f(n)g(n)$. Sean $a = f$, y $b: NN arrow RR0$, definida como:
   $
     b(n) = cases(
@@ -1742,7 +1742,7 @@ Asimismo, vemos que $T(n) = n$, y por lo tanto, $n in O(1)$.
 
 
 #let t = [Esto es un sinsentido. Empezamos diciendo sinsentidos al decir "$T(0)$ es una constante, luego está en O(1)". Recordemos, *$O(1)$ es un conjunto de funciones*. Mientras tanto, $T(0)$ es un número, es cero. De ninguna manera vamos a tener que $T(0)$ está en $O(1)$, es como decir que un elefante está en un conjunto de jirafas: no tipa.]
-#let img = image("../jirafas.png", width: 100%)
+#let img = image("/images/jirafas.png", width: 100%)
 #wrap-content(img, t, align: bottom + right)
 
 Luego seguimos con la confusión al decir $T(k) in O(1)$. Nada de esto tiene sentido, y no tiene sentido hablar de "$T(n) in O(1)$". He visto alumnos que se confunden entre $f$, una función, y $f(x)$, el resultado de evaluar una función en un punto, $x$. Hasta algunos libros fomentan esa confusión. En este caso, esa confusión nos dejó decir sinsentidos.
@@ -2703,7 +2703,7 @@ Veamos un ejemplo.
   En el problema de las Torres de Hanoi@concrete, tenemos $n$ discos de tamaños distintos apilados en una varilla (el más grande abajo), y queremos moverlos a otra varilla, usando una varilla auxiliar, moviendo un disco a la vez y sin nunca colocar un disco más grande sobre uno más pequeño.
 
   #align(center)[
-    #image("../hanoi.png", height: 25%)
+    #image("/images/hanoi.png", height: 25%)
   ]
 
   ```py
@@ -3399,7 +3399,7 @@ El propósito de este ejercicio es que pasen un tiempo jugando con las ecuacione
 == Divide and conquer y programación dinámica
 
 #let t = [La computación está llena de algoritmos que se basan en dividir un problema en subproblemas más pequeños, resolver esos, y luego combinar los resultados. Estos en general van a tener demostraciones por inducción, donde hacemos inducción en el tamaño de los subproblemas que estamos resolviendo. Nuestra tarea es darle semántica al resultado del algoritmo, definir la noción de tamaño, y probar por inducción en el tamaño de una sub-solución, que el algoritmo es correcto con respecto a su semántica, para todos los subproblemas.]
-#let img = image("../cake.png", width: 100%)
+#let img = image("/images/cake.png", width: 100%)
 #wrap-content(img, t, align: bottom + right)
 
 
@@ -3560,15 +3560,15 @@ El propósito de este ejercicio es que pasen un tiempo jugando con las ecuacione
 
     Vamos a definir por comodidad la notación $a lt.tilde b$ como que $a lt.eq t" "forall" "t in b$. Por ejemplo, $5 lt.tilde [6, 5, 9]$, pero $5 lt.tilde.not [8, 3, 10]$.
 
-    Para ver que `merge` es correcta, tenemos que probar que vale $g(0, 0, [])$ es correcta. Si probamos que $P((n+1) (m+1))$, entonces como $(n - 0 + 1)(m - 0 + 1) = (n + 1)(m + 1)$, vemos que $g(0, 0, [])$ es correcta, y luego que `merge` devuelve una lista que contiene los mismos elementos que `xs[0 : n] + ys[0 : m] = xs + ys`, pero ordenada de forma no-decreciente, que es precísamente la semántica que queríamos darle a `merge`.
+    Para ver que `merge` es correcta, tenemos que probar que vale $g(0, 0, [])$ es correcta. Si probamos que $P((n+1) (m+1))$, entonces como $(n - 0 + 1)(m - 0 + 1) = (n + 1)(m + 1)$, vemos que $g(0, 0, [])$ es correcta, y luego que `merge` devuelve una lista que contiene los mismos elementos que `xs[0 : n] + ys[0 : m] = xs + ys`, pero ordenada de forma no-decreciente, que es precisamente la semántica que queríamos darle a `merge`.
 
     #set enum(numbering: "1.a.i.")
-    + Caso base, $P(1)$. Tenemos que probar que para todo $i, j in NN, 0 lt.eq i lt.eq n, 0 lt.eq j lt.eq m$ tal que $(n - i + 1)(m - j + 1) = 1$, $g$ es correcta. Como $i lt.eq n$ y $j lt.eq m$, entonces ambos factores de este producto son números naturales. Si tenemos un producto de naturales que es $1$, entonces ambos naturales son $1$. Luego, $n - i + 1 = 1$, y $m - j + 1 = 1$. Esto nos dice que $i = n$, y $j = m$. En este caso, tenemos que `not (i < n or j < m)`, y entonces $g(n, m, a)$ devuelve $a$. Ahora bién, $a$ es lo mismo que $a + []$ y $[]$ es precísamente la unión de todos los elementos de $x[i, dots, n - 1] + y[j, dots, m - 1] = x[n, dots, n - 1] + y[m, dots m - 1] = [] + [] = []$. Luego, $g$ es correcta para este caso.
+    + Caso base, $P(1)$. Tenemos que probar que para todo $i, j in NN, 0 lt.eq i lt.eq n, 0 lt.eq j lt.eq m$ tal que $(n - i + 1)(m - j + 1) = 1$, $g$ es correcta. Como $i lt.eq n$ y $j lt.eq m$, entonces ambos factores de este producto son números naturales. Si tenemos un producto de naturales que es $1$, entonces ambos naturales son $1$. Luego, $n - i + 1 = 1$, y $m - j + 1 = 1$. Esto nos dice que $i = n$, y $j = m$. En este caso, tenemos que `not (i < n or j < m)`, y entonces $g(n, m, a)$ devuelve $a$. Ahora bién, $a$ es lo mismo que $a + []$ y $[]$ es precisamente la unión de todos los elementos de $x[i, dots, n - 1] + y[j, dots, m - 1] = x[n, dots, n - 1] + y[m, dots m - 1] = [] + [] = []$. Luego, $g$ es correcta para este caso.
     + Paso inductivo. Sabemos que vale $P(r)$ para todo $r < k$, queremos ver que vale $P(k)$. Sean entonces $i, j in NN, 0 lt.eq i lt.eq n, 0 lt.eq j lt.eq m$, tal que $(n - i + 1)(m - j + 1) = k$. Partimos en casos, si $i = n$, si $j = m$, o si ninguna es cierta.
       + Si $i = n$ y $j eq.not m$, entonces $k = m - j + 1$. Como $j lt.eq m$, entonces $j < m$, no salimos en la primer condición (`return ans`). Como $i < n$ es falso, $g(i, j, a)$ evalúa a $g(i, j + 1, a + [y[j]])$. Como $m - (j + 1) + 1 < m - j + 1 = k$, podemos usar la hipótesis inductiva $P(m - (j + 1) + 1)$, para concluir que si llamamos $X = g(i, j + 1, a + [y[j]]) = a + [y[j]] + b$, entonces $b$ es una lista que contiene los elementos de $x[i, dots, n - 1] + y[j + 1, dots, m - 1]$, ordenados de forma no-decreciented. Como $i = n$, entonces $x[i, dots, n - 1] + y[j+1, dots, m - 1] = y[j+1, dots, m - 1]$. Como $y$ está ordenada de forma no-decreciente, entonces $y[j] lt.tilde b$. Luego $t = [y[j]] + b$ está ordenada de forma no-decreciente, y tiene los mismos elementos que $y[j, dots, m - 1] = x[i, dots, n - 1] + y[j, dots, m - 1]$. Luego, $X = a + t$, con $t$ teniendo los mismos elementos que $x[i, dots, n - 1] + y[j, dots, m - 1]$, ordenados de forma no-decreciente, que es lo que queríamos demostrar para $P(k)$.
       + Pasa algo análogo si $j = m$ y $i < n$.
       + Si $i < n$ y $j < m$, entonces partimos en dos casos, dependiendo de si $x[i] lt.eq y[j]$ o no.
-        + Si $x[i] lt.eq y[j]$, $g$ devuelve $g(i + 1, j, a + [x[i]])$. Como $n - (i + 1) + 1 < n - i + 1$, entonces $(n - (i + 1) + 1)(m - j + 1) < (n - i + 1)(m - j + 1) = k$, y podemos usar la hipótesis inductiva $P((n - (i + 1) + 1)(m - j + 1))$ para ver que $g(i + 1, j, a + [x[i]]) = a + [x[i]] + b$, con $b$ una permutación no-decreciente de $x[i + 1, dots, n - 1] + y[j, dots, m - 1]$. Como $x$ e $y$ son no-decrecientes, $x[i] lt.tilde x[i + 1, dots, n - 1]$, y $x[i] lt.eq y[j] lt.tilde y[j, dots, m - 1]$. Luego, $x[i] lt.tilde b$, y luego llamando $t = [x[i]] + b$, vemos que $g(i, j, a)$ está devolviendo $a + t$, con $t$ una lista no-decreciente, que contiene los mismos elementos que $x[i, dots, n - 1] + y[j, dots m - 1]$. Esto es precísamente lo que hay que probar para $P(k)$.
+        + Si $x[i] lt.eq y[j]$, $g$ devuelve $g(i + 1, j, a + [x[i]])$. Como $n - (i + 1) + 1 < n - i + 1$, entonces $(n - (i + 1) + 1)(m - j + 1) < (n - i + 1)(m - j + 1) = k$, y podemos usar la hipótesis inductiva $P((n - (i + 1) + 1)(m - j + 1))$ para ver que $g(i + 1, j, a + [x[i]]) = a + [x[i]] + b$, con $b$ una permutación no-decreciente de $x[i + 1, dots, n - 1] + y[j, dots, m - 1]$. Como $x$ e $y$ son no-decrecientes, $x[i] lt.tilde x[i + 1, dots, n - 1]$, y $x[i] lt.eq y[j] lt.tilde y[j, dots, m - 1]$. Luego, $x[i] lt.tilde b$, y luego llamando $t = [x[i]] + b$, vemos que $g(i, j, a)$ está devolviendo $a + t$, con $t$ una lista no-decreciente, que contiene los mismos elementos que $x[i, dots, n - 1] + y[j, dots m - 1]$. Esto es precisamente lo que hay que probar para $P(k)$.
         + Si $x[i] > y[j]$, pasa algo análogo con $g(i, j + 1, a + [y[j]])$.
 
     Luego, demostramos $P(k)$ para todo $k gt.eq 1$.
@@ -3590,7 +3590,7 @@ El propósito de este ejercicio es que pasen un tiempo jugando con las ecuacione
 
     + Caso base, $P(0)$. Si $x$ tiene $0$ elementos, entonces $x = []$, y merge$([]) = []$ por su primer `if`, que es la respuesta correcta. Luego vale $P(0)$.
     + Caso base, $P(1)$. Si $x$ tiene $1$ elemento, entonces $x = [alpha]$ para algún $alpha$, y merge$([alpha]) = [alpha]$ por su primer `if`, que es la respuesta correcta. Luego vale $P(1)$.
-    + Paso inductivo. Sea $k in NN, k > 1$. Asumo que vale $P(r)$ para todo $r < k$, quiero ver que vale $P(k)$. Sea $a = floor(k / 2)$. Como $k > 1$, entonces $a > 0$. Sea $b = k - a$. Luego $a < k$, y $b < k$. Luego podemos usar las hipótesis inductivas $P(a)$ y $P(b)$, para ver que `lefts` tiene los mismos elementos que $x[0, dots, a - 1]$, y `rights` tiene los mismos elementos que $x[a, dots, n - 1]$. Luego, su concatenación `lefts + rights` tiene los mismos elementos que $x$. Vemos entonces que llamando a `merge(lefts, rights)`, tendremos una lista ordenada de forma no-decreciente, que tiene los mismos elementos que `lefts + rights`, que a su vez son los mismos elementos que $x$. Esto es precísamente la semántica que queríamos para `mergesort`, y luego vale $P(k)$.
+    + Paso inductivo. Sea $k in NN, k > 1$. Asumo que vale $P(r)$ para todo $r < k$, quiero ver que vale $P(k)$. Sea $a = floor(k / 2)$. Como $k > 1$, entonces $a > 0$. Sea $b = k - a$. Luego $a < k$, y $b < k$. Luego podemos usar las hipótesis inductivas $P(a)$ y $P(b)$, para ver que `lefts` tiene los mismos elementos que $x[0, dots, a - 1]$, y `rights` tiene los mismos elementos que $x[a, dots, n - 1]$. Luego, su concatenación `lefts + rights` tiene los mismos elementos que $x$. Vemos entonces que llamando a `merge(lefts, rights)`, tendremos una lista ordenada de forma no-decreciente, que tiene los mismos elementos que `lefts + rights`, que a su vez son los mismos elementos que $x$. Esto es precisamente la semántica que queríamos para `mergesort`, y luego vale $P(k)$.
   ]
 ]
 
@@ -3781,9 +3781,9 @@ Primero les voy a mostrar en qué pienso al resolver el ejercicio, y luego una r
     + Caso base, $P(0)$. La longitud de una cadena de unos más larga que termina en la $(i = 0)$-ésima posición es o bien 1 o 0, dependiendo de si $x_0 = 1$ o $x_0 = 0$. Luego, si $v^*(0, t) = x_0$. Si $x_0 = 1$, nuestra función $f(0, t)$ devuelve $f(-1, t) + 1$, que evalúa a $1$ inmediatamente. Si $x_0 = 0 and t > 0$, $f(i, t)$ devuelve $f(-1, t - 1)$, que evalúa a $0$ inmediatamente. Finalmente, si $x_0 and t = 0$, entonces $f(0, 0) = 0$. Luego en todos los casos tenemos $f(0, t) = v^(0, t)$, lo que prueba $P(0)$.
 
     + Paso inductivo. Sabemos $P(i)$, queremos probar $P(i + 1)$. Sea $t in NN$. Sea $T in theta^*(i + 1, t)$, y por ende $|T| = v^*(i + 1, t)$. Partimos en casos, dependiendo de quién es $x_i$:
-      + Si $x_(i+1) = 1$. Como $T$ termina en $i + 1$, $i + 1 in T$, puesto que sólo podemos borrar ceros. Sea $T' = T without {i + 1}$. Como $T'$ borra a lo sumo $t$ ceros, y termina en $i$, está en $theta(i, t)$. Si no estuviera en $theta^*(i, t)$, podríamos tomar cualquier $S in theta^*(i, t)$, y por lo tanto $|S| > |T'|$, con lo cual $|S + {i + 1}| > |T|$, pero esto no puede pasar, porque $T$ está en $theta^*(i + 1, t)$, luego tiene el número máximo de unos. Luego, $T' in theta^*(i, t)$, y luego $|T'| = v^*(i, t)$. Como sabemos $P(i)$, esto es $|T'| = f(i, t)$, y por ende, $|T| = f(i, t) + 1$, que es precísamente lo que devuelve $f(i + 1, t)$, y por ende vale $P(i + 1)$.
+      + Si $x_(i+1) = 1$. Como $T$ termina en $i + 1$, $i + 1 in T$, puesto que sólo podemos borrar ceros. Sea $T' = T without {i + 1}$. Como $T'$ borra a lo sumo $t$ ceros, y termina en $i$, está en $theta(i, t)$. Si no estuviera en $theta^*(i, t)$, podríamos tomar cualquier $S in theta^*(i, t)$, y por lo tanto $|S| > |T'|$, con lo cual $|S + {i + 1}| > |T|$, pero esto no puede pasar, porque $T$ está en $theta^*(i + 1, t)$, luego tiene el número máximo de unos. Luego, $T' in theta^*(i, t)$, y luego $|T'| = v^*(i, t)$. Como sabemos $P(i)$, esto es $|T'| = f(i, t)$, y por ende, $|T| = f(i, t) + 1$, que es precisamente lo que devuelve $f(i + 1, t)$, y por ende vale $P(i + 1)$.
       + Si $x_(i+1) = 0 and t > 0$. Entonces $i+1 in.not T$. Entonces, como $t > 0$, y $T$ termina en $i + 1$, vemos que $T in theta(i, t - 1)$, y luego $v^*(i + 1, t) = |T| lt.eq v^*(i, t-1)$. Tomemos ahora cualquier $S in theta^*(i, t-1)$. Podemos expandir $S$ a terminar en $i + 1$, borrando el elemento $i + 1$, con lo cual $S$ también está en $theta(i+1, t)$. Luego $v^*(i, t - 1) = |S| lt.eq v^*(i+1, t)$. Luego $v^*(i, t - 1) = v^*(i + 1, t)$. Por $P(i)$, $f(i, t - 1) = v^*(i, t - 1)$, y entonces como $f(i + 1, t)$ devuelve $f(i, t - 1)$, devuelve $v^*(i, t - 1) = v^*(i + 1, t)$, que muestra $P(i + 1)$.
-      + Si $x_(i+1) = 0 and t = 0$, entonces $T$ es una secuencia de unos que termina en un $i + 1$, pero no puede borrar ningún cero pues $t = 0$. Luego $T$ no existe, y por definición, $v^*(i+1, 0) = 0$ en este caso, que es precísamente lo que devuelve nuestra función.
+      + Si $x_(i+1) = 0 and t = 0$, entonces $T$ es una secuencia de unos que termina en un $i + 1$, pero no puede borrar ningún cero pues $t = 0$. Luego $T$ no existe, y por definición, $v^*(i+1, 0) = 0$ en este caso, que es precisamente lo que devuelve nuestra función.
 
     Luego tenemos $P(i) forall i in NN$.]
 
@@ -4228,7 +4228,7 @@ Lo primero que vemos es que #smallcaps("n-queens") llama a #smallcaps("backtrack
 #demo[
   Vamos a probar $P(k)$ para todo $1 lt.eq k lt.eq n + 1$ por inducción. Nuestro caso base va a ser $k = n + 1$, y vamos a usar $P(k+1)$ para probar $P(k)$. Si los incomoda el hecho de hacer inducción "hacia atrás", pretendan que estamos probando $Q(k): 1 lt.eq k lt.eq n implies P(n - k + 1)$, pero realmente no hay ningún problema. Estamos construyendo una cadena de implicaciones, fundada en un caso base, como en toda inducción.
 
-  + Caso base, $P(n + 1)$. Si $r = n + 1$, entonces ya hemos colocado $r - 1 = n$ reinas en el tablero que nos pasan, y sabemos que ningún par se atacan. Luego, existe un tal tablero que es solución al problema entero. Podemos devolver $c$, que indica en qué columna está la reina de cada fila, y es la representación de tal tablero. Vemos que #smallcaps("backtrack")$(n + 1, n, c, f, v, w)$ devuelve precísamente $c$, y luego vale $P(n + 1)$.
+  + Caso base, $P(n + 1)$. Si $r = n + 1$, entonces ya hemos colocado $r - 1 = n$ reinas en el tablero que nos pasan, y sabemos que ningún par se atacan. Luego, existe un tal tablero que es solución al problema entero. Podemos devolver $c$, que indica en qué columna está la reina de cada fila, y es la representación de tal tablero. Vemos que #smallcaps("backtrack")$(n + 1, n, c, f, v, w)$ devuelve precisamente $c$, y luego vale $P(n + 1)$.
   + Paso inductivo. Tenemos $r in NN$, $1 lt.eq r lt.eq n$. Asumimos $P(r+1)$, y queremos probar $P(r)$. Sea $T$ el tablero que nos pasan, el representado por la 4-tupla $(c, f, v, w)$. Hay dos opciones, o bien $T$ se puede completar a un tablero con $n$ reinas, o no se puede.
     - Si se puede completar, entre todos los tableros solución que son completaciones de este, sea $T'$ cualquier tablero donde la reina que hay en la $r$-ésima fila está en la menor columna, y sea $j$ tal columna. Vemos que el ciclo que hace #smallcaps("backtrack") prueba las columnas posibles donde poner la $r$-ésima reina en orden creciente, y luego como ningún tablero se puede completar poniendo una reina en $c[r] = j'$ con $j' < j$, todas esas iteraciones van a terminar sin devolver nada. Luego, llegaremos a la $j$-ésima iteración. En esa iteración, vamos a poner una reina en $c[r] arrow.l j$, y escribimos $f$, $v$, y $w$ correspondientemente. Como $T'$ existe, y el tablero que acabamos de armar es un sub-tablero de $T'$ y también una completación parcial de $T$, estamos llamando a #smallcaps("backtrack")$(r + 1, dots)$ con un tablero que es completable a una solución global $T'$. Como asumimos $P(r+1)$ por inducción, sabemos que esta llamada a #smallcaps("backtrack") va a devolver un tablero solución (no necesariamente $T'$!). Es decir, $z eq.not #smallcaps("null")$. Luego, al devolver $z$, #smallcaps("backtrack") está devolviendo un tablero solución que completa $T$, que es el comportamiento esperado, y prueba $P(r)$.
     - En el caso contrario, no existe ninguna manera de completar $T$ para obtener un tablero con $n$ reinas. Si el ciclo devolviera en algún momento, tendríamos por $P(r+1)$ un tablero $z$ que extiende a $T$ a $n$ reinas, pero no existe. Luego, en ningún momento del ciclo podemos devolver, y el ciclo recorre todas sus iteraciones y termina. #smallcaps("backtrack") entonces devuelve #smallcaps("null"), que es la respuesta correcta en este caso. Esto entonces prueba $P(r)$.
@@ -4287,7 +4287,7 @@ Para muchos problemas, una solución greedy es fácil de imaginar. Por ejemplo, 
   - Argumentos de liderazgo ("greedy stays ahead"), donde definimos una métrica para sub-soluciones, y una noción de "longitud" para las mismas. Luego argumentamos que nuestra sub-solución siempre mejor, en esta métrica, a cualquier otra sub-solución de la misma "longitud".
   - Argumentos de completación, donde argumentamos que en todo momento nuestra sub-solución puede ser completada a una solución óptima.
 ]
-#let img = image("../greedy.png", width: 100%)
+#let img = image("/images/greedy.png", width: 100%)
 #wrap-content(img, t, align: bottom + right)
 
 Vamos a mostrarles algunos ejemplos de cada una.
@@ -4384,7 +4384,7 @@ Vamos a mostrarles algunos ejemplos de cada una.
 
     Y necesitamos demostrar las siguientes proposiciones:
     - La función variante decrece en cada iteración. Como siempre asignamos $i arrow.l j$, con $j > i$, vemos que $V(i) = n - 1 - i$ decrece en cada iteración.
-    - Si la función variante se anula, la guarda es falsa. Si $V(i) = 0$, entonces $i = n - 1$, que es precísamente $not B(i)$.
+    - Si la función variante se anula, la guarda es falsa. Si $V(i) = 0$, entonces $i = n - 1$, que es precisamente $not B(i)$.
     - La negación de la guarda, y el invariante, implican la postcondición. Si tenemos la negación de la guarda ($not B(i)$), tenemos $not (i eq.not n - 1) iff i = n - 1$, y como si también vale el invariante ($I(i)$) tenemos $I(n - 1)$. Luego existe una solución óptima $O$ tal que $(o_1, dots, o_t) = (g_1, dots, g_t)$, y como $i = n - 1$, y si $t > 0$, $"estaciones"[i] - "estaciones"["cargas"[t-1]-1] = "estaciones"[n - 1] - "estaciones"["cargas"[t-1]-1] = x_n - x_(g_t) lt.eq C$, entonces podemos llegar desde la última estación de `cargas` hasta la estación final, Mar del Plata. Como existe una solución óptima $O$ que es extensión de $G$, y $G$ ya puede llegar a Mar del Plata, entonces $O$ debe ser $G$. Luego, $G = {g_1, dots, g_t}$ es una solución válida. Como $O$ es una solución óptima, entonces $O$ no puede tener ninguna estación posterior a la $n$-ésima, y $O$ no sólo _extiende_ a $G$, sino que _es_ $G$. Luego $G$ es una solución óptima. Luego vale la postcondición.
     - El invariante vale inicialmente, $I(0)$. El estado inicial es $i = 0, "cargas"=[]$. La lista vacía es trivialmente extensible a cualquier solución óptima. Por la precondición, existe al menos una solución, y luego existe una solución óptima. Las otras condiciones de $I(0)$ son o simples (pues $0 lt.eq 0 < n$) o trivialmente ciertas (pues $not (t > 0)$). Luego, $I(0)$ vale.
     - Si el invariante vale antes de una iteración, y la guarda es verdadera, entonces el invariante vale después de la iteración. Asumimos que valen $I(i) and B(i)$. Vamos a probar $I(j)$. Notemos que $j$ es el valor que obtiene $i$ al terminar cada iteración. Tenemos un pequeño ciclo interior que calcula $j = max { l | i lt.eq l < n, x_(l+1) - x_(i + 1) lt.eq C}$ (recordemos que los índices de $x$ empiezan en $1$, mientras que en Python estamos indexando ```python estaciones``` a partir de ```python 0```, por eso los $+1$).
@@ -5493,7 +5493,7 @@ Diseñar un algoritmo greedy para resolver este problema. Probar que es correcto
     #let t = [Recordemos que no tiene sentido probar que una función "es correcta" sin decir cuál es su semántica. Una función que siempre devuelve el string `"banana"` es correcta si nuestra semántica es "una función que siempre devuelve el string `"banana"`".
 
       *Siempre* que vamos a probar que una función es correcta, *tenemos* que definir cuál es su semántica. Por esto ven especificación antes de correctitud formal de algoritmos.]
-    #let img = image("../proof_banana.png", width: 90%)
+    #let img = image("/images/proof_banana.png", width: 90%)
     #wrap-content(img, t, align: right)
   ]
 
@@ -5502,7 +5502,7 @@ Diseñar un algoritmo greedy para resolver este problema. Probar que es correcto
 
   Sea $P(i)$: Para todo $v in V$, tal que $M(v) = i$, $f(v) = |C(v)|$.
 
-  + Caso base, $i = 0$. Si $v$ es un vértice tal que $M(v) = 0$, entonces hay un camino de longitud $0$ desde $s$ hasta $v$. Luego, $v$ _es_ $s$. Como hay un único camino desde $s$ hasta $s$, vemos que $|C(s)| = |{[]}| = 1$. Como $f$ precísamente devuelve $1$, $f$ es correcta para este caso.
+  + Caso base, $i = 0$. Si $v$ es un vértice tal que $M(v) = 0$, entonces hay un camino de longitud $0$ desde $s$ hasta $v$. Luego, $v$ _es_ $s$. Como hay un único camino desde $s$ hasta $s$, vemos que $|C(s)| = |{[]}| = 1$. Como $f$ precisamente devuelve $1$, $f$ es correcta para este caso.
   + Paso inductivo. Sea $i > 0 in NN$. Podemos asumir $P(k)$ para todo $k < i$, y queremos ver $P(i)$. Sea $v in V$ tal que $M(v) = i$. Como $M(v) = i > 0$, sabemos que $v eq.not s$, pues $M(s) = 0$. Luego, todo camino mínimo $Q$ desde $s$ hasta $v$, pasa por algún vértice $u$ anterior a $v$. Notar que $u$ puede ser $s$ mismo, si hay un camino mínimo desde $s$ hasta $v$ que es puramente $[(s, v)]$. También, como los caminos mínimos tienen subestructura óptima, el prefijo de $Q$ tiene que ser un camino mínimo desde $s$ hasta ese vértice $u$. Notemos que tendremos $delta(s, u) + w(u, v) = delta(s, v)$, por definición de $delta$ y que $Q$ y su prefijo hasta $u$ son caminos mínimos. Finalmente, por la postcondición del algoritmo de Dijkstra, sabemos que $d[v] = delta(s, v)$ para todo $v in V$.
 
   $
@@ -5688,7 +5688,7 @@ Diseñar un algoritmo greedy para resolver este problema. Probar que es correcto
     Q_(a_k, a_1) times product_(i = 1)^(k - 1) Q_(a_i, a_(i+1)) & > 1 \
   $
 
-  que es precísamente lo que significa obtener más dinero que con el que empezamos.
+  que es precisamente lo que significa obtener más dinero que con el que empezamos.
 
   Podemos transformar $A$ en $B$, con $B_(i, j) = -log A_(i, j)$, y luego usar el algoritmo de Floyd-Warshall en $B$. Luego, si $B_(i, i) < 0$ para algún $i$, entonces existe un ciclo de peso negativo (que incluye a $v_i$). Como vimos arriba, la existencia este ciclo implica que existe una manera de intercambiar monedas que nos deja con más dinero del que empezamos.
 ]
