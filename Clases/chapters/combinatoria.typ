@@ -4,6 +4,9 @@
 #show: apply-preamble
 
 == Combinatoria
+
+La combinatoria estudia cómo contar y enumerar objetos, y es una herramienta fundamental en ciencias de la computación. La usaremos para analizar la cantidad de operaciones que realiza un algoritmo, para contar configuraciones posibles en un problema, y para razonar sobre estructuras discretas como grafos y árboles. En esta sección les presento algunos ejemplos resueltos y ejercicios para practicar. El material debería ser de repaso, y los ejercicios sirven como calentamiento para el tipo de matemática que usaremos en el resto del libro.
+
 #ej[
   ¿Cuantos números naturales hay menores o iguales que $1000$ que no son ni múltiplos de $3$ ni múltiplos de $5$?
 ]
@@ -185,6 +188,44 @@ Para este ejercicio también voy a escribirles en qué pienso a medida que lo ha
                      = & ((f * g) * h)(n)
   $
 ]
+
+=== Ejercicios
+
+#ej[
+  ¿Cuántas cadenas binarias de longitud $n$ tienen exactamente $k$ unos?
+]
+
+#ej[
+  Sea $n in NN$. Demostrar que $sum_(k = 0)^n binom(n, k) = 2^n$.
+]
+
+#ej[
+  Sea $n in NN$. Demostrar que $sum_(k = 0)^n (-1)^k binom(n, k) = 0$.
+]
+
+#ej[
+  Sean $m, n, r in NN$ con $r lt.eq m + n$. Demostrar la identidad de Vandermonde:
+  $
+    binom(m + n, r) = sum_(k = 0)^r binom(m, k) binom(n, r - k)
+  $
+  Sugerencia: contar de dos formas la cantidad de subconjuntos de tamaño $r$ de un conjunto formado por dos grupos disjuntos, uno de tamaño $m$ y otro de tamaño $n$.
+]
+
+#ej[
+  ¿De cuántas formas se pueden sentar $n$ personas en una mesa circular, si consideramos iguales a dos disposiciones que difieren sólo por una rotación?
+]
+
+#ej[
+  Demostrar el principio de inclusión-exclusión para tres conjuntos: sean $A, B, C$ conjuntos finitos. Entonces:
+  $
+    |A union B union C| = |A| + |B| + |C| - |A inter B| - |A inter C| - |B inter C| + |A inter B inter C|
+  $
+]
+
+#ej[
+  Sea $n in NN$, $n gt.eq 1$. Demostrar que $sum_(k = 1)^n k binom(n, k) = n 2^(n - 1)$.
+]
+
 /* FIXME: Esto va a ir en la sección sobre teoría de grafos, cuando exista.
 
 #ej[
