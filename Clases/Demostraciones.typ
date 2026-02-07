@@ -44,6 +44,8 @@ A la Universidad de Buenos Aires.
 #include "chapters/fundamentos-matematicos.typ"
 #include "chapters/algoritmos.typ"
 #include "chapters/teoria-de-grafos.typ"
+#include "chapters/complejidad-computacional.typ"
+#include "chapters/programacion-lineal-y-entera.typ"
 #include "chapters/apendice.typ"
 
 
