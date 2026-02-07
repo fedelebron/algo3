@@ -142,7 +142,7 @@ Notemos cómo analizando los pasos que realiza el algoritmo, y contando lo que n
 
   Este algoritmo envía exactamente $n - 1$ mensajes: el nodo $0$ inicia, y luego cada nodo intermedio reenvía, hasta que el dato llega al nodo $n - 1$. La función de costo es $M_A (x) = n - 1$, donde $M$ mide mensajes enviados. 
 
-  En cambio el siguiente algoritmo, que envía mensajes en paralelo, usa el mismo número de mensajes, pero tiempo logarítmico:
+  En cambio el siguiente algoritmo, que envía mensajes en paralelo (asumiendo que $n$ es de la forma $2^k - 1$ para que los nodos formen un árbol binario perfecto), usa el mismo número de mensajes, pero tiempo logarítmico:
 
   ```py
   def broadcast_paralelo(x, id: int, n: int):
@@ -814,40 +814,46 @@ Para esta demostración les voy a escribir el razonamiento que hago mientras esc
   Dar una cota asintótica superior ajustada para el número de operaciones que realice este algoritmo, en función del tamaño de entrada `j - i`.
 ]
 #sol[
-  Definimos el tamaño de una entrada $("cuts", i, j)$ como $j - i$. La función que describe el tiempo que toma $f$ en correr, en términos del tamaño de entrada, es $T(n) = O(1) + sum_(k = 1)^(n-1) T(k) + T(n - k)$.
+  Definimos el tamaño de una entrada $("cuts", i, j)$ como $n = j - i$. El ciclo `for` realiza $n-1$ iteraciones, por lo que el trabajo no recursivo (control del ciclo, sumas, mínimos) es proporcional a $n$. La función de costo es entonces $T(n) = h(n) + sum_(k = 1)^(n-1) (T(k) + T(n - k))$, donde $h in O(n)$.
 
-  Obviamente no podemos usar el teorema maestro para esto, porque $T$ no tiene la forma correcta, así que vamos a tener que analizar cuidadosamente qué está pasando. Jugando un poco, vemos que:
+  Notemos que la sumatoria es simétrica: $sum_(k=1)^(n-1) (T(k) + T(n-k)) = 2 sum_(k=1)^(n-1) T(k)$. Luego, la recurrencia es:
 
-  $
-    T(n) & = O(1) + T(1) + T(n - 1) + T(2) + T(n - 2) + dots + T(n - 1) + T(1) \
-         & = O(1) + 2 sum_(i=1)^(n-1) T(i)
-  $
+  $ T(n) = h(n) + 2 sum_(k=1)^(n-1) T(k) $
 
-  Esto nos puede recordar a la fórmula para las potencias de un número. Por ejemplo, $2^n = 1 + sum_(i=0)^(n-1) 2^i$, o $3^n = 1 + 2 sum_(i=0)^(n-1) 3^i$. Como esto se parece bastante a la serie de potencias de tres, vamos a intentar adivinar que $T(n) lt.eq alpha 3^n$ para todo $n in NN$, y algún $alpha > 0 in RR$. Esto nos diría que $T in O(3^n)$.
+  Por definición de $O(n)$, existen $n_0 in NN$ y $c > 0$ tales que para todo $n gt.eq n_0, h(n) lt.eq c n$. Para extender esta cota a todo $n in NN_(>1)$, definimos $beta = max(c, max_(1 lt.eq k < n_0) h(k))$. Así, tenemos garantizado que $h(n) lt.eq beta n$ para todo $n gt.eq 1$.
 
-  Probemos esto por inducción. Por definición de "$O(1)$", sabemos que existe una función $h:NN arrow NN$, tal que $T(n) = h(n) + 2 sum_(i=1)^(n-1) T(i)$, y existen $n_0 in NN, beta > 0$ tales que para todo $n gt.eq n_0$, $h(n) lt.eq beta$. Sea $r = max(beta, max_(i = 0)^n_0 h(i))$. Entonces tenemos que para todo $n$, $h(n) lt.eq r$. La cota vale para los primeros $n_0$ valores de $n$ por la segunda rama del $max$, y vale para todos los valores después de $n_0$ por la primer rama, que a su vez vale por la definición de $h in O(1)$.
+  Vamos a demostrar por inducción que $T(n) lt.eq beta 3^n - beta$ para todo $n gt.eq 1$.
 
-  Luego, para todo $n$, $T(n) lt.eq r + 2 sum_(i=1)^(n-1) T(i)$. Si esto tiene que ser menor o igual a $alpha 3^n$, veamos quién tiene que ser $alpha$.
+  Sea $P(n): T(n) lt.eq beta 3^n - beta$.
 
-  $
-    T(n) & lt.eq r + 2 sum_(i=1)^(n-1) T(i) \
-         & lt.eq r + 2 sum_(i=1)^(n-1) alpha 3^i \
-         & lt.eq r + 2 alpha (1/2) (3^n - 3) \
-         & lt.eq r + alpha 3^n - 3 alpha
-  $
+  - *Caso base* ($n = 1$):
+    La sumatoria está vacía, por lo que $T(1) = h(1)$.
+    Queremos ver que $h(1) lt.eq beta 3^1 - beta = 2 beta$.
+    Como $n=1$, sabemos por nuestra definición de $beta$ que $h(1) lt.eq beta dot 1 = beta$.
+    Como $beta lt.eq beta 3^1 - beta = 2 beta$ (pues $beta > 0$), la propiedad se cumple.
 
-  Vamos a querer concluir que $T(n) lt.eq alpha 3^n$. Luego, queremos que $r - 3 alpha = 0$, y luego $alpha = r / 3$. Verifiquemos que con ese $alpha$ se cumple lo que queremos:
+  - *Paso inductivo*:
+    Sea $n > 1$. Suponemos cierto $P(k)$ para todo $1 lt.eq k < n$.
+    
+    $
+      T(n) &= h(n) + 2 sum_(k=1)^(n-1) T(k) \
+           &lt.eq beta n + 2 sum_(k=1)^(n-1) (beta 3^k - beta) \
+           &= beta n + 2 beta sum_(k=1)^(n-1) 3^k - 2 beta sum_(k=1)^(n-1) 1 \
+           &= beta n + 2 beta ((3^n - 3) / 2) - 2 beta (n - 1) \
+           &= beta n + beta (3^n - 3) - 2 beta n + 2 beta \
+           &= beta 3^n - beta n - beta \
+           &= (beta 3^n - beta) - beta n
+    $
 
-  $
-    T(n) lt.eq r + alpha 3^n - 3 (r / 3) = alpha 3^n
-  $
+    Como $beta > 0$ y $n > 1$, tenemos que $beta n > 0$. Por lo tanto:
+    
+    $ T(n) lt.eq (beta 3^n - beta) - beta n < beta 3^n - beta $
+    
+    Lo cual confirma $P(n)$.
 
-  Esto parece funcionar. Probémoslo por inducción, entonces. Sea $P(n): n gt.eq 1 implies T(n) lt.eq alpha 3^n$
-
-  - $P(1) = h(1) lt.eq r = 3 alpha = 3^1 alpha$.
-  - Asumimos que $P(j)$ vale para todo $j < n$, queremos probar $P(n)$. $T(n) lt.eq r + 2 sum_(i=1)^(n-1) T(i) lt.eq alpha 3^n$ por el argumento de arriba, donde usamos la hipótesis inductiva para acotar cada $T(i)$ por $alpha 3^i$.
-
-  Luego vemos que tomando $n_0 = 1$, $alpha = max(beta, (max_(i=0)^n_0 h(i))/3)$, tenemos que para todo $n gt.eq n_0$, $T(n) lt.eq alpha 3^n$, y por lo tanto $T in O(3^n)$.]
+  Por el principio de inducción, $T(n) lt.eq beta 3^n - beta$ para todo $n gt.eq 1$.
+  Esto implica que $T in O(3^n)$.
+]
 
 === Ejercicios
 
