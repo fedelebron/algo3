@@ -105,7 +105,7 @@ Veamos algunos ejemplos de funciones de costo que miden distintos recursos.
     return total
   ```
 
-  Sea $n$ la longitud de la lista `lista`. Definimos el tamaño de entrada como $n$. En cada iteración del ciclo se realizan una comparación, dos sumas, y un acceso a memoria (constantes bajo el modelo RAM), y hay $n$ iteraciones. Antes de entrar al ciclo hay una asignación, y luego de la última iteración del ciclo realizamos una comparación que da falso, que nos dice que podemos salir del ciclo. Luego, si estamos midiendo el número de operaciones, $T_A (x) = 4n + 2$ para toda lista $x$ de longitud $n$. En este caso, la función de costo no depende de los valores concretos de la lista, sino sólo de su longitud.
+  Sea $n$ la longitud de la lista `lista`. Definimos el tamaño de entrada como $n$. En cada iteración del ciclo se realizan una comparación, dos sumas, y un acceso a memoria (constantes bajo el modelo RAM), y hay $n$ iteraciones. Antes de entrar al ciclo hay dos asignaciones, y luego de la última iteración del ciclo realizamos una comparación que da falso, que nos dice que podemos salir del ciclo. Luego, si estamos midiendo el número de operaciones, $T_A (x) = 4n + 3$ para toda lista $x$ de longitud $n$. En este caso, la función de costo no depende de los valores concretos de la lista, sino sólo de su longitud.
 ]
 
 Notemos cómo analizando los pasos que realiza el algoritmo, y contando lo que nos interesa, conseguimos la función de costo.
@@ -662,18 +662,18 @@ Para esta demostración les voy a escribir el razonamiento que hago mientras esc
 
   Sabemos entonces que el número de operaciones que estos tres algoritmos hacen, ante una entrada de tamaño $n$, está respectivamente en $Theta(n^(log_2(5)))$, $Theta(2^n)$, y $Theta(n^2 log n)$.
 
-  Veamos cuál nos conviene usar. Recordando que $g in O(f) iff lim_(n arrow infinity) f(n)/g(n) = infinity$, y usando las reglas usuales de orden de conjuntos asintóticos:
+  Veamos cuál nos conviene usar. Recordando que $lim_(n arrow infinity) f(n)/g(n) = infinity implies g in O(f)$, y usando las reglas usuales de orden de conjuntos asintóticos:
 
   - Como $T_2 in Omega(2^n)$, entonces llamando $f(n) = 2^n$, tenemos que $f in O(T_2)$. Luego, como $T_1 in O(n^(log_2(5)))$, y $O(n^(log_2(5))) subset O(f)$, tenemos que $T_1 in O(f)$. Como $T_1 in O(f)$ y $f in O(T_2)$, tenemos que $T_1 in O(T_2)$.
   - Usando la regla de L'Hopital, tenemos que
     $
-    lim_(n arrow infinity) n^(log_2(5))/(n log n) &= lim_(n arrow infinity) n^(log_2(5) - 1) / (log n) \
+    lim_(n arrow infinity) n^(log_2(5))/(n^2 log n) &= lim_(n arrow infinity) n^(log_2(5) - 2) / (log n) \
     &= lim_(n arrow infinity) n^epsilon / (log n) \
     &= lim_(n arrow infinity) n epsilon n^(epsilon - 1) \
     &= lim_(n arrow infinity) epsilon n^epsilon \
     &= infinity
     $
-    Pues $log_2(5) - 1 = epsilon > 0$. Luego tenemos que $T_3 in O(T_1)$.
+    Pues $log_2(5) - 2 = epsilon approx 0.32 > 0$. Luego tenemos que $T_3 in O(T_1)$.
   - Como $T_3 in O(T_1)$ y $T_1 in O(T_2)$, tenemos que $T_3 in O(T_2)$.
 
   Luego, como $T_3$ está asintóticamente dominada por las otras dos, y $n$ es enorme, nos conviene usar el tercer algoritmo.
@@ -875,7 +875,7 @@ Para esta demostración les voy a escribir el razonamiento que hago mientras esc
         Assign($M_2$, FnInline[Strassen][$A_(2, 1) + A_(2, 2), B_(1, 1)$])
         Assign($M_3$, FnInline[Strassen][$A_(1, 1), B_(1, 2) - B_(2, 2)$])
         Assign($M_4$, FnInline[Strassen][$A_(2, 2), B_(2, 1) - B_(1, 1)$])
-        Assign($M_5$, FnInline[Strassen][$A_(1, 1) + A_(1, 2), B_(1, 1)$])
+        Assign($M_5$, FnInline[Strassen][$A_(1, 1) + A_(1, 2), B_(2, 2)$])
         Assign($M_6$, FnInline[Strassen][$A_(2, 1) - A_(1, 1), B_(1, 1) + B_(1, 2)$])
         Assign($M_7$, FnInline[Strassen][$A_(1, 2) - A_(2, 2), B_(2, 1) + B_(2, 2)$])
 
@@ -894,7 +894,116 @@ Para esta demostración les voy a escribir el razonamiento que hago mientras esc
   Sabiendo que el caso base usa un algoritmo cúbico para multiplicar matrices, y despreciando las operaciones necesarias para las sumas y restas que hace el algoritmo, cuántas operaciones realiza este algoritmo, al ser llamado con dos matrices de tamaño $n times n$, con $n = 2^k$? Probar formalmente que este algoritmo necesita, en el peor caso, $O(n^(log_2 7))$ operaciones, con $log_2 7 < 3$.
 ]
 
+#ej[
+  Consideremos el siguiente algoritmo que determina si una lista tiene elementos duplicados:
 
+  ```py
+  def tiene_duplicados(lista: list[int], n: int) -> bool:
+    for i in range(n):
+      for j in range(i + 1, n):
+        if lista[i] == lista[j]:
+          return True
+    return False
+  ```
+
+  Sea $C(x)$ el número de comparaciones entre elementos que realiza `tiene_duplicados` sobre la entrada $x$, y $n$ la longitud de la lista. Analizar el peor caso y el mejor caso de $C$.
+]
+
+#ej[
+  Consideremos el siguiente algoritmo de exponenciación rápida:
+
+  ```py
+  def potencia(base: int, exp: int) -> int:
+    resultado = 1
+    while exp > 0:
+      if exp % 2 == 1:
+        resultado *= base
+      base *= base
+      exp //= 2
+    return resultado
+  ```
+
+  Sea $T(n)$ el número de multiplicaciones que realiza `potencia(base, n)`. Demostrar que $T in Theta(log n)$.
+]
+
+#ej[
+  Consideremos el siguiente algoritmo que calcula el $k$-ésimo número de Fibonacci:
+
+  ```py
+  def fib(n: int) -> int:
+    if n <= 1:
+      return n
+    prev, curr = 0, 1
+    for i in range(2, n + 1):
+      prev, curr = curr, prev + curr
+    return curr
+  ```
+
+  Sea $T(n)$ el número de operaciones que realiza `fib(n)`, y sea $S(n)$ el espacio auxiliar que utiliza (sin contar la entrada). Demostrar que $T in Theta(n)$ y que $S in Theta(1)$.
+]
+
+#ej[
+  Consideremos el siguiente algoritmo recursivo:
+
+  ```py
+  def f(n: int) -> int:
+    if n <= 1:
+      return 1
+    return f(n - 1) + f(n - 1)
+  ```
+
+  Sea $T(n)$ el número de sumas que realiza `f(n)`. Plantear la recurrencia para $T$ y demostrar que $T in Theta(2^n)$.
+
+  Ahora consideremos la siguiente variante:
+
+  ```py
+  def g(n: int) -> int:
+    if n <= 1:
+      return 1
+    x = g(n - 1)
+    return x + x
+  ```
+
+  Sea $T'(n)$ el número de sumas que realiza `g(n)`. Demostrar que $T' in Theta(n)$. ¿Por qué la diferencia?
+]
+
+#ej[
+  Consideremos la siguiente implementación de insertion sort:
+
+  ```py
+  def insertion_sort(lista: list[int], n: int):
+    for i in range(1, n):
+      key = lista[i]
+      j = i - 1
+      while j >= 0 and lista[j] > key:
+        lista[j + 1] = lista[j]
+        j -= 1
+      lista[j + 1] = key
+  ```
+
+  Sea $C(x)$ el número de comparaciones entre elementos que realiza `insertion_sort` sobre la entrada $x$, y $n$ la longitud de la lista.
+
+  + Demostrar que $C_"max" in Theta(n^2)$.
+  + Demostrar que $C_"min" in Theta(n)$.
+  + Asumiendo que la entrada es una permutación uniformemente al azar de ${1, dots, n}$, demostrar que $C_"avg" in Theta(n^2)$. _Sugerencia: para cada par $i < j$, considerar la probabilidad de que el elemento originalmente en la posición $j$ sea comparado con el originalmente en la posición $i$._
+]
+
+#ej[
+  Se tiene una pila (stack) implementada con un arreglo, que soporta dos operaciones:
+  - `push(x)`: agrega un elemento al tope de la pila.
+  - `multi_pop(k)`: elimina $min(k, |S|)$ elementos del tope de la pila, donde $|S|$ es el tamaño actual de la pila.
+
+  ```py
+  def multi_pop(stack: list[int], k: int):
+    pops = min(k, len(stack))
+    for i in range(pops):
+      stack.pop()
+  ```
+
+  Una llamada a `push` toma $O(1)$, y una llamada a `multi_pop(k)` toma $O(min(k, |S|))$.
+
+  Demostrar que, partiendo de una pila vacía, cualquier secuencia de $n$ operaciones `push` y `multi_pop` toma tiempo total $O(n)$, y luego el costo amortizado por operación es $O(1)$.
+]
 
 /*
 FIXME: En algún momento voy a traer de vuelta este ejercicio, pero por ahora falta explicar demasiado, y se van a asustar con la palabra autómata.
