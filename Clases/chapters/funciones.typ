@@ -99,4 +99,39 @@ Asimismo, cuando $A$ y $B$ son dos conjuntos de funciones $NN arrow RR0$, y $k i
 - $k A = {k a | a in A}$
 ]
 
+=== Ejercicios
+
+#ej[
+  Sea $f: A arrow B$ una función. Demostrar que $f compose id_A = f$ y que $id_B compose f = f$.
+]
+
+#ej[
+  Para cada una de las siguientes funciones, demostrar si es inyectiva, sobreyectiva, ambas, o ninguna.
+  - $f: RR arrow RR, f(x) = x^2$
+  - $f: NN arrow NN, f(x) = x^2$
+  - $f: RR_(gt.eq 0) arrow RR_(gt.eq 0), f(x) = x^2$
+  - $f: ZZ arrow ZZ, f(x) = 2x$
+  - $f: QQ arrow QQ, f(x) = 2x$
+]
+
+#ej[
+  Sean $f: A arrow B, g: B arrow C, h: C arrow D$ funciones. Demostrar que la composición es asociativa, es decir, que $h compose (g compose f) = (h compose g) compose f$.
+]
+
+#ej[
+  Sean $f: A arrow B$ y $g: B arrow A$ funciones tales que $g compose f = id_A$. Demostrar que $f$ es inyectiva y $g$ es sobreyectiva. Dar un ejemplo donde $f$ no sea sobreyectiva.
+]
+
+#ej[
+  Sea $f: A arrow B$ una función, y $X, Y subset.eq A$. Probar o dar un contraejemplo:
+  - $f(X inter Y) subset.eq f(X) inter f(Y)$
+  - $f(X inter Y) = f(X) inter f(Y)$
+  - $f(X union Y) = f(X) union f(Y)$
+]
+
+#ej[
+  Sean $f, g, h: NN arrow RR_(gt.eq 0)$. Demostrar que $f (g + h) = f g + f h$.
+]
+
+
 #load-bib()

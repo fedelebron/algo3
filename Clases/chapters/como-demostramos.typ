@@ -531,18 +531,16 @@ Para estructuras finitas, la inducción estructural es equivalente a la inducci�
 
 #warning-box[Sugiero ser formal cuando hacen inducción. Es muy común que se confundan cuando son informales. El siguiente es un ejemplo de una demostración incorrecta de una proposición falsa, por ser informal y no definir explícitamente una proposición sobre los números naturales, con cuantificadores.
 
-  #text(red)[
-    #prop[
-      Sea $P(n):$ Para todo conjunto $S$ de enteros de tamaño $n$, si $1 in S$, entonces $max(S) = |S|$.
-    ]
-    #demo[
-      + Caso base. Sea $S$ un conjunto de tamaño $1$, con $1 in S$. Entonces $S = {1}$, y luego $max(S) = 1 = |S|$.
-      + Paso inductivo. Asumimos $P(n)$, vamos a probar $P(n+1)$. Sea $S$ un conjunto de tamaño $n$, tal que $1 in S$. Por $P(n)$ sabemos que $max(S) = |S|$. Construimos $S' = S union {k}$, con $k = |S| + 1 = n + 1$. Como $max(S) = |S| = n$, en particular $n + 1 in.not S$, y luego $|S'| = n + 1$. Además, $1 in S'$, porque $1 in S$, y $S subset.eq S'$. Entonces, $max(S') = k = n + 1 = |S'|$, que es lo que queríamos demostrar.
-    ]
+  #propf[
+    Sea $P(n):$ Para todo conjunto $S$ de enteros de tamaño $n$, si $1 in S$, entonces $max(S) = |S|$.
   ]
-
-  Esto es claramente incorrecto, puesto que existe $S = {1, 100}$, con $1 in S$, pero $max(S) = 100 eq.not |S| = 2$. El problema es que la demostración es demasiado informal, y termina siendo insuficientemente rigurosa. No usa $P(n)$, sólo lo menciona. Para probar $P(n+1)$, tendríamos que probar que _cualquier_ conjunto $S'$ de tamaño $n + 1$ que contiene al $1$, cumple que $max(S') = |S'|$. Pero en la demostración, sólo se prueba para un conjunto particular, el que se construye agregando un elemento específico al conjunto $S$. El problema es que no todo conjunto de tamaño $n + 1$ que contiene al $1$, se puede construir de esa forma a partir de un conjunto de tamaño $n$ que contiene al $1$.
+  #demof[
+    + Caso base. Sea $S$ un conjunto de tamaño $1$, con $1 in S$. Entonces $S = {1}$, y luego $max(S) = 1 = |S|$.
+    + Paso inductivo. Asumimos $P(n)$, vamos a probar $P(n+1)$. Sea $S$ un conjunto de tamaño $n$, tal que $1 in S$. Por $P(n)$ sabemos que $max(S) = |S|$. Construimos $S' = S union {k}$, con $k = |S| + 1 = n + 1$. Como $max(S) = |S| = n$, en particular $n + 1 in.not S$, y luego $|S'| = n + 1$. Además, $1 in S'$, porque $1 in S$, y $S subset.eq S'$. Entonces, $max(S') = k = n + 1 = |S'|$, que es lo que queríamos demostrar.
+  ]
 ]
+
+Esto es claramente incorrecto, puesto que existe $S = {1, 100}$, con $1 in S$, pero $max(S) = 100 eq.not |S| = 2$. El problema es que la demostración es demasiado informal, y termina siendo insuficientemente rigurosa. No usa $P(n)$, sólo lo menciona. Para probar $P(n+1)$, tendríamos que probar que _cualquier_ conjunto $S'$ de tamaño $n + 1$ que contiene al $1$, cumple que $max(S') = |S'|$. Pero en la demostración, sólo se prueba para un conjunto particular, el que se construye agregando un elemento específico al conjunto $S$. El problema es que no todo conjunto de tamaño $n + 1$ que contiene al $1$, se puede construir de esa forma a partir de un conjunto de tamaño $n$ que contiene al $1$.
 
 /*
 #prop[
@@ -638,9 +636,9 @@ Veamos primero una demostración correcta que toma esto en cuenta, y luego tres 
 ]
 
 Ahora veamos qué pasa si no somos cuidadosos al usar la hipótesis inductiva.
-#let txt = text(red)[
-  #prop[En cualquier conjunto de caballos, todos los caballos son del mismo color.]
-  #demo[
+#let txt = [
+  #propf[En cualquier conjunto de caballos, todos los caballos son del mismo color.]
+  #demof[
     Sea $S$ un conjunto de caballos de $n$ elementos. Si $n = 1$, $S$ tiene un único caballo, y obviamente es del mismo color que todos los caballos de $S$. Si $n > 1$, entonces sea $x$ cualquier caballo en $S$. Si sacamos a $x$ de $S$, obtenemos un conjunto $S' = S without {x}$ de $n - 1$ caballos. Por hipótesis inductiva, todos los caballos en $S'$ son del mismo color. Ahora sea $y$ otro caballo, distinto de $x$. Por hipótesis inductiva, en $T = S without {y}$, todos los caballos son del mismo color. Como $x$ e $y$ tienen el mismo color que todos los otros caballos, entonces $x$ e $y$ también son del mismo color entre sí, y luego todos los caballos en $S$ son del mismo color.
 
     Por inducción, en cualquier conjunto de caballos, todos los caballos son del mismo color.
@@ -654,11 +652,10 @@ Ahora veamos qué pasa si no somos cuidadosos al usar la hipótesis inductiva.
 Sin embargo, han visto dos caballos de colores distintos. ¿Cómo puede ser? El error está en ser informal, pues al decir "$x$ e $y$ tienen el mismo color que todos los otros caballos", e intentar argumentar algo con eso, uno tiene que asegurarse de que el conjunto "todos los otros caballos" no es vacío, pues en ese caso no podemos inferir nada. Luego, esta demostración se cae en el caso $n = 2$. Al ser informal y razonar vagamente, miente.
 
 Otra demostración erronea más. ¿Pueden encontrar el error?
-#prop[
+#propf[
   Para todo $n in NN$, $2^n = 1$.
 ]
-#text(red)[
-  #demo[
+#demof[
     Vamos a probar que vale $P(n)$ para todo $n in NN$, con $P(n): 2^n = 1$.
 
     + Caso base, $P(0)$. Es cierto que $2^0 = 1$, y luego $P(0)$ es cierta.
@@ -674,20 +671,19 @@ Otra demostración erronea más. ¿Pueden encontrar el error?
     $
 
     que es lo que queríamos demostrar.
-  ]]
+  ]
 
 El error vino de usar $P(n - 1)$. Esto no tiene sentido cuando estamos probando $P(1)$, porque entonces $1 = n + 1$ y entonces $n = 0$, y no tiene sentido decir $n - 1$. No fuimos cuidadosos al asumir que $n > 1$, lo cual nos hubiera marcado que debemos probar $P(1)$ por separado, no sólo $P(0)$.
 
 ¿Pueden detectar dónde está el error en la siguiente demostración?
-#prop[
+#propf[
   Probar que para todo $n in NN$, $5n = 0$.
 ]
-#text(red)[
-  #demo[
+#demof[
     Sea el predicado $P(n): 5n = 0$. Vamos a probar $P(n) forall n in NN$ por inducción.
     - $P(0)$. Queremos probar $P(0)$, que significa $5 times 0 = 0$, y esto es cierto. Luego vale $P(0)$.
     - $n > 0 implies P(n)$. Sean $i, j in NN$, con $i < n, j < n$, tales que $i + j = n$. Entonces por hipótesis inductiva vale $P(i)$ y $P(j)$, entonces $5i = 0$ y $5j = 0$. Entonces, $5n = 5(i + j) = 5i + 5j = 0 + 0 = 0$, lo cual prueba $P(n)$.
-  ]]
+  ]
 
 El error está en asumir que existen naturales $i < n, j < n,$ con $i + j = n$. Esto sólo es cierto si $n gt.eq 2$, y entonces nuestra demostración falla para $n = 1$, y se cae la inducción. No fuimos cuidadosos, y nos faltó el caso base $n = 1$.
 
@@ -807,7 +803,7 @@ Para probar su correctitud, vamos a definir una noción de "tamaño" de entrada,
 
 Vemos como es más fácil demostrar esto que un algoritmo iterativo, que cambia estados. Esto es cierto en general, y es parte del motivo por el cual la gente usa algoritmos y lenguajes de programación funcionales.
 
-=== Definiciones equivalentes
+==== Definiciones equivalentes
 Si tenemos definiciones equivalentes para nuestro objeto, podemos hacer uso de cualquiera de ellas. Por ejemplo:
 
 #ej[
