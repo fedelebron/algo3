@@ -774,5 +774,38 @@ Sean $f, g, h: NN arrow RR0$. Si $f in Theta(g)$, entonces $h compose f in Theta
 ]
 Esto no es cierto, y basta tomar $f(n) = 2n$, $g(n) = n$, y $h(n) = 2^n$. $f$ y $g$ son asintóticamente equivalentes. Sin embargo $(h compose f)(n) = 2^(2n) = (2^n)^2$ no es asintóticamente equivalente a $(h compose g)(n) = 2^n$.
 
+=== Ejercicios
+
+#ej[
+Sea $k in NN$ una constante fija. Probar que si $f_1, f_2, dots, f_k in O(1)$, entonces $product_(i=1)^k f_i in O(1)$.
+
+Explicar por qué este resultado *no* implica que $2^n in O(1)$.
+]
+
+#ej[
+Sea $T: NN arrow RR0$ definida por $T(n) = sum_(i=1)^n i^2$. Probar que $T in Theta(n^3)$.
+]
+
+#ej[
+Sea $f: NN arrow RR0$ tal que $f(n) = n + (-1)^n n$. Determinar si $f in O(n)$, $f in Omega(n)$, y/o $f in Theta(n)$. Demostrar las tres cosas.
+]
+
+#ej[
+Sean $f, g: NN arrow RR0$ tales que $f in Theta(g)$. Probar que $2^f in.not Theta(2^g)$ en general, dando un contraejemplo explícito.
+]
+
+#ej[
+Sean $f, g, h: NN arrow RR0$ con $g(n) gt.eq 1$ para todo $n$. Probar que si $f in O(g)$ y $h in O(g)$, entonces $f - h in O(g)$.
+
+Mostrar que *no* es cierto que $f - h in O(g - g) = O(0)$.
+]
+
+#ej[
+Sea $f: NN arrow RR0$ definida por $f(n) = floor(log_2(n+1))$. Probar que $f in Theta(log n)$.
+]
+
+#ej[
+Sea $f: NN arrow RR0$ tal que $f(n) = 3n^2 + O(n)$. Probar que $f^2 in 9n^4 + O(n^3)$.
+]
 
 #load-bib()

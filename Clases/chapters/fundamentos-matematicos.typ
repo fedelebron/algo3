@@ -3,6 +3,8 @@
 
 #show: apply-preamble
 
+#pagebreak()
+
 #align(center + horizon)[
   = Fundamentos matemáticos
 ]
