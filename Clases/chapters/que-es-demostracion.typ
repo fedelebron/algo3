@@ -276,4 +276,6 @@ El lenguaje en el que está escrito esto es razonablemente formal. Sin embargo, 
 
 Una vez más, esto depende del contexto. Los antiguos griegos usaban este tipo de argumentos todo el tiempo, y esa demostración hubiera sido considerada rigurosa. Fue sólo a principios del 1900, con el trabajo de Ernst Zermelo@choice, que nos dimos cuenta que ese tipo de razonamientos, si no tenemos cuidado, llevan a paradojas.
 
+El ejemplo anterior muestra que incluso argumentos que parecen rigurosos pueden esconder suposiciones ocultas o razonamientos circulares. Cuando las consecuencias de estar equivocados son menores, un argumento informal puede ser suficiente. Pero hay contextos donde realmente necesitamos estar seguros. ¿Cuándo es ese el caso?
+
 #load-bib()

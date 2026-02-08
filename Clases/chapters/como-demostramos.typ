@@ -723,6 +723,7 @@ En Algoritmos 1, aprenden a especificar estas proposiciones, y a demostrar estas
       If($n = 0$, {
         Return[$1$]
       })
+      Assign[$x$][$a$]
       Assign[$k$][$n$]
       Assign[$y$][$1$]
       While($k > 1$, {

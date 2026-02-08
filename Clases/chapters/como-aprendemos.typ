@@ -4,7 +4,6 @@
 
 #show: apply-preamble
 
-
 == ¿Cómo aprendemos a demostrar? <comoaprender>
 
 Nadie aprendió a andar en bicicleta viendo a otros andar en bicicleta. Tampoco van a aprender a demostrar leyendo cómo alguien más demostró. La *única* forma que van a aprender es escribiendo demostraciones ustedes mismos. Por cada segundo que pasan leyendo este documento, sugiero que pasen cinco pensando y escribiendo sus propias demostraciones.

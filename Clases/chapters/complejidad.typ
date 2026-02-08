@@ -147,8 +147,8 @@ Notemos cómo analizando los pasos que realiza el algoritmo, y contando lo que n
   ```py
   def broadcast_paralelo(x, id: int, n: int):
     if id != 0:
-      x = receive(id//2)
-    if id < n / 2:
+      x = receive((id - 1) // 2)
+    if 2 * id + 1 < n:
       parallel(
         send(x, 2 * id + 1),
         send(x, 2 * id + 2),
@@ -581,7 +581,7 @@ FIXME: Este algoritmo es estocástico, y todavía no expliqué eso.
 Para esta demostración les voy a escribir el razonamiento que hago mientras escribo la demostración.
 
 #quote-box[
-  El primer caso es fácil, $log_2(5) > 1$, y el costo de combinar soluciones es pequeño porque $1 < log_2(5))$, entonces el costo está dominado por las hojas del árbol de recursión, y uso el teorema maestro para saber que esto es $Theta(n^(log_2(5)))$.
+  El primer caso es fácil, $log_2(5) > 1$, y el costo de combinar soluciones es pequeño porque $1 < log_2(5)$, entonces el costo está dominado por las hojas del árbol de recursión, y uso el teorema maestro para saber que esto es $Theta(n^(log_2(5)))$.
 
   Para el segundo esto me recuerda a la función $2^n = 2 times 2^(n - 1)$, o también a la sucesión de Fibonacci, $F_n = F_(n - 1) + F_(n - 2)$. Esas tienen solución exponencial, entonces supongamos que $T(n) lt.eq gamma c^n$ para algún $gamma, c in RR_(> 0)$. $T(0)$ es alguna constante, pongámosle $T(0) = alpha$. Entonces si quiero que $T(0) lt.eq gamma c^0 = gamma$, voy a tener $alpha lt.eq gamma$, y luego mi $gamma$ tiene que cumplir $gamma gt.eq alpha$. Como hay un $O(1)$ en la definición de $T$, sea $h: NN arrow NN$ tal que $T(n) = 2T(n-1)+h(n)$, existen $n_0 in NN, beta in RR_(>0)$ tal que para todo $n gt.eq n_0, h(n) lt.eq beta$. Veamos qué puedo deducir sobre $gamma$ usando $beta$...
   $
@@ -636,10 +636,10 @@ Para esta demostración les voy a escribir el razonamiento que hago mientras esc
     Vamos a probar $P(n): alpha 2^n lt.eq T_2(n) lt.eq gamma 2^n - delta$.
 
     + Caso base, $P(0)$. Por definición de $alpha$, $T_2(0) = alpha = alpha + delta - delta = gamma - delta = gamma 2^0 - delta$, que junto con $alpha 2^0 = alpha$, prueba $P(0)$.
-    + Paso inductivo. Asumimos $P(n)$, queremos probar $P(n + 1)$. Sabemos que $T_2(n + 1) = 2T_2(n) + h(n)$.
+    + Paso inductivo. Asumimos $P(n)$, queremos probar $P(n + 1)$. Sabemos que $T_2(n + 1) = 2T_2(n) + h(n + 1)$.
 
     $
-      T_2(n + 1) & = 2T_2(n) + h(n) \
+      T_2(n + 1) & = 2T_2(n) + h(n + 1) \
                & lt.eq 2T_2(n) + delta \
                & lt.eq 2(gamma 2^n - delta) + delta \
                & =gamma 2^(n + 1) - 2delta + delta \
@@ -649,7 +649,7 @@ Para esta demostración les voy a escribir el razonamiento que hago mientras esc
     Asimismo,
 
     $
-      T_2(n+1) & = 2T_2(n) + h(n) \
+      T_2(n+1) & = 2T_2(n) + h(n + 1) \
              & gt.eq 2T_2(n) \
              & gt.eq 2(alpha 2^n) \
              & gt.eq alpha 2^(n + 1)
