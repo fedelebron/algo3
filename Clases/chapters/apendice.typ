@@ -51,7 +51,7 @@ Por inducción sobre $j$. Para $j = 0$, el único vértice es la raíz con argum
 
 Para $j gt.eq 1$, por hipótesis inductiva los argumentos en el nivel $j - 1$ están en ${floor(n / b^(j-1)), ceil(n / b^(j-1))}$. Los hijos de estos vértices tienen argumentos de la forma $floor(q / b)$ o $ceil(q / b)$ donde $q in {floor(n / b^(j-1)), ceil(n / b^(j-1))}$.
 
-Tenemos que $floor(floor(x/y)/y) = floor(x/y^2)$, y $ceil(ceil(x/y)/y) = ceil(x/y^2)$ para todo $x, y$, con $y eq.not 0$. Asimismo, $ceil(x)$ y $floor(x)$ son enteros, y difieren en a lo sumo $1$.
+Tenemos que $floor(floor(x/y)/z) = floor(x/(y z))$, y $ceil(ceil(x/y)/z) = ceil(x/(y z))$ para todo $x, y, z$, con $y, z eq.not 0$. Asimismo, $ceil(x)$ y $floor(x)$ son enteros, y difieren en a lo sumo $1$.
 
 El máximo argumento en el nivel $j$-ésimo, entonces, va a ser $ceil(n / b^j)$, y el mínimo será $floor(n / b^j)$. Como todos los otros argumentos están entre esos dos, y son enteros que difieren en a lo sumo $1$, todos los argumentos del nivel $j$ son o bien $floor(n / b^j)$ o bien $ceil(n / b^j)$.
 ]
@@ -93,7 +93,7 @@ $
   l_j^- = min(f(floor(n/b^j)), f(ceil(n/b^j))), quad l_j^+ = max(f(floor(n/b^j)), f(ceil(n/b^j)))
 $
 
-Pensemos en la descomposición por nivel de nuestro árbol de recursión. En los primeros $d$ niveles, todos los vértices son internos, y por lo tanto la suma de sus pesos es $a^j$. En los últimos dos niveles, hay a lo sumo $a^d$ peso total de vértices internos, con valor $f(n_0)$, y a lo sumo $a^(d+1)$ peso total de hojas con valor entre $k_min$ y $k_max$, algunas estando en el nivel $d$ y otras en el nivel $d+1$.
+Pensemos en la descomposición por nivel de nuestro árbol de recursión. En los primeros $d$ niveles, todos los vértices son internos, y por lo tanto la suma de sus pesos es $a^j$. En los últimos dos niveles, hay a lo sumo $a^d$ peso total de vértices internos, con valor $f(n_0)$, y a lo sumo $a^(d+1)$ peso total de hojas en todo el árbol, con valor entre $k_min$ y $k_max$, algunas estando en el nivel $d$ y otras en el nivel $d+1$. Para ver esto último, sean $I_d$ y $L_d$ los pesos totales de vértices internos y hojas en el nivel $d$, respectivamente. Entonces $I_d + L_d = a^d$. El peso total de hojas en el nivel $d+1$ es $a I_d$, ya que cada vértice interno en el nivel $d$ genera hijos con peso total $a$ veces su propio peso. Luego, el peso total de hojas en todo el árbol es $L_d + a I_d = a^d + (a - 1) I_d$. Como $L_d gt.eq 0$, tenemos $I_d = a^d - L_d lt.eq a^d$, y por lo tanto $a^d + (a - 1) I_d lt.eq a^d + (a - 1) a^d = a^(d+1)$.
   
   $
   sum_(j=0)^(d-1) a^j l_j^- + k_min a^d lt.eq T(n) lt.eq sum_(j=0)^(d-1) a^j dot l_j^+ + a^d dot f(n_0) + k_max dot a^(d+1)
@@ -233,7 +233,7 @@ Pensemos en la descomposición por nivel de nuestro árbol de recursión. En los
 
   Por lo tanto, $floor(n / b^j) gt.eq n / (2 b^j) gt.eq N_1$.
   ]
-  Para tales $j$, como $floor(n / b^j) gt.eq N_1 gt.eq N_0$:
+  Para tales $j$, como $floor(n / b^j) gt.eq N_1 gt.eq N_0$, y como $g(x) = x^c log^k x$ es no decreciente para $x gt.eq 1$ (pues $c gt.eq 0$ y $k gt.eq 0$):
   $
   l_j^- gt.eq alpha dot floor(n / b^j)^c dot log^k (floor(n / b^j)) gt.eq alpha dot (n / (2 b^j))^c dot log^k (n / (2 b^j))
   $
@@ -297,7 +297,7 @@ Pensemos en la descomposición por nivel de nuestro árbol de recursión. En los
 
     Como $C gt.eq 1 / (1 - r)$, tenemos $C r + 1 lt.eq C$, y por lo tanto $T(n) lt.eq C f(n)$.
 
-  Por inducción, $T(n) lt.eq C f(n)$ para todo $n gt.eq N$, y luego $T in O(f)$.Concluimos que $T in Theta(f)$.
+  Por inducción, $T(n) lt.eq C f(n)$ para todo $n gt.eq N$, y luego $T in O(f)$. Concluimos que $T in Theta(f)$.
 ]
 
 == Demostración del número de comparaciones de Mergesort
