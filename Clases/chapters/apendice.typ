@@ -18,7 +18,7 @@ $
   )
 $
 
-para alguna función $f: NN arrow RR0$, algunas constantes $b_0, dots, b_(n_0-1) in RR0$, $a_1, a_2 in NN$, $b in NN gt.eq 2$, $n_0 in NN$, y asumiendo $n_0 gt.eq 2$ si $a_2 > 0$ para estar bien definida. Llamemos $a = a_1 + a_2 gt.eq 1$, y $c = log_b a$. Entonces:
+para alguna función $f: NN arrow RR0$, algunas constantes $b_0, dots, b_(n_0-1) in RRg0$, $a_1, a_2 in NN$, $b in NN gt.eq 2$, $n_0 in NN$, y asumiendo $n_0 gt.eq 2$ si $a_2 > 0$ para estar bien definida. Llamemos $a = a_1 + a_2 gt.eq 1$, y $c = log_b a$. Entonces:
 
 - Si $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$, entonces $T in Theta(n^(c))$.
 - Si $f in Theta(n^(c) log^k n)$ para algún $k in NN$, entonces $T in Theta(n^(c) log^(k+1) n)$.
@@ -31,8 +31,6 @@ para alguna función $f: NN arrow RR0$, algunas constantes $b_0, dots, b_(n_0-1)
 Vamos a asumir sin pérdida de generalidad que $n_0 gt.eq 2$. Si $n_0 = 1$, es decir hay un sólo caso base, podemos definir una función $T'$, idénticamente definida a $T$, sólo que $T'$ contiene un caso base extra, $b_(n_0) = T(n_0)$. Como $T(n) = T'(n)$ para todo $n in NN$, tendrán el mismo comportamiento asintótico, y podemos asumir que estamos analizando $T'$ con $n_0 gt.eq 2$. Hacemos esto para que expresiones como $1/(log_2 n_0)$ estén bien definidas.
 
 Definamos $k_min = min_(0 lt.eq i < n_0) b_i$, y $k_max = max_(0 lt.eq i < n_0) b_i$.
-
-También vamos a asumir sin pérdida de generalidad que $k_min > 0$. Si todos los casos base son $0$, al igual que en el párrafo anterior, tomamos el primer $k$ tal que $T(k) > 0$, y creamos casos base $b_(n_0), dots, b_k$, tal que al menos un caso base no es cero. Si no hay tal primer $k$ con $T(k) > 0$, entonces $T$ es la función constantemente cero, y no hay nada que analizar.
 
 Vamos a analizar el árbol de recursión de $T(n)$. Definimos $d$ como el primer nivel en el que hay una hoja, $d = floor(log_b (n / n_0)) + 1$.
 

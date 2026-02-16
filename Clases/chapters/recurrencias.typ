@@ -604,7 +604,7 @@ $
   )
 $
 
-para alguna función $f: NN arrow RR0$, algunas constantes $b_0, dots, b_(n_0-1) in RR0$, $a_1, a_2 in NN$, $b in NN gt.eq 2$, $n_0 in NN$, y asumiendo $n_0 gt.eq 2$ si $a_2 > 0$ para estar bien definida. Llamemos $a = a_1 + a_2 gt.eq 1$, y $c = log_b a$. Entonces:
+para alguna función $f: NN arrow RR0$, algunas constantes $b_0, dots, b_(n_0-1) in RRg0$, $a_1, a_2 in NN$, $b in NN gt.eq 2$, $n_0 in NN$, y asumiendo $n_0 gt.eq 2$ si $a_2 > 0$ para estar bien definida. Llamemos $a = a_1 + a_2 gt.eq 1$, y $c = log_b a$. Entonces:
 
 - Si $f in O(n^(c - epsilon))$ para algún $epsilon in RRg0$, entonces $T in Theta(n^(c))$.
 - Si $f in Theta(n^(c) log^k n)$ para algún $k in NN$, entonces $T in Theta(n^(c) log^(k+1) n)$.
@@ -788,7 +788,7 @@ Como no caemos en ninguno de los tres casos, el teorema maestro no aplica a esta
 === Ejercicios
 
 #ej[
-  Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 4T(floor(n/3)) + O(n log n)$, y $T(0) = 0$. Probar que $T in Theta(n^(log_3 4))$.
+  Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 4T(floor(n/3)) + O(n log n)$, y $T(0) = 1$. Probar que $T in Theta(n^(log_3 4))$.
 ]
 
 #ej[
@@ -801,11 +801,11 @@ Como no caemos en ninguno de los tres casos, el teorema maestro no aplica a esta
 ]
 
 #ej[
-  Sea $T: NN arrow NN$ una función que cumple que para todo $n > 4$, $T (n) = 16T (floor(n/4)) + n!$, y $T(k) = k^2$ para $0 lt.eq k lt.eq 4$. Probar que $T in Theta(n!)$.
+  Sea $T: NN arrow NN$ una función que cumple que para todo $n > 4$, $T (n) = 16T (floor(n/4)) + n!$, y $T(k) = k^2 + 1$ para $0 lt.eq k lt.eq 4$. Probar que $T in Theta(n!)$.
 ]
 
 #ej[
-  Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 3T(floor(n/3)) + sqrt(n)$, y $T(0) = 0$. Probar que $T in Theta(n)$.
+  Sea $T: NN arrow NN$ una función que cumple que para todo $n > 0$, $T(n) = 3T(floor(n/3)) + sqrt(n)$, y $T(0) = 1$. Probar que $T in Theta(n)$.
 ]
 
 #load-bib()
