@@ -92,7 +92,7 @@ Probar un "para todo" es equivalente a la siguiente conversación, entre el que 
 })
 #let body_forall = [Nosotros vamos a tomar el rol de Alicia. Nos van a dar un $epsilon$, y tenemos que decir quién es $delta$. Como nos están dando un $epsilon$, nuesto $delta$ puede (y en general va a) depender de $epsilon$. Por ejemplo, a veces vamos a concluir que $delta = epsilon / 8$. Este es el baile del "para todo / existe". El término "para todo" resulta en "se nos va a dar un". El término "existe" resulta en "tenemos que devolver".
 
-  Por el contrario, si tuvieramos probar "existe un $x$ tal que para todo $y gt.eq x, x = y$", entonces tenemos que dar un $x$ explícito#footnote[Hay maneras de probar la existencia de algo sin darlo explícitamente, y es común en matemática. Inicialmente, sugiero que consideren que demostrar existencia se hace dando un objeto explícito.], y mostrar que sin importar cuál $y$ elija Beto, podemos probar que $x = y$.]
+  Por el contrario, si tuvieramos que probar "existe un $x$ tal que para todo $y gt.eq x, x = y$", entonces tenemos que dar un $x$ explícito#footnote[Hay maneras de probar la existencia de algo sin darlo explícitamente, y es común en matemática. Inicialmente, sugiero que consideren que demostrar existencia se hace dando un objeto explícito.], y mostrar que sin importar cuál $y$ elija Beto, podemos probar que $x = y$.]
 #wrap-content(image_forall, body_forall)
 
 Luego de que devolvemos ese $delta$, le sigue otro "para todo", "para todo $x in RR$". Entonces, nos van a dar otro $x$. A ese "para todo", le sigue un "si", "si $|x - x_0| < delta$". Un "si" nos deja asumir algo - para probar que "si $X$, entonces $Y$" (que se escribe $X implies Y$), podemos _asumir_ $X$, puesto que de otra manera no hay nada que probar ("falso implica todo"). Entonces, esto se traduce en "nos van a dar un $x$, y podemos asumir que $|x - x_0| < delta$". El "entonces" de un "si" es lo que tenemos que probar. Luego, tenemos que probar que para ese $x$ que nos dieron, vale $|e^x - e^(x_0)| < epsilon$.
@@ -109,7 +109,7 @@ Noten cómo al igual que ocurre en la conversación, tuvimos que decir quién es
 
 === Considerar ejemplos
 
-En general, las cosas que probamos van a ser de la forma $A implies B$, con $A$ algo que podemos asumir, y $B$ algo que queremos demostrar. Para demostrar esto, es frecuentemente útil considerar ejemplos de cosas que cumplen $A$, y ver "por qué" se tiene que cumplir $B$ para ellas. Podemos empezar con ejemplos pequeños, si nuestra estructura tiene alguna noción de "tamaño" (la longitud de una lista, el valor absoluto de un número real, el número de vértices mas aristas de un grafo, el numero de líneas de un programa, el número de reglas de una gramática, etc).
+En general, las cosas que probamos van a ser de la forma $A implies B$, con $A$ algo que podemos asumir, y $B$ algo que queremos demostrar. Para demostrar esto, es frecuentemente útil considerar ejemplos de cosas que cumplen $A$, y ver "por qué" se tiene que cumplir $B$ para ellas. Podemos empezar con ejemplos pequeños, si nuestra estructura tiene alguna noción de "tamaño" (la longitud de una lista, el valor absoluto de un número real, el número de vértices más aristas de un grafo, el número de líneas de un programa, el número de reglas de una gramática, etc).
 
 Por ejemplo, veamos el siguiente enunciado formal:
 
@@ -689,7 +689,7 @@ El error está en asumir que existen naturales $i < n, j < n,$ con $i + j = n$. 
 
 ==== Correctitud de ciclos en algoritmos <fastexp>
 
-Frecuentemente vamos a probar propiedades sobre algoritmos que usan ciclos. La herramienta principal que tenemos para esto es el teorema del invariante. Esto no es nada más que inducción en el número de iteraciones, con un formalismo al rededor para evitar que cometan errores (como, por ejemplo, olvidarse de probar que el ciclo efectivamente termina).
+Frecuentemente vamos a probar propiedades sobre algoritmos que usan ciclos. La herramienta principal que tenemos para esto es el teorema del invariante. Esto no es nada más que inducción en el número de iteraciones, con un formalismo alrededor para evitar que cometan errores (como, por ejemplo, olvidarse de probar que el ciclo efectivamente termina).
 
 Para usar el teorema del invariante, necesitamos definir cinco cosas:
 
@@ -757,8 +757,8 @@ En Algoritmos 1, aprenden a especificar estas proposiciones, y a demostrar estas
   + Si la función variante es cero, entonces $k - 1 = 0$, y luego $k = 1$. Como la guarda es $k > 1$, el que la función variante sea cero obliga a que la guarda no se cumpla.
   + La negación de la guarda nos dice que $k lt.eq 1$. El invariante nos dice que $1 lt.eq k$. Luego, sabemos que $k = 1$. El invariante también nos dice que $x^k times y = x_0^n$, entonces sabemos que $x^1 times y = x times y = x_0^n$, que es la postcondición.
   + Sabemos que $k > 1$ porque vale la guarda. Partimos en casos, dependiendo de si $k mod 2 = 0$ o $k mod 2 = 1$.
-    - Si $k = 2k'$, entonces no entramos al condicional. Lo que hacemos es cuadrar $x$ obteniendo $x'$, y dividir $k$ por dos, obteniendo $k'$. Como vale la guarda, sabemos que $k > 1$, y como $k in NN$, tenemos $k gt.eq 2$. Como $k = 2k'$, vemos que $k' gt.eq 1$, que es la primer parte del invariante. Empezamos la iteración con $x^k y = x_0^n$, es decir $x^(2k') y = x_0^n$. Usando el álgebra de exponenciación, vemos que $x^(2k') = (x^2)^k'$, y $k' = k\/2$. Luego, vemos que vale $(x^2)^k' y = x_0^n$, o $x'^k' y = x_0^n$, que es el invariante al terminar la iteración.
-    - Si $k = 2k' + 1$, entonces entramos al condicional. El efecto de la iteración en este caso es transformar $k$ en $k'$, $x$ en $x' = x^2$, y $y' = x times y$. Como $k > 1$, y $k in NN$, sabemos que $k gt.eq 2$, pero como $k$ es impar, $k gt.eq 3$. Como $k = 2k' + 1$, entonces, tenemos $2k' gt.eq 2$, y luego $k' gt.eq 1$, que es la primer parte del invariante. Como vale el invariante al comenzar la iteración, sabemos que $x^(2k' + 1) y = x_0^n$. Nuevamente usando álgebra de exponenciación, obtenemos $x_0^n = x^(2k' + 1) y = x^(2k') x y = (x^2)^k' x y = (x^2)^k' y' = x'^k' y'$, y por tanto vale el invariante al terminar la iteración.
+    - Si $k = 2k'$, entonces no entramos al condicional. Lo que hacemos es cuadrar $x$ obteniendo $x'$, y dividir $k$ por dos, obteniendo $k'$. Como vale la guarda, sabemos que $k > 1$, y como $k in NN$, tenemos $k gt.eq 2$. Como $k = 2k'$, vemos que $k' gt.eq 1$, que es la primera parte del invariante. Empezamos la iteración con $x^k y = x_0^n$, es decir $x^(2k') y = x_0^n$. Usando el álgebra de exponenciación, vemos que $x^(2k') = (x^2)^k'$, y $k' = k\/2$. Luego, vemos que vale $(x^2)^k' y = x_0^n$, o $x'^k' y = x_0^n$, que es el invariante al terminar la iteración.
+    - Si $k = 2k' + 1$, entonces entramos al condicional. El efecto de la iteración en este caso es transformar $k$ en $k'$, $x$ en $x' = x^2$, y $y' = x times y$. Como $k > 1$, y $k in NN$, sabemos que $k gt.eq 2$, pero como $k$ es impar, $k gt.eq 3$. Como $k = 2k' + 1$, entonces, tenemos $2k' gt.eq 2$, y luego $k' gt.eq 1$, que es la primera parte del invariante. Como vale el invariante al comenzar la iteración, sabemos que $x^(2k' + 1) y = x_0^n$. Nuevamente usando álgebra de exponenciación, obtenemos $x_0^n = x^(2k' + 1) y = x^(2k') x y = (x^2)^k' x y = (x^2)^k' y' = x'^k' y'$, y por tanto vale el invariante al terminar la iteración.
 
   Concluímos la postcondición, que junto con la salida temprana en el caso de $n = 0$ nos deja concluír que el valor de retorno de nuestro programa es efectivamente $x_0^n$, con lo cual es un algoritmo de exponenciación correcto.
 ]
@@ -828,7 +828,7 @@ Si tenemos definiciones equivalentes para nuestro objeto, podemos hacer uso de c
 
   Vamos a encontrar dos secuencias que convergen a $x_0$, una $(q_n)$ de números racionales y otra $(i_n)$ de números irracionales. Por ejemplo, podemos tomar la sucesión $q_n = floor(10^n x_0)/10^n$, que es truncar $x_0$ a $n$ decimales, y la sucesión $i_n = q_n + sqrt(2) / 10^n$. Como $q_n$ es racional para todo $n in NN$, $i_n$ es irracional, y la secuencia $(i_n)$ también converge a $x_0$. Entonces, tenemos que $f(q_n) = 1$ para todo $n in NN$, y $f(i_n) = 0$ para todo $n in NN$.
 
-  Si asumimos que $f$ es continua en $x_0$, ambas sucesiones $(f(q_n))$ y $(f(i_n))$ convergen a $f(x_0)$. Sin embargo, la primer sucesión es constantemente $1$, y luego converge a $1$, y la segunda sucesión es constantemente $0$, y luego converge a $0$. Luego, $f(x_0) = 1$ y $f(x_0) = 0$, lo cual es una contradicción. Luego, $f$ no es continua en ningún punto $x_0 in RR$.
+  Si asumimos que $f$ es continua en $x_0$, ambas sucesiones $(f(q_n))$ y $(f(i_n))$ convergen a $f(x_0)$. Sin embargo, la primera sucesión es constantemente $1$, y luego converge a $1$, y la segunda sucesión es constantemente $0$, y luego converge a $0$. Luego, $f(x_0) = 1$ y $f(x_0) = 0$, lo cual es una contradicción. Luego, $f$ no es continua en ningún punto $x_0 in RR$.
 ]
 
 
@@ -1491,7 +1491,7 @@ OK, creo que eso cierra. A ver cómo se puede escribir bien...
 ]
 */
 
-Si sólo ven la demostración final, parece compacta, no comete errores, no intenta varias cosas, no nombra cosas que no usa, no deja cosas sin demostrar para después, tiene notación sensible, y hasta tiene estructura, planteando una inducción formal. No piensen que la demostración nació así - como ven, uno pasa por jugar, probar cosas, planear, y emprolijar. No se frustren si sus demostraciones no se ven como esta última, en su primer pasada.
+Si sólo ven la demostración final, parece compacta, no comete errores, no intenta varias cosas, no nombra cosas que no usa, no deja cosas sin demostrar para después, tiene notación sensible, y hasta tiene estructura, planteando una inducción formal. No piensen que la demostración nació así - como ven, uno pasa por jugar, probar cosas, planear, y emprolijar. No se frustren si sus demostraciones no se ven como esta última, en su primera pasada.
 
 #tip-box[
   Las siguientes son cosas que pueden hacer al pasar en limpio una demostración:

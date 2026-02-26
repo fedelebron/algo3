@@ -64,7 +64,7 @@ Hay reglas muy útiles que relacionan estas operaciones entre sí, llamadas las 
   $
 ]
 #demo[
-  Para la primer ecuación:
+  Para la primera ecuación:
   $
     A union (B inter C) & = {x | x in A or x in (B inter C)} \
                         & = {x | x in A or (x in B and x in C)} \
