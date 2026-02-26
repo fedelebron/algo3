@@ -50,7 +50,7 @@
     &= f(S, T)
   $
 
-  Para ver una cota superior de $f(S, T)$, basta usar sólo la primer sumatoria:
+  Para ver una cota superior de $f(S, T)$, basta usar sólo la primera sumatoria:
 
   $
     |f| &= f(S, T) \

@@ -86,7 +86,7 @@
     Vamos a probar esto por inducción en el número de iteraciones del ciclo. Sea $P(i)$: Al comenzar la $i$-ésima iteración del ciclo, tenemos $d[v] = delta(s, v)$ para todo $v in V without Q$.
 
     + $P(0)$. Al comenzar el ciclo, no hay nada que probar, pues $Q = V$, entonces no hay nadie en $V - Q$.
-    + $P(1)$. El único vértice que sacamos de $Q$ en la primer iteración fue $s$, y luego al comenzar la segunda, $Q = V without {s}$. En este caso, $d[s] = 0$, y no lo modificamos porque en la primer iteración no vemos aristas $(s, s)$ ($G$ es un grafo, no multigrafo). Como $delta(s, s) = 0 = d[s]$, vale $P(1)$.
+    + $P(1)$. El único vértice que sacamos de $Q$ en la primera iteración fue $s$, y luego al comenzar la segunda, $Q = V without {s}$. En este caso, $d[s] = 0$, y no lo modificamos porque en la primera iteración no vemos aristas $(s, s)$ ($G$ es un grafo, no multigrafo). Como $delta(s, s) = 0 = d[s]$, vale $P(1)$.
     + Paso inductivo. Sabemos $P(k)$ para todo $k lt.eq i$, queremos ver que vale $P(i+1)$. Sea $u$ el vértice que estamos sacando en la $i$-ésima iteración. Este es el vértice que, al sacar de $Q$ en la $i$-ésima iteración, estamos "agregando" a $V without Q$. Luego, como para todos los otros vértices $v$ en $V without Q$ sabemos que $d[v] = delta(s, v)$ por el @dijkstra:1, y no van a cambiar más porque en cada iteración sólo pueden decrecer, lo único que nos queda probar es que para $u$, también tenemos que $d[u] = delta(s, u)$.
 
       Si $d(s, u) = infinity$, es decir no hay ningún camino entre $s$ y $u$, terminamos, pues por el @dijkstra:1, sabemos que $d[u] = infinity$.
@@ -252,7 +252,7 @@
     Vamos a probar esto por inducción en el número de iteraciones del ciclo. Sea $P(i)$: Al comenzar la $i$-ésima iteración del ciclo, tenemos $d[v] = epsilon(s, v)$ para todo $v in V without Q$.
 
     + $P(0)$. Al comenzar el ciclo, no hay nada que probar, pues $Q = V$, entonces no hay nadie en $V - Q$.
-    + $P(1)$. El único vértice que sacamos de $Q$ en la primer iteración fue $s$, y luego al comenzar la segunda, $Q = V without {s}$. En este caso, $d[s] = (0, 0)$, y no lo modificamos porque en la primer iteración no vemos aristas $(s, s)$ ($G$ es un grafo, no multigrafo). Como $delta(s, s) = 0$, y $kappa(s, s) = 0$, vale $P(1)$.
+    + $P(1)$. El único vértice que sacamos de $Q$ en la primera iteración fue $s$, y luego al comenzar la segunda, $Q = V without {s}$. En este caso, $d[s] = (0, 0)$, y no lo modificamos porque en la primera iteración no vemos aristas $(s, s)$ ($G$ es un grafo, no multigrafo). Como $delta(s, s) = 0$, y $kappa(s, s) = 0$, vale $P(1)$.
     + Paso inductivo. Sabemos $P(k)$ para todo $k lt.eq i$, queremos ver que vale $P(i+1)$. Sea $u$ el vértice que estamos sacando en la $i$-ésima iteración. Este es el vértice que, al sacar de $Q$ en la $i$-ésima iteración, estamos "agregando" a $V without Q$. Luego, como para todos los otros vértices $v$ en $V without Q$ sabemos que $d[v] = epsilon(s, v)$ por el @dijkstra2:1, y no van a cambiar más porque en cada iteración sólo pueden decrecer, lo único que nos queda probar es que para $u$, también tenemos que $d[u] = epsilon(s, u)$.
 
       Si $delta(s, u) = infinity$, es decir no hay ningún camino entre $s$ y $u$, usamos el contrarecíproco del @dijkstra2:1, y al no haber ningún camino, entonces $d[u] = (infinity, infinity)$.
@@ -279,7 +279,7 @@
   Dar un algoritmo que calcule el número de caminos de mínimo peso entre $s$ y $v$, para cada $v in V$.
 ]
 #demo[
-  La idea de este algoritmo es primero encontrar el grafo dirigido acíclico $G'$ de caminos mínimos desde $s$. Luego, queremos encontrar el número de caminos en $G'$, desde $s$ hasta $v$, para cada $v$. Para la segunda parte, podemos usar un simple algoritmo de programación dinámica. Para la primer parte, tenemos dos opciones:
+  La idea de este algoritmo es primero encontrar el grafo dirigido acíclico $G'$ de caminos mínimos desde $s$. Luego, queremos encontrar el número de caminos en $G'$, desde $s$ hasta $v$, para cada $v$. Para la segunda parte, podemos usar un simple algoritmo de programación dinámica. Para la primera parte, tenemos dos opciones:
   - Podemos modificar el algoritmo de Dijkstra. Normalmente, el algoritmo devuelve un array $p$, donde $p[v]$ nos da un vértice inmediatamente anterior a $v$ en un camino mínimo desde $s$ hasta $v$. Podemos modificar esto para que $p[v]$ guarde un conjunto de _todos_ los vértices que están inmediatamente antes que $v$, en algún camino mínimo desde $s$ hasta $v$. La modificación sería que al iterar cada arista $(u, v) in E$, incidente al vértice $u$ que sacamos de $Q$, hacemos:
     #algorithm({
       import algorithmic: *

@@ -172,7 +172,7 @@
     #set enum(numbering: "1.a.i.")
     + Caso base, $P(1)$. Tenemos que probar que para todo $i, j in NN, 0 lt.eq i lt.eq n, 0 lt.eq j lt.eq m$ tal que $(n - i + 1)(m - j + 1) = 1$, $g$ es correcta. Como $i lt.eq n$ y $j lt.eq m$, entonces ambos factores de este producto son números naturales. Si tenemos un producto de naturales que es $1$, entonces ambos naturales son $1$. Luego, $n - i + 1 = 1$, y $m - j + 1 = 1$. Esto nos dice que $i = n$, y $j = m$. En este caso, tenemos que `not (i < n or j < m)`, y entonces $g(n, m, a)$ devuelve $a$. Ahora bién, $a$ es lo mismo que $a + []$ y $[]$ es precisamente la unión de todos los elementos de $x[i, dots, n - 1] + y[j, dots, m - 1] = x[n, dots, n - 1] + y[m, dots m - 1] = [] + [] = []$. Luego, $g$ es correcta para este caso.
     + Paso inductivo. Sabemos que vale $P(r)$ para todo $r < k$, queremos ver que vale $P(k)$. Sean entonces $i, j in NN, 0 lt.eq i lt.eq n, 0 lt.eq j lt.eq m$, tal que $(n - i + 1)(m - j + 1) = k$. Partimos en casos, si $i = n$, si $j = m$, o si ninguna es cierta.
-      + Si $i = n$ y $j eq.not m$, entonces $k = m - j + 1$. Como $j lt.eq m$, entonces $j < m$, no salimos en la primer condición (`return ans`). Como $i < n$ es falso, $g(i, j, a)$ evalúa a $g(i, j + 1, a + [y[j]])$. Como $m - (j + 1) + 1 < m - j + 1 = k$, podemos usar la hipótesis inductiva $P(m - (j + 1) + 1)$, para concluir que si llamamos $X = g(i, j + 1, a + [y[j]]) = a + [y[j]] + b$, entonces $b$ es una lista que contiene los elementos de $x[i, dots, n - 1] + y[j + 1, dots, m - 1]$, ordenados de forma no-decreciented. Como $i = n$, entonces $x[i, dots, n - 1] + y[j+1, dots, m - 1] = y[j+1, dots, m - 1]$. Como $y$ está ordenada de forma no-decreciente, entonces $y[j] lt.tilde b$. Luego $t = [y[j]] + b$ está ordenada de forma no-decreciente, y tiene los mismos elementos que $y[j, dots, m - 1] = x[i, dots, n - 1] + y[j, dots, m - 1]$. Luego, $X = a + t$, con $t$ teniendo los mismos elementos que $x[i, dots, n - 1] + y[j, dots, m - 1]$, ordenados de forma no-decreciente, que es lo que queríamos demostrar para $P(k)$.
+      + Si $i = n$ y $j eq.not m$, entonces $k = m - j + 1$. Como $j lt.eq m$, entonces $j < m$, no salimos en la primera condición (`return ans`). Como $i < n$ es falso, $g(i, j, a)$ evalúa a $g(i, j + 1, a + [y[j]])$. Como $m - (j + 1) + 1 < m - j + 1 = k$, podemos usar la hipótesis inductiva $P(m - (j + 1) + 1)$, para concluir que si llamamos $X = g(i, j + 1, a + [y[j]]) = a + [y[j]] + b$, entonces $b$ es una lista que contiene los elementos de $x[i, dots, n - 1] + y[j + 1, dots, m - 1]$, ordenados de forma no-decreciented. Como $i = n$, entonces $x[i, dots, n - 1] + y[j+1, dots, m - 1] = y[j+1, dots, m - 1]$. Como $y$ está ordenada de forma no-decreciente, entonces $y[j] lt.tilde b$. Luego $t = [y[j]] + b$ está ordenada de forma no-decreciente, y tiene los mismos elementos que $y[j, dots, m - 1] = x[i, dots, n - 1] + y[j, dots, m - 1]$. Luego, $X = a + t$, con $t$ teniendo los mismos elementos que $x[i, dots, n - 1] + y[j, dots, m - 1]$, ordenados de forma no-decreciente, que es lo que queríamos demostrar para $P(k)$.
       + Pasa algo análogo si $j = m$ y $i < n$.
       + Si $i < n$ y $j < m$, entonces partimos en dos casos, dependiendo de si $x[i] lt.eq y[j]$ o no.
         + Si $x[i] lt.eq y[j]$, $g$ devuelve $g(i + 1, j, a + [x[i]])$. Como $n - (i + 1) + 1 < n - i + 1$, entonces $(n - (i + 1) + 1)(m - j + 1) < (n - i + 1)(m - j + 1) = k$, y podemos usar la hipótesis inductiva $P((n - (i + 1) + 1)(m - j + 1))$ para ver que $g(i + 1, j, a + [x[i]]) = a + [x[i]] + b$, con $b$ una permutación no-decreciente de $x[i + 1, dots, n - 1] + y[j, dots, m - 1]$. Como $x$ e $y$ son no-decrecientes, $x[i] lt.tilde x[i + 1, dots, n - 1]$, y $x[i] lt.eq y[j] lt.tilde y[j, dots, m - 1]$. Luego, $x[i] lt.tilde b$, y luego llamando $t = [x[i]] + b$, vemos que $g(i, j, a)$ está devolviendo $a + t$, con $t$ una lista no-decreciente, que contiene los mismos elementos que $x[i, dots, n - 1] + y[j, dots m - 1]$. Esto es precisamente lo que hay que probar para $P(k)$.
@@ -187,7 +187,7 @@
     `mergesort` es correcta.
   ]
   #demo[
-    Al ser `mergesort` una función recursiva, la primer herramienta que vamos a intentar es usar inducción.
+    Al ser `mergesort` una función recursiva, la primera herramienta que vamos a intentar es usar inducción.
 
     Veamos primero, ¿qué es lo que decrece en cada llamada recursiva? Nos dan una lista, $x$, y la dividimos en dos partes, aproximadamente de la mitad del tamaño cada vez (lo de aproximado es porque no todas las entradas tienen un número par de elementos). Luego, lo que está decreciendo cada vez es el tamaño de la lista que nos pasan.
 
@@ -249,7 +249,7 @@ Primero una explicación de cómo podemos pensar esto, y luego una solución com
 
     Sea $P(i): i lt.eq n implies f(i, x) = v^*(i, x)$. Vamos a probar $P(i) forall i in NN$ por inducción.
 
-    + Caso base, $P(0)$. Tenemos que probar que $f(0, x) = v^*(0, x)$. Por definición, $v^*(0, x) = max_(S in F(0, x)) { v(S) }$, pero $F(0, x) = {S subset.eq {1, dots, 0} | p(S) lt.eq x} = {emptyset}$, pues el único subconjunto de los primeros $0$ objetos es $emptyset$. Luego, $v^*(0, x) = v(emptyset) = sum_(j in emptyset) v_j = 0$. Nuestra función $f$ efectivamente devuelve $0$, en su primer rama, donde $i = 0$. Luego $f(0, x) = 0 = v^*(0, x)$, lo cual demuestra $P(0)$.
+    + Caso base, $P(0)$. Tenemos que probar que $f(0, x) = v^*(0, x)$. Por definición, $v^*(0, x) = max_(S in F(0, x)) { v(S) }$, pero $F(0, x) = {S subset.eq {1, dots, 0} | p(S) lt.eq x} = {emptyset}$, pues el único subconjunto de los primeros $0$ objetos es $emptyset$. Luego, $v^*(0, x) = v(emptyset) = sum_(j in emptyset) v_j = 0$. Nuestra función $f$ efectivamente devuelve $0$, en su primera rama, donde $i = 0$. Luego $f(0, x) = 0 = v^*(0, x)$, lo cual demuestra $P(0)$.
     + Paso inductivo. Sabemos que vale $P(t)$, queremos ver que vale $P(t + 1)$. Es decir, queremos probar que $v^*(t + 1, x) = f(t + 1, x)$. Llamemos $i = t + 1$. Si $i > n$, no hay nada que probar, pues "falso implica todo", y estamos probando una implicación ($P(i)$) con antecedente falso. Luego, asumimos que $i lt.eq n$.
 
       Por definición, $v^*(i, x) = max_(S in F(i, x)) { v(S) }$.
@@ -322,7 +322,7 @@ Primero una explicación de cómo podemos pensar esto, y luego una solución com
   El costo temporal es idéntico, pero bajamos el costo espacial a sólo $Theta(P)$ en todos los casos.]
 
 #ej[
-  Sea $X = [x_1, x_2, dots, x_n]$ una secuencia de $n$ booleanos ($1$ o $0$) y sea $k in NN$ un número entre $1$ y $n$. Supongamos que se pueden eliminar $k$ ceros, queremos saber la longitud máximo que puede tener una cadena de $1$s. Por ejemplo si $k = 2$ y $X = 11001010001$ la respuesta es $3$, mientras que si $k = 3$ la respuespuesta es $4$.
+  Sea $X = [x_1, x_2, dots, x_n]$ una secuencia de $n$ booleanos ($1$ o $0$) y sea $k in NN$ un número entre $1$ y $n$. Supongamos que se pueden eliminar $k$ ceros, queremos saber la longitud máxima que puede tener una cadena de $1$s. Por ejemplo si $k = 2$ y $X = 11001010001$ la respuesta es $3$, mientras que si $k = 3$ la respuespuesta es $4$.
   + Diseñar un algoritmo basado en programación dinámica que indique la longitud más larga de una subsecuencia de unos sacando a lo sumo $k$ ceros de $S$. Debe tener complejidad a lo sumo $O(n k)$.
   + Demostrar que el algoritmo es correcto.
   + Demostrar su complejidad temporal y espacial en el peor caso.
@@ -335,7 +335,7 @@ Primero les voy a mostrar en qué pienso al resolver el ejercicio, y luego una r
 
   Veamos si puedo plantear esto.
   - Si veo un 1 en $x_i$, entonces puedo tomar $f(i - 1, k) + 1$ como la respuesta para esta posición.
-  - Si veo un 0 en $x_i$, entonces puedo tomar $f(i - 1, k - 1) + 1$ si $k > 0$, o $0$ si no. También puedo tomar una cadena de longitud $0$ que terminar en este $0$, si no quiero tomar la solución recursiva (que puede no existir, si por ejemplo estoy en un prefijo de más de $k$ ceros).
+  - Si veo un 0 en $x_i$, entonces puedo tomar $f(i - 1, k - 1) + 1$ si $k > 0$, o $0$ si no. También puedo tomar una cadena de longitud $0$ que termina en este $0$, si no quiero tomar la solución recursiva (que puede no existir, si por ejemplo estoy en un prefijo de más de $k$ ceros).
 
   $
     f(i, k) = cases(
@@ -382,7 +382,7 @@ Primero les voy a mostrar en qué pienso al resolver el ejercicio, y luego una r
   #demo[
     Está claro que toda cadena de unos borrando a lo sumo $k$ ceros termina en alguna posición. Luego, si probamos que $f$ es correcta (es decir, que cumple su semántica), estamos probando que nuestro algoritmo es correcto, pues estamos tomando el máximo sobre todas las posibles posiciones donde terminaría tal secuencia.
 
-    Vamos a probar que $f$ es correcta usando inducción. Definimos $v^*(i, t)$ como la longitud de cadena de unos más larga, borrando a lo sumo $t$ ceros, que termina exactamente en $i$, 0 cero si no existen tales cadenas. Definimos $P(i): i lt.eq n implies (f(i, t) = v^*(i, t) forall t in NN)$. Por comodidad, vamos a definir $theta(i, t)$ como el conjunto de cadenas de unos que termina en la posición $i$, y borra a lo sumo $t$ ceros, y $theta^*(i, t)$ como el subconjunto de $theta(i, t)$ que tiene número máximo de unos, para cada $i, t$.
+    Vamos a probar que $f$ es correcta usando inducción. Definimos $v^*(i, t)$ como la longitud de cadena de unos más larga, borrando a lo sumo $t$ ceros, que termina exactamente en $i$, y cero si no existen tales cadenas. Definimos $P(i): i lt.eq n implies (f(i, t) = v^*(i, t) forall t in NN)$. Por comodidad, vamos a definir $theta(i, t)$ como el conjunto de cadenas de unos que termina en la posición $i$, y borra a lo sumo $t$ ceros, y $theta^*(i, t)$ como el subconjunto de $theta(i, t)$ que tiene número máximo de unos, para cada $i, t$.
 
     #set enum(numbering: "1.a)i)")
     + Caso base, $P(0)$. La longitud de una cadena de unos más larga que termina en la $(i = 0)$-ésima posición es o bien 1 o 0, dependiendo de si $x_0 = 1$ o $x_0 = 0$. Luego, si $v^*(0, t) = x_0$. Si $x_0 = 1$, nuestra función $f(0, t)$ devuelve $f(-1, t) + 1$, que evalúa a $1$ inmediatamente. Si $x_0 = 0 and t > 0$, $f(i, t)$ devuelve $f(-1, t - 1)$, que evalúa a $0$ inmediatamente. Finalmente, si $x_0 and t = 0$, entonces $f(0, 0) = 0$. Luego en todos los casos tenemos $f(0, t) = v^(0, t)$, lo que prueba $P(0)$.
@@ -427,7 +427,7 @@ Primero les voy a mostrar en qué pienso al resolver el ejercicio, y luego una r
 
   Esto evita computar subproblemas dos veces, pero hace difícil el análisis de complejidad temporal, dado que estamos mutando estado (`cache`), y el tiempo que va a tomar una llamada va a depender del estado cuando es llamada. Asimismo, agregamos ahora el costo adicional de leer y escribir la estructura `cache`.
 
-  Para hacer más claro el análisi algoritmo, y bajar su complejidad en la práctica cuando vamos a llenar `cache` enteramente de todos modos, podemos usar programación dinámica bottom-up. Esto implica ver en qué orden se llena `cache` en la versión top-down, y llenarlo nosotros mismos en ese orden. En este caso, vemos que llenamos una entrada `cache[(i, t)]` sólo luego de llamar a `f(i - 1, ...)`, que va a escribiri `cache[(i - 1, ...)]`. Luego, si llenamos `cache` en orden creciente de `i`, vamos a estar llenando la estructura en un orden que garantiza siempre tener escritos los valores que queremos leer, al momento de querer leerlos.
+  Para hacer más claro el análisis algoritmo, y bajar su complejidad en la práctica cuando vamos a llenar `cache` enteramente de todos modos, podemos usar programación dinámica bottom-up. Esto implica ver en qué orden se llena `cache` en la versión top-down, y llenarlo nosotros mismos en ese orden. En este caso, vemos que llenamos una entrada `cache[(i, t)]` sólo luego de llamar a `f(i - 1, ...)`, que va a escribiri `cache[(i - 1, ...)]`. Luego, si llenamos `cache` en orden creciente de `i`, vamos a estar llenando la estructura en un orden que garantiza siempre tener escritos los valores que queremos leer, al momento de querer leerlos.
 
   ```python
   def F(x, k):
@@ -467,7 +467,7 @@ Primero les voy a mostrar en qué pienso al resolver el ejercicio, y luego una r
   El costo espacial del algoritmo es, en todos los casos, $Theta(n k)$.]
 
 #ej[
-  Sea $v = (v_0, v_2, dots, v_(n-1))$ un vector de números enteros. Diseñar un algoritmo que indique la mínima cantidad de números que hay que eliminar del vector para que cada número que permanezca sea múltiplo del anterior (excepto el primero). Por ejemplo, para los vectores $(-5, 5, 0), (0, 5, -5), y (0, 5, -5, 2, 15, 15)$, los resultados deberían ser respectivamente $0$, $1$, y $2$. El algoritmo debe tener complejidad temporal $O(n^2)$ y estar basado en programación dinámica.
+  Sea $v = (v_0, v_2, dots, v_(n-1))$ un vector de números enteros. Diseñar un algoritmo que indique la mínima cantidad de números que hay que eliminar del vector para que cada número que permanezca sea múltiplo del anterior (excepto el primero). Por ejemplo, para los vectores $(-5, 5, 0), (0, 5, -5),$ y $(0, 5, -5, 2, 15, 15)$, los resultados deberían ser respectivamente $0$, $1$, y $2$. El algoritmo debe tener complejidad temporal $O(n^2)$ y estar basado en programación dinámica.
   + Demostrar que el algoritmo es correcto.
   + Demostrar su complejidad temporal y espacial.
 

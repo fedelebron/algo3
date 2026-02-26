@@ -101,7 +101,7 @@ Esta sección contiene varios ejercicios resueltos sobre sumatorias. Asumo que h
 
   Como llegamos a algo cierto a través de manipulaciones reversibles, cada paso puede ser revertido para empezar con $a^(n+1) = a^(n+1)$ y concluir con $sum_(i=0)^n a^i &= (a^(n+1) - 1)/(a-1)$.
 
-  Notar que para revertir la multiplicación por $a - 1$ que hacemos para ir de la primer ecuación a la segunda, estamos usando que $a eq.not 1$.
+  Notar que para revertir la multiplicación por $a - 1$ que hacemos para ir de la primera ecuación a la segunda, estamos usando que $a eq.not 1$.
 ]
 
 

@@ -124,7 +124,7 @@ def f(M: list[list[int]], k: int) -> list[int]:
     + Análogamente, las celdas de la columna 2, cuya fila sea más grande que `i`.
     + Las celdas que tengan una fila igual a `i`, y columna en `I`.
     + Análogamente, las celdas que tengan columna igual a `i`, y fila en `I`.
-  Esto es restarle ```python 10 + 9 + 9 + 6 + 10 + 9 + 6 = 2 * (10 + 9 + 9 + 6) - 9 = 2 * sum(M[i][j] for j in range(n) if j >= i or j in I) - M[i][i]```. Las celdas azules de la primer fila y la primer columna (los dos "10" azules) las restamos por `j in I`, las otras por `j >= i`.
+  Esto es restarle ```python 10 + 9 + 9 + 6 + 10 + 9 + 6 = 2 * (10 + 9 + 9 + 6) - 9 = 2 * sum(M[i][j] for j in range(n) if j >= i or j in I) - M[i][i]```. Las celdas azules de la primera fila y la primera columna (los dos "10" azules) las restamos por `j in I`, las otras por `j >= i`.
 
   También vamos a aprovechar y computar el valor de la sub-solución actual a medida que hacemos recursión.
 

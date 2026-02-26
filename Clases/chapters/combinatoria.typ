@@ -106,7 +106,7 @@ Para esta demostración les voy a mostrar el proceso de deducción e ideas que h
 
   Quiero ver si puedo combinar estas dos ecuaciones, quizás emparejando coeficientes, porque así se sumarían los coeficientes binomiales. Pensando en cosas que valgan para sumas de coeficientes binomiales, recuerdo que $binom(n, k) = binom(n - 1, k) + binom(n - 1, k - 1)$, puede ser que emparejando los coeficientes que tengan el mismo $x^i y^j$, me queden así los coeficientes? A ver...
 
-  Tengo $i, j in NN$, quiero ver qué coeficiente binomial multiplica a $x^i y^j$ en la primer sumatoria, y luego en la segunda. En la primera, $i = k + 1, j = n - k$. Entonces el coeficiente es $binom(n = j + (i - 1), k = i - 1)$. En la segunda, tenemos $i = k, j = n - k + 1$, entonces el coeficiente es $binom(j + i - 1, i)$.
+  Tengo $i, j in NN$, quiero ver qué coeficiente binomial multiplica a $x^i y^j$ en la primera sumatoria, y luego en la segunda. En la primera, $i = k + 1, j = n - k$. Entonces el coeficiente es $binom(n = j + (i - 1), k = i - 1)$. En la segunda, tenemos $i = k, j = n - k + 1$, entonces el coeficiente es $binom(j + i - 1, i)$.
 
   Juntando estos dos, tenemos que la sumatoria es $sum_(i, j) x^i y^j (binom(j + i - 1, i - 1) + binom(j + i - 1, i))$, donde estoy sumando $i, j$ sobre algún conjunto que no quiero pensar por ahora. Pero esto es bueno, los términos son precisamente de la forma que pensaba que eran, si los sumo me queda $binom(j + i, i)$.
 
@@ -130,7 +130,7 @@ Para esta demostración les voy a mostrar el proceso de deducción e ideas que h
       =& sum_(i = 1)^(n + 1) binom(n, i - 1) x^i y^(n - (i - 1)) + sum_(k = 0)^n binom(n, k) x^k y^(n - k + 1), "llamando "i = k + 1, \
       =& sum_(j = 1)^(n + 1) binom(n, j - 1) x^j y^(n + 1 - j) + sum_(j = 0)^n binom(n, j) x^j y^(n + 1 - j), "llamando a ambos índices "j
     $
-    Acá hay que tener cuidado. Lo que queremos hacer es que los índices sean iguales, que es sacarle el último término ($j = n + 1$) a la primer sumatoria, y el primer término $(j = 0)$ a la segunda. Lo único que sé es que $n in NN$, entonces tengo al menos un término en cada sumatoria, porque $n + 1 gt.eq 1$ (para la primera) y $n gt.eq 0$ (para la segunda). No podría, si quisiera, sacar dos términos de cada una, porque no sé si _hay_ dos términos en cada una.
+    Acá hay que tener cuidado. Lo que queremos hacer es que los índices sean iguales, que es sacarle el último término ($j = n + 1$) a la primera sumatoria, y el primer término $(j = 0)$ a la segunda. Lo único que sé es que $n in NN$, entonces tengo al menos un término en cada sumatoria, porque $n + 1 gt.eq 1$ (para la primera) y $n gt.eq 0$ (para la segunda). No podría, si quisiera, sacar dos términos de cada una, porque no sé si _hay_ dos términos en cada una.
 
 
     $
